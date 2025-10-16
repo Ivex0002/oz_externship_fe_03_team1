@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Search, Users, UserPlus } from 'lucide-react';
+import { Search, Users } from 'lucide-react';
 
 const StudyGroups: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
@@ -32,7 +32,6 @@ const StudyGroups: React.FC = () => {
         <div className="mb-16">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">진행중인 스터디</h2>
           <p className="text-gray-600 mb-8">현재 활발히 진행되고 있는 스터디 그룹들</p>
-          
           <div className="bg-white rounded-lg border border-gray-200 p-16 flex flex-col items-center justify-center">
             <div className="bg-gray-100 rounded-full p-6 mb-6">
               <Users className="w-12 h-12 text-gray-400" />
@@ -48,11 +47,10 @@ const StudyGroups: React.FC = () => {
           </div>
         </div>
 
-        {/* 완료된 스터디 그룹 섹션 */}
+        {/* 완료된 스터디 그룹 */}
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-2">완료된 스터디</h2>
           <p className="text-gray-600 mb-8">성공적으로 마무리된 스터디 그룹들</p>
-          
           <div className="bg-white rounded-lg border border-gray-200 p-16 flex flex-col items-center justify-center">
             <div className="bg-gray-100 rounded-full p-6 mb-6">
               <img

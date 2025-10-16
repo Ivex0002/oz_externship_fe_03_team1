@@ -1,64 +1,42 @@
 import { useState } from 'react'
-import { DayPicker, type MonthCaptionProps } from 'react-day-picker'
+import { DayPicker } from 'react-day-picker'
 import { ko } from 'react-day-picker/locale'
 import 'react-day-picker/style.css'
 import DatePickerHeader from './DatePickerHeader'
-import { ChevronLeft, ChevronRight } from 'lucide-react'
+import DatePickerCaption from './DatePickerCaption'
+import DatePickerFooter from './DatePickerFooter'
 
 type DatePickerModalProps = {
   title: string
+  startMonth?: Date
 }
 
-const DatePickerModal = ({ title }: DatePickerModalProps) => {
+const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
   const [selected, setSelected] = useState<Date>()
 
-  const Caption = (props: MonthCaptionProps) => {
-    const date = props.calendarMonth.date
-    const year = date.getFullYear()
-    const month = date.getMonth() + 1
-
-    return (
-      <div className="flex justify-between">
-        <button>
-          <ChevronLeft />
-        </button>
-        <div className="flex gap-4">
-          <p className="font-bold">
-            {year}년 {month}월
-          </p>
-          <button>오늘</button>
-        </div>
-        <button>
-          <ChevronRight />
-        </button>
-      </div>
-    )
-  }
-
   return (
-    <div className="w-[308px]">
+    <div className="flex w-[350px] flex-col items-center">
       <DatePickerHeader title={title} />
       <DayPicker
-        animate
         mode="single"
         disabled={{ before: new Date() }}
         locale={ko}
         navLayout="around"
+        startMonth={startMonth ?? undefined}
         showOutsideDays
         selected={selected}
         onSelect={setSelected}
-        components={{ MonthCaption: Caption }}
-        footer={
-          selected
-            ? `선택한 날짜 : ${selected.toLocaleDateString()}`
-            : '날짜를 선택하세요.'
-        }
+        components={{ MonthCaption: DatePickerCaption }}
         classNames={{
           today: 'text-black',
-          selected: 'border-2 rounded-full border-[#facc15]',
-          chevron: 'fill-gray-700',
+          selected: 'border-2 rounded-full border-primary-400',
+          month_caption: 'hidden',
+          chevron: 'hidden',
+          outside: 'text-gray-400',
         }}
+        className="py-5"
       />
+      <DatePickerFooter selected={selected} />
     </div>
   )
 }

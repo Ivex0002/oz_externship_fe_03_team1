@@ -6,7 +6,7 @@ type DatePickerHeaderProps = {
 
 const DatePickerHeader = ({ title }: DatePickerHeaderProps) => {
   return (
-    <header className="flex w-full justify-between border-b border-gray-300 py-5">
+    <header className="flex w-full justify-between border-b border-gray-300 p-5">
       <h1>{title}</h1>
       <button>
         <X size={18} />

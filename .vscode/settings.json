@@ -3,5 +3,30 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": "explicit"
   },
-  "editor.defaultFormatter": "esbenp.prettier-vscode"
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+
+  // 테일윈드 설정
+  "files.associations": {
+    // css에 Tailwind CSS 언어 모드 활성화
+    "*.css": "tailwindcss"
+  },
+  // clsx(), classnames() 같은 함수 안에 작성된 Tailwind 클래스명도 자동 완성 및 검사 대상으로 지정
+  "tailwindCSS.experimental.classRegex": [
+    ["clsx\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]"]
+  ],
+  // 적용 언어
+  "tailwindCSS.includeLanguages": {
+    "plaintext": "html",
+    "javascript": "javascript",
+    "typescript": "typescript",
+    "typescriptreact": "typescriptreact",
+    "javascriptreact": "javascriptreact",
+    "css": "css"
+  },
+  // Tailwind 문법 검사를 활성화
+  "tailwindCSS.validate": true,
+  // 문자열 입력 중에도 자동 완성 기능을 활성화
+  "editor.quickSuggestions": {
+    "strings": true
+  }
 }

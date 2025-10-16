@@ -69,7 +69,7 @@ jobs:
                 "devjaesung")
                   MENTIONS="$MENTIONS <@1344112571330072626>"
                   ;;
-                "Rimi")
+                "rimi-w")
                   MENTIONS="$MENTIONS <@1365192257124171907>"
                   ;;
                 "Ivex0002")
@@ -95,7 +95,7 @@ jobs:
               case "$CURRENT_REVIEWER" in
                 "chen4023") MENTIONS="<@683563560063991848>" ;;
                 "devjaesung") MENTIONS="<@1344112571330072626>" ;;
-                "Rimi") MENTIONS="<@1365192257124171907>" ;;
+                "rimi-w") MENTIONS="<@1365192257124171907>" ;;
                 "Ivex0002") MENTIONS="<@378874137080365058>" ;;
                 "yeunji0930") MENTIONS="<@357378923715231755>" ;;
                  "Grunnodap") MENTIONS="<@272000873842999297>" ;;
@@ -181,7 +181,7 @@ jobs:
             "devjaesung")
               AUTHOR_MENTION="<@1344112571330072626>"
               ;;
-            "Rimi")
+            "rimi-w")
               AUTHOR_MENTION="<@1365192257124171907>"
               ;;
             "Ivex0002")
@@ -240,7 +240,7 @@ jobs:
             "devjaesung")
               AUTHOR_MENTION="<@1344112571330072626>"
               ;;
-            "Rimi")
+            "rimi-w")
               AUTHOR_MENTION="<@1365192257124171907>"
               ;;
             "Ivex0002")

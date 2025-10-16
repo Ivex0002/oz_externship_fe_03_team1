@@ -1,12 +1,7 @@
 import './App.css'
-import DatePickerModal from './components/basicComponents/modal/DatePickerModal'
 
 function App() {
-  return (
-    <div>
-      <DatePickerModal />
-    </div>
-  )
+  return <div>template</div>
 }
 
 export default App

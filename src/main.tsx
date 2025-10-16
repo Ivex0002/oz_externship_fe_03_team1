@@ -1,12 +1,40 @@
-import { StrictMode } from 'react'
+import ReactDOM from 'react-dom/client'
+import { createBrowserRouter } from 'react-router'
+import { RouterProvider } from 'react-router/dom'
+import App from './App'
+import TestD from './test/TestD'
+import TestE from './test/TestE'
+import TestG from './test/TestG'
+import TestH from './test/TestH'
+import TestY from './test/TestY'
 
-import { createRoot } from 'react-dom/client'
+const router = createBrowserRouter([
+  {
+    path: '/',
+    Component: App,
+  },
+  {
+    path: '/testD',
+    Component: TestD,
+  },
+  {
+    path: '/testE',
+    Component: TestE,
+  },
+  {
+    path: '/testG',
+    Component: TestG,
+  },
+  {
+    path: '/testH',
+    Component: TestH,
+  },
+  {
+    path: '/testY',
+    Component: TestY,
+  },
+])
 
-import './index.css'
-import App from './App.tsx'
+const root = document.getElementById('root') as HTMLElement
 
-createRoot(document.getElementById('root')!).render(
-  <StrictMode>
-    <App />
-  </StrictMode>
-)
+ReactDOM.createRoot(root).render(<RouterProvider router={router} />)

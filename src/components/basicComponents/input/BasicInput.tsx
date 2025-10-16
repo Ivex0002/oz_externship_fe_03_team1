@@ -1,7 +1,6 @@
-// 색상 정의
-
 import clsx from 'clsx'
 
+// 색상 정의
 // disabled일때 ph는 투명도 50%
 const INPUT_COLORS = {
   default: {

@@ -15,7 +15,7 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
   const endDate = end.getDate()
 
   return (
-    <div className="w-[448px]">
+    <form className="w-[448px]">
       <ModalHeader title="리뷰 작성" />
       <main className="p-5">
         <div className="flex flex-col gap-3">
@@ -32,7 +32,7 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
         <button className="w-[195px]">취소</button>
         <button className="w-[195px]">작성 완료</button>
       </footer>
-    </div>
+    </form>
   )
 }
 

@@ -6,7 +6,7 @@ import TestD from './test/TestD'
 import TestE from './test/TestE'
 import TestG from './test/TestG'
 import TestH from './test/TestH'
-import TestY from './test/testY'
+import TestY from './test/TestY'
 
 const router = createBrowserRouter([
   {

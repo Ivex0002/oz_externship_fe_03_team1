@@ -1,5 +1,5 @@
 import { X } from 'lucide-react'
-import { storeIsModalOpen } from '../../store/storeIsModalOpen'
+import { storeModalOpen } from '../../store/storeIsModalOpen'
 
 type ModalHeaderProps = {
   title: string
@@ -7,7 +7,7 @@ type ModalHeaderProps = {
 }
 
 const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
-  const { SetModalOpen } = storeIsModalOpen()
+  const { SetModalOpen } = storeModalOpen()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()

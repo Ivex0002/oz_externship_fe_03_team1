@@ -4,25 +4,17 @@ import { ko } from 'react-day-picker/locale'
 import 'react-day-picker/style.css'
 import DatePickerCaption from './DatePickerCaption'
 import DatePickerFooter from './DatePickerFooter'
-import ModalHeader from '../ModalHeader'
 
-type DatePickerModalProps = {
-  title: string
-  startMonth?: Date
-}
-
-const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
+const DatePickerModal = () => {
   const [selected, setSelected] = useState<Date>()
 
   return (
     <div className="flex w-[448px] flex-col items-center rounded-xl">
-      <ModalHeader title={title} />
       <DayPicker
         mode="single"
         disabled={{ before: new Date() }}
         locale={ko}
         navLayout="around"
-        startMonth={startMonth ?? undefined}
         showOutsideDays
         selected={selected}
         onSelect={setSelected}

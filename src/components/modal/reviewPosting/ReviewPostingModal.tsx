@@ -16,11 +16,11 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
   const endMonth = end.getMonth() + 1
   const endDate = end.getDate()
 
-  const { setModalOpen: SetModalOpen } = storeModalOpen()
+  const { setModalOpen: setModalOpen } = storeModalOpen()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    SetModalOpen(false)
+    setModalOpen(false)
   }
 
   return (

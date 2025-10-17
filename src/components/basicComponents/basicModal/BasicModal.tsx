@@ -5,6 +5,7 @@ import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import ModalHeader from '@/components/modal/ModalHeader'
+import { useModal } from '@/hooks/useModal'
 
 /**
  *
@@ -22,29 +23,21 @@ import ModalHeader from '@/components/modal/ModalHeader'
  * ```
  */
 export default function BasicModal() {
-  const navigate = useNavigate()
   const location = useLocation()
   const modalRef = useRef<HTMLDivElement>(null)
+  const { closeModal } = useModal()
 
   // Zustand store
   const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
   const setModalOpen = storeModalOpen((state) => state.setModalState)
 
   // navigate를 통해 들어온 값들
-  const { prevPath, title, subTitle } = storeModalOpen().modalState
+  const { title, subTitle } = storeModalOpen().modalState
 
   // 무한 랜더링 방지 및 린트 회피용 ref
   const setModalOpenRef = useRef(setModalOpen)
   const isModalOpenRef = useRef(isModalOpen)
-
-  // 닫기 로직
-  const handleCloseRef = useRef(() => {
-    setModalOpen({ isModalOpen: false })
-    navigate(prevPath, { replace: true })
-  })
-  const handleClose = useCallback(() => {
-    handleCloseRef.current()
-  }, [])
+  const closeModalRef = useRef(closeModal)
 
   // location이 변경될 때마다 모달 상태 확인
   useEffect(() => {
@@ -76,7 +69,7 @@ export default function BasicModal() {
   // esc 누를시 이전 경로로 이동
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleCloseRef.current()
+      if (e.key === 'Escape') closeModalRef.current()
     }
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
@@ -118,7 +111,7 @@ export default function BasicModal() {
           animate="visible"
           exit="exit"
           transition={{ duration: 0.25 }}
-          onClick={handleClose}
+          onClick={() => closeModalRef.current()}
         >
           <motion.div
             className="relative max-h-[90vh] w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl"
@@ -134,7 +127,7 @@ export default function BasicModal() {
               <ModalHeader
                 title={title}
                 subTitle={subTitle}
-                onClose={handleClose}
+                onClose={() => closeModalRef.current()}
               />
               <Outlet />
             </div>

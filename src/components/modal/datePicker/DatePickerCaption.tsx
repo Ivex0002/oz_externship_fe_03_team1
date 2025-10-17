@@ -22,7 +22,7 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
   }
 
   return (
-    <div className="flex justify-between">
+    <div className="flex justify-between pb-6">
       <button
         className={`rounded px-2 py-1 hover:bg-gray-100 ${
           !canGoPrev ? 'cursor-not-allowed opacity-40' : ''
@@ -36,7 +36,7 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
         <ChevronLeft />
       </button>
       <div className="flex items-center gap-4">
-        <span className="font-bold">
+        <span className="font-bold text-gray-900">
           {year}년 {month}월
         </span>
         <button className="text-primary-500" onClick={goToday}>

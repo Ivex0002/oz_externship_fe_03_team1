@@ -15,7 +15,7 @@ const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
   }
 
   return (
-    <header className="flex w-full justify-between border-b border-gray-300 p-6">
+    <header className="flex w-full justify-between border-b border-gray-300 p-6 text-gray-900">
       <div className="flex flex-col">
         <h1 className="text-lg font-semibold">{title}</h1>
         <h2 className="text-sm font-normal text-gray-500">{subTitle}</h2>

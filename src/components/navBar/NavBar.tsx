@@ -15,7 +15,7 @@ export default function NavbarLayout() {
         </div>
       </nav>
 
-      <main className="flex w-full flex-1 items-center justify-center bg-gray-50">
+      <main className="mt-[65px] flex w-full flex-1 items-center justify-center bg-gray-50">
         <Outlet />
       </main>
     </div>

@@ -1,17 +1,18 @@
-import { storeModalOpen } from '@/store/storeModalOpen'
+import { useModal } from '@/hooks/useModal'
 import { X } from 'lucide-react'
 
 type ModalHeaderProps = {
   title: string
   subTitle?: string | null
+  onClose: () => void
 }
 
-const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
-  const { setModalOpen: setModalOpen } = storeModalOpen()
+const ModalHeader = ({ title, subTitle = null, onClose }: ModalHeaderProps) => {
+  const { closeModal } = useModal()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    setModalOpen(false)
+    closeModal()
   }
 
   return (
@@ -21,7 +22,7 @@ const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
         <h2 className="text-sm font-normal text-gray-500">{subTitle}</h2>
       </div>
       <button onClick={(e) => handleClickCancel(e)}>
-        <X size={18} />
+        <X size={18} onClick={() => onClose()} className="cursor-pointer" />
       </button>
     </header>
   )

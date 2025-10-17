@@ -1,10 +1,28 @@
 import { create } from 'zustand'
 
-interface ModalOpen {
+type ModalState = {
   isModalOpen: boolean
-  setModalOpen: (isOpen: boolean) => void
+  prevPath: string
+  title: string
+  subTitle?: string
 }
-export const storeModalOpen = create<ModalOpen>((set) => ({
+interface storeModalState {
+  modalState: ModalState
+
+  setModalState: (state: Partial<ModalState>) => void
+  clearModal: () => void
+}
+
+const initState: ModalState = {
   isModalOpen: false,
-  setModalOpen: (isOpen) => set(() => ({ isModalOpen: isOpen })),
+  prevPath: '',
+  title: '',
+  subTitle: '',
+}
+
+export const storeModalOpen = create<storeModalState>((set) => ({
+  modalState: initState,
+  setModalState: (newState) =>
+    set((cur) => ({ modalState: { ...cur.modalState, ...newState } })),
+  clearModal: () => set(() => ({ modalState: initState })),
 }))

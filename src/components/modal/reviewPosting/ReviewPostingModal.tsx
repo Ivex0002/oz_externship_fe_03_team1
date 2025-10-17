@@ -1,8 +1,8 @@
-import { storeModalOpen } from '@/store/storeModalOpen'
 import type { StudyGroup } from '../../../types/StudyGroup'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
+import { useModal } from '@/hooks/useModal'
 // import { useLoaderData } from 'react-router'
 
 const ReviewPostingModal = () => {
@@ -28,12 +28,11 @@ const ReviewPostingModal = () => {
   const endYear = end.getFullYear()
   const endMonth = end.getMonth() + 1
   const endDate = end.getDate()
-
-  const { setModalOpen: setModalOpen } = storeModalOpen()
+  const { closeModal } = useModal()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    setModalOpen(false)
+    closeModal()
   }
 
   return (

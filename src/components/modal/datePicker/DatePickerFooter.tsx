@@ -1,4 +1,4 @@
-import { storeModalOpen } from '@/store/storeModalOpen'
+import { useModal } from '@/hooks/useModal'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 
 type DatePickerFooterProps = {
@@ -6,11 +6,11 @@ type DatePickerFooterProps = {
 }
 
 const DatePickerFooter = ({ selected }: DatePickerFooterProps) => {
-  const { setModalOpen } = storeModalOpen()
+  const { closeModal } = useModal()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    setModalOpen(false)
+    closeModal()
   }
   return (
     <footer className="flex w-full items-center justify-between border-t border-gray-300 p-6">

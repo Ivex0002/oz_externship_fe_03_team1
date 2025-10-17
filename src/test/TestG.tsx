@@ -1,5 +1,5 @@
+import NavbarLayout from '@/components/navBar/NavBar'
 import { Route, Routes } from 'react-router'
-import NavbarLayout from '../components/navBar/NavBar'
 
 function TestG() {
   return (

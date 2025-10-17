@@ -1,8 +1,8 @@
 // BasicModal.tsx
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
-import { useNavigate, useLocation, Outlet } from 'react-router'
+import { useEffect, useRef } from 'react'
+import { useLocation, Outlet } from 'react-router'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import ModalHeader from '@/components/modal/ModalHeader'
 import { useModal } from '@/hooks/useModal'

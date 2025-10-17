@@ -7,11 +7,11 @@ type ModalHeaderProps = {
 }
 
 const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
-  const { setModalOpen: SetModalOpen } = storeModalOpen()
+  const { setModalOpen: setModalOpen } = storeModalOpen()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    SetModalOpen(false)
+    setModalOpen(false)
   }
 
   return (

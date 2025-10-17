@@ -276,7 +276,7 @@ const SearchResults: React.FC = () => {
               <p className="text-gray-600">현재 활발히 진행되고 있는 스터디 그룹들</p>
             </div>
             {filteredActiveStudies.length > 0 && (
-              <span className="text-color-success-600 font-semibold">{filteredActiveStudies.length}개 진행중</span>
+              <span className="text-success-600 font-semibold">{filteredActiveStudies.length}개 진행중</span>
             )}
           </div>
           
@@ -288,9 +288,9 @@ const SearchResults: React.FC = () => {
             </div>
           ) : (
             // 밑 줄 색상 적용이? 문제 있는거 같다.
-            <div className="bg-white rounded-lg border border-color-gray-200 p-16 flex flex-col items-center justify-center"> 
+            <div className="bg-white rounded-lg border border-color-gray-200 p-16 flex flex-col items-center justify-center">
               <div className="bg-color-gray-100 rounded-full p-6 mb-6">
-                <Users className="w-12 h-12 text-color-gray-400" />
+                <Users className="w-12 h-12 text-gray-400" />
               </div>
               <h3 className="text-xl font-bold text-color-gray-900 mb-2">
                 검색된 진행중인 스터디가 없습니다

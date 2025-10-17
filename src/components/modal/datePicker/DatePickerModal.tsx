@@ -2,9 +2,9 @@ import { useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import { ko } from 'react-day-picker/locale'
 import 'react-day-picker/style.css'
-import DatePickerHeader from './DatePickerHeader'
 import DatePickerCaption from './DatePickerCaption'
 import DatePickerFooter from './DatePickerFooter'
+import ModalHeader from '../ModalHeader'
 
 type DatePickerModalProps = {
   title: string
@@ -16,7 +16,7 @@ const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
 
   return (
     <div className="flex w-[350px] flex-col items-center">
-      <DatePickerHeader title={title} />
+      <ModalHeader title={title} />
       <DayPicker
         mode="single"
         disabled={{ before: new Date() }}
@@ -34,7 +34,7 @@ const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
           chevron: 'hidden',
           outside: 'text-gray-400',
         }}
-        className="py-5"
+        className="py-6"
       />
       <DatePickerFooter selected={selected} />
     </div>

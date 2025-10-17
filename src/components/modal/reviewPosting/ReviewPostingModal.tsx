@@ -3,19 +3,10 @@ import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
 import { useModal } from '@/hooks/useModal'
+import { studyGroup } from '@/assets/dummyData/studyGruop'
 // import { useLoaderData } from 'react-router'
 
 const ReviewPostingModal = () => {
-  const studyGroup: StudyGroup = {
-    id: 1,
-    name: 'string',
-    introduction: 'string',
-    profile_img_url: 'string',
-    max_headcount: 10,
-    start_at: '2025-10-16T13:29:17.588Z',
-    end_at: '2025-10-16T13:29:17.588Z',
-    lectures: [1],
-  }
   //loader 설정시 아래 코드로 변경
   // const studyGroup = useLoaderData<StudyGroup>()
 

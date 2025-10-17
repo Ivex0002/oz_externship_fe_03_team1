@@ -1,9 +1,9 @@
-import DatePickerModal from '../components/modal/datePicker/DatePickerModal'
+import ReviewDetailModal from '@/components/modal/reviewDetail/ReviewDetailModal'
 
 function TestH() {
   return (
     <div>
-      <DatePickerModal />
+      <ReviewDetailModal />
     </div>
   )
 }

@@ -1,17 +1,30 @@
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { StudyGroup } from '../../../types/StudyGroup'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
-import ModalHeader from '../ModalHeader'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
+// import { useLoaderData } from 'react-router'
 
-const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
-  const start = new Date(studyGroup.startDate)
+const ReviewPostingModal = () => {
+  const studyGroup: StudyGroup = {
+    id: 1,
+    name: 'string',
+    introduction: 'string',
+    profile_img_url: 'string',
+    max_headcount: 10,
+    start_at: '2025-10-16T13:29:17.588Z',
+    end_at: '2025-10-16T13:29:17.588Z',
+    lectures: [1],
+  }
+  //loader 설정시 아래 코드로 변경
+  // const studyGroup = useLoaderData<StudyGroup>()
+
+  const start = new Date(studyGroup.start_at)
   const startYear = start.getFullYear()
   const startMonth = start.getMonth() + 1
   const startDate = start.getDate()
 
-  const end = new Date(studyGroup.endDate)
+  const end = new Date(studyGroup.end_at)
   const endYear = end.getFullYear()
   const endMonth = end.getMonth() + 1
   const endDate = end.getDate()
@@ -25,10 +38,9 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
 
   return (
     <form className="w-[448px]">
-      <ModalHeader title="리뷰 작성" />
       <main className="p-5">
         <div className="flex flex-col gap-3">
-          <h3 className="text-[16px] font-medium">{studyGroup.title}</h3>
+          <h3 className="text-[16px] font-medium">{studyGroup.name}</h3>
           <p className="text-sm font-normal text-gray-500">
             {startYear}년 {startMonth}월 {startDate}일 ~ {endYear}년 {endMonth}
             월 {endDate}일

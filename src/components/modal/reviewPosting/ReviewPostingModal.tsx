@@ -1,4 +1,6 @@
+import { storeIsModalOpen } from '../../../store/storeIsModalOpen'
 import type { StudyGroup } from '../../../types/StudyGroup'
+import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ModalHeader from '../ModalHeader'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
@@ -14,6 +16,13 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
   const endMonth = end.getMonth() + 1
   const endDate = end.getDate()
 
+  const { SetModalOpen } = storeIsModalOpen()
+
+  const handleClickCancel = (e: React.MouseEvent) => {
+    e.preventDefault()
+    SetModalOpen(false)
+  }
+
   return (
     <form className="w-[448px]">
       <ModalHeader title="리뷰 작성" />
@@ -28,13 +37,17 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
         <ReviewRating />
         <ReviewText />
       </main>
-      <footer className="flex gap-2.5">
-        <button type="button" className="w-[195px]">
-          취소
-        </button>
-        <button type="submit" className="w-[195px]">
-          작성 완료
-        </button>
+      <footer className="flex w-[448px] gap-2.5">
+        <BasicButton
+          type="outline"
+          onClick={(e) => handleClickCancel(e)}
+          size="medium"
+        >
+          <span className="w-[calc(50%-5px)]">취소</span>
+        </BasicButton>
+        <BasicButton type="secondary" size="medium">
+          <span className="w-[calc(50%-5px)]">작성 완료</span>
+        </BasicButton>
       </footer>
     </form>
   )

@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useCallback, useEffect, useRef } from 'react'
 import { useNavigate, useLocation, Outlet } from 'react-router'
 import { ChevronLeft } from 'lucide-react'
-import { storeModalOpen } from '../../../store/storeIsModalOpen'
+import { storeModalOpen } from '@/store/storeModalOpen'
 
 /**
  *
@@ -27,7 +27,7 @@ export default function BasicModal() {
   const modalRef = useRef<HTMLDivElement>(null)
 
   // Zustand store
-  const { isModalOpen, SetModalOpen } = storeModalOpen()
+  const { isModalOpen, setModalOpen: SetModalOpen } = storeModalOpen()
   const prevPath = location.state?.prevPath || '/'
 
   // 닫기 로직

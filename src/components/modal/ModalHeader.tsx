@@ -4,10 +4,9 @@ import { X } from 'lucide-react'
 type ModalHeaderProps = {
   title: string
   subTitle?: string | null
-  onClose: () => void
 }
 
-const ModalHeader = ({ title, subTitle = null, onClose }: ModalHeaderProps) => {
+const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
   const { closeModal } = useModal()
 
   const handleClickCancel = (e: React.MouseEvent) => {
@@ -21,8 +20,8 @@ const ModalHeader = ({ title, subTitle = null, onClose }: ModalHeaderProps) => {
         <h1 className="text-lg font-semibold">{title}</h1>
         <h2 className="text-sm font-normal text-gray-500">{subTitle}</h2>
       </div>
-      <button onClick={(e) => handleClickCancel(e)}>
-        <X size={18} onClick={() => onClose()} className="cursor-pointer" />
+      <button onClick={(e) => handleClickCancel(e)} className="cursor-pointer">
+        <X size={18} />
       </button>
     </header>
   )

@@ -29,13 +29,13 @@ export default function BasicModal() {
 
   // Zustand store
   const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
-  const setModalOpen = storeModalOpen((state) => state.setModalState)
+  const setModalState = storeModalOpen((state) => state.setModalState)
 
   // navigate를 통해 들어온 값들
   const { title, subTitle } = storeModalOpen().modalState
 
   // 무한 랜더링 방지 및 린트 회피용 ref
-  const setModalOpenRef = useRef(setModalOpen)
+  const setModalOpenRef = useRef(setModalState)
   const isModalOpenRef = useRef(isModalOpen)
   const closeModalRef = useRef(closeModal)
 
@@ -124,11 +124,7 @@ export default function BasicModal() {
             onClick={(e) => e.stopPropagation()}
           >
             <div className="max-h-[calc(90vh-3.5rem)] overflow-y-auto p-4">
-              <ModalHeader
-                title={title}
-                subTitle={subTitle}
-                onClose={() => closeModalRef.current()}
-              />
+              <ModalHeader title={title} subTitle={subTitle} />
               <Outlet />
             </div>
           </motion.div>

@@ -26,7 +26,7 @@ export function useModal() {
   const openModal = (modalPath: string, title: string, subTitle?: string) => {
     const currentPath = location.pathname
     navigate(modalPath)
-    storeModalOpen.getState().setModalState({
+    storeModalOpen.getState().setIsModalState({
       isModalOpen: true,
       prevPath: currentPath,
       title: title,
@@ -45,7 +45,7 @@ export function useModal() {
     subTitle?: string
   ) => {
     navigate(modalPath)
-    storeModalOpen.getState().setModalState({
+    storeModalOpen.getState().setIsModalState({
       isModalOpen: true,
       title: title,
       subTitle: subTitle,

@@ -15,7 +15,7 @@ const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
   const [selected, setSelected] = useState<Date>()
 
   return (
-    <div className="flex w-[350px] flex-col items-center">
+    <div className="flex w-[448px] flex-col items-center rounded-xl">
       <ModalHeader title={title} />
       <DayPicker
         mode="single"
@@ -33,6 +33,7 @@ const DatePickerModal = ({ title, startMonth }: DatePickerModalProps) => {
           month_caption: 'hidden',
           chevron: 'hidden',
           outside: 'text-gray-400',
+          day_button: 'w-[53.7px] h-[40px]',
         }}
         className="py-6"
       />

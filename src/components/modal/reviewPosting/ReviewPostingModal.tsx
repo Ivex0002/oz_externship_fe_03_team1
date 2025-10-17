@@ -1,4 +1,4 @@
-import { storeModalOpen } from '../../../store/storeIsModalOpen'
+import { storeModalOpen } from '@/store/storeModalOpen'
 import type { StudyGroup } from '../../../types/StudyGroup'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ModalHeader from '../ModalHeader'
@@ -16,11 +16,11 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
   const endMonth = end.getMonth() + 1
   const endDate = end.getDate()
 
-  const { SetModalOpen } = storeModalOpen()
+  const { setModalOpen: setModalOpen } = storeModalOpen()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    SetModalOpen(false)
+    setModalOpen(false)
   }
 
   return (

@@ -1,16 +1,9 @@
-import ReviewPostingModal from '../components/modal/reviewPosting/ReviewPostingModal'
+import DatePickerModal from '../components/modal/datePicker/DatePickerModal'
 
 function TestH() {
-  const studyGroup = {
-    id: 1,
-    title: 'react study',
-    description: 'react로 자기소개 페이지를 만들어보자.',
-    startDate: `${new Date().toISOString()}`,
-    endDate: `${new Date(2025, 9, 31).toISOString()}`,
-  }
   return (
     <div>
-      <ReviewPostingModal studyGroup={studyGroup} />
+      <DatePickerModal title="스터디 시작날짜 선택" />
     </div>
   )
 }

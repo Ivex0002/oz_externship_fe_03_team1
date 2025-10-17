@@ -42,22 +42,27 @@ export default function BasicInfoSection({
     <section className="space-y-6 border-b border-gray-200 pb-6">
       <h2 className="text-lg font-semibold text-gray-700">기본 정보</h2>
 
-      <InputField
-        label="스터디 그룹명 *"
-        name="name"
-        placeholder="스터디 그룹의 이름을 입력하세요"
-        required
-        value={form.name}
-        onChange={handleChange}
-        className="!h-[50px] !w-[766px] !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
-      />
+      <div className="w-[766px]">
+        <label className="mb-1 block text-[14px] font-medium text-gray-800">
+          스터디 그룹명
+          <span className="ml-1 text-[#EF4444]">*</span>
+        </label>
+        <InputField
+          name="name"
+          placeholder="스터디 그룹의 이름을 입력하세요"
+          required
+          value={form.name}
+          onChange={handleChange}
+          className="!h-[50px] !w-[766px] !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+        />
+      </div>
 
       <div>
         <label className="mb-1 block text-sm font-medium text-gray-700">
           스터디 그룹 소개 (선택사항)
         </label>
 
-        <div className="overflow-hidden rounded-md border border-gray-300 bg-white">
+        <div className="overflow-hidden rounded-lg border border-gray-300 bg-white">
           <div className="flex items-center justify-between border-b border-gray-200 bg-[#F9FAFB] px-4 py-2">
             <div className="flex gap-2">
               <button

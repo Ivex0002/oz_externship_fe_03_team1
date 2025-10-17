@@ -1,3 +1,4 @@
+import { useModal } from '../../../hooks/useModal'
 import { InputField } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/studyGroup'
 
@@ -8,33 +9,60 @@ interface Props {
 }
 
 export default function PeriodSection({ form, setForm, handleChange }: Props) {
+  const { openModal } = useModal()
+
+  const handleOpenDatePicker = (type: 'start' | 'end') => {
+    openModal(`/modal/date-picker?target=${type}`)
+  }
+
   return (
     <section className="space-y-4 border-b border-gray-200 pb-6">
       <h2 className="text-lg font-semibold text-gray-700">
         스터디 기간 및 인원
       </h2>
 
-      <div className="flex flex-wrap gap-4">
-        <InputField
-          label="스터디 시작일"
-          name="startDate"
-          placeholder="날짜를 선택하세요"
-          type="date"
-          value={form.startDate}
-          onChange={handleChange}
-        />
-        <InputField
-          label="스터디 종료일"
-          name="endDate"
-          placeholder="날짜를 선택하세요"
-          type="date"
-          value={form.endDate}
-          onChange={handleChange}
-        />
+      <div className="flex gap-4">
+        <div className="flex-1">
+          <label className="mb-1 block text-sm font-medium text-gray-800">
+            스터디 시작일 <span className="text-[#EF4444]">*</span>
+          </label>
+          <div
+            className="cursor-pointer"
+            onClick={() => handleOpenDatePicker('start')}
+          >
+            <InputField
+              name="startDate"
+              placeholder="날짜를 선택하세요"
+              readOnly
+              value={form.startDate}
+              className="!h-[50px] !w-full !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+            />
+          </div>
+        </div>
+
+        <div className="flex-1">
+          <label className="mb-1 block text-sm font-medium text-gray-800">
+            스터디 종료일 <span className="text-[#EF4444]">*</span>
+          </label>
+          <div
+            className="cursor-pointer"
+            onClick={() => handleOpenDatePicker('end')}
+          >
+            <InputField
+              name="endDate"
+              placeholder="날짜를 선택하세요"
+              readOnly
+              value={form.endDate}
+              className="!h-[50px] !w-full !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+            />
+          </div>
+        </div>
       </div>
 
       <div>
-        <label className="mb-1 block text-sm text-gray-700">최대 인원</label>
+        <label className="mb-1 block text-sm font-medium text-gray-700">
+          최대 인원 <span className="text-[#EF4444]">*</span>
+        </label>
         <input
           type="range"
           min="2"

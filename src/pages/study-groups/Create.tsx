@@ -3,6 +3,7 @@ import type { StudyGroupForm } from '../../types/studyGroup'
 import BasicInfoSection from './sections/BasicInfoSection'
 import PeriodSection from './sections/PeriodSection'
 import LectureSection from './sections/LectureSection'
+import BasicModal from '../../components/basicComponents/basicModal/BasicModal'
 
 export default function CreateStudyGroup() {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -31,7 +32,7 @@ export default function CreateStudyGroup() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-10">
+    <div className="relative min-h-screen bg-gray-50 py-10">
       <div className="mx-auto mb-8 max-w-[832px]">
         <h1 className="text-2xl font-bold text-gray-800">
           새 스터디 그룹 만들기
@@ -69,6 +70,8 @@ export default function CreateStudyGroup() {
           </button>
         </div>
       </main>
+
+      <BasicModal />
     </div>
   )
 }

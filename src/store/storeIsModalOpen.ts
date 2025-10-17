@@ -1,10 +1,10 @@
 import { create } from 'zustand'
 
-interface storeIsModalOpen {
+interface ModalOpen {
   isModalOpen: boolean
   SetModalOpen: (isOpen: boolean) => void
 }
-export const storeIsModalOpen = create<storeIsModalOpen>((set) => ({
+export const storeModalOpen = create<ModalOpen>((set) => ({
   isModalOpen: false,
   SetModalOpen: (isOpen) => set(() => ({ isModalOpen: isOpen })),
 }))

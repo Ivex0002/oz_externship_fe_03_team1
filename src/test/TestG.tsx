@@ -1,5 +1,12 @@
+import NavbarLayout from '@/components/navBar/NavBar'
+import { Route, Routes } from 'react-router'
+
 function TestG() {
-  return <div>가람님의 테스트 페이지 입니다.</div>
+  return (
+    <Routes>
+      <Route path="/" element={<NavbarLayout />}></Route>
+    </Routes>
+  )
 }
 
 export default TestG

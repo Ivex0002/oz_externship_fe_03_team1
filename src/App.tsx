@@ -1,7 +1,8 @@
 import './App.css'
+import NavbarLayout from './components/navBar/NavBar'
 
 function App() {
-  return <div>template</div>
+  return <NavbarLayout />
 }
 
 export default App

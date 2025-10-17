@@ -1,5 +1,6 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Users, Calendar } from 'lucide-react';
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import '../App.css'; 
 
 interface Study {
@@ -26,107 +27,107 @@ const SearchResults: React.FC = () => {
   // 더미 데이터
 
   const studies: Study[] = [
-    // {
-    //   id: 1,
-    //   title: '알고리즘 스터디',
-    //   description: '코딩테스트 대비',
-    //   members: 8,
-    //   maxMembers: 10,
-    //   startDate: '2024년 2월 1일',
-    //   endDate: '2024년 4월 30일',
-    //   category: '프로그래밍',
-    //   status: 'active',
-    //   lectures: [
-    //     { title: 'React 완벽 마스터 강의', instructor: '강개발' },
-    //     { title: 'Next.js 실전 가이드', instructor: '박코딩' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // },
-    // {
-    //   id: 2,
-    //   title: '리액트 마스터하기',
-    //   description: 'React 심화 학습',
-    //   members: 5,
-    //   maxMembers: 8,
-    //   startDate: '2024년 1월 15일',
-    //   endDate: '2024년 3월 15일',
-    //   category: '웹개발',
-    //   status: 'active',
-    //   lectures: [
-    //     { title: 'Python 데이터 사이언스', instructor: '이데이터' },
-    //     { title: '머신러닝 입문', instructor: '김AI' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // },
-    // {
-    //   id: 3,
-    //   title: '영어회화 스터디',
-    //   description: '매일 영어로 대화',
-    //   members: 12,
-    //   maxMembers: 15,
-    //   startDate: '2024년 9월 20일',
-    //   endDate: '2024년 11월 30일',
-    //   category: '어학',
-    //   status: 'active',
-    //   lectures: [
-    //     { title: 'Python 데이터 사이언스', instructor: '이데이터' },
-    //     { title: '머신러닝 입문', instructor: '김AI' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // },
-    // {
-    //   id: 4,
-    //   title: '자바스크립트 기초',
-    //   description: '자바스크립트 기본',
-    //   members: 10,
-    //   maxMembers: 10,
-    //   startDate: '2023년 10월 1일',
-    //   endDate: '2023년 12월 31일',
-    //   category: '프로그래밍',
-    //   status: 'completed',
-    //   lectures: [
-    //     { title: 'Node.js 백엔드 개발 완주', instructor: '박서버' },
-    //     { title: 'Express.js 심화', instructor: '김노드' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // },
-    // {
-    //   id: 5,
-    //   title: '토익 800+ 달성',
-    //   description: '토익 고득점 학습',
-    //   members: 6,
-    //   maxMembers: 6,
-    //   startDate: '2023년 9월 1일',
-    //   endDate: '2023년 11월 30일',
-    //   category: '어학',
-    //   status: 'completed',
-    //   lectures: [
-    //     { title: 'Vue.js 완벽 마스터', instructor: '최뷰' },
-    //     { title: 'Vuex 상태관리', instructor: '장리액트' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // },
-    // {
-    //   id: 6,
-    //   title: '파이썬 데이터분석',
-    //   description: 'Python 데이터 분석',
-    //   members: 8,
-    //   maxMembers: 8,
-    //   startDate: '2023년 9월 1일',
-    //   endDate: '2023년 12월 15일',
-    //   category: '데이터',
-    //   status: 'completed',
-    //   lectures: [
-    //     { title: 'TypeScript 마스터', instructor: '김타입' }
-    //   ],
-    //   rating: 4.7,
-    //   reviewCount: 3
-    // }
+    {
+      id: 1,
+      title: '알고리즘 스터디',
+      description: '코딩테스트 대비',
+      members: 8,
+      maxMembers: 10,
+      startDate: '2024년 2월 1일',
+      endDate: '2024년 4월 30일',
+      category: '프로그래밍',
+      status: 'active',
+      lectures: [
+        { title: 'React 완벽 마스터 강의', instructor: '강개발' },
+        { title: 'Next.js 실전 가이드', instructor: '박코딩' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    },
+    {
+      id: 2,
+      title: '리액트 마스터하기',
+      description: 'React 심화 학습',
+      members: 5,
+      maxMembers: 8,
+      startDate: '2024년 1월 15일',
+      endDate: '2024년 3월 15일',
+      category: '웹개발',
+      status: 'active',
+      lectures: [
+        { title: 'Python 데이터 사이언스', instructor: '이데이터' },
+        { title: '머신러닝 입문', instructor: '김AI' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    },
+    {
+      id: 3,
+      title: '영어회화 스터디',
+      description: '매일 영어로 대화',
+      members: 12,
+      maxMembers: 15,
+      startDate: '2024년 9월 20일',
+      endDate: '2024년 11월 30일',
+      category: '어학',
+      status: 'active',
+      lectures: [
+        { title: 'Python 데이터 사이언스', instructor: '이데이터' },
+        { title: '머신러닝 입문', instructor: '김AI' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    },
+    {
+      id: 4,
+      title: '자바스크립트 기초',
+      description: '자바스크립트 기본',
+      members: 10,
+      maxMembers: 10,
+      startDate: '2023년 10월 1일',
+      endDate: '2023년 12월 31일',
+      category: '프로그래밍',
+      status: 'completed',
+      lectures: [
+        { title: 'Node.js 백엔드 개발 완주', instructor: '박서버' },
+        { title: 'Express.js 심화', instructor: '김노드' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    },
+    {
+      id: 5,
+      title: '토익 800+ 달성',
+      description: '토익 고득점 학습',
+      members: 6,
+      maxMembers: 6,
+      startDate: '2023년 9월 1일',
+      endDate: '2023년 11월 30일',
+      category: '어학',
+      status: 'completed',
+      lectures: [
+        { title: 'Vue.js 완벽 마스터', instructor: '최뷰' },
+        { title: 'Vuex 상태관리', instructor: '장리액트' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    },
+    {
+      id: 6,
+      title: '파이썬 데이터분석',
+      description: 'Python 데이터 분석',
+      members: 8,
+      maxMembers: 8,
+      startDate: '2023년 9월 1일',
+      endDate: '2023년 12월 15일',
+      category: '데이터',
+      status: 'completed',
+      lectures: [
+        { title: 'TypeScript 마스터', instructor: '김타입' }
+      ],
+      rating: 4.7,
+      reviewCount: 3
+    }
   ];
 
   // 초성 검색 기능
@@ -287,19 +288,18 @@ const SearchResults: React.FC = () => {
               ))}
             </div>
           ) : (
-            // 밑 줄 색상 적용이? 문제 있는거 같다.
-            <div className="bg-white rounded-lg border border-color-gray-200 p-16 flex flex-col items-center justify-center">
-              <div className="bg-color-gray-100 rounded-full p-6 mb-6">
+            <div className="bg-white rounded-lg border border-gray-200 p-16 flex flex-col items-center justify-center">
+              <div className="bg-gray-100 rounded-full p-6 mb-6">
                 <Users className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl font-bold text-color-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 검색된 진행중인 스터디가 없습니다
               </h3>
-              <p className="text-color-gray-600 mb-6">새로운 스터디 그룹을 만들어보세요!</p>
-              <button className="bg-color-primary-400 hover:bg-color-primary-500 text-white font-semibold px-6 py-3 rounded-lg flex items-center gap-2 transition-colors">
+              <p className="text-gray-600 mb-6">새로운 스터디 그룹을 만들어보세요!</p>
+              <BasicButton type='primary'>
                 <span className="text-xl">+</span>
                 <span>스터디 그룹 만들기</span>
-              </button>
+              </BasicButton>
             </div>
           )}
         </div>
@@ -308,11 +308,11 @@ const SearchResults: React.FC = () => {
         <div>
           <div className="flex items-center justify-between mb-8">
             <div>
-              <h2 className="text-2xl font-bold text-color-gray-900 mb-2">완료된 스터디</h2>
-              <p className="text-color-gray-600">성공적으로 마무리된 스터디 그룹들</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">완료된 스터디</h2>
+              <p className="text-gray-600">성공적으로 마무리된 스터디 그룹들</p>
             </div>
             {completedStudies.length > 0 && (
-              <span className="text-color-gray-600 font-semibold">{completedStudies.length}건 완료됨</span>
+              <span className="text-gray-600 font-semibold">{completedStudies.length}건 완료됨</span>
             )}
           </div>
           
@@ -324,16 +324,16 @@ const SearchResults: React.FC = () => {
             </div>
           ) : (
             <div className="bg-white rounded-lg p-16 flex flex-col items-center justify-center">
-              <div className="bg-color-gray-100 rounded-full p-6 mb-6">
+              <div className="bg-gray-100 rounded-full p-6 mb-6">
                 <img
                   src="/medal.svg"
                   alt="매달 아이콘"
                   className="w-12 h-12 text-gray-400" />
               </div>
-              <h3 className="text-xl font-bold text-color-gray-900 mb-2">
+              <h3 className="text-xl font-bold text-gray-900 mb-2">
                 검색된 완료된 스터디가 없습니다
               </h3>
-              <p className="text-color-gray-600">아직 완료된 스터디 그룹이 없습니다</p>
+              <p className="text-gray-600">아직 완료된 스터디 그룹이 없습니다</p>
             </div>
           )}
         </div>

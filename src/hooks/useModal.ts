@@ -34,6 +34,24 @@ export function useModal() {
     })
   }
 
+  /**
+   * 모달에서 다른 모달로 이동(prevPath 옵션을 위해 분리)
+   * 모달 > 다른 모달 이동 완료된 상태에서 뒤로가기 : navigate(-1)
+   * 모달 > 다른 모달 이동 완료된 상태에서 모달 닫기 : closeModal()
+   */
+  const modalToModal = (
+    modalPath: string,
+    title: string,
+    subTitle?: string
+  ) => {
+    navigate(modalPath)
+    storeModalOpen.getState().setModalState({
+      isModalOpen: true,
+      title: title,
+      subTitle: subTitle,
+    })
+  }
+
   // 모달 닫기
   const closeModal = () => {
     const { prevPath } = storeModalOpen.getState().modalState
@@ -54,5 +72,5 @@ export function useModal() {
     }
   }, [location.pathname])
 
-  return { openModal, closeModal } as const
+  return { openModal, closeModal, modalToModal } as const
 }

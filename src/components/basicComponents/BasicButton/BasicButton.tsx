@@ -65,7 +65,7 @@ type ButtonProps = {
   size?: ButtonSize
   disabled?: boolean
   isLoading?: boolean
-  onClick?: () => void
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   children: React.ReactNode
 }
 

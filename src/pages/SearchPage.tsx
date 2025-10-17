@@ -179,8 +179,7 @@ const SearchResults: React.FC = () => {
 
   // 스터디 카드 컴포넌트
   const StudyCard: React.FC<{ study: Study }> = ({ study }) => (
-    // 'gray-200'은 'color-gray-200'으로 변경
-    <div className="bg-white rounded-xl border border-color-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
+    <div className="bg-white rounded-xl border border-gray-200 overflow-hidden hover:shadow-lg transition-shadow">
       {/* 카드 이미지 */}
       <div className="relative h-48 bg-gradient-to-br from-blue-500 to-purple-600">
         <img 
@@ -189,13 +188,13 @@ const SearchResults: React.FC = () => {
           className="w-full h-full object-cover"
         />
         <div className="absolute top-4 left-4">
-          <span className="bg-color-success-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+          <span className="bg-success-500 text-white text-xs font-bold px-3 py-1 rounded-full">
             {study.status === 'active' ? '진행중' : '완료'}
           </span>
         </div>
         {/* 인원 */}
         <div className="absolute bottom-4 left-4 bg-white bg-opacity-90 rounded-full px-3 py-1">
-          <span className="text-sm font-semibold text-color-gray-800">
+          <span className="text-sm font-semibold text-gray-800">
             {study.members}/{study.maxMembers}명
           </span>
         </div>
@@ -203,22 +202,22 @@ const SearchResults: React.FC = () => {
 
       {/* 카드 내용 */}
       <div className="p-6">
-        <h3 className="text-xl font-bold text-color-gray-900 mb-3">{study.title}</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-3">{study.title}</h3>
         
-        <div className="flex items-center gap-2 text-sm text-color-gray-600 mb-2">
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <Calendar className="w-4 h-4" />
           <span>스터디 기간</span>
         </div>
-        <p className="text-sm text-color-gray-700 mb-4">{study.startDate} ~ {study.endDate}</p>
+        <p className="text-sm text-gray-700 mb-4">{study.startDate} ~ {study.endDate}</p>
         
-        <div className="flex items-center gap-2 text-sm text-color-gray-600 mb-2">
+        <div className="flex items-center gap-2 text-sm text-gray-600 mb-2">
           <span className="font-semibold"> 스터디 강의 ({study.lectures.length})</span>
         </div>
         <div className="space-y-2 mb-6">
           {study.lectures.map((lecture, idx) => (
             <div key={idx}>
-              <p className="text-sm font-medium text-color-gray-800">{lecture.title}</p>
-              <p className="text-xs text-color-gray-500">{lecture.instructor}</p>
+              <p className="text-sm font-medium text-gray-800">{lecture.title}</p>
+              <p className="text-xs text-gray-500">{lecture.instructor}</p>
             </div>
           ))}
         </div>
@@ -226,18 +225,18 @@ const SearchResults: React.FC = () => {
         {/* 하단 버튼 영역 */}
         {study.status === 'active' ? (
           <div className="flex justify-end">
-            <button className="text-color-primary-500 hover:text-color-primary-600 font-semibold text-sm flex items-center gap-1 transition-colors">
+            <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm flex items-center gap-1 transition-colors">
               자세히 보기
               <span>→</span>
             </button>
           </div>
         ) : (
-          <div className="flex items-center justify-between pt-4 border-t border-color-gray-200">
+          <div className="flex items-center justify-between pt-4 border-t border-gray-200">
             <div className="flex items-center gap-1">
-              <span className="text-sm font-semibold text-color-gray-800">{study.rating}</span>
-              <span className="text-sm text-color-gray-500">({study.reviewCount})</span>
+              <span className="text-sm font-semibold text-gray-800">{study.rating}</span>
+              <span className="text-sm text-gray-500">({study.reviewCount})</span>
             </div>
-            <button className="text-color-primary-500 hover:text-color-primary-600 font-semibold text-sm flex items-center gap-1 transition-colors">
+            <button className="text-primary-500 hover:text-primary-600 font-semibold text-sm flex items-center gap-1 transition-colors">
               자세히 보기
               <span>→</span>
             </button>
@@ -248,7 +247,7 @@ const SearchResults: React.FC = () => {
   );
 
   return (
-    <div className="min-h-screen bg-color-gray-50">
+    <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-6 py-8">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">스터디 그룹</h1>
@@ -258,13 +257,13 @@ const SearchResults: React.FC = () => {
         {/* 서치 바 */}
         <div className="mb-12">
           <div className="relative max-w-md">
-            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-color-gray-400 w-5 h-5" />
+            <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
             <input
               type="text"
               placeholder="....."
               value={searchQuery}
               onChange={(e: React.ChangeEvent<HTMLInputElement>) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-color-primary-400 focus:border-transparent"
+              className="w-full pl-12 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary-400 focus:border-transparent"
             />
           </div>
         </div>
@@ -277,7 +276,7 @@ const SearchResults: React.FC = () => {
               <p className="text-gray-600">현재 활발히 진행되고 있는 스터디 그룹들</p>
             </div>
             {filteredActiveStudies.length > 0 && (
-              <span className="text-success-600 font-semibold">{filteredActiveStudies.length}개 진행중</span>
+              <span className="text-success-800 text-base font-semibold rounded-lg bg-success-100 h-6 w-21">{filteredActiveStudies.length}개 진행중</span>
             )}
           </div>
           

@@ -23,7 +23,7 @@ const BUTTON_COLORS: Record<string, ButtonColorSet> = {
   secondary: {
     default: { bg: 'bg-gray-100', text: 'text-gray-900' },
     hover: { bg: 'bg-gray-200', text: 'text-gray-900' },
-    active: { bg: 'bg-gray-300', text: 'text-gray-900' },
+    active: { bg: 'bg-gray-300', text: 'text-white' },
   },
 
   outline: {
@@ -101,13 +101,13 @@ export function BasicButton({
     BUTTON_COLORS[type].default
 
   const sizeMap = {
-    small: 'px-2 py-1 text-sm',
-    medium: 'px-3 py-2 text-base',
-    large: 'px-4 py-3 text-lg',
+    small: 'px-2 h-8 text-sm',
+    medium: 'px-3 h-10 text-base',
+    large: 'px-4 h-12 text-lg',
   }
 
   const buttonClass = clsx(
-    'rounded-lg font-medium transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-primary-400 focus:outline-none',
+    'flex items-center justify-center rounded-lg font-medium transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-primary-400 focus:outline-none',
     sizeMap[size],
     colorSet.bg,
     colorSet.text,

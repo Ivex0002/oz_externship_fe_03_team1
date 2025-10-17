@@ -29,8 +29,12 @@ const ReviewPostingModal = ({ studyGroup }: { studyGroup: StudyGroup }) => {
         <ReviewText />
       </main>
       <footer className="flex gap-2.5">
-        <button className="w-[195px]">취소</button>
-        <button className="w-[195px]">작성 완료</button>
+        <button type="button" className="w-[195px]">
+          취소
+        </button>
+        <button type="submit" className="w-[195px]">
+          작성 완료
+        </button>
       </footer>
     </form>
   )

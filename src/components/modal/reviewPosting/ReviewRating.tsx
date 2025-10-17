@@ -5,6 +5,11 @@ const ReviewRating = () => {
   const [rating, setRating] = useState(0)
   const ratingStarCount = [1, 2, 3, 4, 5]
 
+  const handleClickStar = (e: React.MouseEvent, star: number) => {
+    e.preventDefault()
+    setRating(star)
+  }
+
   return (
     <div className="flex w-[448px] flex-col gap-3 pt-6">
       <h3 className="text-sm font-medium">
@@ -13,8 +18,9 @@ const ReviewRating = () => {
       <div>
         {ratingStarCount.map((star) => (
           <button
+            type="button"
             key={star}
-            onClick={() => setRating(star)}
+            onClick={(e) => handleClickStar(e, star)}
             className="text-primary-400"
           >
             <Star fill={rating >= star ? '#facc15' : 'white'} />

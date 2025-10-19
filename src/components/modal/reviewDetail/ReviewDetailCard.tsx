@@ -30,6 +30,11 @@ const ReviewDetailCard = ({ review }: { review: Review }) => {
             ))}
           </span>
           {review.rating}/5
+          {review.isMine && (
+            <span className="bg-primary-100 text-primary-800 rounded-sm px-2 py-1">
+              내 리뷰
+            </span>
+          )}
         </div>
         <span className="text-sm font-normal text-gray-500">
           {formattedUpdatedDate}

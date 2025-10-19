@@ -13,7 +13,7 @@ type ReviewDetailList = {
 }
 
 export const reviewDetailList: ReviewDetailList = {
-  averageRating: 2.3,
+  averageRating: 4.5,
   totalReview: 2,
   reviews: [
     {

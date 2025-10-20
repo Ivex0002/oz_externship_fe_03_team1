@@ -1,5 +1,9 @@
-function TestE() {
-  return <div>은지님의 테스트 페이지 입니다.</div>
-}
+import Create from '../pages/study-groups/Create'
 
-export default TestE
+export default function TestE() {
+  return (
+    <div className="min-h-screen bg-gray-50">
+      <Create />
+    </div>
+  )
+}

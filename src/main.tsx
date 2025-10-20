@@ -11,6 +11,7 @@ import BasicModal from './components/basicComponents/basicModal/BasicModal'
 import ReviewPostingModal from './components/modal/reviewPosting/ReviewPostingModal'
 import DatePickerModal from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
+import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
 
 const router = createBrowserRouter([
   {
@@ -32,6 +33,8 @@ const router = createBrowserRouter([
           },
           {
             path: '/modal/review_detail',
+            loader: () => {},
+            Component: ReviewDetailModal,
           },
           {
             path: '/modal/date_picker',

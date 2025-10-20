@@ -4,7 +4,7 @@ import { UserMenu } from './userMenu/UserMenu'
 export default function NavbarLayout() {
   return (
     <div className="flex min-h-screen flex-col">
-      <nav className="fixed top-0 right-0 left-0 z-50 h-[65px] bg-white/90 px-20 backdrop-blur-sm">
+      <nav className="fixed top-0 right-0 left-0 z-50 h-[65px] border-b border-gray-200 bg-white px-20">
         <div className="flex h-full items-center justify-between px-8">
           <Logo />
 
@@ -15,7 +15,7 @@ export default function NavbarLayout() {
         </div>
       </nav>
 
-      <main className="mt-[65px] flex w-full flex-1 items-center justify-center bg-gray-50">
+      <main className="mt-[65px] flex w-full flex-1 items-center justify-center bg-white">
         <Outlet />
       </main>
     </div>

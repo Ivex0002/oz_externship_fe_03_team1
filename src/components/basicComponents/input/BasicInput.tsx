@@ -36,7 +36,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 // 인풋 컴포넌트
-export function InputField({
+export function BasicInput({
   status = 'default',
   label,
   errorMessage,

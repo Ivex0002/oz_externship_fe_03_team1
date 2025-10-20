@@ -1,16 +1,4 @@
-type Review = {
-  id: number
-  rating: number
-  reviewText: string
-  updated_at: string
-  isMine: boolean
-}
-
-type ReviewDetailList = {
-  averageRating: number
-  totalReview: number
-  reviews: Review[]
-}
+import type { ReviewDetailList } from '@/types/Review'
 
 export const reviewDetailList: ReviewDetailList = {
   averageRating: 4.5,

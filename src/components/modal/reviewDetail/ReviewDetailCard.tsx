@@ -1,19 +1,9 @@
 import type { Review } from '@/types/Review'
+import { formattedReviewUpdatedDate } from '@/utils/formattedDate'
 import { Star } from 'lucide-react'
 
 const ReviewDetailCard = ({ review }: { review: Review }) => {
-  const updatedDate = new Date(review.updated_at)
-  const year = updatedDate.getFullYear()
-  const month = updatedDate.getMonth() + 1
-  const date = updatedDate.getDate()
-  const hour =
-    updatedDate.getHours() > 12
-      ? `오후 ${updatedDate.getHours() - 12}`
-      : `오전 ${updatedDate.getHours()}`
-  const minute = updatedDate.getMinutes()
-  const time = `${hour}:${minute}`
-
-  const formattedUpdatedDate = `${year}. ${month}. ${date} ${time}`
+  const formattedUpdatedDate = formattedReviewUpdatedDate(review.updated_at)
 
   return (
     <div className="w-full border-t border-gray-100 py-6">

@@ -57,7 +57,9 @@ const LectureChoosingModal = () => {
         </div>
       </main>
       <footer className="flex justify-between border-t border-gray-200 p-6">
-        <span>{selectedLectureList.length}개 강의 선택됨</span>
+        <span className="text-sm font-normal text-gray-600">
+          {selectedLectureList.length}개 강의 선택됨
+        </span>
         <div className="flex gap-3">
           <BasicButton onClick={handleClickCancel} type="outline">
             취소

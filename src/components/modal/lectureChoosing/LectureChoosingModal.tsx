@@ -1,6 +1,8 @@
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { useState } from 'react'
 import LectureCard from './LectureCard'
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
 // import { useLoaderData } from 'react-router'
 
 const lectureList = [
@@ -62,20 +64,35 @@ const LectureChoosingModal = () => {
 
   return (
     <div className="w-[896px]">
-      <main>
-        <div className="border-b border-gray-200 p-6">
+      <main className="p-6">
+        <div className="border-b border-gray-200 pb-6">
           <BasicInput
             placeholder="강의명이나 강사명으로 검색..."
             value={searchInputValue}
             onChange={handleChangeInputValue}
           />
         </div>
-        <div className="flex flex-col gap-4 p-6">
+        <div className="flex flex-col gap-4 pt-6">
           {lectureList.map((lecture) => (
             <LectureCard key={lecture.id} lecture={lecture} />
           ))}
         </div>
+        <div className="center-center gap-2 pt-8">
+          <BasicButton type="outline">
+            <ChevronLeft />
+          </BasicButton>
+          <BasicButton type="outline">
+            <ChevronRight />
+          </BasicButton>
+        </div>
       </main>
+      <footer className="flex justify-between border-t border-gray-200 p-6">
+        <span>{}개 강의 선택됨</span>
+        <div className="flex gap-3">
+          <BasicButton type="outline">취소</BasicButton>
+          <BasicButton type="primary">선택 완료</BasicButton>
+        </div>
+      </footer>
     </div>
   )
 }

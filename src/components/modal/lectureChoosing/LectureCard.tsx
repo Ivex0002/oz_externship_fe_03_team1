@@ -1,45 +1,60 @@
+import type { Lecture } from '@/types/Lecture'
 import clsx from 'clsx'
-import { Circle, CircleCheck } from 'lucide-react'
+import { Circle, CircleCheck, Clock3 } from 'lucide-react'
 import { useState } from 'react'
-
-type Lecture = {
-  id: number
-  title: string
-  thumbnail_img_url: string
-  instructor: string
-  duration: string
-  price: number
-  platform: string
-}
 
 const LectureCard = ({ lecture }: { lecture: Lecture }) => {
   const [isChecked, setIsChecked] = useState(false)
+  const formattedPrice = new Intl.NumberFormat('ko-Kr', {
+    style: 'currency',
+    currency: 'KRW',
+  }).format(lecture.price)
+
+  const handleClickLectureCard = () => {
+    setIsChecked((prev) => !prev)
+  }
 
   return (
     <div
+      onClick={handleClickLectureCard}
       className={clsx(
         'flex w-full items-center justify-between rounded-lg border-2 p-4.5',
-        { isChecked: 'border-primary-500 bg-primary-50' },
-        'border-gray-200'
+        isChecked ? 'border-primary-500 bg-primary-50' : 'border-gray-200'
       )}
     >
-      <div className="flex gap-4">
+      <div className="center-center gap-4">
         <img
           src={lecture.thumbnail_img_url}
           alt={`${lecture.title}의 이미지`}
           className="h-16 w-24 rounded-lg"
         />
-        <div className="flex flex-col">
-          <h3>{lecture.title}</h3>
-          <p>{lecture.instructor}</p>
-          <p>
-            <span>{lecture.platform}</span>
-            <span>{lecture.duration}</span>
-            <span>{lecture.price}</span>
+        <div className="flex flex-col gap-1">
+          <h3 className="font-normal text-gray-900">{lecture.title}</h3>
+          <p className="text-sm font-normal text-gray-600">
+            {lecture.instructor}
+          </p>
+          <p className="flex items-center gap-3">
+            <span
+              className={clsx(
+                lecture.platform === 'inflearn' &&
+                  'bg-[#dcfce7] text-[#166534]',
+                'rounded-sm px-2 py-1 text-xs font-medium'
+              )}
+            >
+              {lecture.platform}
+            </span>
+            <span className="flex items-center gap-1 text-xs font-normal text-gray-600">
+              <Clock3 size={12} /> {lecture.duration}
+            </span>
+            <span className="text-sm font-semibold">{formattedPrice}</span>
           </p>
         </div>
       </div>
-      {isChecked ? <CircleCheck /> : <Circle />}
+      {isChecked ? (
+        <CircleCheck size={29} fill="#eab308" className="text-white" />
+      ) : (
+        <Circle className="text-gray-300" />
+      )}
     </div>
   )
 }

@@ -25,10 +25,10 @@ export default function NavbarLayout() {
 function Logo() {
   return (
     <NavLink to="/" className="flex items-center space-x-2">
-      <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-yellow-400 font-semibold text-white">
+      <div className="bg-primary-400 flex h-8 w-8 items-center justify-center rounded-lg font-semibold text-white">
         S
       </div>
-      <span className="text-xl font-semibold text-yellow-600">StudyHub</span>
+      <span className="text-primary-600 text-xl font-semibold">StudyHub</span>
     </NavLink>
   )
 }
@@ -47,7 +47,7 @@ function Links() {
           key={link.path}
           to={link.path}
           className={({ isActive }) =>
-            `nav-links ${isActive ? 'text-yellow-600' : ''}`
+            `nav-links ${isActive ? 'text-primary-600' : ''}`
           }
         >
           {link.label}

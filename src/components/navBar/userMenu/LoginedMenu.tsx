@@ -54,10 +54,7 @@ export function LoginedMenu() {
 
   return (
     <div className="relative flex items-center space-x-4">
-      <button
-        onClick={handleNoti}
-        className="relative text-gray-700 transition-colors hover:text-yellow-600"
-      >
+      <button onClick={handleNoti} className="nav-links relative">
         <Bell size={22} />
         <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
           {notiCount}
@@ -67,10 +64,10 @@ export function LoginedMenu() {
       <div className="relative" ref={menuRef}>
         <button
           onClick={handlePanel}
-          className="group flex cursor-pointer items-center space-x-2 rounded-lg px-2 py-1 transition-colors duration-200 ease-in-out hover:bg-yellow-50"
+          className="group hover:bg-primary-50 flex cursor-pointer items-center space-x-2 rounded-lg px-2 py-1 transition-colors duration-200 ease-in-out"
         >
-          <div className="center-center h-8 w-8 rounded-full bg-yellow-100 transition-colors duration-200 group-hover:bg-yellow-200">
-            <User className="text-yellow-600" size={18} />
+          <div className="center-center bg-primary-100 group-hover:bg-primary-200 h-8 w-8 rounded-full transition-colors duration-200">
+            <User className="text-primary-600" size={18} />
           </div>
           <span className="text-sm font-medium text-gray-700">김개발</span>
         </button>
@@ -96,7 +93,7 @@ function UserPanel({ onClose }: { onClose: () => void }) {
 
       <NavLink
         to="/logout"
-        className="flex flex-1 items-center space-x-2 px-4 text-sm text-red-600 transition-colors hover:bg-gray-50"
+        className="text-danger-600 flex flex-1 items-center space-x-2 px-4 text-sm transition-colors hover:bg-gray-50"
         onClick={() => onClose()}
       >
         <LogOut size={16} />

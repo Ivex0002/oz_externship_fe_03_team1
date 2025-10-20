@@ -57,3 +57,7 @@ body {
 .nav-links {
   @apply hover:text-primary-600 text-base font-normal text-gray-700 transition-colors;
 }
+
+.input-svg {
+  @apply pointer-events-none absolute top-1/2 -translate-y-1/2 text-gray-400;
+}

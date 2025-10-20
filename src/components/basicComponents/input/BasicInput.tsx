@@ -4,25 +4,25 @@ import clsx from 'clsx'
 // disabled일때 ph는 투명도 50%
 const INPUT_COLORS = {
   default: {
-    bg: 'bg-gray-50',
+    bg: 'bg-white',
     bd: 'border-gray-300',
     ph: 'placeholder-gray-400',
   },
   focus: {
-    bg: 'bg-gray-50',
-    bd: 'border-primary-400',
+    bg: 'bg-white',
+    bd: 'border-primary-500',
     ph: 'placeholder-gray-400',
   },
   error: {
-    bg: 'bg-gray-50',
-    bd: 'border-danger-400',
+    bg: 'bg-white',
+    bd: 'border-danger-100',
     ph: 'placeholder-gray-400',
     msg: 'text-danger-600',
   },
   disabled: {
-    bg: 'bg-gray-100',
+    bg: 'bg-gray-50/50',
     bd: 'border-gray-300',
-    ph: 'placeholder-gray-400/50',
+    ph: 'placeholder-black/50',
   },
 }
 
@@ -36,7 +36,7 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 // 인풋 컴포넌트
-export function InputField({
+export function BasicInput({
   status = 'default',
   label,
   errorMessage,
@@ -50,7 +50,7 @@ export function InputField({
     color.bd,
     color.ph,
     {
-      'cursor-not-allowed text-gray-400': status === 'disabled',
+      'cursor-not-allowed text-black/50': status === 'disabled',
       'focus:border-primary-500 focus:ring-1 focus:ring-primary-300':
         status === 'focus',
     }

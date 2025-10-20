@@ -1,9 +1,9 @@
-import type { StudyGroup } from '../../../types/StudyGroup'
+// import type { StudyGroup } from '../../../types/StudyGroup'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
 import { useModal } from '@/hooks/useModal'
-import { studyGroup } from '@/assets/dummyData/studyGruop'
+import { studyGroup } from '@/assets/dummyData/studyGroup'
 // import { useLoaderData } from 'react-router'
 
 const ReviewPostingModal = () => {

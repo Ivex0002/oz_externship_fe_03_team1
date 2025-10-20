@@ -5,23 +5,23 @@ import clsx from 'clsx'
 const INPUT_COLORS = {
   default: {
     bg: 'bg-white',
-    bd: 'border-gray-300',
+    bd: 'border border-gray-300',
     ph: 'placeholder-gray-400',
   },
   focus: {
     bg: 'bg-white',
-    bd: 'border-primary-500',
+    bd: 'border-2 border-primary-500',
     ph: 'placeholder-gray-400',
   },
   error: {
     bg: 'bg-white',
-    bd: 'border-danger-100',
+    bd: 'border border-danger-100',
     ph: 'placeholder-gray-400',
     msg: 'text-danger-600',
   },
   disabled: {
     bg: 'bg-gray-50/50',
-    bd: 'border-gray-300',
+    bd: 'border border-gray-300',
     ph: 'placeholder-black/50',
   },
 }
@@ -45,7 +45,7 @@ export function BasicInput({
   const color = INPUT_COLORS[status]
 
   const inputClass = clsx(
-    'w-full rounded-md px-3 py-2 text-gray-900 outline-none transition',
+    'w-full rounded-md px-[17px] py-[13px] text-gray-900 outline-none transition',
     color.bg,
     color.bd,
     color.ph,
@@ -58,12 +58,14 @@ export function BasicInput({
 
   return (
     <div className="flex flex-col gap-1">
-      {label && <label className="text-sm text-gray-700">{label}</label>}
+      {label && (
+        <label className="text-sm font-medium text-gray-700">{label}</label>
+      )}
 
       <input
         {...props}
         disabled={status === 'disabled'}
-        className={inputClass}
+        className={`${inputClass} placeholder-gray-400`}
       />
 
       {status === 'error' && errorMessage && (

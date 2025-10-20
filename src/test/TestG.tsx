@@ -1,33 +1,20 @@
-import NavbarLayout from '@/components/navBar/NavBar'
-import { useModal } from '@/hooks/useModal'
-import { Route, Routes } from 'react-router'
+import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 
-function TestG() {
+export default function TestG() {
   return (
-    <Routes>
-      <Route path="/" element={<NavbarLayout />}>
-        <Route path="/" element={<ModalTestBtns />} />
-      </Route>
-    </Routes>
-  )
-}
-
-export default TestG
-
-const routeArr = [
-  { path: '/modal/review_posting', title: 'review_posting' },
-  { path: '/modal/review_detail', title: 'review_detail' },
-  { path: '/modal/date_picker', title: 'date_picker' },
-  { path: '/modal/choosing_lecture', title: 'choosing_lecture' },
-]
-
-function ModalTestBtns() {
-  const { openModal } = useModal()
-  return (
-    <>
-      {routeArr.map((el) => (
-        <button key={el.path} onClick={() => openModal(el.path, el.title)} />
-      ))}
-    </>
+    <div className="mx-auto w-[567px] p-4">
+      <BasicInput status="default" label="default" placeholder="placeholder" />
+      <BasicInput
+        status="focus"
+        label="focus"
+        placeholder="example@email.com"
+      />
+      <BasicInput status="error" label="error" placeholder="placeholder" />
+      <BasicInput
+        status="disabled"
+        label="disabled"
+        placeholder="placeholder"
+      />
+    </div>
   )
 }

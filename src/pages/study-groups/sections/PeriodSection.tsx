@@ -1,6 +1,6 @@
 import { useModal } from '../../../hooks/useModal'
 import { InputField } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/studyGroup'
+import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 
 interface Props {
   form: StudyGroupForm

@@ -8,7 +8,7 @@ export default function NavbarLayout() {
         <div className="flex h-full items-center justify-between px-8">
           <Logo />
 
-          <div className="flex items-center space-x-6 text-sm font-medium">
+          <div className="flex items-center space-x-8">
             <Links />
             <UserMenu />
           </div>
@@ -47,11 +47,7 @@ function Links() {
           key={link.path}
           to={link.path}
           className={({ isActive }) =>
-            `pb-1 transition-colors ${
-              isActive
-                ? 'text-yellow-600'
-                : 'text-gray-700 hover:text-yellow-600'
-            }`
+            `nav-links ${isActive ? 'text-yellow-600' : ''}`
           }
         >
           {link.label}

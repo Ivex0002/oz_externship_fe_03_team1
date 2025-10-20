@@ -3,6 +3,6 @@ import { LogoutedMenu } from './LogoutedMenu'
 
 export function UserMenu() {
   // 로그인 확인 로직 필요
-  const isLogined = true
+  const isLogined = false
   return isLogined ? <LoginedMenu /> : <LogoutedMenu />
 }

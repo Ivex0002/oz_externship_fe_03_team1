@@ -33,3 +33,13 @@
   --color-danger-600: #dc2626;
   --color-danger-800: #991b1b;
 }
+
+.center-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-links {
+  @apply hover:text-primary-600 text-base font-normal text-gray-700 transition-colors;
+}

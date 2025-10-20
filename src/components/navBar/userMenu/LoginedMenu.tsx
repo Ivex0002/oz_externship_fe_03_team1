@@ -67,9 +67,11 @@ export function LoginedMenu() {
       <div className="relative" ref={menuRef}>
         <button
           onClick={handlePanel}
-          className="flex items-center space-x-1 rounded-full bg-yellow-100 px-2 py-1 transition-colors hover:bg-yellow-200"
+          className="group flex cursor-pointer items-center space-x-2 rounded-lg px-2 py-1 transition-colors duration-200 ease-in-out hover:bg-yellow-50"
         >
-          <User className="text-yellow-600" size={18} />
+          <div className="center-center h-8 w-8 rounded-full bg-yellow-100 transition-colors duration-200 group-hover:bg-yellow-200">
+            <User className="text-yellow-600" size={18} />
+          </div>
           <span className="text-sm font-medium text-gray-700">김개발</span>
         </button>
 

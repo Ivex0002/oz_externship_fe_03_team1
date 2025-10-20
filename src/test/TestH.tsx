@@ -1,9 +1,9 @@
-import ReviewDetailModal from '@/components/modal/reviewDetail/ReviewDetailModal'
+import LectureChoosingModal from '@/components/modal/lectureChoosing/LectureChoosingModal'
 
 function TestH() {
   return (
     <div>
-      <ReviewDetailModal />
+      <LectureChoosingModal />
     </div>
   )
 }

@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import type { StudyGroupForm } from '../../types/studyGroup'
+import type { StudyGroupForm } from '../../types/StudyGroupTypes'
 import BasicInfoSection from './sections/BasicInfoSection'
 import PeriodSection from './sections/PeriodSection'
 import LectureSection from './sections/LectureSection'

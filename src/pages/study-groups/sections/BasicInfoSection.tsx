@@ -1,6 +1,6 @@
 import { useState, useRef } from 'react'
 import { InputField } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/studyGroup'
+import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import {

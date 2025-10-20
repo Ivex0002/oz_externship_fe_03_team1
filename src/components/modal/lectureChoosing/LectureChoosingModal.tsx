@@ -9,12 +9,25 @@ import { storeLecture } from '@/store/storeLecture'
 
 const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
-  const { selectedLectureList } = storeLecture()
+  const {
+    selectedLectureList,
+    previousLectureList,
+    setPreviousLectureList,
+    setSelectedLectureList,
+  } = storeLecture()
   //loader 생성 후 아래 코드로 변경
   //   const lectureList = useLoaderData()
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value)
+  }
+
+  const handleClickCancel = () => {
+    setSelectedLectureList(previousLectureList)
+  }
+
+  const handleClickConfirm = () => {
+    setPreviousLectureList(selectedLectureList)
   }
 
   return (
@@ -46,8 +59,12 @@ const LectureChoosingModal = () => {
       <footer className="flex justify-between border-t border-gray-200 p-6">
         <span>{selectedLectureList.length}개 강의 선택됨</span>
         <div className="flex gap-3">
-          <BasicButton type="outline">취소</BasicButton>
-          <BasicButton type="primary">선택 완료</BasicButton>
+          <BasicButton onClick={handleClickCancel} type="outline">
+            취소
+          </BasicButton>
+          <BasicButton onClick={handleClickConfirm} type="primary">
+            선택 완료
+          </BasicButton>
         </div>
       </footer>
     </div>

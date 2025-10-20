@@ -2,7 +2,7 @@ import { storeLecture } from '@/store/storeLecture'
 import type { Lecture } from '@/types/Lecture'
 import clsx from 'clsx'
 import { Circle, CircleCheck, Clock3 } from 'lucide-react'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 const LectureCard = ({ lecture }: { lecture: Lecture }) => {
   const [isChecked, setIsChecked] = useState(false)
@@ -11,10 +11,17 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
     addToSelectedLectureList,
     deleteFromSelectedLectureList,
   } = storeLecture()
+
   const formattedPrice = new Intl.NumberFormat('ko-Kr', {
     style: 'currency',
     currency: 'KRW',
   }).format(lecture.price)
+
+  useEffect(() => {
+    selectedLectureList?.forEach(
+      (lec) => lecture.id === lec.id && setIsChecked(true)
+    )
+  })
 
   const handleClickLectureCard = () => {
     if (isChecked) {

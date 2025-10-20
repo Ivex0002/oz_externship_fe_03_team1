@@ -1,3 +1,5 @@
+import { storeModalOpen } from '@/store/storeModalOpen'
+import { useEffect, useRef } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 
 /**
@@ -18,12 +20,57 @@ import { useNavigate, useLocation } from 'react-router'
 export function useModal() {
   const navigate = useNavigate()
   const location = useLocation()
+  const isClosingRef = useRef(false)
 
-  const openModal = (modalPath: string) => {
-    navigate(modalPath, {
-      state: { prevPath: location.pathname },
+  // 모달 열기
+  const openModal = (modalPath: string, title: string, subTitle?: string) => {
+    const currentPath = location.pathname
+    navigate(modalPath)
+    storeModalOpen.getState().setModalState({
+      isModalOpen: true,
+      prevPath: currentPath,
+      title: title,
+      subTitle: subTitle,
     })
   }
 
-  return { openModal } as const
+  /**
+   * 모달에서 다른 모달로 이동(prevPath 옵션을 위해 분리)
+   * 모달 > 다른 모달 이동 완료된 상태에서 뒤로가기 : navigate(-1)
+   * 모달 > 다른 모달 이동 완료된 상태에서 모달 닫기 : closeModal()
+   */
+  const modalToModal = (
+    modalPath: string,
+    title: string,
+    subTitle?: string
+  ) => {
+    navigate(modalPath)
+    storeModalOpen.getState().setModalState({
+      isModalOpen: true,
+      title: title,
+      subTitle: subTitle,
+    })
+  }
+
+  // 모달 닫기
+  const closeModal = () => {
+    const { prevPath } = storeModalOpen.getState().modalState
+    if (prevPath) {
+      isClosingRef.current = true
+      navigate(prevPath, { replace: true })
+    }
+  }
+
+  // 모달 닫을때 상태 초기화
+  // 기존에 clearModal이 과도하게 실행되는 문제가 있었으나, isClosingRef 참조형으로 변경하여 해결
+  useEffect(() => {
+    const { modalState, clearModal } = storeModalOpen.getState()
+
+    if (isClosingRef.current && location.pathname === modalState.prevPath) {
+      clearModal()
+      isClosingRef.current = false
+    }
+  }, [location.pathname])
+
+  return { openModal, closeModal, modalToModal } as const
 }

@@ -1,10 +1,11 @@
 // BasicModal.tsx
 import { createPortal } from 'react-dom'
 import { AnimatePresence, motion } from 'framer-motion'
-import { useCallback, useEffect, useRef } from 'react'
-import { useNavigate, useLocation, Outlet } from 'react-router'
-import { ChevronLeft } from 'lucide-react'
+import { useEffect, useRef } from 'react'
+import { useLocation, Outlet } from 'react-router'
 import { storeModalOpen } from '@/store/storeModalOpen'
+import ModalHeader from '@/components/modal/ModalHeader'
+import { useModal } from '@/hooks/useModal'
 
 /**
  *
@@ -22,28 +23,33 @@ import { storeModalOpen } from '@/store/storeModalOpen'
  * ```
  */
 export default function BasicModal() {
-  const navigate = useNavigate()
   const location = useLocation()
   const modalRef = useRef<HTMLDivElement>(null)
+  const { closeModal } = useModal()
 
   // Zustand store
-  const { isModalOpen, setModalOpen: SetModalOpen } = storeModalOpen()
-  const prevPath = location.state?.prevPath || '/'
+  const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
+  const setModalState = storeModalOpen((state) => state.setModalState)
 
-  // 닫기 로직
-  const handleClose = useCallback(() => {
-    SetModalOpen(false)
-    navigate(prevPath, { replace: true })
-  }, [SetModalOpen, navigate, prevPath])
+  // navigate를 통해 들어온 값들
+  const { title, subTitle } = storeModalOpen().modalState
+
+  // 무한 랜더링 방지 및 린트 회피용 ref
+  const setModalOpenRef = useRef(setModalState)
+  const isModalOpenRef = useRef(isModalOpen)
+  const closeModalRef = useRef(closeModal)
 
   // location이 변경될 때마다 모달 상태 확인
   useEffect(() => {
+    const smorc = setModalOpenRef.current
+    const imorc = isModalOpenRef.current
+
     const isModalRoute = location.pathname.startsWith('/modal')
-    if (isModalRoute && !isModalOpen) {
-      SetModalOpen(true)
+    if (isModalRoute && !imorc) {
+      smorc({ isModalOpen: true })
       document.body.style.overflow = 'hidden'
-    } else if (!isModalRoute && isModalOpen) {
-      SetModalOpen(false)
+    } else if (!isModalRoute && imorc) {
+      smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
 
@@ -55,19 +61,19 @@ export default function BasicModal() {
     // 위의 else if는 경로 이동에 따른 모달 상태관리
     // 아래의 return 클린업 함수는 비정상 종료 대응용 안전장치
     return () => {
-      SetModalOpen(false)
+      smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
-  }, [location.pathname, isModalOpen, SetModalOpen])
+  }, [location.pathname])
 
   // esc 누를시 이전 경로로 이동
   useEffect(() => {
     const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') handleClose()
+      if (e.key === 'Escape') closeModalRef.current()
     }
     window.addEventListener('keydown', handleEsc)
     return () => window.removeEventListener('keydown', handleEsc)
-  }, [handleClose])
+  }, [])
 
   // 포커스 트랩
   useEffect(() => {
@@ -105,7 +111,7 @@ export default function BasicModal() {
           animate="visible"
           exit="exit"
           transition={{ duration: 0.25 }}
-          onClick={handleClose}
+          onClick={() => closeModalRef.current()}
         >
           <motion.div
             className="relative max-h-[90vh] w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl"
@@ -117,15 +123,8 @@ export default function BasicModal() {
             transition={{ type: 'spring', stiffness: 280, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="sticky top-0 z-10 flex items-center border-b bg-white/90 p-4 backdrop-blur-sm">
-              <ChevronLeft
-                onClick={handleClose}
-                className="h-6 w-6 cursor-pointer text-gray-500 transition-colors hover:text-gray-700"
-                aria-label="창 닫기"
-              />
-            </div>
-
             <div className="max-h-[calc(90vh-3.5rem)] overflow-y-auto p-4">
+              <ModalHeader title={title} subTitle={subTitle} />
               <Outlet />
             </div>
           </motion.div>

@@ -1,5 +1,7 @@
 type Lectures = number[]
 
+type Lectures = number[]
+
 export type StudyGroup = {
   id: number
   name: string

@@ -1,12 +1,12 @@
 import { useState, useRef, useEffect } from 'react'
 import { Bell, User, LogOut } from 'lucide-react'
 import { NavLink } from 'react-router'
-import { storeNotiOpen } from '@/store/storeNotiOpen'
+import { storeNotification } from '@/store/storeNotification'
 
 export function LoginedMenu() {
   const [isPanelOpen, setIsPanelOpen] = useState(false)
   const [notiCount, setNotiCount] = useState(0)
-  const { SetIsNotiOpen } = storeNotiOpen()
+  const { setIsNotiPanelOpen: SetIsNotiOpen } = storeNotification()
   const menuRef = useRef<HTMLDivElement | null>(null)
 
   const handleNoti = () => {

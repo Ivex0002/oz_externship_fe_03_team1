@@ -21,7 +21,7 @@ const ReviewRating = () => {
             type="button"
             key={star}
             onClick={(e) => handleClickStar(e, star)}
-            className="text-primary-400"
+            className="text-primary-400 hover:scale-110"
           >
             <Star fill={rating >= star ? '#facc15' : 'white'} />
           </button>

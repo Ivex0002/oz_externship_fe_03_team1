@@ -1,3 +1,4 @@
+import { dummyNotifications } from '@/assets/dummyData/dummyNotification'
 import type { UserNotification } from '@/types/Notification'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
@@ -17,43 +18,8 @@ interface StoreNoti {
   markAllAsRead: () => void
 }
 
-const mockNotifications: UserNotification[] = [
-  {
-    id: 1,
-    message:
-      'Unity 게임 개발 프로젝트 팀원 모집 구인 공고에 대한 1건의 대기중인 지원자가 있습니다.',
-    created_at: '12월 1일',
-    type: 'application',
-    is_read: false,
-  },
-  {
-    id: 2,
-    message:
-      'React 실무 프로젝트 함께하실 분 모집합니다! 구인 공고에 대한 지원내역이 승인되었습니다.',
-    created_at: '12월 1일',
-    type: 'approval',
-    is_read: true,
-  },
-  {
-    id: 3,
-    message:
-      'React 실무 프로젝트 스터디에 김민지님이 참여했습니다. 환영해주세요!',
-    created_at: '12월 1일',
-    type: 'new_member',
-    is_read: true,
-  },
-  {
-    id: 4,
-    message:
-      'Vue.js 프론트엔드 개발팀 모집 구인 공고에 대한 지원내역이 거절되었습니다.',
-    created_at: '12월 1일',
-    type: 'rejection',
-    is_read: false,
-  },
-]
-
 /**
- * 키에 따른 알림 필터링 로직
+ * 키값에 따른 알림 필터링 로직
  */
 const applyFilter = (notifications: UserNotification[], filter: filterKey) => {
   return notifications.filter((el) =>
@@ -64,7 +30,7 @@ const applyFilter = (notifications: UserNotification[], filter: filterKey) => {
 export const storeNotification = create<StoreNoti>()(
   subscribeWithSelector((set) => {
     // TODO : 초기값 나중에 api 받아와야 함
-    const initialNotiArr = mockNotifications
+    const initialNotiArr = dummyNotifications
     return {
       notiArr: initialNotiArr,
       filtered: initialNotiArr,
@@ -90,7 +56,7 @@ export const storeNotification = create<StoreNoti>()(
   })
 )
 
-/** notiArr 변화에 따라 스토어 내부값 자동으로 변경 해주는 로직 */
+// notiArr 변화에 따라 스토어 내부값 자동으로 변경 해주는 로직
 storeNotification.subscribe(
   (state) => state.notiArr,
   (notiArr) => {

@@ -1,13 +1,12 @@
-import SearchStudy from "../components/SearchStudy/SearchStudy";
-import '../App.css'
 import NavbarLayout from "@/components/navBar/NavBar";
+import { ActiveStudies, CompletedStudies } from "@/components/SearchStudy/SearchStudy";
 
 function TestD() {
   return (
     <div>
-      <NavbarLayout>
-        <SearchStudy />
-      </NavbarLayout>
+      <NavbarLayout />
+        <ActiveStudies />
+        <CompletedStudies />
     </div>
   )
 }

@@ -1,7 +1,7 @@
 import React, { useMemo } from 'react';
 import { Users, Calendar, Star } from 'lucide-react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-
+import test1 from '../../assets/dummyData/medal.svg'
 interface Lecture {
   title: string;
   instructor: string;
@@ -136,60 +136,7 @@ const StudyCard: React.FC<{ study: Study; showReview?: boolean }> = ({ study, sh
 export const ActiveStudies: React.FC = () => {
   const studies: Study[] = useMemo<Study[]>(
     () => [
-      // {
-      //   id: 1,
-      //   title: 'React 실무 프로젝트 스터디',
-      //   description: '팀으로 리얼 프로젝트 진행',
-      //   members: 8,
-      //   maxMembers: 10,
-      //   startDate: '2024년 2월 1일',
-      //   endDate: '2024년 4월 30일',
-      //   category: '프로그래밍',
-      //   status: 'active',
-      //   lectures: [
-      //     { title: 'React 완벽 마스터 강의', instructor: '강개발' },
-      //     { title: 'Next.js 실전 가이드', instructor: '박코딩' },
-      //   ],
-      //   rating: 4.7,
-      //   reviewCount: 3,
-      //   cover: '/test1.svg',
-      // },
-      // {
-      //   id: 2,
-      //   title: 'Python 데이터 분석 스터디',
-      //   description: '데이터 분석 실습과 피드백',
-      //   members: 6,
-      //   maxMembers: 8,
-      //   startDate: '2024년 1월 15일',
-      //   endDate: '2024년 3월 15일',
-      //   category: '데이터',
-      //   status: 'active',
-      //   lectures: [
-      //     { title: 'Python 데이터 사이언스', instructor: '이데이터' },
-      //     { title: '머신러닝 입문', instructor: '김AI' },
-      //   ],
-      //   rating: 4.3,
-      //   reviewCount: 2,
-      //   cover: '/test1.svg',
-      // },
-      // {
-      //   id: 3,
-      //   title: '영어회화 스터디',
-      //   description: '매일 영어로 대화하는 모임',
-      //   members: 12,
-      //   maxMembers: 15,
-      //   startDate: '2024년 9월 20일',
-      //   endDate: '2024년 11월 30일',
-      //   category: '어학',
-      //   status: 'active',
-      //   lectures: [
-      //     { title: '토론 기반 회화', instructor: '제니' },
-      //     { title: '발음 교정', instructor: '마이클' },
-      //   ],
-      //   rating: 4.0,
-      //   reviewCount: 5,
-      //   cover: '/test1.svg',
-      // },
+// 더미 데이터 자리
     ],
     []
   );
@@ -200,18 +147,6 @@ export const ActiveStudies: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-6 py-10">
         <section className="mb-12">
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">진행중인 스터디</h2>
-              <p className="text-gray-600">현재 활발히 진행되고 있는 스터디 그룹들</p>
-            </div>
-            <div>
-              <span className="inline-block text-success-800 text-base font-semibold rounded-full bg-success-100 py-1 px-3">
-                {activeStudies.length}개 진행중
-              </span>
-            </div>
-          </div>
-
           {activeStudies.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {activeStudies.map(study => (
@@ -241,60 +176,7 @@ export const ActiveStudies: React.FC = () => {
 export const CompletedStudies: React.FC = () => {
   const studies: Study[] = useMemo<Study[]>(
     () => [
-      // {
-      //   id: 4,
-      //   title: 'Node.js 백엔드 개발팀',
-      //   description: '실전 백엔드 프로젝트',
-      //   members: 4,
-      //   maxMembers: 6,
-      //   startDate: '2023년 10월 1일',
-      //   endDate: '2023년 12월 31일',
-      //   category: '프로그래밍',
-      //   status: 'completed',
-      //   lectures: [
-      //     { title: 'Node.js 백엔드 개발 완주', instructor: '박서버' },
-      //     { title: 'Express.js 심화', instructor: '김백엔드' },
-      //   ],
-      //   rating: 4.7,
-      //   reviewCount: 3,
-      //   userHasReview: true,
-      //   cover: '/test1.svg',
-      // },
-      // {
-      //   id: 5,
-      //   title: 'Vue.js 마스터 스터디',
-      //   description: '프론트엔드 마스터 과정',
-      //   members: 6,
-      //   maxMembers: 8,
-      //   startDate: '2023년 8월 1일',
-      //   endDate: '2023년 11월 30일',
-      //   category: '웹개발',
-      //   status: 'completed',
-      //   lectures: [
-      //     { title: 'Vue.js 완벽 마스터', instructor: '정뷰' },
-      //     { title: 'Vuex 상태관리', instructor: '김상태' },
-      //   ],
-      //   rating: 4.7,
-      //   reviewCount: 3,
-      //   userHasReview: false,
-      //   cover: '/test1.svg',
-      // },
-      // {
-      //   id: 6,
-      //   title: 'TypeScript 심화 스터디',
-      //   description: '타입 시스템과 실무 적용',
-      //   members: 5,
-      //   maxMembers: 6,
-      //   startDate: '2023년 9월 1일',
-      //   endDate: '2023년 12월 15일',
-      //   category: '프로그래밍',
-      //   status: 'completed',
-      //   lectures: [{ title: 'TypeScript 마스터', instructor: '김타입' }],
-      //   rating: 4.7,
-      //   reviewCount: 3,
-      //   userHasReview: true,
-      //   cover: '/test1.svg',
-      // },
+// 더미 데이터 자리
     ],
     []
   );
@@ -305,18 +187,6 @@ export const CompletedStudies: React.FC = () => {
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-6xl mx-auto px-6 py-10">
         <section>
-          <div className="flex items-center justify-between mb-6">
-            <div>
-              <h2 className="text-2xl font-bold text-gray-900 mb-1">완료된 스터디</h2>
-              <p className="text-gray-600">성공적으로 마무리된 스터디 그룹들</p>
-            </div>
-            <div>
-              <span className="inline-block text-gray-800 text-base font-semibold rounded-full bg-gray-100 py-1 px-3">
-                {completedStudies.length}건 완료됨
-              </span>
-            </div>
-          </div>
-
           {completedStudies.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
               {completedStudies.map(study => (
@@ -326,7 +196,11 @@ export const CompletedStudies: React.FC = () => {
           ) : (
             <div className="bg-white rounded-lg border border-gray-200 p-16 flex flex-col items-center justify-center">
               <div className="bg-gray-100 rounded-full p-6 mb-6">
-                <Users className="w-12 h-12 text-gray-400" />
+                <img
+                src={test1}
+                alt="메달 아이콘"
+                className="w-12 h-12 text-gray-400" 
+                />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">완료된 스터디가 없습니다</h3>
               <p className="text-gray-600">아직 완료된 스터디 그룹이 없습니다</p>
@@ -337,15 +211,3 @@ export const CompletedStudies: React.FC = () => {
     </div>
   );
 };
-
-// 데모용 컴포넌트 (둘 다 확인할 수 있도록) 연결 시 필요없는 코드
-const StudyComponents: React.FC = () => {
-  return (
-    <div>
-      <ActiveStudies />
-      <CompletedStudies />
-    </div>
-  );
-};
-
-export default StudyComponents;

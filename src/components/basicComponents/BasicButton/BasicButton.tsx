@@ -67,6 +67,7 @@ type ButtonProps = {
   isLoading?: boolean
   onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void
   children: React.ReactNode
+  className?: string
 }
 
 type ButtonSize = 'small' | 'medium' | 'large'
@@ -83,6 +84,7 @@ export function BasicButton({
   isLoading = false,
   onClick,
   children,
+  className = '',
 }: ButtonProps) {
   const [status, setStatus] = useState<ButtonStatus>(
     isLoading ? 'loading' : disabled ? 'disabled' : 'default'
@@ -128,7 +130,7 @@ export function BasicButton({
       onMouseLeave={() => isInteractive && setStatus('default')}
       onMouseDown={() => isInteractive && setStatus('active')}
       onMouseUp={() => isInteractive && setStatus('hover')}
-      className={buttonClass}
+      className={buttonClass + className}
     >
       {isLoading ? (
         <span className="flex items-center gap-2">

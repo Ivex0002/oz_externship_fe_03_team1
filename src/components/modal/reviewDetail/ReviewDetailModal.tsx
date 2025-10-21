@@ -13,6 +13,8 @@ const ReviewDetailModal = () => {
       new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
   )
 
+  const isPostedReview = reviews.some((review) => review.isMine === true)
+
   return (
     <div className="w-[672px]">
       <main className="flex flex-col items-center p-6">
@@ -27,9 +29,15 @@ const ReviewDetailModal = () => {
         </div>
       </main>
       <footer className="flex justify-center border-t border-gray-200 p-6">
-        <span className="w-[159px]">
-          <BasicButton size="medium">내 리뷰 수정하기</BasicButton>
-        </span>
+        {isPostedReview ? (
+          <span>
+            <BasicButton size="medium">내 리뷰 수정하기</BasicButton>
+          </span>
+        ) : (
+          <span>
+            <BasicButton size="medium">내 리뷰 작성하기</BasicButton>
+          </span>
+        )}
       </footer>
     </div>
   )

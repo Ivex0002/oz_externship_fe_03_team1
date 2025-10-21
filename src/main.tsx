@@ -12,6 +12,7 @@ import ReviewPostingModal from './components/modal/reviewPosting/ReviewPostingMo
 import DatePickerModal from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
+import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoosingModal'
 
 const router = createBrowserRouter([
   {
@@ -42,6 +43,8 @@ const router = createBrowserRouter([
           },
           {
             path: '/modal/choosing_lecture',
+            loader: () => {},
+            Component: LectureChoosingModal,
           },
         ],
       },

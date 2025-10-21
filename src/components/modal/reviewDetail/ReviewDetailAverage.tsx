@@ -1,4 +1,4 @@
-import { Star } from 'lucide-react'
+import RatedStar from '@/components/RatedStar'
 
 type ReviewDetailAverageProps = {
   averageRating: number
@@ -12,16 +12,7 @@ const ReviewDetailAverage = ({
   return (
     <div className="flex w-full flex-col items-center gap-2 border-b border-gray-200 pb-6 text-gray-600">
       <div className="flex items-center justify-center gap-2 text-2xl font-bold text-gray-900">
-        <span className="flex">
-          {Array.from({ length: 5 }, (_, i) => i).map((star) => (
-            <Star
-              key={star}
-              className="text-primary-400"
-              size={18}
-              fill={averageRating >= star + 0.5 ? '#facc15' : 'white'}
-            />
-          ))}
-        </span>
+        <RatedStar rating={averageRating} />
         {averageRating}
       </div>
       총 {totalReview}개의 리뷰

@@ -5,6 +5,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
 import { lectureList } from '@/assets/dummyData/lectureList'
 import { storeLecture } from '@/store/storeLecture'
+import { useModal } from '@/hooks/useModal'
 // import { useLoaderData } from 'react-router'
 
 const LectureChoosingModal = () => {
@@ -17,6 +18,7 @@ const LectureChoosingModal = () => {
   } = storeLecture()
   //loader 생성 후 아래 코드로 변경
   //   const lectureList = useLoaderData()
+  const { closeModal } = useModal()
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value)
@@ -24,6 +26,7 @@ const LectureChoosingModal = () => {
 
   const handleClickRevert = () => {
     setSelectedLectureList(previousLectureList)
+    closeModal()
   }
 
   const handleClickConfirm = () => {

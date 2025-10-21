@@ -44,13 +44,13 @@ export const lectureList = [
     price: 95000,
     platform: 'inflearn',
   },
-  {
-    id: 6,
-    title: 'Vue.js 실전 프로젝트 - SPA 개발 완성',
-    thumbnail_img_url: '',
-    instructor: '정뷰',
-    duration: '20:10',
-    price: 95000,
-    platform: 'inflearn',
-  },
+  // {
+  //   id: 6,
+  //   title: 'Vue.js 실전 프로젝트 - SPA 개발 완성',
+  //   thumbnail_img_url: '',
+  //   instructor: '정뷰',
+  //   duration: '20:10',
+  //   price: 95000,
+  //   platform: 'inflearn',
+  // },
 ]

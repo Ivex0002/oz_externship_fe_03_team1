@@ -1,10 +1,13 @@
-import SearchPage from "../pages/SearchPage";
+import SearchStudy from "../components/SearchStudy/SearchStudy";
 import '../App.css'
+import NavbarLayout from "@/components/navBar/NavBar";
 
 function TestD() {
   return (
     <div>
-      <SearchPage />
+      <NavbarLayout>
+        <SearchStudy />
+      </NavbarLayout>
     </div>
   )
 }

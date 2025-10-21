@@ -114,7 +114,7 @@ export default function BasicModal() {
           onClick={() => closeModalRef.current()}
         >
           <motion.div
-            className="relative w-full max-w-md rounded-xl bg-white shadow-2xl"
+            className="relative rounded-xl bg-white shadow-2xl"
             variants={contentAnim}
             ref={modalRef}
             initial="hidden"

@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
-// import App from './App'
+import App from './App'
 import TestD from './test/TestD'
 import TestE from './test/TestE'
 import TestG from './test/TestG'
@@ -11,20 +11,13 @@ import BasicModal from './components/basicComponents/basicModal/BasicModal'
 import ReviewPostingModal from './components/modal/reviewPosting/ReviewPostingModal'
 import DatePickerModal from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
-<<<<<<< HEAD
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
-<<<<<<< HEAD
 import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoosingModal'
-=======
-=======
-import NavbarLayout from './components/navBar/NavBar'
->>>>>>> d215f47 (feat : 이전과 동일)
->>>>>>> 6a0770b (feat : rebase 충돌 해결)
 
 const router = createBrowserRouter([
   {
     path: '/',
-    Component: <NavbarLayout />,
+    Component: App,
     children: [
       {
         path: '/testModal',

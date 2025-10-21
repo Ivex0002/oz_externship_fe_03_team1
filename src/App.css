@@ -1,10 +1,9 @@
 @import 'tailwindcss';
-/* 폰트 */
-@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard/dist/web/static/pretendard.css');
 
 @theme {
   /* 폰트 */
-  --font-sans: 'Pretendard', ui-sans-serif, system-ui, sans-serif;
+  --font-pretendard: 'Pretendard', ui-sans-serif, system-ui, sans-serif;
+  --font-roboto: 'Roboto', ui-sans-serif, system-ui, sans-serif;
 
   /* 색상 팔레트 */
   --color-primary-50: #fefce8;
@@ -43,14 +42,12 @@
 /* 폰트 전체 적용 */
 html,
 body {
-  font-family: var(--font-sans);
+  font-family: var(--font-pretendard);
 }
 
 /* 많이 쓰이는 center 속성 변수화 */
 .center-center {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  @apply flex items-center justify-center;
 }
 
 /* 네브 바 링크들 스타일 통일 */
@@ -58,6 +55,15 @@ body {
   @apply hover:text-primary-600 text-base font-normal text-gray-700 transition-colors;
 }
 
+/* BasicInput에 추가할 수 있는 아이콘 스타일 지정 */
 .input-svg {
   @apply pointer-events-none absolute top-1/2 -translate-y-1/2 text-gray-400;
+}
+
+/* 채팅, 알림 창에서 사용할 투명한 스크롤 바 */
+.transparent-scrollbar {
+  @apply overflow-y-auto;
+  &::-webkit-scrollbar {
+    @apply w-0;
+  }
 }

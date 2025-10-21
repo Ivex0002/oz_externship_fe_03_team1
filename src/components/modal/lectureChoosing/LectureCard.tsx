@@ -4,6 +4,8 @@ import clsx from 'clsx'
 import { Circle, CircleCheck, Clock3 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+const MAX_LECTURE = 5
+
 const LectureCard = ({ lecture }: { lecture: Lecture }) => {
   const [isChecked, setIsChecked] = useState(false)
   const {
@@ -21,14 +23,14 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
     selectedLectureList?.forEach(
       (lec) => lecture.id === lec.id && setIsChecked(true)
     )
-  })
+  }, [])
 
   const handleClickLectureCard = () => {
     if (isChecked) {
       setIsChecked(false)
       deleteFromSelectedLectureList(lecture)
     }
-    if (selectedLectureList.length === 5) return
+    if (selectedLectureList.length === MAX_LECTURE) return
     if (!isChecked) {
       setIsChecked(true)
       addToSelectedLectureList(lecture)
@@ -44,16 +46,18 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
       )}
     >
       <div className="center-center gap-4">
-        <img
-          src={lecture.thumbnail_img_url}
-          alt={`${lecture.title}의 이미지`}
-          className="h-16 w-24 rounded-lg"
-        />
+        {lecture.thumbnail_img_url ? (
+          <img
+            src={lecture.thumbnail_img_url}
+            alt={`${lecture.title}의 이미지`}
+            className="h-16 w-24 rounded-lg"
+          />
+        ) : (
+          <div className="h-16 w-24 rounded-lg bg-gray-200"></div>
+        )}
         <div className="flex flex-col gap-1">
-          <h3 className="font-normal text-gray-900">{lecture.title}</h3>
-          <p className="text-sm font-normal text-gray-600">
-            {lecture.instructor}
-          </p>
+          <h3 className="text-gray-900">{lecture.title}</h3>
+          <p className="text-sm text-gray-600">{lecture.instructor}</p>
           <p className="flex items-center gap-3">
             <span
               className={clsx(
@@ -64,7 +68,7 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
             >
               {lecture.platform}
             </span>
-            <span className="flex items-center gap-1 text-xs font-normal text-gray-600">
+            <span className="flex items-center gap-1 text-xs text-gray-600">
               <Clock3 size={12} /> {lecture.duration}
             </span>
             <span className="text-sm font-semibold">{formattedPrice}</span>

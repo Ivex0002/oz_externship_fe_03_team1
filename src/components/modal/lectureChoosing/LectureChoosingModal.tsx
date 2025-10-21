@@ -22,7 +22,7 @@ const LectureChoosingModal = () => {
     setSearchInputValue(e.target.value)
   }
 
-  const handleClickCancel = () => {
+  const handleClickRevert = () => {
     setSelectedLectureList(previousLectureList)
   }
 
@@ -61,7 +61,7 @@ const LectureChoosingModal = () => {
           {selectedLectureList.length}개 강의 선택됨
         </span>
         <div className="flex gap-3">
-          <BasicButton onClick={handleClickCancel} type="outline">
+          <BasicButton onClick={handleClickRevert} type="outline">
             취소
           </BasicButton>
           <BasicButton onClick={handleClickConfirm} type="primary">

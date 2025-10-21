@@ -159,7 +159,7 @@ export const ActiveStudies: React.FC = () => {
                 <Users className="w-12 h-12 text-gray-400" />
               </div>
               <h3 className="text-xl font-bold text-gray-900 mb-2">진행중인 스터디가 없습니다</h3>
-              <p className="text-gray-600 mb-6">새로운 스터디 그룹을 만들어보세요!</p>
+              <p className="text-gray-600 mb-6">새로운 스터디 그룹을 만들어보세요</p>
               <BasicButton type="primary" size="large">
                 <span className="text-xl mr-2">+</span>
                 <span>스터디 그룹 만들기</span>

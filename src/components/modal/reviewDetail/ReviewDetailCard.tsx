@@ -8,8 +8,8 @@ const ReviewDetailCard = ({ review }: { review: Review }) => {
   return (
     <div className="w-full border-t border-gray-100 py-6">
       <div className="flex justify-between">
-        <div className="flex items-center gap-2">
-          <span className="flex">
+        <div className="flex items-center gap-2 text-gray-700">
+          <span className="flex font-medium">
             {Array.from({ length: 5 }, (_, i) => i).map((star) => (
               <Star
                 key={star}

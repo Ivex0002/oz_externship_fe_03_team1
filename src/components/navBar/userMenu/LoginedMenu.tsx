@@ -1,47 +1,38 @@
 import { useState, useRef, useEffect } from 'react'
-import { Bell, User, LogOut } from 'lucide-react'
+import { User, LogOut } from 'lucide-react'
 import { NavLink } from 'react-router'
-import { storeNotiOpen } from '@/store/storeNotiOpen'
+import { NotiButton } from '@/components/notification/NotiButton'
 
 export function LoginedMenu() {
-  const [isPanelOpen, setIsPanelOpen] = useState(false)
-  const [notiCount, setNotiCount] = useState(0)
-  const { SetIsNotiOpen } = storeNotiOpen()
+  const [isUserPanelOpen, setIsUserPanelOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
 
-  const handleNoti = () => {
-    SetIsNotiOpen(true)
+  const handleUserPanel = () => {
+    setIsUserPanelOpen((prev) => !prev)
   }
 
-  const handlePanel = () => {
-    setIsPanelOpen((prev) => !prev)
+  const closeUserPanel = () => {
+    setIsUserPanelOpen(false)
   }
 
-  const closePanel = () => {
-    setIsPanelOpen(false)
-  }
-
-  // 일단 3개로 설정
   // 실제 api 요청필요
-  useEffect(() => {
-    setNotiCount(3)
-  }, [])
+  useEffect(() => {}, [])
 
   // 패널 외부 클릭시, esc 입력시 패널 닫기
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(e.target as Node)) {
-        closePanel()
+        closeUserPanel()
       }
     }
 
     const handleEscapeKey = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        closePanel()
+        closeUserPanel()
       }
     }
 
-    if (isPanelOpen) {
+    if (isUserPanelOpen) {
       document.addEventListener('mousedown', handleClickOutside)
       document.addEventListener('keydown', handleEscapeKey)
     }
@@ -50,20 +41,15 @@ export function LoginedMenu() {
       document.removeEventListener('mousedown', handleClickOutside)
       document.removeEventListener('keydown', handleEscapeKey)
     }
-  }, [isPanelOpen])
+  }, [isUserPanelOpen])
 
   return (
     <div className="relative flex items-center space-x-4">
-      <button onClick={handleNoti} className="nav-links relative">
-        <Bell size={22} />
-        <span className="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-red-500 text-[10px] font-bold text-white">
-          {notiCount}
-        </span>
-      </button>
+      <NotiButton />
 
       <div className="relative" ref={menuRef}>
         <button
-          onClick={handlePanel}
+          onClick={handleUserPanel}
           className="group hover:bg-primary-50 flex cursor-pointer items-center space-x-2 rounded-lg px-2 py-1 transition-colors duration-200 ease-in-out"
         >
           <div className="center-center bg-primary-100 group-hover:bg-primary-200 h-8 w-8 rounded-full transition-colors duration-200">
@@ -72,7 +58,7 @@ export function LoginedMenu() {
           <span className="text-sm font-medium text-gray-700">김개발</span>
         </button>
 
-        {isPanelOpen && <UserPanel onClose={closePanel} />}
+        {isUserPanelOpen && <UserPanel onClose={closeUserPanel} />}
       </div>
     </div>
   )

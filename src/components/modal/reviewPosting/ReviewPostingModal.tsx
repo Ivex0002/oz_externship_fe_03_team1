@@ -28,7 +28,7 @@ const ReviewPostingModal = () => {
 
   return (
     <form className="w-[448px]">
-      <main className="p-5">
+      <main className="p-6">
         <div className="flex flex-col gap-3">
           <h3 className="text-[16px] font-medium">{studyGroup.name}</h3>
           <p className="text-sm font-normal text-gray-500">
@@ -39,16 +39,17 @@ const ReviewPostingModal = () => {
         <ReviewRating />
         <ReviewText />
       </main>
-      <footer className="flex w-[448px] gap-2.5">
+      <footer className="flex w-full justify-between gap-2.5 p-6 pt-0">
         <BasicButton
           type="outline"
           onClick={(e) => handleClickCancel(e)}
           size="medium"
+          className="w-full flex-1"
         >
-          <span className="w-[calc(50%-5px)]">취소</span>
+          <span>취소</span>
         </BasicButton>
-        <BasicButton type="secondary" size="medium">
-          <span className="w-[calc(50%-5px)]">작성 완료</span>
+        <BasicButton className="w-full flex-1" type="secondary" size="medium">
+          <span>작성 완료</span>
         </BasicButton>
       </footer>
     </form>

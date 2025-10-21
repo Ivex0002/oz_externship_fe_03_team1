@@ -114,7 +114,7 @@ export default function BasicModal() {
           onClick={() => closeModalRef.current()}
         >
           <motion.div
-            className="relative max-h-[90vh] w-full max-w-md overflow-hidden rounded-xl bg-white shadow-2xl"
+            className="relative w-full max-w-md rounded-xl bg-white shadow-2xl"
             variants={contentAnim}
             ref={modalRef}
             initial="hidden"
@@ -123,7 +123,7 @@ export default function BasicModal() {
             transition={{ type: 'spring', stiffness: 280, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div className="max-h-[calc(90vh-3.5rem)] overflow-y-auto p-4">
+            <div>
               <ModalHeader title={title} subTitle={subTitle} />
               <Outlet />
             </div>

@@ -23,6 +23,7 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
     selectedLectureList?.forEach(
       (lec) => lecture.id === lec.id && setIsChecked(true)
     )
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const handleClickLectureCard = () => {

@@ -16,7 +16,7 @@ interface CompletedStudiesProps {
 // 진행중인 스터디 컴포넌트
 export const ActiveStudies: React.FC<ActiveStudiesProps> = ({ 
   title = "검색된 진행중인 스터디가 없습니다",
-  description = "새로운 스터디 그룹을 만들어보세요"
+  // description = "새로운 스터디 그룹을 만들어보세요"
 }) => {
   return (
     <section className="min-h-screen bg-gray-50 px-6 py-10">
@@ -25,7 +25,7 @@ export const ActiveStudies: React.FC<ActiveStudiesProps> = ({
           <Users className="w-12 h-12 text-gray-400" />
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600 mb-6">{description}</p>
+        <p className="text-gray-600 mb-6">새로운 스터디 그룹을 만들어보세요</p>
         <BasicButton type="primary" size="large">
           <span className="text-xl mr-2">+</span>
           <span>스터디 그룹 만들기</span>
@@ -38,7 +38,7 @@ export const ActiveStudies: React.FC<ActiveStudiesProps> = ({
 // 완료된 스터디 컴포넌트
 export const CompletedStudies: React.FC<CompletedStudiesProps> = ({ 
   title = "검색된 완료된 스터디가 없습니다",
-  description = "아직 완료된 스터디 그룹이 없습니다"
+  // description = "아직 완료된 스터디 그룹이 없습니다" 
 }) => {
   return (
     <section className="min-h-screen bg-gray-50 px-6 py-10">
@@ -47,7 +47,7 @@ export const CompletedStudies: React.FC<CompletedStudiesProps> = ({
           <img src={test1} alt="메달 아이콘" className="w-12 h-12 text-gray-400" />
         </div>
         <h3 className="text-xl font-bold text-gray-900 mb-2">{title}</h3>
-        <p className="text-gray-600">{description}</p>
+        <p className="text-gray-600">아직 완료된 스터디 그룹이 없습니다</p>
       </div>
     </section>
   );

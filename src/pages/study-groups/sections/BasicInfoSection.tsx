@@ -36,7 +36,7 @@ export default function BasicInfoSection({
       alert('5MB 이하의 이미지만 업로드 가능합니다.')
       return
     }
-    setForm((prev) => ({ ...prev, image: file }))
+    setForm((prev: StudyGroupForm) => ({ ...prev, image: file }))
   }
 
   return (
@@ -45,8 +45,7 @@ export default function BasicInfoSection({
 
       <div className="w-[766px]">
         <label className="mb-1 block text-[14px] font-medium text-gray-800">
-          스터디 그룹명
-          <span className="ml-1 text-[#EF4444]">*</span>
+          스터디 그룹명<span className="ml-1 text-[#EF4444]">*</span>
         </label>
         <BasicInput
           name="name"
@@ -54,7 +53,19 @@ export default function BasicInfoSection({
           required
           value={form.name}
           onChange={handleChange}
-          className="!h-[50px] !w-[766px] !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+          className="text-[16px] leading-[24px] text-gray-700 placeholder:text-gray-400 focus:ring-1 focus:ring-amber-400"
+          style={{
+            width: 766,
+            height: 50,
+            borderWidth: 1,
+            borderColor: '#D1D5DB',
+            borderRadius: 8,
+            paddingLeft: 17,
+            paddingRight: 17,
+            paddingTop: 13,
+            paddingBottom: 13,
+            backgroundColor: '#FFFFFF',
+          }}
         />
       </div>
 

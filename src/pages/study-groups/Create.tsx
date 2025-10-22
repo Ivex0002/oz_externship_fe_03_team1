@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { ArrowLeft } from 'lucide-react'
 import type { StudyGroupForm } from '../../types/StudyGroupTypes'
 import BasicInfoSection from './sections/BasicInfoSection'
 import PeriodSection from './sections/PeriodSection'
@@ -28,21 +29,34 @@ export default function CreateStudyGroup() {
       alert('필수 항목을 모두 입력해주세요.')
       return
     }
-    console.log('📦 제출 데이터:', form)
+    console.log('제출 데이터:', form)
+  }
+
+  const handleBack = () => {
+    window.history.back()
   }
 
   return (
     <div className="relative min-h-screen bg-gray-50 py-10">
-      <div className="mx-auto mb-8 max-w-[832px]">
-        <h1 className="text-2xl font-bold text-gray-800">
-          새 스터디 그룹 만들기
-        </h1>
-        <p className="mt-1 text-sm text-gray-500">
-          함께 공부할 멤버들과 스터디 그룹을 시작해보세요
-        </p>
+      <div className="mx-auto mb-8 flex h-[96px] w-[832px] items-center gap-[16px]">
+        <button
+          onClick={handleBack}
+          className="flex h-[40px] w-[40px] items-center justify-center rounded-full bg-[#F3F4F6] text-gray-700 transition hover:bg-[#E5E7EB]"
+        >
+          <ArrowLeft size={20} strokeWidth={2} />
+        </button>
+
+        <div className="flex flex-col justify-center pt-[2px]">
+          <h1 className="text-[24px] leading-[32px] font-bold text-gray-800">
+            새 스터디 그룹 만들기
+          </h1>
+          <p className="mt-[4px] text-[14px] leading-[20px] text-gray-500">
+            함께 공부할 멤버들과 스터디 그룹을 시작해보세요
+          </p>
+        </div>
       </div>
 
-      <main className="mx-auto max-w-[896px] space-y-10 rounded-2xl bg-white p-10 shadow-sm">
+      <main className="mx-auto max-w-[832px] space-y-10 rounded-2xl bg-white p-10 shadow-sm">
         <BasicInfoSection
           form={form}
           setForm={setForm}

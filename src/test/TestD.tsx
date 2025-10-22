@@ -10,7 +10,7 @@ function TestD() {
       <NoStudyFound type="active" />
       
       {/* 완료된 스터디가 없을 때 */}
-      {/* <NoStudyFound type="completed" /> */}
+      <NoStudyFound type="completed" />
     </div>
   )
 }

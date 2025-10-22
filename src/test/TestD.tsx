@@ -5,8 +5,12 @@ function TestD() {
   return (
     <div>
       <NavbarLayout />
-        <NoStudyFound type="active" />
-        <NoStudyFound type="completed" />
+      
+      {/* 진행중인 스터디가 없을 때 */}
+      {/* <NoStudyFound type="active" /> */}
+      
+      {/* 완료된 스터디가 없을 때 */}
+      {/* <NoStudyFound type="completed" /> */}
     </div>
   )
 }

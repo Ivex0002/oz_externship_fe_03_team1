@@ -1,5 +1,5 @@
 import { useModal } from '../../../hooks/useModal'
-import { InputField } from '../../../components/basicComponents/input/BasicInput'
+import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 
 interface Props {
@@ -8,11 +8,11 @@ interface Props {
   handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function PeriodSection({ form, setForm, handleChange }: Props) {
+export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(`/modal/date-picker?target=${type}`)
+    openModal(`/modal/date-picker?target=${type}`, '날짜 선택')
   }
 
   return (
@@ -24,13 +24,13 @@ export default function PeriodSection({ form, setForm, handleChange }: Props) {
       <div className="flex gap-4">
         <div className="flex-1">
           <label className="mb-1 block text-sm font-medium text-gray-800">
-            스터디 시작일 <span className="text-[#EF4444]">*</span>
+            스터디 시작일<span className="text-[#EF4444]">*</span>
           </label>
           <div
             className="cursor-pointer"
             onClick={() => handleOpenDatePicker('start')}
           >
-            <InputField
+            <BasicInput
               name="startDate"
               placeholder="날짜를 선택하세요"
               readOnly
@@ -48,7 +48,7 @@ export default function PeriodSection({ form, setForm, handleChange }: Props) {
             className="cursor-pointer"
             onClick={() => handleOpenDatePicker('end')}
           >
-            <InputField
+            <BasicInput
               name="endDate"
               placeholder="날짜를 선택하세요"
               readOnly
@@ -69,7 +69,7 @@ export default function PeriodSection({ form, setForm, handleChange }: Props) {
           max="10"
           value={form.maxMembers}
           onChange={(e) =>
-            setForm((prev) => ({
+            setForm((prev: StudyGroupForm) => ({
               ...prev,
               maxMembers: Number(e.target.value),
             }))

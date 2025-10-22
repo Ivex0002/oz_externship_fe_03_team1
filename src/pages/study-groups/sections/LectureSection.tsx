@@ -1,5 +1,5 @@
 import { BasicButton } from '../../../components/basicComponents/BasicButton/BasicButton'
-import type { StudyGroupForm } from '../../../types/StudyGroup'
+import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 
 interface Props {
   form: StudyGroupForm

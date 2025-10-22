@@ -1,8 +1,9 @@
 import { useState, useRef } from 'react'
-import { InputField } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/StudyGroup'
+import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
+import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
+import ImageUploadIcon from '../../../assets/icons/image-upload-icon.svg'
 import {
   Bold,
   Italic,
@@ -47,7 +48,7 @@ export default function BasicInfoSection({
           스터디 그룹명
           <span className="ml-1 text-[#EF4444]">*</span>
         </label>
-        <InputField
+        <BasicInput
           name="name"
           placeholder="스터디 그룹의 이름을 입력하세요"
           required
@@ -150,9 +151,9 @@ export default function BasicInfoSection({
         >
           {form.image ? (
             <img
-              src={URL.createObjectURL(form.image)}
-              alt="대표 이미지 미리보기"
-              className="mx-auto h-32 object-contain"
+              src={ImageUploadIcon}
+              alt="이미지 업로드 아이콘"
+              className="mx-auto h-[30px] w-[33px]"
             />
           ) : (
             <>

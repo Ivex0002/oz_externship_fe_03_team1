@@ -1,4 +1,4 @@
-import RatedStar from '@/components/RatedStar'
+import RatedStar from '@/components/basicComponents/ratedStar/RatedStar'
 
 type ReviewDetailAverageProps = {
   averageRating: number

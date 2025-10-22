@@ -1,4 +1,4 @@
-import RatedStar from '@/components/RatedStar'
+import RatedStar from '@/components/basicComponents/ratedStar/RatedStar'
 import type { Review } from '@/types/Review'
 import { formattedReviewUpdatedDate } from '@/utils/formattedDate'
 

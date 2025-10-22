@@ -1,5 +1,12 @@
+import SearchPage from "../pages/SearchPage";
+import '../App.css'
+
 function TestD() {
-  return <div>도혁님의 테스트 페이지 입니다.</div>
+  return (
+    <div>
+      <SearchPage />
+    </div>
+  )
 }
 
-export default TestD
+export default TestD;

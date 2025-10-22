@@ -1,7 +1,7 @@
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
-import App from './App'
+// import App from './App'
 import TestD from './test/TestD'
 import TestE from './test/TestE'
 import TestG from './test/TestG'
@@ -17,6 +17,7 @@ import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoo
 const router = createBrowserRouter([
   {
     path: '/',
+<<<<<<< HEAD
     Component: App,
     children: [
       {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
         ],
       },
     ],
+=======
+    // Component: App,
+    Component: TestD,
+>>>>>>> e222d9b (feat : 이전 커밋 동일)
   },
 
   {

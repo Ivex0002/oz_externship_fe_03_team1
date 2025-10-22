@@ -1,12 +1,12 @@
 import NavbarLayout from "@/components/navBar/NavBar";
-import { ActiveStudies, CompletedStudies } from "@/components/SearchStudy/SearchStudy";
+import { NoStudyFound } from "@/components/SearchStudy/NoStudyFound";
 
 function TestD() {
   return (
     <div>
       <NavbarLayout />
-        <ActiveStudies />
-        <CompletedStudies />
+        <NoStudyFound type="active" />
+        <NoStudyFound type="completed" />
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import React, { useState, useMemo } from 'react';
 import { Search, Users, Calendar } from 'lucide-react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
+// import NavbarLayout from '@/components/navBar/NavBar';
 import '../App.css'; 
 
 interface Study {
@@ -25,7 +26,6 @@ const SearchResults: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState<string>('');
 
   // 더미 데이터
-
   const studies: Study[] = [
     {
       id: 1,
@@ -90,7 +90,7 @@ const SearchResults: React.FC = () => {
       status: 'completed',
       lectures: [
         { title: 'Node.js 백엔드 개발 완주', instructor: '박서버' },
-        { title: 'Express.js 심화', instructor: '김노드' }
+        { title: 'Express.js 심화', instructor: '김백엔드' }
       ],
       rating: 4.7,
       reviewCount: 3
@@ -106,8 +106,8 @@ const SearchResults: React.FC = () => {
       category: '어학',
       status: 'completed',
       lectures: [
-        { title: 'Vue.js 완벽 마스터', instructor: '최뷰' },
-        { title: 'Vuex 상태관리', instructor: '장리액트' }
+        { title: 'Vue.js 완벽 마스터', instructor: '정뷰' },
+        { title: 'Vuex 상태관리', instructor: '김상태' }
       ],
       rating: 4.7,
       reviewCount: 3

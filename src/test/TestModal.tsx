@@ -3,7 +3,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { useModal } from '@/hooks/useModal'
 
 const routeArr = [
-  { path: '/modal/review_posting', title: 'review_posting' },
+  { path: '/modal/add_schedule', title: '새 스케줄 추가' },
   { path: '/modal/review_detail', title: 'review_detail' },
   { path: '/modal/date_picker', title: 'date_picker' },
   { path: '/modal/choosing_lecture', title: 'choosing_lecture' },

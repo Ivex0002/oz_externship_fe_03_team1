@@ -41,10 +41,8 @@ export default function CreateStudyGroup() {
     }
 
     if (isEdit) {
-      console.log('📘 수정 완료:', form)
       alert('스터디 그룹이 수정되었습니다.')
     } else {
-      console.log('✨ 새 스터디 생성:', form)
       alert('스터디 그룹이 생성되었습니다.')
     }
   }

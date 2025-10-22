@@ -63,3 +63,4 @@ export const CompletedStudies: React.FC<CompletedStudiesProps> = ({ studies = []
     </div>
   );
 };
+

@@ -1,9 +1,9 @@
 import './App.css'
 import './font.css'
-import TestE from './test/TestE'
+import NavbarLayout from './components/navBar/NavBar'
 
 function App() {
-  return <TestE />
+  return <NavbarLayout />
 }
 
 export default App

@@ -1,59 +1,91 @@
+import { useEffect } from 'react'
 import { useModal } from '../../../hooks/useModal'
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
+import CustomSlider from '../../../components/slider/CustomSlider'
+import { Calendar } from 'lucide-react'
+import GroupMembersIcon from '../../../assets/icons/group-members-icon.svg'
 
 interface Props {
   form: StudyGroupForm
   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
-  handleChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
 export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(`/modal/date-picker?target=${type}`, '날짜 선택')
+    openModal(`/modal/date-picker?target=${type}`)
+  }
+
+  useEffect(() => {
+    const handleDateSelected = (
+      e: CustomEvent<{ target: 'start' | 'end'; date: string }>
+    ) => {
+      const { target, date } = e.detail
+      setForm((prev) => ({
+        ...prev,
+        ...(target === 'start' ? { startDate: date } : { endDate: date }),
+      }))
+    }
+
+    window.addEventListener(
+      'date-selected',
+      handleDateSelected as EventListener
+    )
+    return () =>
+      window.removeEventListener(
+        'date-selected',
+        handleDateSelected as EventListener
+      )
+  }, [setForm])
+
+  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = Number(e.target.value)
+    setForm((prev) => ({ ...prev, maxMembers: newValue }))
   }
 
   return (
-    <section className="space-y-4 border-b border-gray-200 pb-6">
-      <h2 className="text-lg font-semibold text-gray-700">
+    <section className="space-y-6 pt-2">
+      <h2 className="text-lg font-semibold text-gray-800">
         스터디 기간 및 인원
       </h2>
 
-      <div className="flex gap-4">
+      <div className="flex gap-6">
         <div className="flex-1">
-          <label className="mb-1 block text-sm font-medium text-gray-800">
-            스터디 시작일<span className="text-[#EF4444]">*</span>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            스터디 시작일<span className="ml-1 text-[#EF4444]">*</span>
           </label>
-          <div
-            className="cursor-pointer"
-            onClick={() => handleOpenDatePicker('start')}
-          >
+          <div className="relative">
             <BasicInput
               name="startDate"
               placeholder="날짜를 선택하세요"
-              readOnly
               value={form.startDate}
-              className="!h-[50px] !w-full !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+              readOnly
+              onClick={() => handleOpenDatePicker('start')}
+            />
+            <Calendar
+              className="absolute top-1/2 right-3 h-[16px] w-[16px] -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600"
+              onClick={() => handleOpenDatePicker('start')}
             />
           </div>
         </div>
 
         <div className="flex-1">
-          <label className="mb-1 block text-sm font-medium text-gray-800">
-            스터디 종료일 <span className="text-[#EF4444]">*</span>
+          <label className="mb-1 block text-sm font-medium text-gray-700">
+            스터디 종료일<span className="ml-1 text-[#EF4444]">*</span>
           </label>
-          <div
-            className="cursor-pointer"
-            onClick={() => handleOpenDatePicker('end')}
-          >
+          <div className="relative">
             <BasicInput
               name="endDate"
               placeholder="날짜를 선택하세요"
-              readOnly
               value={form.endDate}
-              className="!h-[50px] !w-full !rounded-lg !border !border-[#D1D5DB] !bg-white !px-[17px] !py-[13px] !text-gray-700 placeholder:!text-gray-400 focus:!border-amber-400 focus:!ring-1 focus:!ring-amber-400"
+              readOnly
+              onClick={() => handleOpenDatePicker('end')}
+            />
+            <Calendar
+              className="absolute top-1/2 right-3 h-[16px] w-[16px] -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600"
+              onClick={() => handleOpenDatePicker('end')}
             />
           </div>
         </div>
@@ -61,24 +93,35 @@ export default function PeriodSection({ form, setForm }: Props) {
 
       <div>
         <label className="mb-1 block text-sm font-medium text-gray-700">
-          최대 인원 <span className="text-[#EF4444]">*</span>
+          최대 인원 수<span className="ml-1 text-[#EF4444]">*</span>
         </label>
-        <input
-          type="range"
-          min="2"
-          max="10"
-          value={form.maxMembers}
-          onChange={(e) =>
-            setForm((prev: StudyGroupForm) => ({
-              ...prev,
-              maxMembers: Number(e.target.value),
-            }))
-          }
-          className="w-full accent-amber-400"
-        />
-        <p className="mt-1 text-sm text-gray-600">
-          {form.maxMembers}명 (2~10명)
-        </p>
+
+        <div className="mt-3 flex items-center justify-between gap-8">
+          <div className="flex-1">
+            <CustomSlider
+              min={2}
+              max={10}
+              value={form.maxMembers}
+              onChange={handleSliderChange}
+              color="#007BFF"
+            />
+            <div className="mt-2 flex justify-between text-sm text-gray-500">
+              <span>2명</span>
+              <span>10명</span>
+            </div>
+          </div>
+
+          <div className="flex items-center gap-[6px] pr-1 text-[15px] font-semibold text-gray-800">
+            <img
+              src={GroupMembersIcon}
+              alt="인원 아이콘"
+              className="h-[16px] w-[16px] select-none"
+              draggable="false"
+            />
+            <span>{form.maxMembers}</span>
+            <span className="text-sm font-medium text-gray-500">명</span>
+          </div>
+        </div>
       </div>
     </section>
   )

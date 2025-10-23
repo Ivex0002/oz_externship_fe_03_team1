@@ -49,6 +49,7 @@ const ScheduleParticipantsSelecting = ({
       <div className="flex max-h-48 flex-col gap-2 overflow-y-auto rounded-md border border-gray-300 p-4">
         <div className="flex items-center gap-2">
           <BasicInput
+            id={leader?.nickname}
             type="checkbox"
             value={leader?.nickname}
             onChange={handleParticipantChange}
@@ -67,6 +68,7 @@ const ScheduleParticipantsSelecting = ({
         {others.map((participant) => (
           <div key={participant.id} className="flex items-center gap-2">
             <BasicInput
+              id={participant.nickname}
               type="checkbox"
               value={participant.nickname}
               onChange={handleParticipantChange}

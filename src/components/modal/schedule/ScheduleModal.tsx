@@ -1,6 +1,8 @@
-import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import ScheduleParticipantsSelecting from './ScheduleParticipantsSelecting'
 import { useState } from 'react'
+import ScheduleInfo from './ScheduleInfo'
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import { useModal } from '@/hooks/useModal'
 
 type Participant = {
   id: number
@@ -12,51 +14,31 @@ const ScheduleModal = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<
     Participant[]
   >([])
+  const { closeModal } = useModal()
+
+  const handleClickCancel = (e: React.MouseEvent) => {
+    e.preventDefault()
+    closeModal()
+  }
 
   return (
     <form className="w-[672px] text-gray-900">
-      <main className="flex flex-col gap-6">
-        <div className="flex flex-col gap-2">
-          <h3 className="text-sm font-medium">
-            스케줄명 <span className="text-danger-600">*</span>
-          </h3>
-          <BasicInput placeholder="스케쥴 제목을 입력하세요" required />
-        </div>
-        <div className="flex flex-col gap-2">
-          <h3 className="text-sm font-medium">
-            스터디 목표 <span className="text-danger-600">*</span>
-          </h3>
-          <BasicInput
-            placeholder="이번 스터디에서 달성하고자 하는 목표를 입력하세요"
-            required
-          />
-        </div>
-        <div className="flex flex-col gap-2">
-          <h3 className="text-sm font-medium">
-            스터디 날짜 <span className="text-danger-600">*</span>
-          </h3>
-          <BasicInput type="date" required />
-        </div>
-        <div className="grid grid-cols-2 gap-4">
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">
-              시작 시간 <span className="text-danger-600">*</span>
-            </h3>
-            <BasicInput type="time" required />
-          </div>
-          <div className="flex flex-col gap-2">
-            <h3 className="text-sm font-medium">
-              종료 시간 <span className="text-danger-600">*</span>
-            </h3>
-            <BasicInput type="time" required />
-          </div>
-        </div>
+      <main className="flex flex-col gap-6 p-6">
+        <ScheduleInfo />
 
         <ScheduleParticipantsSelecting
           selectedParticipants={selectedParticipants}
           setSelectedParticipants={setSelectedParticipants}
         />
       </main>
+      <footer className="flex w-full justify-end gap-3 border-t border-gray-300 p-6">
+        <BasicButton type="outline" size="large" onClick={handleClickCancel}>
+          취소
+        </BasicButton>
+        <BasicButton type="primary" size="large">
+          추가하기
+        </BasicButton>
+      </footer>
     </form>
   )
 }

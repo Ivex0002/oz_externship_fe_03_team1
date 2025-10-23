@@ -1,16 +1,5 @@
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import ReactMarkdown from 'react-markdown'
-import remarkGfm from 'remark-gfm'
-import ImageUploadIcon from '../../../assets/icons/image-upload-icon.svg'
-import {
-  Bold,
-  Italic,
-  Code2,
-  Link as LinkIcon,
-  Heading1,
-  List,
-} from 'lucide-react'
 import ImageUploadBox from '../../../components/upload/ImageUploadBox'
 import MarkdownWrite from '../../../components/markdown/MarkdownWrite'
 

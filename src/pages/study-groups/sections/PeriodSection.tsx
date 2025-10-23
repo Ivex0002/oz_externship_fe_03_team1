@@ -15,7 +15,7 @@ export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(`/modal/date_picker`, '날짜 선택')
+    openModal(`/modal/date_picker?target=${type}`, '날짜 선택')
   }
 
   useEffect(() => {

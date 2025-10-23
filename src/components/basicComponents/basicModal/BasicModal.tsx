@@ -36,19 +36,17 @@ export default function BasicModal() {
 
   // 무한 랜더링 방지 및 린트 회피용 ref
   const setModalOpenRef = useRef(setModalState)
-  const isModalOpenRef = useRef(isModalOpen)
   const closeModalRef = useRef(closeModal)
 
   // location이 변경될 때마다 모달 상태 확인
   useEffect(() => {
     const smorc = setModalOpenRef.current
-    const imorc = isModalOpenRef.current
 
     const isModalRoute = location.pathname.startsWith('/modal')
-    if (isModalRoute && !imorc) {
+    if (isModalRoute && !isModalOpen) {
       smorc({ isModalOpen: true })
       document.body.style.overflow = 'hidden'
-    } else if (!isModalRoute && imorc) {
+    } else if (!isModalRoute && isModalOpen) {
       smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
@@ -64,7 +62,7 @@ export default function BasicModal() {
       smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
-  }, [location.pathname])
+  }, [location.pathname, isModalOpen])
 
   // esc 누를시 이전 경로로 이동
   useEffect(() => {

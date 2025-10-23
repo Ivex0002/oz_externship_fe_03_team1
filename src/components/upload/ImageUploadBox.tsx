@@ -61,7 +61,7 @@ export default function ImageUploadBox({
           <p className="mt-2 text-sm font-medium text-gray-700">
             클릭하여 이미지 업로드
           </p>
-          <p className="mt-1 text-xs text-gray-400">(SVG, JPG/PNG 최대 5MB)</p>
+          <p className="mt-1 text-xs text-gray-400">JPG/PNG (최대 5MB)</p>
         </>
       )}
 
@@ -69,7 +69,7 @@ export default function ImageUploadBox({
         ref={fileInputRef}
         id="imageInput"
         type="file"
-        accept="image/png, image/jpeg, image/svg+xml"
+        accept="image/png, image/jpeg"
         className="hidden"
         onChange={handleFileChange}
       />

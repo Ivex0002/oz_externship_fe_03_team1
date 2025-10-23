@@ -75,7 +75,76 @@ export default function MarkdownWrite({
       ) : (
         <div className="min-h-[160px] bg-white p-4 text-sm text-gray-700">
           {previewValue.trim() ? (
-            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+            <ReactMarkdown
+              remarkPlugins={[remarkGfm]}
+              components={{
+                a: ({ node, ...props }) => {
+                  const href = props.href?.startsWith('http')
+                    ? props.href
+                    : `https://${props.href?.replace(/^\/*/, '')}`
+                  return (
+                    <a
+                      {...props}
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-amber-600 hover:underline"
+                    />
+                  )
+                },
+                text: ({ children }) => {
+                  const text = String(children)
+                  const urlRegex =
+                    /((?:https?:\/\/)?(?:www\.)?[a-zA-Z0-9-]+\.[a-z]{2,}(?:\/[^\s]*)?)/g
+
+                  const parts = text.split(urlRegex)
+
+                  return (
+                    <>
+                      {parts.map((part, i) => {
+                        if (urlRegex.test(part)) {
+                          const href = part.startsWith('http')
+                            ? part
+                            : `https://${part.replace(/^\/*/, '')}`
+                          return (
+                            <a
+                              key={i}
+                              href={href}
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="text-amber-600 hover:underline"
+                            >
+                              {part}
+                            </a>
+                          )
+                        }
+                        return <span key={i}>{part}</span>
+                      })}
+                    </>
+                  )
+                },
+                img: ({ node, ...props }) => {
+                  const src = props.src ?? ''
+                  const isSafeSrc =
+                    src.startsWith('blob:') ||
+                    src.startsWith('data:') ||
+                    src.startsWith('http')
+
+                  return isSafeSrc ? (
+                    <img
+                      {...props}
+                      src={src}
+                      alt={props.alt || '이미지 미리보기'}
+                      className="max-w-full rounded-md shadow-sm"
+                    />
+                  ) : (
+                    <span className="text-sm text-gray-400">
+                      ⚠️ 유효하지 않은 이미지 경로입니다.
+                    </span>
+                  )
+                },
+              }}
+            >
               {previewValue}
             </ReactMarkdown>
           ) : (
@@ -87,7 +156,7 @@ export default function MarkdownWrite({
       <div className="border-t border-gray-200 bg-[#F9FAFB] px-4 py-2 text-xs text-gray-600">
         마크다운 문법을 사용할 수 있습니다.{` `}
         <span className="font-medium text-gray-600">
-          **굵게** · *기울임* · `코드` · [링크](URL) · ## 제목
+          **굵게** *기울임* `코드` [링크](URL) ## 제목
         </span>
       </div>
     </div>

@@ -1,3 +1,4 @@
+import { useRef } from 'react'
 import type { RefObject } from 'react'
 import {
   Bold,
@@ -6,6 +7,7 @@ import {
   Link as LinkIcon,
   Heading1,
   List,
+  Image as FileImage,
 } from 'lucide-react'
 
 interface MarkdownToolbarProps {
@@ -17,6 +19,8 @@ export default function MarkdownToolbar({
   textareaRef,
   onUpdate,
 }: MarkdownToolbarProps) {
+  const fileInputRef = useRef<HTMLInputElement | null>(null)
+
   const wrapSelectedText = (wrapper: string, closingWrapper?: string) => {
     const textarea = textareaRef.current
     if (!textarea) return
@@ -49,6 +53,26 @@ export default function MarkdownToolbar({
     })
   }
 
+  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+
+    if (!['image/png', 'image/jpeg'].includes(file.type)) {
+      alert('JPG 또는 PNG 파일만 업로드 가능합니다.')
+      return
+    }
+
+    if (file.size > 5 * 1024 * 1024) {
+      alert('5MB 이하의 이미지만 업로드 가능합니다.')
+      return
+    }
+
+    const imageURL = URL.createObjectURL(file)
+    const markdownImage = `![${file.name}](${imageURL})`
+
+    onUpdate((textareaRef.current?.value ?? '') + '\n' + markdownImage)
+  }
+
   return (
     <div className="flex items-center gap-3 text-gray-600">
       <Bold
@@ -66,11 +90,49 @@ export default function MarkdownToolbar({
         className="cursor-pointer hover:text-amber-500"
         onClick={() => wrapSelectedText('`')}
       />
+      <div className="relative">
+        <FileImage
+          size={18}
+          className="cursor-pointer hover:text-amber-500"
+          onClick={() => fileInputRef.current?.click()}
+        />
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept="image/png, image/jpeg"
+          onChange={handleFileSelect}
+          className="hidden"
+        />
+      </div>
       <LinkIcon
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={() => wrapSelectedText('[', '](URL)')}
+        onClick={() => {
+          const textarea = textareaRef.current
+          if (!textarea) return
+
+          const { selectionStart, selectionEnd, value } = textarea
+          const selected = value.slice(selectionStart, selectionEnd).trim()
+
+          const isUrl = /^https?:\/\/|^www\./i.test(selected)
+          const linkTarget = isUrl ? selected : 'https://'
+
+          const newValue =
+            value.slice(0, selectionStart) +
+            `[${selected || '링크텍스트'}](${linkTarget})` +
+            value.slice(selectionEnd)
+
+          onUpdate(newValue)
+
+          requestAnimationFrame(() => {
+            textarea.focus()
+            const pos = selectionStart + `[${selected || '링크텍스트'}](`.length
+            textarea.selectionStart = textarea.selectionEnd =
+              pos + linkTarget.length
+          })
+        }}
       />
+
       <Heading1
         size={18}
         className="cursor-pointer hover:text-amber-500"

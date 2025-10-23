@@ -90,7 +90,6 @@ export default function CreateStudyGroup() {
         </section>
 
         <div className="flex justify-end gap-3 pt-8">
-          {/* 취소 버튼 */}
           <BasicButton
             type="outline"
             onClick={handleBack}
@@ -99,7 +98,6 @@ export default function CreateStudyGroup() {
             취소
           </BasicButton>
 
-          {/* 생성 / 수정 버튼 */}
           <BasicButton type="primary" onClick={handleSubmit}>
             {isEdit ? '스터디 그룹 수정하기' : '스터디 그룹 만들기'}
           </BasicButton>

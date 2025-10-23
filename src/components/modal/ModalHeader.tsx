@@ -1,13 +1,10 @@
 import { useModal } from '@/hooks/useModal'
+import { storeModalOpen } from '@/store/storeModalOpen'
 import { X } from 'lucide-react'
 
-type ModalHeaderProps = {
-  title: string
-  subTitle?: string | null
-}
-
-const ModalHeader = ({ title, subTitle = null }: ModalHeaderProps) => {
+const ModalHeader = () => {
   const { closeModal } = useModal()
+  const { title, subTitle } = storeModalOpen().modalState
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()

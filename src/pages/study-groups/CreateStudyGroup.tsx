@@ -6,6 +6,7 @@ import PeriodSection from './sections/PeriodSection'
 import LectureSection from './sections/LectureSection'
 import BasicModal from '../../components/basicComponents/basicModal/BasicModal'
 import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
+import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
 
 export default function CreateStudyGroup() {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -89,19 +90,19 @@ export default function CreateStudyGroup() {
         </section>
 
         <div className="flex justify-end gap-3 pt-8">
-          <button
+          {/* 취소 버튼 */}
+          <BasicButton
+            type="outline"
             onClick={handleBack}
-            className="h-[50px] min-w-[80px] rounded-lg border border-[#D1D5DB] bg-white px-[25px] py-[13px] text-[14px] font-medium text-gray-800 transition hover:bg-gray-50"
+            className="h-[50px] min-w-[80px] px-[25px] py-[13px] text-[14px] font-medium text-[#374151] hover:bg-[#F9FAFB]"
           >
             취소
-          </button>
+          </BasicButton>
 
-          <button
-            onClick={handleSubmit}
-            className="h-[48px] min-w-[190px] rounded-lg bg-[#EAB308] px-[32px] py-[12px] text-[14px] font-semibold text-white transition hover:bg-[#DFA307]"
-          >
+          {/* 생성 / 수정 버튼 */}
+          <BasicButton type="primary" onClick={handleSubmit}>
             {isEdit ? '스터디 그룹 수정하기' : '스터디 그룹 만들기'}
-          </button>
+          </BasicButton>
         </div>
       </main>
 

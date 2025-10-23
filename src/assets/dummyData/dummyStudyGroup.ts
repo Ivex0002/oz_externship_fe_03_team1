@@ -1,4 +1,4 @@
-import type { StudyGroupForm } from '../../types/StudyGroup'
+import type { StudyGroupForm } from '../../types/StudyGroupTypes'
 
 export const studyGroupFormMock: StudyGroupForm = {
   name: 'React 완벽 마스터 스터디',

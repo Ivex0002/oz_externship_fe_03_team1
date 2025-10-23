@@ -31,9 +31,6 @@ export default function BasicModal() {
   const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
   const setModalState = storeModalOpen((state) => state.setModalState)
 
-  // navigate를 통해 들어온 값들
-  const { title, subTitle } = storeModalOpen().modalState
-
   // 무한 랜더링 방지 및 린트 회피용 ref
   const setModalOpenRef = useRef(setModalState)
   const closeModalRef = useRef(closeModal)
@@ -121,10 +118,8 @@ export default function BasicModal() {
             transition={{ type: 'spring', stiffness: 280, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div>
-              <ModalHeader title={title} subTitle={subTitle} />
-              <Outlet />
-            </div>
+            <ModalHeader />
+            <Outlet />
           </motion.div>
         </motion.div>
       )}

@@ -5,6 +5,7 @@ type ModalState = {
   prevPath: string
   title: string
   subTitle?: string
+  isClosing: boolean
 }
 interface storeModalState {
   modalState: ModalState
@@ -18,6 +19,7 @@ const initState: ModalState = {
   prevPath: '',
   title: '',
   subTitle: '',
+  isClosing: false,
 }
 
 export const storeModalOpen = create<storeModalState>((set) => ({

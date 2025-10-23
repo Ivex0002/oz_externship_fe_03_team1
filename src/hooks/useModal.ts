@@ -1,5 +1,5 @@
 import { storeModalOpen } from '@/store/storeModalOpen'
-import { useEffect, useRef } from 'react'
+import { useEffect } from 'react'
 import { useNavigate, useLocation } from 'react-router'
 
 /**
@@ -20,17 +20,18 @@ import { useNavigate, useLocation } from 'react-router'
 export function useModal() {
   const navigate = useNavigate()
   const location = useLocation()
-  const isClosingRef = useRef(false)
+
+  const { modalState, setModalState, clearModal } = storeModalOpen()
 
   // 모달 열기
   const openModal = (modalPath: string, title: string, subTitle?: string) => {
     const currentPath = location.pathname
     navigate(modalPath)
-    storeModalOpen.getState().setModalState({
-      isModalOpen: true,
+    setModalState({
       prevPath: currentPath,
       title: title,
       subTitle: subTitle,
+      isClosing: false,
     })
   }
 
@@ -45,8 +46,7 @@ export function useModal() {
     subTitle?: string
   ) => {
     navigate(modalPath)
-    storeModalOpen.getState().setModalState({
-      isModalOpen: true,
+    setModalState({
       title: title,
       subTitle: subTitle,
     })
@@ -56,20 +56,16 @@ export function useModal() {
   const closeModal = () => {
     const { prevPath } = storeModalOpen.getState().modalState
     if (prevPath) {
-      isClosingRef.current = true
+      setModalState({ isClosing: true })
       navigate(prevPath, { replace: true })
     }
   }
 
-  // 모달 닫을때 상태 초기화
-  // 기존에 clearModal이 과도하게 실행되는 문제가 있었으나, isClosingRef 참조형으로 변경하여 해결
   useEffect(() => {
-    const { modalState, clearModal } = storeModalOpen.getState()
-
-    if (isClosingRef.current && location.pathname === modalState.prevPath) {
+    if (modalState.isClosing && location.pathname === modalState.prevPath) {
       clearModal()
-      isClosingRef.current = false
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
   return { openModal, closeModal, modalToModal } as const

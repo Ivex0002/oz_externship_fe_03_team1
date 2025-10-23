@@ -28,7 +28,7 @@ export default function BasicModal() {
   const { closeModal } = useModal()
 
   // Zustand store
-  const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
+  const { isModalOpen, isClosing } = storeModalOpen((state) => state.modalState)
   const setModalState = storeModalOpen((state) => state.setModalState)
 
   // 무한 랜더링 방지 및 린트 회피용 ref
@@ -38,9 +38,9 @@ export default function BasicModal() {
   // location이 변경될 때마다 모달 상태 확인
   useEffect(() => {
     const smorc = setModalOpenRef.current
-
     const isModalRoute = location.pathname.startsWith('/modal')
-    if (isModalRoute && !isModalOpen) {
+
+    if (isModalRoute && !isModalOpen && !isClosing) {
       smorc({ isModalOpen: true })
       document.body.style.overflow = 'hidden'
     } else if (!isModalRoute && isModalOpen) {
@@ -56,10 +56,10 @@ export default function BasicModal() {
     // 위의 else if는 경로 이동에 따른 모달 상태관리
     // 아래의 return 클린업 함수는 비정상 종료 대응용 안전장치
     return () => {
-      smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
-  }, [location.pathname, isModalOpen])
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [location.pathname])
 
   // esc 누를시 이전 경로로 이동
   useEffect(() => {

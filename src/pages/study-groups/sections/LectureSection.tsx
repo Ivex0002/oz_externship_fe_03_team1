@@ -12,7 +12,7 @@ export default function LectureSection({ form }: Props) {
   const { openModal } = useModal()
 
   const handleOpenLectureModal = () => {
-    openModal('/modal/lecture-choosing')
+    openModal('/modal/choosing_lecture', '강의 선택')
   }
 
   return (

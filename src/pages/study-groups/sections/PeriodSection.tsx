@@ -4,7 +4,7 @@ import { BasicInput } from '../../../components/basicComponents/input/BasicInput
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import CustomSlider from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
-import GroupMembersIcon from '../../../assets/icons/group-members-icon.svg'
+import GroupMembersIcon from '../../../../public/icons/group-members-icon.svg'
 
 interface Props {
   form: StudyGroupForm
@@ -15,7 +15,7 @@ export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(`/modal/date-picker?target=${type}`)
+    openModal(`/modal/date_picker`, '날짜 선택')
   }
 
   useEffect(() => {

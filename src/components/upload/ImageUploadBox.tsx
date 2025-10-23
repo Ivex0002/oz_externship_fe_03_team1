@@ -1,7 +1,6 @@
 import { useRef } from 'react'
 import { X } from 'lucide-react'
-import ImageUploadIcon from '../../assets/icons/image-upload-icon.svg'
-
+import ImageUploadIcon from '../../../public/icons/image-upload-icon.svg'
 interface ImageUploadBoxProps {
   onFileSelect: (file: File | null) => void
   currentFile?: File | null

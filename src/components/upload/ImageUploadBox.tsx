@@ -1,6 +1,7 @@
 import { useRef } from 'react'
 import { X } from 'lucide-react'
-import ImageUploadIcon from '../../../public/icons/image-upload-icon.svg'
+import ImageUploadIcon from '/icons/image-upload-icon.svg'
+
 interface ImageUploadBoxProps {
   onFileSelect: (file: File | null) => void
   currentFile?: File | null
@@ -54,7 +55,7 @@ export default function ImageUploadBox({
         <>
           <img
             src={ImageUploadIcon}
-            alt="이미지 업로드 아이콘"
+            alt="/"
             className="mx-auto block h-[30px] w-[33px]"
           />
           <p className="mt-2 text-sm font-medium text-gray-700">

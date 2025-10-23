@@ -4,7 +4,6 @@ import { BasicInput } from '../../../components/basicComponents/input/BasicInput
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import CustomSlider from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
-import GroupMembersIcon from '../../../../public/icons/group-members-icon.svg'
 
 interface Props {
   form: StudyGroupForm
@@ -113,7 +112,7 @@ export default function PeriodSection({ form, setForm }: Props) {
 
           <div className="flex items-center gap-[6px] pr-1 text-[15px] font-semibold text-gray-800">
             <img
-              src={GroupMembersIcon}
+              src="/icons/group-members-icon.svg"
               alt="인원 아이콘"
               className="h-[16px] w-[16px] select-none"
               draggable="false"

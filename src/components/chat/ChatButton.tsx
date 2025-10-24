@@ -3,6 +3,7 @@ import { MessageCircle, X } from 'lucide-react'
 import { useRef } from 'react'
 import { ChatPanel } from './ChatPanel'
 import clsx from 'clsx'
+import { AnimatePresence } from 'framer-motion'
 
 export function ChatButton() {
   const { totalUnreadCount, setIsPanelOpen, isPanelOpen } = storeChat()
@@ -31,7 +32,9 @@ export function ChatButton() {
         )}
       </button>
 
-      {isPanelOpen && <ChatPanel buttonRef={buttonRef} />}
+      <AnimatePresence mode="wait">
+        {isPanelOpen && <ChatPanel buttonRef={buttonRef} />}
+      </AnimatePresence>
     </>
   )
 }

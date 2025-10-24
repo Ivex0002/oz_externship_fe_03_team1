@@ -16,7 +16,7 @@ const ScheduleModal = () => {
     Participant[]
   >([])
   const { closeModal } = useModal()
-  const { previousSchedule } = storeSchedule()
+  const { previousSchedule, clearSchedules } = storeSchedule()
   const isEdit =
     window.location.pathname === '/modal/edit_schedule' ? true : false
 
@@ -30,9 +30,11 @@ const ScheduleModal = () => {
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
     if (isEdit) {
+      clearSchedules()
       window.history.back()
       return
     }
+    clearSchedules()
     closeModal()
   }
 

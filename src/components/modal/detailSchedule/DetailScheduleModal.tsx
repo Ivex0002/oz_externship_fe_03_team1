@@ -3,11 +3,13 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { useModal } from '@/hooks/useModal'
 import DetailScheduleInfo from './DetailScheduleInfo'
 import DetailScheduleSelectedParticipants from './DetailScheduleSelectedParticipants'
-import { formattedReviewUpdatedDate } from '@/utils/formattedDate'
+import dayjs from '@/lib/dayjs'
 
 const DetailScheduleModal = () => {
   const { modalToModal } = useModal()
-  const formattedDate = formattedReviewUpdatedDate(dummySchedule.create_at)
+  const formattedCreatedScheduleDate = dayjs(dummySchedule.create_at).format(
+    'LLL'
+  )
 
   const handleClickEdit = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -21,7 +23,9 @@ const DetailScheduleModal = () => {
         <DetailScheduleSelectedParticipants />
       </main>
       <footer className="flex w-full items-center justify-between gap-3 border-t border-gray-200 p-6">
-        <span className="text-xs text-gray-500">생성일: {formattedDate}</span>
+        <span className="text-xs text-gray-500">
+          생성일: {formattedCreatedScheduleDate}
+        </span>
         <div className="flex gap-3">
           <BasicButton type="primary" size="medium" onClick={handleClickEdit}>
             수정

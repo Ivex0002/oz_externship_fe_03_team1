@@ -1,7 +1,12 @@
 import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { Calendar, Clock3 } from 'lucide-react'
+import dayjs from '@/lib/dayjs'
 
 const DetailScheduleInfo = () => {
+  const formattedScheduleDate = dayjs(dummySchedule.date)
+    .format('LLLL')
+    .slice(0, 15)
+
   return (
     <section className="flex flex-col gap-6">
       <h3 className="text-lg">{dummySchedule.title}</h3>
@@ -14,7 +19,7 @@ const DetailScheduleInfo = () => {
           <h4 className="text-sm font-medium text-gray-700">스터디 날짜</h4>
           <p className="flex items-center gap-2">
             <Calendar size={16} className="text-gray-400" />{' '}
-            {dummySchedule.date}
+            {formattedScheduleDate}
           </p>
         </div>
         <div className="flex flex-col gap-2">

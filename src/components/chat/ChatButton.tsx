@@ -19,7 +19,9 @@ export function ChatButton() {
         onClick={handleClick}
         className="center-center bg-primary-500 fixed right-6 bottom-6 h-16 w-16 cursor-pointer rounded-full shadow-[0px_10px_15px_-3px_#0000001A,_0px_4px_6px_-4px_#0000001A]"
       >
-        {!isPanelOpen && (
+        {isPanelOpen ? (
+          <X className={iconStyle} />
+        ) : (
           <>
             <div className="center-center bg-danger-500 absolute -top-2 left-12 h-6 w-6 rounded-full text-xs font-semibold text-white">
               {totalUnreadCount}
@@ -27,8 +29,6 @@ export function ChatButton() {
             <MessageCircle className={iconStyle} />
           </>
         )}
-
-        {isPanelOpen && <X className={iconStyle} />}
       </button>
 
       {isPanelOpen && <ChatPanel buttonRef={buttonRef} />}

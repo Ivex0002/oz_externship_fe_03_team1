@@ -4,6 +4,7 @@ import ScheduleInfo from './ScheduleInfo'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
 import { storeSchedule } from '@/store/storeSchedule'
+import { useParams } from 'react-router'
 
 type Participant = {
   id: number
@@ -15,6 +16,7 @@ const ScheduleModal = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<
     Participant[]
   >([])
+  const params = useParams<{ id: string }>()
   const { closeModal, modalToModal } = useModal()
   const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
 
@@ -29,7 +31,7 @@ const ScheduleModal = () => {
     e.preventDefault()
     if (isEdit) {
       clearSchedules()
-      modalToModal('/modal/schedule_detail', '스케줄 상세보기')
+      modalToModal(`/modal/schedule_detail/${params.id}`, '스케줄 상세보기')
       return
     }
     clearSchedules()

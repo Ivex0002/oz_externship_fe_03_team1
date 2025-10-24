@@ -5,8 +5,10 @@ import DetailScheduleInfo from './DetailScheduleInfo'
 import DetailScheduleSelectedParticipants from './DetailScheduleSelectedParticipants'
 import dayjs from '@/lib/dayjs'
 import { storeSchedule } from '@/store/storeSchedule'
+import { useParams } from 'react-router'
 
 const DetailScheduleModal = () => {
+  const params = useParams<{ id: string }>()
   const { modalToModal } = useModal()
   const { setPreviousSchedule, setIsEdit } = storeSchedule()
   const formattedCreatedScheduleDate = dayjs(dummySchedule.created_at).format(
@@ -16,7 +18,7 @@ const DetailScheduleModal = () => {
   const handleClickEdit = () => {
     setPreviousSchedule(dummySchedule)
     setIsEdit(true)
-    modalToModal('/modal/edit_schedule', '스케줄 수정')
+    modalToModal(`/modal/edit_schedule/${params.id}`, '스케줄 수정')
   }
 
   return (

@@ -9,7 +9,7 @@ import { storeSchedule } from '@/store/storeSchedule'
 const DetailScheduleModal = () => {
   const { modalToModal } = useModal()
   const { setPreviousSchedule } = storeSchedule()
-  const formattedCreatedScheduleDate = dayjs(dummySchedule.create_at).format(
+  const formattedCreatedScheduleDate = dayjs(dummySchedule.created_at).format(
     'LLL'
   )
 

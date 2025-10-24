@@ -5,7 +5,7 @@ export const dummySchedule = {
   date: '2024-07-01',
   startTime: '10:00',
   endTime: '12:00',
-  create_at: '2024-06-20T10:00:00Z',
+  created_at: '2024-06-20T10:00:00Z',
   participants: [
     { id: 1, nickname: '김개발', is_leader: true },
     { id: 2, nickname: '박리엑트', is_leader: false },

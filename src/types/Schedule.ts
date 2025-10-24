@@ -11,6 +11,6 @@ export type Schedule = {
   date: string
   startTime: string
   endTime: string
-  create_at?: string
+  created_at?: string
   participants: ScheduleParticipant[]
 }

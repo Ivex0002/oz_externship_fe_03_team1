@@ -31,7 +31,7 @@ const ScheduleModal = () => {
           setSelectedParticipants={setSelectedParticipants}
         />
       </main>
-      <footer className="flex w-full justify-end gap-3 border-t border-gray-300 p-6">
+      <footer className="flex w-full justify-end gap-3 border-t border-gray-200 p-6">
         <BasicButton type="outline" size="large" onClick={handleClickCancel}>
           취소
         </BasicButton>

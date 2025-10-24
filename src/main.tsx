@@ -14,6 +14,7 @@ import TestModal from './test/TestModal'
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
 import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoosingModal'
 import ScheduleModal from './components/modal/schedule/ScheduleModal'
+import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
 
 const router = createBrowserRouter([
   {
@@ -50,6 +51,10 @@ const router = createBrowserRouter([
           {
             path: '/modal/add_schedule',
             Component: ScheduleModal,
+          },
+          {
+            path: '/modal/schedule_detail',
+            Component: DetailScheduleModal,
           },
         ],
       },

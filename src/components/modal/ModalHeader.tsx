@@ -12,7 +12,7 @@ const ModalHeader = () => {
   }
 
   return (
-    <header className="flex justify-between border-b border-gray-300 p-6 text-gray-900">
+    <header className="flex justify-between border-b border-gray-200 p-6 text-gray-900">
       <div className="flex flex-col">
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <h2 className="text-sm font-normal text-gray-500">{subTitle}</h2>

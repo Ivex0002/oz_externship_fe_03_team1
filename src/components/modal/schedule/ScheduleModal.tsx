@@ -1,8 +1,9 @@
 import ScheduleParticipantsSelecting from './ScheduleParticipantsSelecting'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ScheduleInfo from './ScheduleInfo'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
+import { storeSchedule } from '@/store/storeSchedule'
 
 type Participant = {
   id: number
@@ -15,6 +16,16 @@ const ScheduleModal = () => {
     Participant[]
   >([])
   const { closeModal } = useModal()
+  const { previousSchedule } = storeSchedule()
+  const isEdit =
+    window.location.pathname === '/modal/edit_schedule' ? true : false
+
+  useEffect(() => {
+    if (isEdit) return // 수정이 아닌 경우 초기화하지 않음
+    if (previousSchedule) {
+      setSelectedParticipants(previousSchedule.participants)
+    }
+  }, [isEdit, previousSchedule])
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()

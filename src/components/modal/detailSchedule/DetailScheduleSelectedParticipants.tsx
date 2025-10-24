@@ -10,7 +10,7 @@ const DetailScheduleSelectedParticipants = () => {
   return (
     <section className="flex flex-col gap-2">
       <h4 className="text-sm font-medium text-gray-700">
-        참여자 목록 {`(${dummySchedule.participants.length}명)`}
+        참여자 목록 {`(${participants.length}명)`}
       </h4>
       <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto rounded-lg border border-gray-200 p-4">
         {leader && (

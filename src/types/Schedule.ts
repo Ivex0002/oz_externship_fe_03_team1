@@ -5,12 +5,12 @@ type ScheduleParticipant = {
 }
 
 export type Schedule = {
-  id: number
+  id?: number
   title: string
   goal: string
   date: string
   startTime: string
   endTime: string
-  create_at: string
+  create_at?: string
   participants: ScheduleParticipant[]
 }

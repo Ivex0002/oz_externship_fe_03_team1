@@ -21,7 +21,7 @@ const ScheduleModal = () => {
     window.location.pathname === '/modal/edit_schedule' ? true : false
 
   useEffect(() => {
-    if (isEdit) return // 수정이 아닌 경우 초기화하지 않음
+    if (!isEdit) return // 수정이 아닌 경우 초기화하지 않음
     if (previousSchedule) {
       setSelectedParticipants(previousSchedule.participants)
     }
@@ -29,6 +29,10 @@ const ScheduleModal = () => {
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
+    if (isEdit) {
+      window.history.back()
+      return
+    }
     closeModal()
   }
 
@@ -47,7 +51,7 @@ const ScheduleModal = () => {
           취소
         </BasicButton>
         <BasicButton type="primary" size="large">
-          추가하기
+          {isEdit ? '수정하기' : '추가하기'}
         </BasicButton>
       </footer>
     </form>

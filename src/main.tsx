@@ -53,7 +53,11 @@ const router = createBrowserRouter([
             Component: ScheduleModal,
           },
           {
-            path: '/modal/schedule_detail',
+            path: '/modal/edit_schedule/:id',
+            Component: ScheduleModal,
+          },
+          {
+            path: '/modal/schedule_detail/:id',
             Component: DetailScheduleModal,
           },
         ],

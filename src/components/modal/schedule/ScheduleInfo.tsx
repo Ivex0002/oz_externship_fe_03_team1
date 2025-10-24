@@ -1,5 +1,6 @@
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
-import { useState } from 'react'
+import { storeSchedule } from '@/store/storeSchedule'
+import { useEffect, useState } from 'react'
 
 const ScheduleInfo = () => {
   const [titleValue, setTitleValue] = useState('')
@@ -7,6 +8,19 @@ const ScheduleInfo = () => {
   const [dateValue, setDateValue] = useState('')
   const [startTimeValue, setStartTimeValue] = useState('')
   const [endTimeValue, setEndTimeValue] = useState('')
+
+  const { previousSchedule, isEdit } = storeSchedule()
+
+  useEffect(() => {
+    if (!isEdit) return
+    if (isEdit && previousSchedule) {
+      setTitleValue(previousSchedule.title)
+      setGoalValue(previousSchedule.goal)
+      setDateValue(previousSchedule.date)
+      setStartTimeValue(previousSchedule.startTime)
+      setEndTimeValue(previousSchedule.endTime)
+    }
+  }, [isEdit, previousSchedule])
 
   return (
     <section className="flex flex-col gap-6">

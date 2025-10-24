@@ -1,8 +1,10 @@
 import ScheduleParticipantsSelecting from './ScheduleParticipantsSelecting'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import ScheduleInfo from './ScheduleInfo'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
+import { storeSchedule } from '@/store/storeSchedule'
+import { useParams } from 'react-router'
 
 type Participant = {
   id: number
@@ -14,10 +16,25 @@ const ScheduleModal = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<
     Participant[]
   >([])
-  const { closeModal } = useModal()
+  const params = useParams<{ id: string }>()
+  const { closeModal, modalToModal } = useModal()
+  const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
+
+  useEffect(() => {
+    if (!isEdit) return // 수정이 아닌 경우 초기화하지 않음
+    if (previousSchedule) {
+      setSelectedParticipants(previousSchedule.participants)
+    }
+  }, [isEdit, previousSchedule])
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
+    if (isEdit) {
+      clearSchedules()
+      modalToModal(`/modal/schedule_detail/${params.id}`, '스케줄 상세보기')
+      return
+    }
+    clearSchedules()
     closeModal()
   }
 
@@ -36,7 +53,7 @@ const ScheduleModal = () => {
           취소
         </BasicButton>
         <BasicButton type="primary" size="large">
-          추가하기
+          {isEdit ? '수정하기' : '추가하기'}
         </BasicButton>
       </footer>
     </form>

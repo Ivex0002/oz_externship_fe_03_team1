@@ -1,5 +1,6 @@
 import { NavLink, Outlet } from 'react-router'
 import { UserMenu } from './userMenu/UserMenu'
+import { ChatButton } from '../chat/ChatButton'
 
 export default function NavbarLayout() {
   return (
@@ -18,6 +19,7 @@ export default function NavbarLayout() {
       <main className="mt-[65px] flex w-full flex-1 items-center justify-center bg-white">
         <Outlet />
       </main>
+      <ChatButton />
     </div>
   )
 }

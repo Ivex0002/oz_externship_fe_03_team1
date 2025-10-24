@@ -5,13 +5,15 @@ interface StoreSchedule {
   previousSchedule: Schedule
   newSchedule: Schedule
 
+  isEdit: boolean
+
   setPreviousSchedule: (schedule: Schedule) => void
   setNewSchedule: (schedule: Schedule) => void
+  setIsEdit: (isEdit: boolean) => void
   clearSchedules: () => void
 }
 
 const initialSchedule: Schedule = {
-  id: 0,
   title: '',
   goal: '',
   date: '',
@@ -24,11 +26,19 @@ export const storeSchedule = create<StoreSchedule>((set) => ({
   previousSchedule: initialSchedule,
   newSchedule: initialSchedule,
 
+  isEdit: false,
+
   setPreviousSchedule: (schedule: Schedule) =>
     set({ previousSchedule: schedule }),
 
   setNewSchedule: (schedule: Schedule) => set({ newSchedule: schedule }),
 
+  setIsEdit: (isEdit: boolean) => set({ isEdit }),
+
   clearSchedules: () =>
-    set({ previousSchedule: initialSchedule, newSchedule: initialSchedule }),
+    set({
+      previousSchedule: initialSchedule,
+      newSchedule: initialSchedule,
+      isEdit: false,
+    }),
 }))

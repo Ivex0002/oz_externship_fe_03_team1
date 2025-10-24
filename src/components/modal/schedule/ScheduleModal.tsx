@@ -15,10 +15,8 @@ const ScheduleModal = () => {
   const [selectedParticipants, setSelectedParticipants] = useState<
     Participant[]
   >([])
-  const { closeModal } = useModal()
-  const { previousSchedule, clearSchedules } = storeSchedule()
-  const isEdit =
-    window.location.pathname === '/modal/edit_schedule' ? true : false
+  const { closeModal, modalToModal } = useModal()
+  const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
 
   useEffect(() => {
     if (!isEdit) return // 수정이 아닌 경우 초기화하지 않음
@@ -31,7 +29,7 @@ const ScheduleModal = () => {
     e.preventDefault()
     if (isEdit) {
       clearSchedules()
-      window.history.back()
+      modalToModal('/modal/schedule_detail', '스케줄 상세보기')
       return
     }
     clearSchedules()

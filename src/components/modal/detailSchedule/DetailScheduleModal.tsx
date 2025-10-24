@@ -8,13 +8,14 @@ import { storeSchedule } from '@/store/storeSchedule'
 
 const DetailScheduleModal = () => {
   const { modalToModal } = useModal()
-  const { setPreviousSchedule } = storeSchedule()
+  const { setPreviousSchedule, setIsEdit } = storeSchedule()
   const formattedCreatedScheduleDate = dayjs(dummySchedule.created_at).format(
     'LLL'
   )
 
   const handleClickEdit = () => {
     setPreviousSchedule(dummySchedule)
+    setIsEdit(true)
     modalToModal('/modal/edit_schedule', '스케줄 수정')
   }
 

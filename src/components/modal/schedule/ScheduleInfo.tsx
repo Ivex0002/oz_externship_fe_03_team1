@@ -9,9 +9,7 @@ const ScheduleInfo = () => {
   const [startTimeValue, setStartTimeValue] = useState('')
   const [endTimeValue, setEndTimeValue] = useState('')
 
-  const { previousSchedule } = storeSchedule()
-  const isEdit =
-    window.location.pathname === '/modal/edit_schedule' ? true : false
+  const { previousSchedule, isEdit } = storeSchedule()
 
   useEffect(() => {
     if (!isEdit) return

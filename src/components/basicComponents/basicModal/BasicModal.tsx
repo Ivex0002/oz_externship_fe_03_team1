@@ -28,27 +28,22 @@ export default function BasicModal() {
   const { closeModal } = useModal()
 
   // Zustand store
-  const isModalOpen = storeModalOpen((state) => state.modalState.isModalOpen)
+  const { isModalOpen, isClosing } = storeModalOpen((state) => state.modalState)
   const setModalState = storeModalOpen((state) => state.setModalState)
-
-  // navigate를 통해 들어온 값들
-  const { title, subTitle } = storeModalOpen().modalState
 
   // 무한 랜더링 방지 및 린트 회피용 ref
   const setModalOpenRef = useRef(setModalState)
-  const isModalOpenRef = useRef(isModalOpen)
   const closeModalRef = useRef(closeModal)
 
   // location이 변경될 때마다 모달 상태 확인
   useEffect(() => {
     const smorc = setModalOpenRef.current
-    const imorc = isModalOpenRef.current
-
     const isModalRoute = location.pathname.startsWith('/modal')
-    if (isModalRoute && !imorc) {
+
+    if (isModalRoute && !isModalOpen && !isClosing) {
       smorc({ isModalOpen: true })
       document.body.style.overflow = 'hidden'
-    } else if (!isModalRoute && imorc) {
+    } else if (!isModalRoute && isModalOpen) {
       smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
@@ -61,9 +56,9 @@ export default function BasicModal() {
     // 위의 else if는 경로 이동에 따른 모달 상태관리
     // 아래의 return 클린업 함수는 비정상 종료 대응용 안전장치
     return () => {
-      smorc({ isModalOpen: false })
       document.body.style.overflow = 'unset'
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
   // esc 누를시 이전 경로로 이동
@@ -123,10 +118,8 @@ export default function BasicModal() {
             transition={{ type: 'spring', stiffness: 280, damping: 25 }}
             onClick={(e) => e.stopPropagation()}
           >
-            <div>
-              <ModalHeader title={title} subTitle={subTitle} />
-              <Outlet />
-            </div>
+            <ModalHeader />
+            <Outlet />
           </motion.div>
         </motion.div>
       )}

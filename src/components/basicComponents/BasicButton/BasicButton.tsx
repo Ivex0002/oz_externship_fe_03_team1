@@ -56,8 +56,6 @@ const BUTTON_COLORS: Record<string, ButtonColorSet> = {
     active: { bg: 'bg-danger-800', text: 'text-white' },
   },
 } as const
-// loading, disabled의 경우 default에 투명도 50% 스타일 적용
-// 피그마 색상 기반으로 작성
 
 // 프롭스 및 타입
 type ButtonProps = {

@@ -4,13 +4,49 @@ import type { StudyGroup } from '@/types/StudyGroupTypes'
 import RatedStar from '../basicComponents/ratedStar/RatedStar'
 import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
+import { useEffect } from 'react'
+import { storeReview } from '@/store/storeReview'
+import { reviewDetailData } from '@/assets/dummyData/reviewList'
+import { dummyUser } from '@/assets/dummyData/dummyUser'
 
 // StudyCard 컴포넌트
 const StudyCard = ({ study }: { study: StudyGroup }) => {
   const { openModal } = useModal()
+  const { reviewData, setReviewData, setPreviousMyReview, setIsEditReview } =
+    storeReview()
+
+  const reviewList = reviewDetailData.results
+  const isReviewed = reviewList.some(
+    (review) => review.user && review.user.id === dummyUser.id
+  )
+
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
   const period = `${startDate} ~ ${endDate}`
+
+  useEffect(() => {
+    if (study.status === 'ONGOING') return
+    if (study.status === 'ENDED') {
+      // todo 스터디 리뷰 api 호출
+      // setReviewData(api로 받아온 리뷰 데이터)
+      setReviewData(reviewDetailData)
+    }
+  }, [study.status, setReviewData])
+
+  const handleClickPostReview = () => {
+    openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
+  }
+
+  const handleClickEditReview = () => {
+    const myReview = reviewList.find(
+      (review) => review.user.id === dummyUser.id
+    )
+    if (myReview) {
+      setPreviousMyReview(myReview)
+      setIsEditReview(true)
+    }
+    openModal(`/modal/edit_review/${study.id}`, '리뷰 수정')
+  }
 
   return (
     <div className="flex min-h-[360px] w-96 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
@@ -75,9 +111,9 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
               <div className="flex items-center gap-1">
-                <RatedStar rating={study.star_rating_avr} />
+                <RatedStar rating={reviewData.averageRating} />
                 <span className="flex items-center text-xs text-gray-500">
-                  {study.star_rating_avr} {`(${study.review_count})`}
+                  {reviewData.averageRating} {`(${reviewData.count})`}
                 </span>
               </div>
             </div>
@@ -89,15 +125,11 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
 
           {/* 버튼이 카드 하단 전체를 꽉 채움 */}
           <BasicButton
-            type={study.is_reviewed ? 'secondary' : 'primary'}
+            type={isReviewed ? 'secondary' : 'primary'}
             size="small"
-            onClick={() =>
-              study.is_reviewed
-                ? openModal(`/modal/edit_review/${study.id}`, '리뷰 수정')
-                : openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
-            }
+            onClick={isReviewed ? handleClickPostReview : handleClickEditReview}
           >
-            {study.is_reviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
+            {isReviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
           </BasicButton>
         </div>
       ) : (

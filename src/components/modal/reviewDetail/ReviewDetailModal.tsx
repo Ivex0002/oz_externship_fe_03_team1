@@ -1,30 +1,37 @@
 // import { useLoaderData } from 'react-router'
-import { reviewDetailList } from '@/assets/dummyData/reviewList'
+import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import ReviewDetailAverage from './ReviewDetailAverage'
 import ReviewDetailCard from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import { dummyUser } from '@/assets/dummyData/dummyUser'
 
 const ReviewDetailModal = () => {
   //loader 설정하면 아래 코드로 변경
-  //   const reviewDetailList = useLoaderData<ReviewDetailList>()
-  const reviews = reviewDetailList.reviews
+  //   const reviewDetailData = useLoaderData<ReviewDetailData>()
+  const reviews = reviewDetailData.results
   reviews.sort(
     (a, b) =>
       new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
   )
 
-  const isPostedReview = reviews.some((review) => review.isMine === true)
+  const isPostedReview = reviews.some(
+    (review) => review.user.id === dummyUser.id
+  )
 
   return (
     <div className="w-[672px]">
       <main className="flex flex-col items-center p-6">
         <ReviewDetailAverage
-          averageRating={reviewDetailList.averageRating}
-          totalReview={reviewDetailList.totalReview}
+          averageRating={reviewDetailData.averageRating}
+          totalReview={reviewDetailData.count}
         />
         <div className="flex flex-col">
           {reviews.map((review) => (
-            <ReviewDetailCard key={review.id} review={review} />
+            <ReviewDetailCard
+              key={review.id}
+              review={review}
+              isMine={isPostedReview}
+            />
           ))}
         </div>
       </main>

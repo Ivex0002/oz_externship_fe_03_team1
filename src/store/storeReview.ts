@@ -1,45 +1,54 @@
-import type { Review } from '@/types/Review'
+import type { Review, ReviewDetailData, ReviewForm } from '@/types/Review'
 import { create } from 'zustand'
 
 interface StoreReview {
-  reviewList: Review[]
-  previousMyReview: Review
-  newReview: Review
+  reviewData: ReviewDetailData
+  previousMyReview: ReviewForm
+  newReview: ReviewForm
 
-  isEdit: boolean
+  isEditReview: boolean
 
-  setReviewList: (reviews: Review[]) => void
+  setReviewData: (reviewData: ReviewDetailData) => void
   setPreviousMyReview: (schedule: Review) => void
   setNewReview: (schedule: Review) => void
-  setIsEdit: (isEdit: boolean) => void
+  setIsEditReview: (isEdit: boolean) => void
   clearReviews: () => void
 }
 
-const initialReview: Review = {
+const initialReview: ReviewForm = {
   content: '',
   star_rating: 0,
 }
 
+const initialReviewData: ReviewDetailData = {
+  count: 0,
+  averageRating: 0,
+  next: null,
+  previous: null,
+  results: [],
+}
+
 export const storeReview = create<StoreReview>((set) => ({
-  reviewList: [],
+  reviewData: initialReviewData,
   previousMyReview: initialReview,
   newReview: initialReview,
 
-  isEdit: false,
+  isEditReview: false,
 
-  setReviewList: (reviews: Review[]) => set({ reviewList: reviews }),
+  setReviewData: (reviewData: ReviewDetailData) =>
+    set({ reviewData: reviewData }),
 
   setPreviousMyReview: (review: Review) => set({ previousMyReview: review }),
 
   setNewReview: (review: Review) => set({ newReview: review }),
 
-  setIsEdit: (isEdit: boolean) => set({ isEdit }),
+  setIsEditReview: (isEdit: boolean) => set({ isEditReview: isEdit }),
 
   clearReviews: () =>
     set({
-      reviewList: [],
+      reviewData: initialReviewData,
       previousMyReview: initialReview,
       newReview: initialReview,
-      isEdit: false,
+      isEditReview: false,
     }),
 }))

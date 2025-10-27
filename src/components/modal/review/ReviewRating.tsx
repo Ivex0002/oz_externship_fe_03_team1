@@ -1,8 +1,11 @@
 import { Star } from 'lucide-react'
-import { useState } from 'react'
 
-const ReviewRating = () => {
-  const [rating, setRating] = useState(0)
+type ReviewRatingProps = {
+  rating: number
+  setRating: React.Dispatch<React.SetStateAction<number>>
+}
+
+const ReviewRating = ({ rating, setRating }: ReviewRatingProps) => {
   const ratingStarCount = [1, 2, 3, 4, 5]
 
   const handleClickStar = (e: React.MouseEvent, star: number) => {

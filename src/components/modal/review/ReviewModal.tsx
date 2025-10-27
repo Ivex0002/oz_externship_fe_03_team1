@@ -1,13 +1,16 @@
-// import type { StudyGroup } from '../../../types/StudyGroup'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
 import { useModal } from '@/hooks/useModal'
 import { studyGroup } from '@/assets/dummyData/studyGroup'
 import dayjs from '@/lib/dayjs'
+import { storeReview } from '@/store/storeReview'
+import { useEffect, useState } from 'react'
 // import { useLoaderData } from 'react-router'
 
 const ReviewModal = () => {
+  const [rating, setRating] = useState(0)
+  const [reviewInputValue, setReviewInputValue] = useState('')
   //loader 설정시 아래 코드로 변경
   // const studyGroup = useLoaderData<StudyGroup>()
 
@@ -16,6 +19,16 @@ const ReviewModal = () => {
   const period = `${startDate} ~ ${endDate}`
 
   const { closeModal } = useModal()
+
+  const { previousMyReview, isEditReview } = storeReview()
+
+  useEffect(() => {
+    if (!isEditReview) return
+    if (isEditReview) {
+      setRating(previousMyReview.star_rating)
+      setReviewInputValue(previousMyReview.content)
+    }
+  }, [isEditReview, previousMyReview])
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -29,8 +42,11 @@ const ReviewModal = () => {
           <h3 className="text-[16px] font-medium">{studyGroup.name}</h3>
           <p className="text-sm font-normal text-gray-500">{period}</p>
         </div>
-        <ReviewRating />
-        <ReviewText />
+        <ReviewRating rating={rating} setRating={setRating} />
+        <ReviewText
+          inputValue={reviewInputValue}
+          setInputValue={setReviewInputValue}
+        />
       </main>
       <footer className="flex w-full justify-between gap-2.5 p-6 pt-0">
         <BasicButton

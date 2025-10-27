@@ -15,9 +15,6 @@ export type StudyGroup = {
   status: 'PENDING' | 'ONGOING' | 'ENDED'
   current_headcount: number
   is_leader: boolean
-  review_count: number
-  star_rating_avr: number
-  is_reviewed: boolean
 }
 
 export interface StudyGroupForm {

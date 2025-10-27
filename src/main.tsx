@@ -35,7 +35,12 @@ const router = createBrowserRouter([
         Component: BasicModal,
         children: [
           {
-            path: '/modal/review_posting',
+            path: '/modal/post_review/:id',
+            loader: () => {},
+            Component: ReviewPostingModal,
+          },
+          {
+            path: '/modal/edit_review/:id',
             loader: () => {},
             Component: ReviewPostingModal,
           },

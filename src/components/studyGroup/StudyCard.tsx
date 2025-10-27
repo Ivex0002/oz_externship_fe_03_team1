@@ -3,9 +3,11 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import type { StudyGroup } from '@/types/StudyGroupTypes'
 import RatedStar from '../basicComponents/ratedStar/RatedStar'
 import dayjs from '@/lib/dayjs'
+import { useModal } from '@/hooks/useModal'
 
 // StudyCard 컴포넌트
 const StudyCard = ({ study }: { study: StudyGroup }) => {
+  const { openModal } = useModal()
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
   const period = `${startDate} ~ ${endDate}`
@@ -70,15 +72,14 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">
           <div className="mb-2 flex w-full justify-between">
             {/* 별점 표시 */}
-            <div className="flex items-center font-medium text-gray-700">
+            <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
-              <RatedStar rating={study.star_rating_avr} />
-              <span className="ml-1 text-xs text-gray-500">
-                {study.star_rating_avr}
-              </span>
-              <span className="ml-1 text-xs text-gray-500">
-                {`(${study.review_count})`}
-              </span>
+              <div className="flex items-center gap-1">
+                <RatedStar rating={study.star_rating_avr} />
+                <span className="flex items-center text-xs text-gray-500">
+                  {study.star_rating_avr} {`(${study.review_count})`}
+                </span>
+              </div>
             </div>
 
             <span className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline">
@@ -90,6 +91,11 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
           <BasicButton
             type={study.is_reviewed ? 'secondary' : 'primary'}
             size="small"
+            onClick={() =>
+              study.is_reviewed
+                ? openModal(`/modal/edit_review/${study.id}`, '리뷰 수정')
+                : openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
+            }
           >
             {study.is_reviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
           </BasicButton>

@@ -4,21 +4,17 @@ import ReviewRating from './ReviewRating'
 import ReviewText from './ReviewText'
 import { useModal } from '@/hooks/useModal'
 import { studyGroup } from '@/assets/dummyData/studyGroup'
+import dayjs from '@/lib/dayjs'
 // import { useLoaderData } from 'react-router'
 
-const ReviewPostingModal = () => {
+const ReviewModal = () => {
   //loader 설정시 아래 코드로 변경
   // const studyGroup = useLoaderData<StudyGroup>()
 
-  const start = new Date(studyGroup.start_at)
-  const startYear = start.getFullYear()
-  const startMonth = start.getMonth() + 1
-  const startDate = start.getDate()
+  const startDate = dayjs(studyGroup.start_at).format('LL')
+  const endDate = dayjs(studyGroup.end_at).format('LL')
+  const period = `${startDate} ~ ${endDate}`
 
-  const end = new Date(studyGroup.end_at)
-  const endYear = end.getFullYear()
-  const endMonth = end.getMonth() + 1
-  const endDate = end.getDate()
   const { closeModal } = useModal()
 
   const handleClickCancel = (e: React.MouseEvent) => {
@@ -31,10 +27,7 @@ const ReviewPostingModal = () => {
       <main className="p-6">
         <div className="flex flex-col gap-3">
           <h3 className="text-[16px] font-medium">{studyGroup.name}</h3>
-          <p className="text-sm font-normal text-gray-500">
-            {startYear}년 {startMonth}월 {startDate}일 ~ {endYear}년 {endMonth}
-            월 {endDate}일
-          </p>
+          <p className="text-sm font-normal text-gray-500">{period}</p>
         </div>
         <ReviewRating />
         <ReviewText />
@@ -56,4 +49,4 @@ const ReviewPostingModal = () => {
   )
 }
 
-export default ReviewPostingModal
+export default ReviewModal

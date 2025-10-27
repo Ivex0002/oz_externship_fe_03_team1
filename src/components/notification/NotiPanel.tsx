@@ -1,7 +1,8 @@
 import { storeNotification, type filterKey } from '@/store/storeNotification'
-import { useEffect, useMemo, useRef } from 'react'
+import { useMemo, useRef } from 'react'
 import { createIconNode, NOTIFICATION_STYLE } from './NotiCreateIcon'
 import { AnimatePresence, motion } from 'framer-motion'
+import { usePanelClose } from '@/hooks/usePanelClose'
 
 // TODO
 // 1. store : 초기값 api 요청 로직 작성
@@ -13,41 +14,14 @@ export function NotiPanel({
   buttonRef: React.RefObject<HTMLButtonElement | null>
 }) {
   const { isNotiPanelOpen, setIsNotiPanelOpen } = storeNotification()
-  const setIsNotiPanelOpenRef = useRef(setIsNotiPanelOpen)
   const NotiPanelRef = useRef<HTMLDivElement>(null)
 
-  // 패널 외부 클릭시, esc 입력시 패널 닫기
-  useEffect(() => {
-    const handleClickOutside = (e: MouseEvent) => {
-      const target = e.target as Node
-      if (
-        NotiPanelRef.current &&
-        !NotiPanelRef.current.contains(target) &&
-        // 알림 버튼이 입력받는 경우는 제외
-        buttonRef?.current &&
-        !buttonRef.current.contains(target)
-      )
-        setIsNotiPanelOpenRef.current(false)
-    }
-
-    const handleEscapeKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        setIsNotiPanelOpenRef.current(false)
-      }
-    }
-
-    if (isNotiPanelOpen) {
-      document.addEventListener('mousedown', handleClickOutside)
-      document.addEventListener('keydown', handleEscapeKey)
-    }
-
-    return () => {
-      document.removeEventListener('mousedown', handleClickOutside)
-      document.removeEventListener('keydown', handleEscapeKey)
-    }
-    // ref 참조중 : 의존성 배열에 넣을 필요 x
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isNotiPanelOpen])
+  usePanelClose({
+    isOpen: isNotiPanelOpen,
+    setIsOpen: setIsNotiPanelOpen,
+    panelRef: NotiPanelRef,
+    buttonRef,
+  })
 
   return (
     <AnimatePresence mode="wait">
@@ -59,16 +33,16 @@ export function NotiPanel({
         ref={NotiPanelRef}
         className="absolute top-10 right-20 h-[475px] w-[384px] rounded-2xl border border-gray-200 bg-white shadow-md"
       >
-        <Header />
-        <Tabs />
-        <ItemList />
+        <NotiHeader />
+        <NotiTabs />
+        <NotiItemList />
         <div className="h-[45px] w-full border-t border-gray-200 p-3 pt-[13px]"></div>
       </motion.div>
     </AnimatePresence>
   )
 }
 
-function Header() {
+function NotiHeader() {
   const { markAllAsRead } = storeNotification()
   const handleClick = () => {
     // TODO : 모두 읽음 처리 로직
@@ -88,7 +62,7 @@ function Header() {
   )
 }
 
-function Tabs() {
+function NotiTabs() {
   const { notiArr, unreadCount, readCount, currentFilter, filterNoti } =
     storeNotification()
 
@@ -136,7 +110,7 @@ function Tabs() {
   )
 }
 
-function ItemList() {
+function NotiItemList() {
   const { filtered } = storeNotification()
 
   // TODO : 해당 알림 링크로 이동하는 로직 필요

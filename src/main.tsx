@@ -15,12 +15,17 @@ import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal
 import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoosingModal'
 import ScheduleModal from './components/modal/schedule/ScheduleModal'
 import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
+import StudyGroup from './pages/StudyGroup'
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: App,
     children: [
+      {
+        path: '/',
+        Component: StudyGroup,
+      },
       {
         path: '/testModal',
         Component: TestModal,

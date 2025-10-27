@@ -6,12 +6,12 @@ import dayjs from '@/lib/dayjs'
 
 // StudyCard 컴포넌트
 const StudyCard = ({ study }: { study: StudyGroup }) => {
-  const startDate = dayjs(study.start_at).format('YYYY.MM.DD')
-  const endDate = dayjs(study.end_at).format('YYYY.MM.DD')
+  const startDate = dayjs(study.start_at).format('LL')
+  const endDate = dayjs(study.end_at).format('LL')
   const period = `${startDate} ~ ${endDate}`
 
   return (
-    <div className="relative flex min-h-[360px] flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+    <div className="flex min-h-[360px] w-96 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
       {/* 이미지 섹션 */}
       <div className="relative">
         <img
@@ -26,7 +26,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
             study.status === 'ONGOING' ? 'bg-green-500' : 'bg-gray-400'
           }`}
         >
-          {study.status}
+          {study.status === 'ONGOING' ? '진행중' : '완료'}
         </span>
 
         {/* 리더 표시 - 우측 상단 */}
@@ -70,9 +70,12 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">
           <div className="mb-2 flex w-full justify-between">
             {/* 별점 표시 */}
-            <div className="flex items-center">
+            <div className="flex items-center font-medium text-gray-700">
+              스터디 리뷰
               <RatedStar rating={study.star_rating_avr} />
-
+              <span className="ml-1 text-xs text-gray-500">
+                {study.star_rating_avr}
+              </span>
               <span className="ml-1 text-xs text-gray-500">
                 {`(${study.review_count})`}
               </span>
@@ -84,8 +87,11 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
           </div>
 
           {/* 버튼이 카드 하단 전체를 꽉 채움 */}
-          <BasicButton type="primary" size="small">
-            리뷰작성
+          <BasicButton
+            type={study.is_reviewed ? 'secondary' : 'primary'}
+            size="small"
+          >
+            {study.is_reviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
           </BasicButton>
         </div>
       ) : (

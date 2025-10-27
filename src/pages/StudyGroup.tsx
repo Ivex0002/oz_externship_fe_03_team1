@@ -2,7 +2,7 @@ import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import React, { useState } from 'react'
-import type { StudyGroup } from '@/types/StudyGroupTypes'
+import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 import StudyCard from '@/components/studyGroup/StudyCard'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 
@@ -18,7 +18,7 @@ const SearchBar: React.FC = () => (
   </div>
 )
 
-const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
+const StudySection: React.FC<{ title: string; studies: StudyGroupType[] }> = ({
   title,
   studies,
 }) => {
@@ -88,7 +88,7 @@ const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
   )
 }
 
-const StudyGroup: React.FC = () => {
+const StudyGroup = () => {
   const ongoingStudyGroupList = studyGroupList.filter(
     (study) => study.status === 'ONGOING'
   )

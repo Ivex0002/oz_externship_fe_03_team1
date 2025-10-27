@@ -26,6 +26,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-76.png',
     star_rating_avr: 4.5,
     review_count: 12,
+    is_reviewed: false,
   },
   {
     id: 2,
@@ -51,6 +52,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-136.png',
     star_rating_avr: 4.8,
     review_count: 20,
+    is_reviewed: false,
   },
   {
     id: 3,
@@ -76,6 +78,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-206.png',
     star_rating_avr: 4.2,
     review_count: 15,
+    is_reviewed: false,
   },
   {
     id: 4,
@@ -101,6 +104,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-287.png',
     star_rating_avr: 4.7,
     review_count: 18,
+    is_reviewed: false,
   },
   {
     id: 5,
@@ -126,6 +130,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-363.png',
     star_rating_avr: 4.3,
     review_count: 10,
+    is_reviewed: false,
   },
 
   {
@@ -152,6 +157,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '/images/node-study.jpg',
     star_rating_avr: 4.6,
     review_count: 14,
+    is_reviewed: false,
   },
   {
     id: 7,
@@ -177,6 +183,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '/images/vue-study.jpg',
     star_rating_avr: 4.4,
     review_count: 11,
+    is_reviewed: true,
   },
   {
     id: 8,
@@ -202,5 +209,6 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '/images/ts-study.jpg',
     star_rating_avr: 4.9,
     review_count: 22,
+    is_reviewed: false,
   },
 ]

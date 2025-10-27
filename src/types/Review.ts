@@ -1,13 +1,14 @@
 export type Review = {
-  id: number
-  rating: number
-  reviewText: string
-  updated_at: string
-  isMine: boolean
+  id?: number
+  star_rating: number
+  content: string
+  updated_at?: string
+  user?: { id: number; nickname: string }
 }
 
 export type ReviewDetailList = {
-  averageRating: number
-  totalReview: number
-  reviews: Review[]
+  count: number
+  next: string | null
+  previous: string | null
+  results: Review[]
 }

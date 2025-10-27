@@ -8,7 +8,7 @@ import TestG from './test/TestG'
 import TestH from './test/TestH'
 import TestY from './test/TestY'
 import BasicModal from './components/basicComponents/basicModal/BasicModal'
-import ReviewPostingModal from './components/modal/reviewPosting/ReviewPostingModal'
+import ReviewModal from './components/modal/review/ReviewModal'
 import DatePickerModal from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
@@ -35,14 +35,14 @@ const router = createBrowserRouter([
         Component: BasicModal,
         children: [
           {
-            path: '/modal/post_review/:id',
+            path: '/modal/post_review/:studyGroupId',
             loader: () => {},
-            Component: ReviewPostingModal,
+            Component: ReviewModal,
           },
           {
-            path: '/modal/edit_review/:id',
+            path: '/modal/edit_review/:studyGroupId/:reviewId',
             loader: () => {},
-            Component: ReviewPostingModal,
+            Component: ReviewModal,
           },
           {
             path: '/modal/review_detail',

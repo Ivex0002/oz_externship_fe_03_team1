@@ -158,7 +158,7 @@ function joinPath(...segments: string[]): string {
 }
 
 /**
- * 경로 안전하게 파싱(/)
+ * 중복 슬래시 제거
  */
 function normalizeUrl(path: string): string {
   if (!path) return '/'

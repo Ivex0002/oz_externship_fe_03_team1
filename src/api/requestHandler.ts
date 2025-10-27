@@ -3,7 +3,14 @@ import { BASE_URL } from './api'
 
 const client = axios.create({
   baseURL: BASE_URL,
+  withCredentials: true,
 })
+
+// id, 검색어, 페이지 옵션 등등 지원용 옵션 타입
+export interface RequestConfig<Req> {
+  params?: Record<string, unknown>
+  data?: Req
+}
 
 /**
  * api 요청 메서드
@@ -12,12 +19,13 @@ const client = axios.create({
 export async function requestHandler<Req = void, Res = unknown>(
   url: string,
   method: Method,
-  data?: Req
+  config?: RequestConfig<Req>
 ): Promise<Res> {
-  const res: AxiosResponse<Res> = await client.request({
+  const res: AxiosResponse<Res> = await client.request<Res>({
     url,
     method,
-    ...(data !== undefined && { data }),
+    ...config,
   })
+
   return res.data
 }

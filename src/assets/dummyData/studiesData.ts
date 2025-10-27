@@ -1,7 +1,7 @@
 import type { StudyGroup } from '@/types/StudyGroupTypes'
 
 // 진행중 스터디
-export const studiesOngoing: StudyGroup[] = [
+export const studyGroupList: StudyGroup[] = [
   {
     id: 1,
     name: 'React 실무 프로젝트 스터디',
@@ -24,6 +24,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '../images/IMG-76.png',
+    star_rating_avr: 4.5,
+    review_count: 12,
   },
   {
     id: 2,
@@ -47,6 +49,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '../images/IMG-136.png',
+    star_rating_avr: 4.8,
+    review_count: 20,
   },
   {
     id: 3,
@@ -70,6 +74,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '../images/IMG-206.png',
+    star_rating_avr: 4.2,
+    review_count: 15,
   },
   {
     id: 4,
@@ -93,6 +99,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '../images/IMG-287.png',
+    star_rating_avr: 4.7,
+    review_count: 18,
   },
   {
     id: 5,
@@ -116,6 +124,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '../images/IMG-363.png',
+    star_rating_avr: 4.3,
+    review_count: 10,
   },
 
   {
@@ -140,6 +150,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '/images/node-study.jpg',
+    star_rating_avr: 4.6,
+    review_count: 14,
   },
   {
     id: 7,
@@ -163,6 +175,8 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '/images/vue-study.jpg',
+    star_rating_avr: 4.4,
+    review_count: 11,
   },
   {
     id: 8,
@@ -186,5 +200,7 @@ export const studiesOngoing: StudyGroup[] = [
       },
     ],
     profile_img_url: '/images/ts-study.jpg',
+    star_rating_avr: 4.9,
+    review_count: 22,
   },
 ]

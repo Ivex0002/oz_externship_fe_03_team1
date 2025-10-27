@@ -7,7 +7,7 @@ export function ChatSessionsPanel() {
   const { sessions } = storeChat()
   return (
     <>
-      <Header />
+      <ChatSessionHeader />
 
       {/* sessions 개수에 따른 분기처리 필요 */}
       <div className="transparent-scrollbar h-[309px] w-full">
@@ -16,7 +16,7 @@ export function ChatSessionsPanel() {
     </>
   )
 }
-function Header() {
+function ChatSessionHeader() {
   const { totalUnreadCount, setIsPanelOpen } = storeChat()
   const handlePanelClose = () => {
     setIsPanelOpen(false)

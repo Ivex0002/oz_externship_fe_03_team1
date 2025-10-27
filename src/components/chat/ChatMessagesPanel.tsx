@@ -22,15 +22,15 @@ export function ChatMessagesPanel() {
   }, [currentSession])
   return (
     <>
-      <Header />
-      <Members />
-      <Messages />
-      <Input />
+      <ChatHeader />
+      <ChatMembers />
+      <ChatMessages />
+      <ChatInput />
     </>
   )
 }
 
-function Header() {
+function ChatHeader() {
   const { currentSession, sessions, togglePanel, setIsPanelOpen } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
 
@@ -86,7 +86,7 @@ function Header() {
   )
 }
 
-function Members() {
+function ChatMembers() {
   const { currentSession, sessions } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
   const membersRef = useRef<HTMLDivElement>(null)
@@ -136,7 +136,7 @@ function Member({ member, isMe }: { member: ChatUser; isMe: boolean }) {
   )
 }
 
-function Messages() {
+function ChatMessages() {
   const { currentSession, messages } = storeChat()
   const messageArr = messages.filter((el) => el.session_id === currentSession)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -199,7 +199,7 @@ function Message({ message }: { message: ChatMessage }) {
   )
 }
 
-function Input() {
+function ChatInput() {
   const { currentSession, addMessage, sessions } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
   const me = session?.member[0]

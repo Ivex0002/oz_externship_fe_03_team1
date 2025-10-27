@@ -33,16 +33,16 @@ export function NotiPanel({
         ref={NotiPanelRef}
         className="absolute top-10 right-20 h-[475px] w-[384px] rounded-2xl border border-gray-200 bg-white shadow-md"
       >
-        <Header />
-        <Tabs />
-        <ItemList />
+        <NotiHeader />
+        <NotiTabs />
+        <NotiItemList />
         <div className="h-[45px] w-full border-t border-gray-200 p-3 pt-[13px]"></div>
       </motion.div>
     </AnimatePresence>
   )
 }
 
-function Header() {
+function NotiHeader() {
   const { markAllAsRead } = storeNotification()
   const handleClick = () => {
     // TODO : 모두 읽음 처리 로직
@@ -62,7 +62,7 @@ function Header() {
   )
 }
 
-function Tabs() {
+function NotiTabs() {
   const { notiArr, unreadCount, readCount, currentFilter, filterNoti } =
     storeNotification()
 
@@ -110,7 +110,7 @@ function Tabs() {
   )
 }
 
-function ItemList() {
+function NotiItemList() {
   const { filtered } = storeNotification()
 
   // TODO : 해당 알림 링크로 이동하는 로직 필요

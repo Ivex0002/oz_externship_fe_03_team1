@@ -4,7 +4,6 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 
 const StudyGroupDetail = () => {
   const [isLeader, setIsLeader] = useState(false);
-
   const [_hoveredMember, setHoveredMember] = useState<string | null>(null);
   const [showTooltip, setShowTooltip] = useState<string | null>(null);
 
@@ -75,16 +74,16 @@ const StudyGroupDetail = () => {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <div className="max-w-7xl mx-auto px-6">
+      <div className="pt-[60.5px] max-w-7xl mx-auto px-6">
 
         {/* 스터디 배너 섹션 */}
-        <div className="relative mb-6 rounded-2xl overflow-hidden">
+        <div className="relative mb-6 rounded-lg overflow-hidden mt-[36.5px] ">
           <img
             src="https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop"
             alt="Study Banner"
-            className="w-full h-64 object-cover"
+            className="w-full h-[598px] object-cover"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-lg"></div>
           <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
             <h1 className="text-3xl font-bold mb-2">{studyInfo.title}</h1>
             <div className="flex items-center gap-3 text-sm text-gray-100 mb-2">
@@ -97,7 +96,7 @@ const StudyGroupDetail = () => {
           </div>
 
           {/* 리더 / 일반 버튼 */}
-          <div className="absolute top-4 right-4 flex gap-2">
+          <div className="absolute top-[25px] right-[24px] flex gap-2">
             {isLeader && (
               <button className="px-4 py-2 bg-white/90 text-gray-900 rounded-lg hover:bg-gray-300 font-medium text-sm backdrop-blur flex items-center gap-2">
                 <img src="/pen.svg" alt="edit" className="w-4 h-4" />
@@ -139,72 +138,65 @@ const StudyGroupDetail = () => {
               </div>
 
               {/* 달력 */}
-              <div className="mb-4 overflow-x-auto">
-                {/* 달력 헤더 */}
-                <div className="flex items-center justify-center mb-6">
-                  <h3 className="text-lg font-bold text-gray-900">2024년 2월</h3>
-                </div>
+<div className="mb-4 overflow-hidden">
+  <div className="flex items-center justify-center mb-6">
+    <h3 className="text-lg font-bold text-gray-900">2024년 2월</h3>
+  </div>
 
-                {/* 요일 행 */}
-                <div className="grid grid-cols-7 border border-gray-200 rounded-t-lg overflow-hidden min-w-[600px]">
-                  {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
-                    <div
-                      key={`weekday-${idx}`}
-                      className="flex items-center justify-center text-sm font-semibold text-gray-900 bg-gray-50 border-r border-gray-200 last:border-r-0 h-11"
-                    >
-                      {day}
-                    </div>
-                  ))}
-                </div>
+  <div className="grid grid-cols-7 border border-gray-200 rounded-t-lg overflow-hidden min-w-[600px]">
+    {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
+      <div
+        key={`weekday-${idx}`}
+        className="flex items-center justify-center text-sm font-semibold text-gray-900 bg-gray-50 border-r border-gray-200 last:border-r-0 h-11"
+      >
+        {day}
+      </div>
+    ))}
+  </div>
 
-                {/* 달력 본체 */}
                 <div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
-                  {generateCalendar().map((week, weekIdx) =>
-                    week.map((day, dayIdx) => {
-                      const scheduleEvent = day
-                        ? scheduleEvents.find((event) => event.date === day)
-                        : null;
+    {generateCalendar().map((week, weekIdx) =>
+      week.map((day, dayIdx) => {
+        const scheduleEvent = day
+          ? scheduleEvents.find((event) => event.date === day)
+          : null;
 
-                      return (
-                        <div
-                          key={`${weekIdx}-${dayIdx}`}
-                          className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
-                        >
-                          {day ? (
-                            <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
-                              {/* 일자 */}
-                              <div className="text-xs font-bold text-gray-900 pb-2">
-                                {day}
-                              </div>
+        return (
+          <div
+            key={`${weekIdx}-${dayIdx}`}
+            className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
+          >
+            {day ? (
+              <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
+                <div className="text-xs font-bold text-gray-900 pb-2">{day}</div>
 
-                              {/* 일일 일정 정보 */}
-                              {scheduleEvent && (
-                                <div className={`${scheduleEvent.color} rounded p-1`}>
-                                  <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
-                                    {scheduleEvent.title}
-                                  </h4>
-                                  <p className="text-[10px] text-primary-800/75 leading-tight">
-                                    {scheduleEvent.time}
-                                  </p>
-                                </div>
-                              )}
-                            </div>
-                          ) : (
-                            <div className="h-full bg-gray-50"></div>
-                          )}
-                        </div>
-                      );
-                    })
-                  )}
-                </div>
+                {scheduleEvent && (
+                  <div className={`${scheduleEvent.color} rounded p-1`}>
+                    <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
+                      {scheduleEvent.title}
+                    </h4>
+                    <p className="text-[10px] text-primary-800/75 leading-tight">
+                      {scheduleEvent.time}
+                    </p>
+                  </div>
+                )}
               </div>
+            ) : (
+              <div className="h-full bg-gray-50"></div>
+            )}
+          </div>
+        );
+      })
+    )}
+  </div>
+</div>
             </div>
 
             {/* 스터디 기록 */}
             <div className="rounded-xl border border-gray-100 bg-white p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">스터디 기록</h2>
-                <button className="px-4 py-2 bg-yellow-400 text-white rounded-lg hover:bg-yellow-500 font-medium text-sm flex items-center gap-2">
+                <button className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-900 font-medium text-sm flex items-center gap-2">
                   <img src="/pen.svg" alt="write" className="w-4 h-4 filter invert brightness-0" />
                   작성하기
                 </button>
@@ -212,15 +204,15 @@ const StudyGroupDetail = () => {
 
               <div className="space-y-3">
                 {posts.map((post, idx) => (
-                  <div key={idx} className="border border-gray-200 rounded-xl hover:border-yellow-400 hover:bg-yellow-50/40 cursor-pointer transition-all group">
+                  <div key={idx} className="border border-gray-200 rounded-xl hover:border-primary-400 hover:bg-primary-50/40 cursor-pointer transition-all group">
                     <div className="p-4 flex items-center justify-between">
-                      <h3 className="font-bold text-gray-900 text-sm group-hover:text-yellow-700">{post.title}</h3>
-                      <span className="text-xs text-gray-400 font-medium">{post.date} {post.time}</span>
+                      <h3 className="font-bold text-gray-900 text-sm group-hover:text-primary-700">{post.title}</h3>
+                      <span className="text-xs text-gray-500 font-medium">{post.date} {post.time}</span>
                     </div>
                     <div className="px-4 pb-4 flex items-center gap-3">
                       <img src="/member.svg" alt={post.author} className="w-11 h-11 rounded-full object-cover" />
                       <div className="flex-1">
-                        <p className="text-xs text-gray-500">{post.author}</p>
+                        <p className="text-xs text-gray-700 font-bold">{post.author}</p>
                         <div className="flex items-center gap-1 text-gray-400 text-xs mt-1">
                           <img src="/klip.svg" alt="attachment" className="w-4 h-4 opacity-80" />
                           첨부파일 {post.attachments}개
@@ -234,7 +226,7 @@ const StudyGroupDetail = () => {
           </div>
 
           {/* 스터디 정보 + 강의 + 멤버 */}
-          <div className="space-y-6">
+          <div className="space-y-6 hidden lg:block">
 
             {/* 스터디 정보 */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
@@ -262,28 +254,46 @@ const StudyGroupDetail = () => {
             </div>
 
             {/* 스터디 강의 */}
-            <div className="bg-white rounded-2xl p-6 border border-gray-100">
-              <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
-              <div className="space-y-4">
-                {upcomingStudies.map((study, idx) => (
-                  <div key={idx} className="bg-gradient-to-br from-blue-50 rounded-xl border border-blue-200 hover:border-blue-300 transition-all overflow-hidden">
-                    <img src="/member.svg" alt={study.instructor} className="w-full h-32 object-cover " />
-                    <div className="p-4">
-                      <h3 className="font-bold text-sm mb-2 text-gray-900">{study.title}</h3>
-                      <p className="text-xs text-gray-600 mb-3 font-medium">{study.instructor}</p>
-                      <button className="py-1 hover:text-primary-500 text-primary-600 font-semibold flex items-center gap-2 text-xs group">
-                        강의 바로가기
-                        <img 
-                          src="/move.svg" 
-                          alt="move" 
-                          className="w-4 h-4 group-hover:opacity-70 text-primary-600"
-                        />
-                      </button>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
+<div className="bg-white rounded-2xl p-6 border border-gray-100">
+  <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
+
+  <div className="space-y-6">
+    {upcomingStudies.map((study, idx) => (
+      <div
+        key={idx}
+        className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all bg-white"
+      >
+        {/* 강의 이미지 */}
+        <div className="relative w-full">
+          <img
+            src="/React.svg"
+            alt={study.title}
+            className="w-full object-cover"
+            style={{ aspectRatio: '16/9' }}
+          />
+        </div>
+
+        {/* 강의 정보 */}
+        <div className="p-4">
+          <h3 className="font-semibold text-gray-900 text-base mb-1">
+            {study.title}
+          </h3>
+          <p className="text-sm text-gray-600 mb-3">{study.instructor}</p>
+
+          <button className="text-yellow-600 hover:text-yellow-700 font-semibold text-sm flex items-center gap-1 group">
+            강의 바로가기
+            <img
+              src="/move.svg"
+              alt="move"
+              className="w-4 h-4 group-hover:opacity-70"
+            />
+          </button>
+        </div>
+      </div>
+    ))}
+  </div>
+</div>
+
 
             {/* 멤버 목록 */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
@@ -293,7 +303,10 @@ const StudyGroupDetail = () => {
               </div>
               <div className="space-y-3">
                 {studyInfo.members.map((member, idx) => (
-                  <div key={idx} className="group relative flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg transition-colors">
+                  <div 
+                    key={idx} 
+                    className="group relative flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg transition-colors"
+                  >
                     <div className="flex items-center gap-3">
                       <img 
                         src="/member.svg" 
@@ -304,7 +317,7 @@ const StudyGroupDetail = () => {
                         <div className="flex items-center gap-2">
                           <span className="font-bold text-gray-900 text-sm">{member.name}</span>
                           {member.role === 'leader' && (
-                            <span className="px-2 py-0.5 bg-yellow-100 text-yellow-700 rounded text-xs font-bold">
+                            <span className="px-2 py-0.5 bg-primary-100 text-primary-700 rounded text-xs font-bold">
                               리더
                             </span>
                           )}
@@ -313,41 +326,37 @@ const StudyGroupDetail = () => {
                       </div>
                     </div>
                     
-                    {/* 리더일 때만 추방 버튼 표시 */}
-                {isLeader && member.role !== 'leader' && (
-                  <div
-                    className="relative"
-                    onMouseEnter={() => {
-                      setHoveredMember(member.name);
-                      const timer = setTimeout(() => {
-                        setShowTooltip(member.name);
-                      }, 500);
-                      return () => clearTimeout(timer);
-                    }}
-                    onMouseLeave={() => {
-                      setHoveredMember(null);
-                      setShowTooltip(null);
-                    }}
-                  >
-                    <BasicButton
-                      type="danger"
-                      size="small"
-                      className="transition-opacity !w-8 !h-8 !rounded-full !bg-danger-100 !text-danger-500"
-                      onClick={() => {
-                        if (window.confirm(`${member.name}님을 추방하시겠습니까?`)) {
-                          console.log(`${member.name} 추방`);
-                        }
-                      }}
-                    >
-                      X
-                    </BasicButton>
-                        
-                        {/* 툴팁 */}
+                    {isLeader && member.role !== 'leader' && (
+                      <div
+                        className="relative opacity-0 group-hover:opacity-100 transition-opacity" 
+                        onMouseEnter={() => {
+                            setHoveredMember(member.name);
+                            const timer = setTimeout(() => {
+                                setShowTooltip(member.name);
+                            }, 1000); 
+                            return () => clearTimeout(timer);
+                        }}
+                        onMouseLeave={() => {
+                            setHoveredMember(null);
+                            setShowTooltip(null);
+                        }}
+                      >
+                        <BasicButton
+                          type="danger"
+                          size="small"
+                          className="!w-6 !h-6 !rounded-full !bg-danger-100 !text-danger-500"
+                          onClick={() => {
+                            if (window.confirm(`${member.name}님을 추방하시겠습니까?`)) {
+                              return
+                            }
+                          }}
+                        >
+                          X
+                        </BasicButton>
                         {showTooltip === member.name && (
-                          <div className="absolute right-0 top-full mt-1 px-3 py-1.5 bg-gray-800 text-white text-xs rounded-lg whitespace-nowrap z-10">
-                            {member.name}님을 추방
-                            <div className="absolute -top-1 right-3 w-2 h-2 bg-gray-800 transform rotate-45"></div>
-                          </div>
+                            <div className="absolute left-6/2 top-full mt-2 -translate-x-1/2 px-3 py-1.5 bg-gray-200 text-gray-600 text-xs rounded-lg whitespace-nowrap z-10">
+                                {member.name}님을 추방
+                            </div>
                         )}
                       </div>
                     )}

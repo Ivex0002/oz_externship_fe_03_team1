@@ -41,7 +41,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview)
-    openModal(`/modal/edit_review/${study.id}`, '리뷰 수정')
+    openModal(`/modal/edit_review/${study.id}/${myReview.id}`, '리뷰 수정')
   }
 
   return (
@@ -123,7 +123,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
           <BasicButton
             type={isReviewed ? 'secondary' : 'primary'}
             size="small"
-            onClick={isReviewed ? handleClickPostReview : handleClickEditReview}
+            onClick={isReviewed ? handleClickEditReview : handleClickPostReview}
           >
             {isReviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
           </BasicButton>

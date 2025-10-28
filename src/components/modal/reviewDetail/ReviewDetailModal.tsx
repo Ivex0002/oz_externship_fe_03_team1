@@ -4,19 +4,41 @@ import ReviewDetailAverage from './ReviewDetailAverage'
 import ReviewDetailCard from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
+import { useModal } from '@/hooks/useModal'
+import { useParams } from 'react-router'
+import { storeReview } from '@/store/storeReview'
 
 const ReviewDetailModal = () => {
+  const { modalToModal } = useModal()
+  const { setPreviousMyReview } = storeReview()
+
+  const params = useParams()
   //loader 설정하면 아래 코드로 변경
   //   const reviewDetailData = useLoaderData<ReviewDetailData>()
-  const reviews = reviewDetailData.results
-  reviews.sort(
+  const reviewList = reviewDetailData.results
+  reviewList.sort(
     (a, b) =>
       new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
   )
 
-  const isPostedReview = reviews.some(
-    (review) => review.user.id === dummyUser.id
-  )
+  const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
+  const isReviewed = !!myReview
+
+  const handleClickPostReview = () => {
+    if (isReviewed) return
+
+    modalToModal(`/modal/post_review/${params.studyGroupId}`, '리뷰 작성')
+  }
+
+  const handleClickEditReview = () => {
+    if (!isReviewed) return
+
+    setPreviousMyReview(myReview)
+    modalToModal(
+      `/modal/edit_review/${params.studyGroupId}/${myReview.id}`,
+      '리뷰 수정'
+    )
+  }
 
   return (
     <div className="w-[672px]">
@@ -26,23 +48,27 @@ const ReviewDetailModal = () => {
           totalReview={reviewDetailData.count}
         />
         <div className="flex flex-col">
-          {reviews.map((review) => (
+          {reviewList.map((review) => (
             <ReviewDetailCard
               key={review.id}
               review={review}
-              isMine={isPostedReview}
+              isMine={isReviewed}
             />
           ))}
         </div>
       </main>
       <footer className="flex justify-center border-t border-gray-200 p-6">
-        {isPostedReview ? (
+        {isReviewed ? (
           <span>
-            <BasicButton size="medium">내 리뷰 수정하기</BasicButton>
+            <BasicButton size="medium" onClick={handleClickEditReview}>
+              내 리뷰 수정하기
+            </BasicButton>
           </span>
         ) : (
           <span>
-            <BasicButton size="medium">내 리뷰 작성하기</BasicButton>
+            <BasicButton size="medium" onClick={handleClickPostReview}>
+              내 리뷰 작성하기
+            </BasicButton>
           </span>
         )}
       </footer>

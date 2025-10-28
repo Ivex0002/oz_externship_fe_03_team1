@@ -45,7 +45,7 @@ const router = createBrowserRouter([
             Component: ReviewModal,
           },
           {
-            path: '/modal/review_detail',
+            path: '/modal/review_detail/:studyGroupId',
             loader: () => {},
             Component: ReviewDetailModal,
           },

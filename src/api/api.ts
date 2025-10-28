@@ -4,8 +4,9 @@ import { ApiClientFactory } from './apiClient'
 import { TokenManager } from './tokenManager'
 import { throwHttpError } from './throwHttpError'
 
-// 추후 실제 서버 주소로 교체
-const BASE_URL = '/api'
+// 추후 실제 주소로 교체
+export const BASE_URL = '/api'
+export const LOGIN_PAGE_URL = '/login'
 const WEB_SOCKET_URL = '/ws'
 
 const tokenManager = new TokenManager()

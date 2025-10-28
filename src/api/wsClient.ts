@@ -1,4 +1,6 @@
+import axios from 'axios'
 import type { TokenStorage } from './tokenManager'
+import { BASE_URL, LOGIN_PAGE_URL } from './api'
 
 export interface WebSocketClientConfig {
   url: string
@@ -12,6 +14,7 @@ export interface WebSocketClientConfig {
 }
 
 // TODO : toast 알림 로직 작성 필요
+// TODO : 실제 로그인 페이지로 연결해야됨
 export class WebSocketClient {
   private ws: WebSocket | null = null
   private url: string
@@ -27,8 +30,15 @@ export class WebSocketClient {
     this.config = config
   }
 
-  public connect(): void {
-    const token = this.tokenStorage.getAccessToken()
+  public async connect(): Promise<void> {
+    let token = this.tokenStorage.getAccessToken()
+
+    // 토큰 없으면 리프레시
+    if (!token) {
+      const success = await this.tryRefreshToken()
+      if (!success) return
+      token = this.tokenStorage.getAccessToken()
+    }
 
     const wsUrl = token ? `${this.url}?token=${token}` : this.url
 
@@ -53,9 +63,20 @@ export class WebSocketClient {
       }
     }
 
-    this.ws.onclose = (event) => {
+    this.ws.onclose = async (event) => {
       if (this.config.onClose) {
         this.config.onClose(event)
+      }
+
+      // 토큰 만료 감지 (서버에서 code 401로 보낸다고 가정)
+      // TODO:실제 서버 코드로 변경 해야함
+      if (event.code === 401) {
+        const success = await this.tryRefreshToken()
+        if (success) {
+          this.connect() // 성공 시 재연결
+          return
+        }
+        return
       }
 
       if (
@@ -73,6 +94,36 @@ export class WebSocketClient {
           this.connect()
         }, interval)
       }
+    }
+  }
+
+  private async tryRefreshToken(): Promise<boolean> {
+    try {
+      const newToken = await this.refreshAccessToken()
+      if (newToken) {
+        this.tokenStorage.setAccessToken(newToken)
+        return true
+      }
+      throw new Error('Refresh failed')
+    } catch {
+      this.tokenStorage.clearTokens()
+      window.location.href = LOGIN_PAGE_URL
+      return false
+    }
+  }
+
+  private async refreshAccessToken(): Promise<string | null> {
+    try {
+      const refreshClient = axios.create({
+        baseURL: BASE_URL,
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const res = await refreshClient.post('/api/v1/auth/refresh')
+      if (res.data?.accessToken) return res.data.accessToken
+      return null
+    } catch {
+      return null
     }
   }
 
@@ -97,6 +148,13 @@ export class WebSocketClient {
     }
   }
 
+  /**
+   * 0: CONNECTING
+   * 1: OPEN
+   * 2: CLOSING
+   * 3: CLOSED
+   * null: 아직 생성되지 않음
+   */
   public getReadyState(): number | null {
     return this.ws ? this.ws.readyState : null
   }

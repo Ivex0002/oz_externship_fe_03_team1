@@ -11,6 +11,7 @@ import type {
   RequestExecutor,
   RetryableRequestConfig,
 } from '@/types/ApiTree'
+import { LOGIN_PAGE_URL } from './api'
 
 interface HttpClientConfig {
   baseURL: string
@@ -83,7 +84,7 @@ export class HttpClient {
             // 리프래쉬 에러가 있다면 에러 핸들러로 던지기
             if (this.onError) await this.onError(refreshError as AxiosError)
             this.tokenStorage.clearTokens()
-            window.location.href = '/login' // 실제 로그인 주소로 변경 해야됨
+            window.location.href = LOGIN_PAGE_URL
           }
         }
 

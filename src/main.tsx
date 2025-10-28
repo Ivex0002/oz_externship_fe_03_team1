@@ -16,6 +16,7 @@ import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoo
 import ScheduleModal from './components/modal/schedule/ScheduleModal'
 import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
 import StudyGroup from './pages/StudyGroup'
+import CreateStudyGroup from './pages/study-groups/CreateStudyGroup'
 
 const router = createBrowserRouter([
   {
@@ -25,6 +26,10 @@ const router = createBrowserRouter([
       {
         path: '/',
         Component: StudyGroup,
+      },
+      {
+        path: '/create_study_group',
+        Component: CreateStudyGroup,
       },
       {
         path: '/testModal',

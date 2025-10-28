@@ -51,7 +51,7 @@ export default function CreateStudyGroup() {
   const handleBack = () => window.history.back()
 
   return (
-    <div className="relative min-h-screen bg-[#FAFAFA] py-10">
+    <div className="relative min-h-screen w-full bg-[#FAFAFA] py-10">
       <div className="mx-auto mb-8 flex h-[96px] w-[832px] items-center gap-[16px]">
         <button
           onClick={handleBack}

@@ -14,7 +14,10 @@ export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(`/modal/date_picker?target=${type}`, '날짜 선택')
+    openModal(
+      `/modal/date_picker?target=${type}`,
+      type === 'start' ? '스터디 시작일 선택' : '스터디 종료일 선택'
+    )
   }
 
   useEffect(() => {

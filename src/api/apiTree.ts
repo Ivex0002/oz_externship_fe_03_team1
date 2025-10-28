@@ -118,8 +118,8 @@ type DynamicFn = (...args: (string | number)[]) => object
  */
 export function createApiTree<T extends object, P extends string = ''>(
   schema: T, // 경로 객체
-  pathPrefix: P = '' as P, // 경로 누적 저장용
-  requestFn: RequestExecutor // 요청 로직
+  requestFn: RequestExecutor, // 요청 로직
+  pathPrefix: P = '' as P // 경로 누적 저장용
 ): ApiTree<T> {
   return new Proxy({} as object, {
     get(_target, prop: string | symbol) {
@@ -143,7 +143,7 @@ export function createApiTree<T extends object, P extends string = ''>(
         throw new Error(`Expected object at path: ${nextPath}`)
       }
 
-      return createApiTree(nextNode as object, nextPath, requestFn)
+      return createApiTree(nextNode as object, requestFn, nextPath)
     },
   }) as ApiTree<T>
 }
@@ -160,7 +160,7 @@ function onMiddlePram<T extends object, P extends string = ''>(
   const dynamicHandler = (...args: (string | number)[]) => {
     const subPath = joinPath(pathPrefix, ...args.map(String))
     const subSchema = (value as DynamicFn)(...args)
-    return createApiTree(subSchema, subPath, requestFn)
+    return createApiTree(subSchema, requestFn, subPath)
   }
 
   return dynamicHandler

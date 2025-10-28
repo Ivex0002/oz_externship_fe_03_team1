@@ -1,3 +1,4 @@
+import type { RequestConfig } from '@/api/requestHandler'
 import type { Method } from 'axios'
 
 // 반드시 대문자로 Http메서드를 적도록 명시(가독성)
@@ -5,9 +6,9 @@ export type HttpMethod = Uppercase<Method>
 
 // HttpMethod 일때 req 유무에 따른 분기처리
 type ApiMethod<M> = M extends { res: infer R; req: infer Q }
-  ? (payload: Q) => Promise<R>
+  ? (payload: Q | RequestConfig<Q>) => Promise<R>
   : M extends { res: infer R }
-    ? () => Promise<R>
+    ? (config?: Omit<RequestConfig<never>, 'data'>) => Promise<R>
     : never
 
 // src\api\apiTree.ts 타입 지정용

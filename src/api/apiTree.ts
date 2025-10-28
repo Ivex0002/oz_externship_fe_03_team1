@@ -1,6 +1,10 @@
-import type { ApiTree, HttpMethod } from '@/types/ApiTree'
+import type {
+  ApiTree,
+  HttpMethod,
+  RequestConfig,
+  RequestExecutor,
+} from '@/types/ApiTree'
 import type { Method } from 'axios'
-import { type RequestConfig } from './requestHandler'
 
 /**
  * 런타임에서 HTTP 메서드를 구분하기 위한 상수.
@@ -69,16 +73,6 @@ const CONFIG_KEYS = [
   'fetchOptions',
 ]
 const CONFIG_KEYS_SET = new Set<string>(CONFIG_KEYS)
-
-/**
- * API 요청을 수행하는 함수 시그니처.
- * - createApiTree에 주입되어 모든 요청이 이를 통해 수행됨.
- */
-type RequestExecutor = <Req, Res>(
-  url: string,
-  method: Method,
-  config?: RequestConfig<Req>
-) => Promise<Res>
 
 /**
  * 스키마 타입에서 req/res 타입을 추출.

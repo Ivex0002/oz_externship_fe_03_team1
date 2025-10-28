@@ -1,8 +1,11 @@
 import type { ApiTree, HttpMethod } from '@/types/ApiTree'
 import type { Method } from 'axios'
-import { requestHandler, type RequestConfig } from './requestHandler'
+import { type RequestConfig } from './requestHandler'
 
-// 런타임 체크용 HTTP_METHODS 상수 - 객체 구조에 따른 동적 링크 및 요청 파싱을 위해 필요
+/**
+ * 런타임에서 HTTP 메서드를 구분하기 위한 상수.
+ * - 객체 기반 API 스키마를 파싱할 때 메서드 이름 대문자 변환 후 비교.
+ */
 export const HTTP_METHODS = new Set<HttpMethod>([
   'GET',
   'POST',
@@ -13,10 +16,30 @@ export const HTTP_METHODS = new Set<HttpMethod>([
   'OPTIONS',
 ])
 
-type ExtractMethodType<T> = T extends { res: infer R; req?: infer Q }
-  ? { res: R; req: Q }
+/**
+ * API 요청을 수행하는 함수 시그니처.
+ * - createApiTree에 주입되어 모든 요청이 이를 통해 수행됨.
+ */
+type RequestExecutor = <Req, Res>(
+  url: string,
+  method: Method,
+  config?: RequestConfig<Req>
+) => Promise<Res>
+
+/**
+ * 스키마 타입에서 req/res 타입을 추출.
+ */
+type ExtractMethodType<T> = T extends { res: infer R }
+  ? T extends { req: infer Q }
+    ? { res: R; req: Q }
+    : { res: R }
   : never
 
+/**
+ * API 엔드포인트 호출 시 인자 시그니처를 추론하기 위한 타입.
+ * - req가 없는 경우: config만 받음.
+ * - req가 있는 경우: data 또는 RequestConfig를 받음.
+ */
 type MethodHandler<T> = T extends { res: infer R; req?: infer Q }
   ? Q extends undefined
     ? (config?: Omit<RequestConfig<never>, 'data'>) => Promise<R>
@@ -24,113 +47,131 @@ type MethodHandler<T> = T extends { res: infer R; req?: infer Q }
   : never
 
 /**
- * 객체 타입 구조를 url로 파싱해주는 메서드
+ * 동적 URL 세그먼트용 함수 타입.
+ * ex) user(id).GET() → (...args: (string | number)[]) => object
+ */
+type DynamicFn = (...args: (string | number)[]) => object
+
+/**
+ * createApiTree
+ *
+ * 주어진 API 스키마 객체를 기반으로 Proxy를 생성하여,
+ * 속성 접근 시 경로를 누적하고 요청 메서드 핸들러를 자동 생성한다.
+ *
+ * @param schema - API 구조 객체 (req/res 타입 정의 포함)
+ * @param pathPrefix - 현재까지 누적된 URL 경로
+ * @param requestFn - 실제 HTTP 요청을 수행하는 함수
  */
 export function createApiTree<T extends object, P extends string = ''>(
-  schema: T,
-  pathPrefix: P = '' as P
+  schema: T, // 경로 객체
+  pathPrefix: P = '' as P, // 경로 누적 저장용
+  requestFn: RequestExecutor // 요청 로직
 ): ApiTree<T> {
-  const cache = new Map<string, unknown>()
-
   return new Proxy({} as object, {
     get(_target, prop: string | symbol) {
       const key = String(prop)
 
-      // 캐싱
-      const cacheKey = `${pathPrefix}:${key}`
-      if (cache.has(cacheKey)) {
-        return cache.get(cacheKey)
-      }
-
       const upper = key.toUpperCase()
 
-      //   http 메서드 들어왔을때의 분기처리
+      // http 메서드 들어왔을때의 분기처리
       if (HTTP_METHODS.has(upper as HttpMethod)) {
-        const methodDef = (schema as T & Record<string, unknown>)[upper]
-        if (!methodDef) {
-          throw new Error(`Method ${upper} not defined at ${pathPrefix}`)
-        }
-
-        type MethodType = ExtractMethodType<typeof methodDef>
-
-        type Req = MethodType['req']
-        type Res = MethodType['res']
-
-        /**
-         * HTTP 메서드 핸들러 생성
-         * - payload 없이 호출: api.users.GET()
-         * - body만 전달: api.users.POST(req_body)
-         * - config 전달: api.users.POST({ data: req_body, headers 등: {...} })
-         */
-        const handler = (payload?: Req | RequestConfig<Req>) => {
-          if (payload === undefined) {
-            return requestHandler<Req, Res>(
-              normalizeUrl(pathPrefix),
-              upper as Method
-            )
-          }
-
-          // RequestConfig 여부 판별
-          // - 옵션 포함시: RequestConfig 그대로 전달 (data, params, headers 등 포함)
-          // - 옵션 미포함시(req_body만 제공): payload를 data 속성으로 감싸서 전달
-          const config = isRequestConfig<Req>(payload)
-            ? payload
-            : { data: payload }
-
-          return requestHandler<Req, Res>(
-            normalizeUrl(pathPrefix),
-            upper as Method,
-            config
-          )
-        }
-
-        cache.set(cacheKey, handler)
-        return handler as MethodHandler<typeof methodDef>
+        return onHttpMethod<T, P>(schema, upper, pathPrefix, requestFn)
       }
 
+      // 동적 세그먼트 (ex. users(id))
       const value = (schema as T & Record<string, unknown>)[key as keyof T]
-
-      if (typeof value === 'function') {
-        type DynamicFn = (...args: (string | number)[]) => object
-
-        const dynamicHandler = (...args: (string | number)[]) => {
-          const subPath = joinPath(pathPrefix, ...args.map(String))
-          const subSchema = (value as DynamicFn)(...args)
-          return createApiTree(subSchema, subPath)
-        }
-
-        cache.set(cacheKey, dynamicHandler)
-        return dynamicHandler
+      if (isMiddlePr(value)) {
+        return onMiddlePr<T, P>(pathPrefix, value, requestFn)
       }
 
+      // 하위 경로 객체로 재귀 이동
       const nextPath = joinPath(pathPrefix, key)
-
       const nextNode = value as T[keyof T]
-
       if (typeof nextNode !== 'object' || nextNode === null) {
         throw new Error(`Expected object at path: ${nextPath}`)
       }
 
-      const nextTree = createApiTree(nextNode as object, nextPath)
-      cache.set(cacheKey, nextTree)
-      return nextTree
+      return createApiTree(nextNode as object, nextPath, requestFn)
     },
   }) as ApiTree<T>
 }
 
+/**
+ * 경로 중간에 파라미터(동적 세그먼트)가 포함된 경우 처리.
+ * ex) /users/:id → users(id)
+ */
+function onMiddlePr<T extends object, P extends string = ''>(
+  pathPrefix: P,
+  value: (T & Record<string, unknown>)[keyof T] & DynamicFn,
+  requestFn: RequestExecutor
+) {
+  const dynamicHandler = (...args: (string | number)[]) => {
+    const subPath = joinPath(pathPrefix, ...args.map(String))
+    const subSchema = (value as DynamicFn)(...args)
+    return createApiTree(subSchema, subPath, requestFn)
+  }
+
+  return dynamicHandler
+}
+
+/**
+ * HTTP 메서드(GET/POST 등)가 호출된 경우 요청 인자(payload/config)를 판별하여
+ * requestFn으로 전달.
+ */
+function onHttpMethod<T extends object, P extends string = ''>(
+  schema: T,
+  upper: string,
+  pathPrefix: P,
+  requestFn: RequestExecutor
+) {
+  const methodDef = (schema as T & Record<string, unknown>)[upper]
+  if (!methodDef) {
+    throw new Error(`Method ${upper} not defined at ${pathPrefix}`)
+  }
+
+  type MethodType = ExtractMethodType<typeof methodDef>
+
+  type Req = MethodType['req']
+  type Res = MethodType['res']
+
+  const handler = (payload?: Req | RequestConfig<Req>) => {
+    const config = isRequestConfig<Req>(payload)
+      ? payload
+      : payload
+        ? { data: payload }
+        : undefined
+
+    return requestFn<Req, Res>(
+      normalizeUrl(pathPrefix),
+      upper as Method,
+      config
+    )
+  }
+
+  return handler as MethodHandler<typeof methodDef>
+}
+
+/**
+ * 값이 동적 경로 함수인지 판별.
+ * ex) /users/:id → users(id)
+ */
+function isMiddlePr(value: unknown): value is DynamicFn {
+  return typeof value === 'function'
+}
+
+/**
+ * RequestConfig 형태인지 판별.
+ * - data, params 또는 주요 Axios 설정 키를 포함하면 true.
+ */
 function isRequestConfig<T>(value: unknown): value is RequestConfig<T> {
   if (typeof value !== 'object' || value === null) {
     return false
   }
-
   const obj = value as Record<string, unknown>
 
-  // data나 params가 있으면 RequestConfig로 간주
   if ('data' in obj || 'params' in obj) {
     return true
   }
-
-  // 기타 RequestConfig 특징적 속성들
   const configKeys = [
     'headers',
     'timeout',
@@ -143,13 +184,16 @@ function isRequestConfig<T>(value: unknown): value is RequestConfig<T> {
   return configKeys.some((key) => key in obj)
 }
 
+/**
+ * URL 경로 세그먼트를 안전하게 병합.
+ * - 각 세그먼트의 슬래시를 제거하고 중복된 슬래시 없이 조합.
+ */
 function joinPath(...segments: string[]): string {
   if (segments.length === 0) return ''
 
   const cleaned = segments
     .filter(Boolean)
     .map((segment) => {
-      // 앞뒤 슬래시 제거
       return String(segment).replace(/^\/+|\/+$/g, '')
     })
     .filter(Boolean)
@@ -158,14 +202,11 @@ function joinPath(...segments: string[]): string {
 }
 
 /**
- * 중복 슬래시 제거
+ * URL 경로를 정규화.
+ * - 중복 슬래시 제거 및 항상 `/`로 시작 보장.
  */
 function normalizeUrl(path: string): string {
   if (!path) return '/'
-
-  // 중복 슬래시 제거
   const normalized = path.replace(/\/+/g, '/')
-
-  // 항상 /로 시작하도록
   return normalized.startsWith('/') ? normalized : `/${normalized}`
 }

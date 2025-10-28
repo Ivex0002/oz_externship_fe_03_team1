@@ -9,6 +9,7 @@ import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
 import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
+import { useNavigate } from 'react-router'
 
 export default function CreateStudyGroup() {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -23,6 +24,7 @@ export default function CreateStudyGroup() {
 
   const [isEdit, setIsEdit] = useState(false)
   const { newStartDate, newEndDate, clearDates } = storeStudyGroupDate()
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (window.location.pathname.includes('edit')) {
@@ -57,7 +59,10 @@ export default function CreateStudyGroup() {
     clearDates()
   }
 
-  const handleBack = () => window.history.back()
+  const handleBack = () => {
+    clearDates()
+    navigate('/')
+  }
 
   return (
     <div className="relative min-h-screen w-full bg-[#FAFAFA] py-10">

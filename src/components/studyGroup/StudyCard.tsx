@@ -12,13 +12,11 @@ import { dummyUser } from '@/assets/dummyData/dummyUser'
 // StudyCard 컴포넌트
 const StudyCard = ({ study }: { study: StudyGroup }) => {
   const { openModal } = useModal()
-  const { reviewData, setReviewData, setPreviousMyReview, setIsEditReview } =
-    storeReview()
+  const { reviewData, setReviewData, setPreviousMyReview } = storeReview()
 
   const reviewList = reviewDetailData.results
-  const isReviewed = reviewList.some(
-    (review) => review.user && review.user.id === dummyUser.id
-  )
+  const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
+  const isReviewed = !!myReview
 
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
@@ -34,17 +32,15 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
   }, [study.status, setReviewData])
 
   const handleClickPostReview = () => {
+    if (isReviewed) return
+
     openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
   }
 
   const handleClickEditReview = () => {
-    const myReview = reviewList.find(
-      (review) => review.user.id === dummyUser.id
-    )
-    if (myReview) {
-      setPreviousMyReview(myReview)
-      setIsEditReview(true)
-    }
+    if (!isReviewed) return
+
+    setPreviousMyReview(myReview)
     openModal(`/modal/edit_review/${study.id}`, '리뷰 수정')
   }
 

@@ -38,7 +38,8 @@ export const storeReview = create<StoreReview>((set) => ({
   setReviewData: (reviewData: ReviewDetailData) =>
     set({ reviewData: reviewData }),
 
-  setPreviousMyReview: (review: Review) => set({ previousMyReview: review }),
+  setPreviousMyReview: (review: Review) =>
+    set({ previousMyReview: review, isEditReview: true }),
 
   setNewReview: (review: Review) => set({ newReview: review }),
 

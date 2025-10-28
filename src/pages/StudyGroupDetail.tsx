@@ -98,15 +98,23 @@ const StudyGroupDetail = () => {
           {/* 리더 / 일반 버튼 */}
           <div className="absolute top-[25px] right-[24px] flex gap-2">
             {isLeader && (
-              <button className="px-4 py-2 bg-white/90 text-gray-900 rounded-lg hover:bg-gray-300 font-medium text-sm backdrop-blur flex items-center gap-2">
+              <BasicButton
+                type="secondary"
+                size="small"
+                className="flex items-center gap-2 !px-4 !py-2 !text-sm"
+              >
                 <img src="/pen.svg" alt="edit" className="w-4 h-4" />
                 수정하기
-              </button>
+              </BasicButton>
             )}
-            <button className="px-4 py-2 bg-danger-500 text-white rounded-lg hover:bg-danger-600 font-medium text-sm flex items-center gap-2">
+            <BasicButton
+              type="danger"
+              size="small"
+              className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+            >
               <img src="/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />
               나가기
-            </button>
+            </BasicButton>
           </div>
         </div>
 
@@ -132,74 +140,82 @@ const StudyGroupDetail = () => {
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">스케줄 관리</h2>
-                <button className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-800 font-medium text-sm">
+                <BasicButton
+                  type="primary"
+                  size="medium"
+                  className="!px-4 !py-2 !text-sm text-white"
+                >
                   + 스케줄 추가
-                </button>
+                </BasicButton>
               </div>
 
               {/* 달력 */}
-<div className="mb-4 overflow-hidden">
-  <div className="flex items-center justify-center mb-6">
-    <h3 className="text-lg font-bold text-gray-900">2024년 2월</h3>
-  </div>
+              <div className="mb-4 overflow-hidden">
+                <div className="flex items-center justify-center mb-6">
+                  <h3 className="text-lg font-bold text-gray-900">2024년 2월</h3>
+                </div>
 
-  <div className="grid grid-cols-7 border border-gray-200 rounded-t-lg overflow-hidden min-w-[600px]">
-    {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
-      <div
-        key={`weekday-${idx}`}
-        className="flex items-center justify-center text-sm font-semibold text-gray-900 bg-gray-50 border-r border-gray-200 last:border-r-0 h-11"
-      >
-        {day}
-      </div>
-    ))}
-  </div>
+                <div className="grid grid-cols-7 border border-gray-200 rounded-t-lg overflow-hidden min-w-[600px]">
+                  {['일', '월', '화', '수', '목', '금', '토'].map((day, idx) => (
+                    <div
+                      key={`weekday-${idx}`}
+                      className="flex items-center justify-center text-sm font-semibold text-gray-900 bg-gray-50 border-r border-gray-200 last:border-r-0 h-11"
+                    >
+                      {day}
+                    </div>
+                  ))}
+                </div>
 
                 <div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
-    {generateCalendar().map((week, weekIdx) =>
-      week.map((day, dayIdx) => {
-        const scheduleEvent = day
-          ? scheduleEvents.find((event) => event.date === day)
-          : null;
+                  {generateCalendar().map((week, weekIdx) =>
+                    week.map((day, dayIdx) => {
+                      const scheduleEvent = day
+                        ? scheduleEvents.find((event) => event.date === day)
+                        : null;
 
-        return (
-          <div
-            key={`${weekIdx}-${dayIdx}`}
-            className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
-          >
-            {day ? (
-              <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
-                <div className="text-xs font-bold text-gray-900 pb-2">{day}</div>
+                      return (
+                        <div
+                          key={`${weekIdx}-${dayIdx}`}
+                          className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
+                        >
+                          {day ? (
+                            <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
+                              <div className="text-xs font-bold text-gray-900 pb-2">{day}</div>
 
-                {scheduleEvent && (
-                  <div className={`${scheduleEvent.color} rounded p-1`}>
-                    <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
-                      {scheduleEvent.title}
-                    </h4>
-                    <p className="text-[10px] text-primary-800/75 leading-tight">
-                      {scheduleEvent.time}
-                    </p>
-                  </div>
-                )}
+                              {scheduleEvent && (
+                                <div className={`${scheduleEvent.color} rounded p-1`}>
+                                  <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
+                                    {scheduleEvent.title}
+                                  </h4>
+                                  <p className="text-[10px] text-primary-800/75 leading-tight">
+                                    {scheduleEvent.time}
+                                  </p>
+                                </div>
+                              )}
+                            </div>
+                          ) : (
+                            <div className="h-full bg-gray-50"></div>
+                          )}
+                        </div>
+                      );
+                    })
+                  )}
+                </div>
               </div>
-            ) : (
-              <div className="h-full bg-gray-50"></div>
-            )}
-          </div>
-        );
-      })
-    )}
-  </div>
-</div>
             </div>
 
             {/* 스터디 기록 */}
             <div className="rounded-xl border border-gray-100 bg-white p-6">
               <div className="flex items-center justify-between mb-6">
                 <h2 className="text-xl font-bold text-gray-900">스터디 기록</h2>
-                <button className="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-900 font-medium text-sm flex items-center gap-2">
+                <BasicButton
+                  type="primary"
+                  size="small"
+                  className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+                >
                   <img src="/pen.svg" alt="write" className="w-4 h-4 filter invert brightness-0" />
                   작성하기
-                </button>
+                </BasicButton>
               </div>
 
               <div className="space-y-3">
@@ -254,46 +270,45 @@ const StudyGroupDetail = () => {
             </div>
 
             {/* 스터디 강의 */}
-<div className="bg-white rounded-2xl p-6 border border-gray-100">
-  <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
+            <div className="bg-white rounded-2xl p-6 border border-gray-100">
+              <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
 
-  <div className="space-y-6">
-    {upcomingStudies.map((study, idx) => (
-      <div
-        key={idx}
-        className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all bg-white"
-      >
-        {/* 강의 이미지 */}
-        <div className="relative w-full">
-          <img
-            src="/React.svg"
-            alt={study.title}
-            className="w-full object-cover"
-            style={{ aspectRatio: '16/9' }}
-          />
-        </div>
+              <div className="space-y-6">
+                {upcomingStudies.map((study, idx) => (
+                  <div
+                    key={idx}
+                    className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all bg-white"
+                  >
+                    {/* 강의 이미지 */}
+                    <div className="relative w-full">
+                      <img
+                        src="/React.svg"
+                        alt={study.title}
+                        className="w-full object-cover"
+                        style={{ aspectRatio: '16/9' }}
+                      />
+                    </div>
 
-        {/* 강의 정보 */}
-        <div className="p-4">
-          <h3 className="font-semibold text-gray-900 text-base mb-1">
-            {study.title}
-          </h3>
-          <p className="text-sm text-gray-600 mb-3">{study.instructor}</p>
+                    {/* 강의 정보 */}
+                    <div className="p-4">
+                      <h3 className="font-semibold text-gray-900 text-base mb-1">
+                        {study.title}
+                      </h3>
+                      <p className="text-sm text-gray-600 mb-3">{study.instructor}</p>
 
-          <button className="text-yellow-600 hover:text-yellow-700 font-semibold text-sm flex items-center gap-1 group">
-            강의 바로가기
-            <img
-              src="/move.svg"
-              alt="move"
-              className="w-4 h-4 group-hover:opacity-70"
-            />
-          </button>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
-
+                      <button className="text-yellow-600 hover:text-yellow-700 font-semibold text-sm flex items-center gap-1 group">
+                        강의 바로가기
+                        <img
+                          src="/move.svg"
+                          alt="move"
+                          className="w-4 h-4 group-hover:opacity-70"
+                        />
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
 
             {/* 멤버 목록 */}
             <div className="bg-white rounded-2xl p-6 border border-gray-100">
@@ -364,7 +379,6 @@ const StudyGroupDetail = () => {
                 ))}
               </div>
             </div>
-
           </div>
         </div>
       </div>

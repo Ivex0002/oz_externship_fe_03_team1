@@ -12,7 +12,8 @@ import { dummyUser } from '@/assets/dummyData/dummyUser'
 // StudyCard 컴포넌트
 const StudyCard = ({ study }: { study: StudyGroup }) => {
   const { openModal } = useModal()
-  const { reviewData, setReviewData, setPreviousMyReview } = storeReview()
+  const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
+    storeReview()
 
   const reviewList = reviewDetailData.results
   const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
@@ -21,6 +22,13 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
   const period = `${startDate} ~ ${endDate}`
+
+  const basicStudyInfo = {
+    id: Number(study.id),
+    name: study.name,
+    start_at: study.start_at,
+    end_at: study.end_at,
+  }
 
   useEffect(() => {
     if (study.status === 'ONGOING') return
@@ -31,16 +39,24 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     }
   }, [study.status, setReviewData])
 
+  const handleClickDetailView = () => {
+    if (study.status === 'ONGOING') return
+
+    setBasicStudyInfo(basicStudyInfo)
+    openModal(`/modal/review_detail/${study.id}`, '리뷰 상세', study.name)
+  }
+
   const handleClickPostReview = () => {
     if (isReviewed) return
 
+    setBasicStudyInfo(basicStudyInfo)
     openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
   }
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
-    setPreviousMyReview(myReview)
+    setPreviousMyReview(myReview, basicStudyInfo)
     openModal(`/modal/edit_review/${study.id}/${myReview.id}`, '리뷰 수정')
   }
 
@@ -114,7 +130,10 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
               </div>
             </div>
 
-            <span className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline">
+            <span
+              onClick={handleClickDetailView}
+              className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline"
+            >
               상세보기
             </span>
           </div>

@@ -10,7 +10,7 @@ import { storeReview } from '@/store/storeReview'
 
 const ReviewDetailModal = () => {
   const { modalToModal } = useModal()
-  const { setPreviousMyReview } = storeReview()
+  const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
   const params = useParams()
   //loader 설정하면 아래 코드로 변경
@@ -33,7 +33,7 @@ const ReviewDetailModal = () => {
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
-    setPreviousMyReview(myReview)
+    setPreviousMyReview(myReview, basicStudyInfo)
     modalToModal(
       `/modal/edit_review/${params.studyGroupId}/${myReview.id}`,
       '리뷰 수정'
@@ -52,7 +52,7 @@ const ReviewDetailModal = () => {
             <ReviewDetailCard
               key={review.id}
               review={review}
-              isMine={isReviewed}
+              isMine={review === myReview}
             />
           ))}
         </div>

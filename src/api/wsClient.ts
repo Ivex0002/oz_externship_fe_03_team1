@@ -11,6 +11,7 @@ export interface WebSocketClientConfig {
   reconnectInterval?: number
 }
 
+// TODO : toast 알림 로직 작성 필요
 export class WebSocketClient {
   private ws: WebSocket | null = null
   private url: string

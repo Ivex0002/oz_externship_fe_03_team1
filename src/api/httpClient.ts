@@ -9,6 +9,7 @@ import type {
   AxiosErrorHandler,
   RequestConfig,
   RequestExecutor,
+  RetryableRequestConfig,
 } from '@/types/ApiTree'
 
 interface HttpClientConfig {
@@ -19,7 +20,8 @@ interface HttpClientConfig {
 }
 
 /**
- * 토큰 처리와 에러 핸들링만 지원
+ * 토큰 삽입과 요청만 처리
+ * 에러는 핸들러로 위임
  */
 export class HttpClient {
   private client: AxiosInstance
@@ -61,12 +63,49 @@ export class HttpClient {
     this.client.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
-        if (this.onError) {
-          await this.onError(error)
+        const originalRequest = error.config as RetryableRequestConfig
+        const status = error.response?.status
+
+        // 401 코드 → 토큰 만료로 간주
+        if (status === 401 && !originalRequest?._retry) {
+          originalRequest._retry = true
+
+          try {
+            // refresh 요청 (refresh용 axios 인스턴스 따로 사용 > 무한루프 방지)
+            const newToken = await this.refreshAccessToken()
+            if (newToken) {
+              this.tokenStorage.setAccessToken(newToken)
+              // 헤더 갱신 후 원래 요청 재시도
+              originalRequest.headers.Authorization = `Bearer ${newToken}`
+              return this.client(originalRequest)
+            }
+          } catch (refreshError) {
+            // 리프래쉬 에러가 있다면 에러 핸들러로 던지기
+            if (this.onError) await this.onError(refreshError as AxiosError)
+            this.tokenStorage.clearTokens()
+            window.location.href = '/login' // 실제 로그인 주소로 변경 해야됨
+          }
         }
+
+        if (this.onError) await this.onError(error)
         return Promise.reject(error)
       }
     )
+  }
+
+  private async refreshAccessToken(): Promise<string | null> {
+    try {
+      const refreshClient = axios.create({
+        baseURL: this.client.defaults.baseURL,
+        withCredentials: true,
+        headers: { 'Content-Type': 'application/json' },
+      })
+      const res = await refreshClient.post('/api/v1/auth/refresh')
+      if (res.data?.accessToken) return res.data.accessToken
+      return null
+    } catch {
+      return null
+    }
   }
 
   /**

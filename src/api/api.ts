@@ -1,16 +1,17 @@
 import type { ApiLinks } from '@/types/ApiLinks'
 import { createApiTree } from './apiTree'
 import { ApiClientFactory } from './apiClient'
-import { LocalStorageTokenStorage } from './tokenManager'
-import { handleHttpError } from './handleHttpError'
+import { TokenManager } from './tokenManager'
+import { throwHttpError } from './throwHttpError'
 
-export const BASE_URL = '/api' // 추후 실제 서버 주소로 교체
-export const WEB_SOCKET_URL = '/ws' // 추후 실제 서버 주소로 교체
+// 추후 실제 서버 주소로 교체
+const BASE_URL = '/api'
+const WEB_SOCKET_URL = '/ws'
 
-const tokenStorage = new LocalStorageTokenStorage()
-const apiFactory = new ApiClientFactory(tokenStorage)
+const tokenManager = new TokenManager()
+const apiFactory = new ApiClientFactory(tokenManager)
 
-const httpClient = apiFactory.createHttpClient(BASE_URL, handleHttpError)
+const httpClient = apiFactory.createHttpClient(BASE_URL, throwHttpError)
 const requestExecutor = httpClient.getRequestExecutor()
 
 // 일반 http 통신은 트리 구조로 접근

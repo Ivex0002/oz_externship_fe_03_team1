@@ -14,10 +14,10 @@ export class ApiError extends Error {
 }
 
 /**
- * 메인 에러 핸들러
- * TODO:토큰 리프레시 로직 필요
+ * 응답 상태 코드에 따라 에러 메시지를 배출해주는 메서드
+ * 모든 에러를 throw 처리 하므로 반드시 try-catch 내부에서 사용해야됨
  */
-export async function handleHttpError(error: AxiosError): Promise<never> {
+export async function throwHttpError(error: AxiosError): Promise<never> {
   const status = error.response?.status || 0
   const data = error.response?.data
   const errorResponse = isErrorResponse(data) ? data : null
@@ -30,6 +30,9 @@ export async function handleHttpError(error: AxiosError): Promise<never> {
   throw new ApiError(status, message, code, details)
 }
 
+/**
+ * 서버에서 보낸 에러 타입인가 확인
+ */
 function isErrorResponse(data: unknown): data is SurverErrorResponse {
   return (
     typeof data === 'object' &&

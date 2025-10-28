@@ -1,4 +1,4 @@
-import type { AxiosError, Method } from 'axios'
+import type { AxiosError, InternalAxiosRequestConfig, Method } from 'axios'
 
 // 반드시 대문자로 Http메서드를 적도록 명시(가독성)
 export type HttpMethod = Uppercase<Method>
@@ -39,16 +39,18 @@ export interface RequestConfig<Req> {
 }
 
 // 에러 핸들링
-export type AxiosErrorHandler = (error: AxiosError) => void | Promise<void>
+export type AxiosErrorHandler = (error: AxiosError) => void | Promise<never>
 
-export class ApiError extends Error {
-  constructor(
-    public status: number,
-    message: string,
-    public code?: string,
-    public details?: unknown
-  ) {
-    super(message)
-    this.name = 'ApiError'
-  }
+// 서버에서 주는 에러 타입
+// {type:'error' ...} 도 있던데
+// 실제로 쓸지는 모름
+export type SurverErrorResponse = {
+  message?: string
+  code?: string
+  details?: unknown
+}
+
+// 리프레시
+export interface RetryableRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean
 }

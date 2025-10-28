@@ -24,7 +24,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
   const period = `${startDate} ~ ${endDate}`
 
   const basicStudyInfo = {
-    id: Number(study.id),
+    id: study.id,
     name: study.name,
     start_at: study.start_at,
     end_at: study.end_at,
@@ -39,7 +39,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     }
   }, [study.status, setReviewData])
 
-  const handleClickDetailView = () => {
+  const handleClickDetailReview = () => {
     if (study.status === 'ONGOING') return
 
     setBasicStudyInfo(basicStudyInfo)
@@ -131,7 +131,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
             </div>
 
             <span
-              onClick={handleClickDetailView}
+              onClick={handleClickDetailReview}
               className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline"
             >
               상세보기

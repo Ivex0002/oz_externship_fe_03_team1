@@ -7,6 +7,7 @@ import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useModal } from '@/hooks/useModal'
 import { useParams } from 'react-router'
 import { storeReview } from '@/store/storeReview'
+import dayjs from '@/lib/dayjs'
 
 const ReviewDetailModal = () => {
   const { modalToModal } = useModal()
@@ -16,9 +17,8 @@ const ReviewDetailModal = () => {
   //loader 설정하면 아래 코드로 변경
   //   const reviewDetailData = useLoaderData<ReviewDetailData>()
   const reviewList = reviewDetailData.results
-  reviewList.sort(
-    (a, b) =>
-      new Date(a.updated_at).getTime() - new Date(b.updated_at).getTime()
+  reviewList.sort((a, b) =>
+    dayjs(a.updated_at).isBefore(dayjs(b.updated_at)) ? 1 : -1
   )
 
   const myReview = reviewList.find((review) => review.user.id === dummyUser.id)

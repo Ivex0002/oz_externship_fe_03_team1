@@ -4,23 +4,33 @@ import type { AxiosError, InternalAxiosRequestConfig, Method } from 'axios'
 export type HttpMethod = Uppercase<Method>
 
 // HttpMethod 일때 req 유무에 따른 분기처리
-type ApiMethod<M> = M extends { res: infer R; req: infer Q }
+type MethodHandler<M> = M extends { res: infer R; req: infer Q }
   ? (payload: Q | RequestConfig<Q>) => Promise<R>
   : M extends { res: infer R }
     ? (config?: Omit<RequestConfig<never>, 'data'>) => Promise<R>
     : never
 
+export type DynamicFn = (...args: (string | number)[]) => object
+
+type MappedProperties<T> = {
+  [K in Exclude<keyof T, 'dynamicSub'>]: K extends HttpMethod
+    ? MethodHandler<T[K]>
+    : T[K] extends DynamicFn
+      ? (...args: (string | number)[]) => ApiTree<ReturnType<T[K]>>
+      : T[K] extends object
+        ? ApiTree<T[K]>
+        : never
+}
+
+type CallableSignature<T> = T extends { dynamicSub: infer D extends object }
+  ? {
+      (...args: (string | number)[]): ApiTree<D>
+    }
+  : unknown
+
 // src\api\apiTree.ts 타입 지정용
 // 들어온 타입객체 키값에 따른 분기처리
-export type ApiTree<T> = {
-  [K in keyof T]: K extends HttpMethod // HTTP 메서드
-    ? ApiMethod<T[K]>
-    : T[K] extends (...args: infer Args) => infer SubT // 동적 경로 함수 (ex:id, 검색어 등등)
-      ? (...args: Args) => ApiTree<SubT>
-      : T[K] extends object
-        ? ApiTree<T[K]> // 재귀적 호출 - "/"로 구분된 경로 키값으로 사용
-        : T[K]
-}
+export type ApiTree<T> = MappedProperties<T> & CallableSignature<T>
 
 /**
  * API 요청을 수행하는 함수 시그니처.

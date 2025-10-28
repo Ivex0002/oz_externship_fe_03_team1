@@ -1,6 +1,4 @@
-// ===================== Study =====================
-
-// ===================== Study:Lecture =====================
+// ===================== Lecture =====================
 // /api/v1/lectures : 강의 목록 조희 요청에 사용자에 따른 추천 항목이 포함됨
 // /api/v1/lectures/recommendations : 사용자에 따른 추천 항목
 // 어째서 메서드가 반복되는가?
@@ -23,6 +21,25 @@ type Lecture = {
   url_link: string
   is_bookmarked: boolean
 }
+
+// ===================== Lecture:Review =====================
+// rating이 string인 이유?
+// 이후에 10점, 100점 등 확장 예정이면 %로 하는게 낫지않나?
+type rating =
+  | '5_OUT_OF_5_STARS'
+  | '4_OUT_OF_5_STARS'
+  | '3_OUT_OF_5_STARS'
+  | '2_OUT_OF_5_STARS'
+  | '1_OUT_OF_5_STARS'
+
+type Review = {
+  id: number
+  rating: rating
+  content: string
+  created_at: string
+}
+
+// ===================== Study =====================
 
 // ===================== Pagenation =====================
 // type Pagenation = {
@@ -96,6 +113,37 @@ export const ApiLinks = {
       logout: {
         POST: {} as {
           res: DetailEvent | ErrorEvent
+        },
+      },
+    },
+    lectures: {
+      GET: {} as {
+        res: {
+          count: number
+          next: string
+          previous: string
+          results: Lecture[]
+          user_nickname: string
+          recommended_lectures: Lecture[]
+        }
+      },
+      categories: {
+        GET: {} as {
+          res: LectureCategory[]
+        },
+      },
+      dynamicSub: {
+        reviews: {
+          GET: {} as {
+            res: {
+              reviews: Review[]
+            }
+          },
+          // POST: {} as {
+          //   req: {}
+          //   res: {}
+          // },
+          // 리뷰 삭제, 포스팅, 변경 로직 없음
         },
       },
     },

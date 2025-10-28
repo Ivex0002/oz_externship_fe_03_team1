@@ -1,5 +1,6 @@
 import type {
   ApiTree,
+  DynamicFn,
   HttpMethod,
   RequestConfig,
   RequestExecutor,
@@ -98,7 +99,6 @@ type MethodHandler<T> = T extends { res: infer R }
  * 동적 URL 세그먼트용 함수 타입.
  * ex) user(id).GET() → (...args: (string | number)[]) => object
  */
-type DynamicFn = (...args: (string | number)[]) => object
 
 /**
  * createApiTree
@@ -115,7 +115,18 @@ export function createApiTree<T extends object, P extends string = ''>(
   requestFn: RequestExecutor, // 요청 로직
   pathPrefix: P = '' as P // 경로 누적 저장용
 ): ApiTree<T> {
-  return new Proxy({} as object, {
+  return new Proxy(() => {}, {
+    // Proxy 객체 자체가 함수로 호출될 때 (예: api.users(123)) 실행
+    // ApiLinks의 특정 키값(dynamicSub) 으로 트리거
+    apply(_target, _thisArg, args: unknown[]) {
+      if (args.length > 0 && isDynamicSub(schema)) {
+        const segment = String(args[0])
+        const nextPath = joinPath(pathPrefix, segment)
+        return createApiTree(schema.dynamicSub, requestFn, nextPath)
+      }
+      throw new Error(`Cannot call non-dynamic path: ${pathPrefix}`)
+    },
+    // 나머지 일반 객체 전부 여기서 처리
     get(_target, prop: string | symbol) {
       // http 메서드 들어왔을때의 분기처리
       const key = String(prop)
@@ -126,20 +137,36 @@ export function createApiTree<T extends object, P extends string = ''>(
 
       // 동적 세그먼트 (ex. users(id))
       const value = (schema as T & Record<string, unknown>)[key as keyof T]
-      if (isMiddlePram(value)) {
-        return onMiddlePram<T, P>(pathPrefix, value, requestFn)
+      if (value !== undefined) {
+        if (isMiddlePram(value)) {
+          return onMiddlePram<T, P>(pathPrefix, value, requestFn)
+        }
+        const nextPath = joinPath(pathPrefix, key)
+        const nextNode = value as T[keyof T]
+        if (typeof nextNode !== 'object' || nextNode === null) {
+          throw new Error(`Expected object at path: ${nextPath}`)
+        }
+        return createApiTree(nextNode as object, requestFn, nextPath)
+      } else {
+        if (isDynamicSub(schema)) {
+          const nextPath = joinPath(pathPrefix, key)
+          return createApiTree(schema.dynamicSub, requestFn, nextPath)
+        } else {
+          throw new Error(`Property ${key} not found at path: ${pathPrefix}`)
+        }
       }
-
-      // 하위 경로 객체로 재귀 이동
-      const nextPath = joinPath(pathPrefix, key)
-      const nextNode = value as T[keyof T]
-      if (typeof nextNode !== 'object' || nextNode === null) {
-        throw new Error(`Expected object at path: ${nextPath}`)
-      }
-
-      return createApiTree(nextNode as object, requestFn, nextPath)
     },
   }) as ApiTree<T>
+}
+
+function isDynamicSub(schema: unknown): schema is { dynamicSub: object } {
+  return (
+    typeof schema === 'object' &&
+    schema !== null &&
+    'dynamicSub' in schema &&
+    typeof schema.dynamicSub === 'object' &&
+    schema.dynamicSub !== null
+  )
 }
 
 /**

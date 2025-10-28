@@ -1,9 +1,9 @@
 import React, { useState } from 'react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import StudyCard from './StudyCard'
-import type { Study } from '@/types/StudyGroupTypes'
+import type { StudyGroup } from '@/types/StudyGroupTypes'
 
-const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
+const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
   title,
   studies,
 }) => {

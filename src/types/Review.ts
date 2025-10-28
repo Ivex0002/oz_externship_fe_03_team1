@@ -1,13 +1,20 @@
 export type Review = {
   id: number
-  rating: number
-  reviewText: string
+  star_rating: number
+  content: string
   updated_at: string
-  isMine: boolean
+  user: { id: number; nickname: string }
 }
 
-export type ReviewDetailList = {
+export type ReviewDetailData = {
+  count: number
   averageRating: number
-  totalReview: number
-  reviews: Review[]
+  next: string | null
+  previous: string | null
+  results: Review[]
+}
+
+export type ReviewForm = {
+  star_rating: number
+  content: string
 }

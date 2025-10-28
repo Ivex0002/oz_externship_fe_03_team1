@@ -1,24 +1,23 @@
 import { useDayPicker, type MonthCaptionProps } from 'react-day-picker'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
+import dayjs from '@/lib/dayjs'
 
 const DatePickerCaption = (props: MonthCaptionProps) => {
   const { goToMonth, nextMonth, previousMonth, dayPickerProps } = useDayPicker()
   const { startMonth, endMonth } = dayPickerProps
 
   const date = props.calendarMonth.date
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
+  const year = dayjs(date).get('year')
+  const month = dayjs(date).get('month') + 1
 
   const canGoPrev =
-    !startMonth ||
-    date > new Date(startMonth.getFullYear(), startMonth.getMonth(), 1)
-  const canGoNext =
-    !endMonth || date < new Date(endMonth.getFullYear(), endMonth.getMonth(), 1)
+    !startMonth || date > dayjs(startMonth).set('date', 1).toDate()
+  const canGoNext = !endMonth || date < dayjs(endMonth).set('date', 1).toDate()
 
   const goToday = () => {
-    const today = new Date()
+    const today = dayjs()
     // 날짜는 1일로 맞춰서 월 전환만 하도록
-    goToMonth?.(new Date(today.getFullYear(), today.getMonth(), 1))
+    goToMonth?.(today.set('date', 1).toDate())
   }
 
   return (
@@ -30,7 +29,7 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
         onClick={() =>
           canGoPrev &&
           previousMonth &&
-          goToMonth?.(new Date(date.getFullYear(), date.getMonth() - 1, 1))
+          goToMonth?.(dayjs(date).subtract(1, 'month').toDate())
         }
       >
         <ChevronLeft />
@@ -39,7 +38,10 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
         <span className="text-lg font-bold text-gray-900">
           {year}년 {month}월
         </span>
-        <button className="text-primary-500 text-sm" onClick={goToday}>
+        <button
+          className="text-primary-500 hover:text-primary-600 text-sm hover:cursor-pointer"
+          onClick={goToday}
+        >
           오늘
         </button>
       </div>
@@ -50,7 +52,7 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
         onClick={() =>
           canGoNext &&
           nextMonth &&
-          goToMonth?.(new Date(date.getFullYear(), date.getMonth() + 1, 1))
+          goToMonth?.(dayjs(date).add(1, 'month').toDate())
         }
       >
         <ChevronRight />

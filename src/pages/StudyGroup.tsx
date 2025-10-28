@@ -5,6 +5,7 @@ import React, { useState } from 'react'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 import StudyCard from '@/components/studyGroup/StudyCard'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
+import { useNavigate } from 'react-router'
 
 const SearchBar: React.FC = () => (
   <div className="mb-8 w-1/3">
@@ -89,6 +90,8 @@ const StudySection: React.FC<{ title: string; studies: StudyGroupType[] }> = ({
 }
 
 const StudyGroup = () => {
+  const navigate = useNavigate()
+
   const ongoingStudyGroupList = studyGroupList.filter(
     (study) => study.status === 'ONGOING'
   )
@@ -101,6 +104,10 @@ const StudyGroup = () => {
   // const completedWithLeader = studiesCompleted.map((s, i) =>
   //   i === 0 ? { ...s, isLeader: true } : s
   // )
+
+  const handleClickCreateStudy = () => {
+    navigate('/create_study_group')
+  }
 
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
@@ -115,7 +122,11 @@ const StudyGroup = () => {
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
           </div>
-          <BasicButton type="primary" size="medium">
+          <BasicButton
+            type="primary"
+            onClick={handleClickCreateStudy}
+            size="medium"
+          >
             <Plus size={16} /> 새 스터디 만들기
           </BasicButton>
         </div>

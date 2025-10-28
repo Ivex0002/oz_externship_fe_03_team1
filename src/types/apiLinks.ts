@@ -1,39 +1,3 @@
-// ===================== Chat =====================
-type Chat = {
-  id: number
-  sender_id: number
-  sender_nickname: string
-  study_group_id: number
-  content: string
-  file_url: string | null
-  is_read: boolean
-  created_at: string
-}
-
-// ===================== Chat:WS =====================
-// 어째서 웹 소캣 연결시 성공 타입과 메시지 목록 조회의 메시지 타입이 다르지?
-interface WSChatMessageEvent {
-  type: 'chat.message'
-  data: {
-    message_id: number
-    sender_id: number
-    study_group_id: number
-    content: string
-    created_at: string
-  }
-}
-
-interface WSChatErrorEvent {
-  type: 'error'
-  code: 'NOT_A_MEMBER' | 'INVALID_TOKEN' | 'UNKNOWN_ERROR'
-  message: string
-}
-
-export interface WSChatMessageReq {
-  type: 'chat.message'
-  content: string
-}
-
 // ===================== Study =====================
 
 // ===================== Study:Lecture =====================
@@ -61,11 +25,11 @@ type Lecture = {
 }
 
 // ===================== Pagenation =====================
-type Pagenation = {
-  page: number
-  page_size: number
-  total_count: number
-}
+// type Pagenation = {
+//   page: number
+//   page_size: number
+//   total_count: number
+// }
 
 // ===================== etc =====================
 interface DetailEvent {
@@ -126,30 +90,18 @@ interface ErrorEvent {
  * api.v1.studies.groups(123).PUT({ name: "New Name" }, { params: { updateType: "partial" } }) 로 사용
  *  (req_url:`api/v1/studies/groups/123`, "PUT", { data: { name: "New Name" }, params: { updateType: "partial" } }) 과 같음
  */
-export interface ApiLinks {
+export const ApiLinks = {
   v1: {
     auth: {
-      refresh: {
-        POST: {
-          res: {
-            detail: string
-            data: {
-              access_token: string
-              token_type: string
-              expires_in: number
-            }
-          }
-        }
-      }
       logout: {
-        POST: {
+        POST: {} as {
           res: DetailEvent | ErrorEvent
-        }
-      }
-    }
+        },
+      },
+    },
     studies: {
       groups: {
-        POST: {
+        POST: {} as {
           req: {
             name: string
             introduction: string
@@ -174,34 +126,8 @@ export interface ApiLinks {
               lectures: Lecture[]
             }
           }
-        }
-      }
-    }
-  }
-  ws: {
-    studyGroups: (id: number) => {
-      // 메시지 검색하는게 ui상에 있었나?
-      // 피그마엔 안보임
-      // api 명세서 잘못 적은듯
-      chat: {
-        connect: {
-          req: WSChatMessageReq
-          res: WSChatMessageEvent | WSChatErrorEvent
-        }
-      }
-      messages: {
-        GET: {
-          res: {
-            status: string
-            code: string
-            message: string
-            data: {
-              messages: Chat[]
-              pagination: Pagenation
-            }
-          }
-        }
-      }
-    }
-  }
+        },
+      },
+    },
+  },
 }

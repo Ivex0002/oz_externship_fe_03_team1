@@ -111,7 +111,7 @@ type DynamicFn = (...args: (string | number)[]) => object
  * @param requestFn - 실제 HTTP 요청을 수행하는 함수
  */
 export function createApiTree<T extends object, P extends string = ''>(
-  schema: T, // 경로 객체
+  schema: T, // 경로 객체 : T = type of ApiLinks
   requestFn: RequestExecutor, // 요청 로직
   pathPrefix: P = '' as P // 경로 누적 저장용
 ): ApiTree<T> {

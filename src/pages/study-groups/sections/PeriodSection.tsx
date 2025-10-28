@@ -1,9 +1,11 @@
-import { useEffect } from 'react'
+// import { useEffect } from 'react'
 import { useModal } from '../../../hooks/useModal'
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import CustomSlider from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
+import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
+import dayjs from '@/lib/dayjs'
 
 interface Props {
   form: StudyGroupForm
@@ -12,6 +14,12 @@ interface Props {
 
 export default function PeriodSection({ form, setForm }: Props) {
   const { openModal } = useModal()
+  const { previousStartDate, previousEndDate } = storeStudyGroupDate()
+
+  const startDate = previousStartDate
+    ? dayjs(previousStartDate).format('L')
+    : ''
+  const endDate = previousEndDate ? dayjs(previousEndDate).format('L') : ''
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
     openModal(
@@ -19,28 +27,6 @@ export default function PeriodSection({ form, setForm }: Props) {
       type === 'start' ? '스터디 시작일 선택' : '스터디 종료일 선택'
     )
   }
-
-  useEffect(() => {
-    const handleDateSelected = (
-      e: CustomEvent<{ target: 'start' | 'end'; date: string }>
-    ) => {
-      const { target, date } = e.detail
-      setForm((prev) => ({
-        ...prev,
-        ...(target === 'start' ? { startDate: date } : { endDate: date }),
-      }))
-    }
-
-    window.addEventListener(
-      'date-selected',
-      handleDateSelected as EventListener
-    )
-    return () =>
-      window.removeEventListener(
-        'date-selected',
-        handleDateSelected as EventListener
-      )
-  }, [setForm])
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = Number(e.target.value)
@@ -62,7 +48,7 @@ export default function PeriodSection({ form, setForm }: Props) {
             <BasicInput
               name="startDate"
               placeholder="날짜를 선택하세요"
-              value={form.startDate}
+              value={startDate}
               readOnly
               onClick={() => handleOpenDatePicker('start')}
             />
@@ -81,7 +67,7 @@ export default function PeriodSection({ form, setForm }: Props) {
             <BasicInput
               name="endDate"
               placeholder="날짜를 선택하세요"
-              value={form.endDate}
+              value={endDate}
               readOnly
               onClick={() => handleOpenDatePicker('end')}
             />

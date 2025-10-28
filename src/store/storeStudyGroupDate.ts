@@ -28,9 +28,11 @@ export const storeStudyGroupDate = create<StoreStudyGroupDate>((set) => ({
   isEditEndDate: false,
 
   setPreviousStartDate: (date: Date | null) => set({ previousStartDate: date }),
-  setNewStartDate: (date: Date | null) => set({ newStartDate: date }),
+  setNewStartDate: (date: Date | null) =>
+    set({ newStartDate: date, previousStartDate: date }),
   setPreviousEndDate: (date: Date | null) => set({ previousEndDate: date }),
-  setNewEndDate: (date: Date | null) => set({ newEndDate: date }),
+  setNewEndDate: (date: Date | null) =>
+    set({ newEndDate: date, previousEndDate: date }),
   setIsEditStartDate: (isEdit: boolean) => set({ isEditStartDate: isEdit }),
   setIsEditEndDate: (isEdit: boolean) => set({ isEditEndDate: isEdit }),
 

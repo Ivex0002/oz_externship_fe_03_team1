@@ -7,6 +7,8 @@ import LectureSection from './sections/LectureSection'
 import BasicModal from '../../components/basicComponents/basicModal/BasicModal'
 import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
 import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
+import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
+import dayjs from '@/lib/dayjs'
 
 export default function CreateStudyGroup() {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -20,6 +22,7 @@ export default function CreateStudyGroup() {
   })
 
   const [isEdit, setIsEdit] = useState(false)
+  const { newStartDate, newEndDate, clearDates } = storeStudyGroupDate()
 
   useEffect(() => {
     if (window.location.pathname.includes('edit')) {
@@ -46,6 +49,12 @@ export default function CreateStudyGroup() {
     } else {
       alert('스터디 그룹이 생성되었습니다.')
     }
+    setForm({
+      ...form,
+      startDate: dayjs(newStartDate).toISOString(),
+      endDate: dayjs(newEndDate).toISOString(),
+    })
+    clearDates()
   }
 
   const handleBack = () => window.history.back()

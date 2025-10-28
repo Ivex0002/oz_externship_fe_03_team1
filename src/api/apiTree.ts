@@ -21,8 +21,9 @@ export const HTTP_METHODS = new Set<HttpMethod>([
 
 /**
  * AxiosRequestConfig에 존재하는 모든 설정 키들 목록
+ * data 항목만 미포함
  */
-const configKeys = [
+const CONFIG_KEYS = [
   'url',
   'method',
   'baseURL',
@@ -32,7 +33,6 @@ const configKeys = [
   'headers',
   'params',
   'paramsSerializer',
-  'data',
   'timeout',
   'timeoutErrorMessage',
   'withCredentials',
@@ -68,6 +68,7 @@ const configKeys = [
   'parseReviver',
   'fetchOptions',
 ]
+const CONFIG_KEYS_SET = new Set<string>(CONFIG_KEYS)
 
 /**
  * API 요청을 수행하는 함수 시그니처.
@@ -220,7 +221,12 @@ function isRequestConfig<T>(value: unknown): value is RequestConfig<T> {
   }
   const obj = value as Record<string, unknown>
 
-  return configKeys.some((key) => key in obj)
+  for (const key in obj) {
+    if (CONFIG_KEYS_SET.has(key)) {
+      return true
+    }
+  }
+  return false
 }
 
 /**

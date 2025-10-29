@@ -138,8 +138,8 @@ export function createApiTree<T extends object, P extends string = ''>(
       // 동적 세그먼트 (ex. users(id))
       const value = (schema as T & Record<string, unknown>)[key as keyof T]
       if (value !== undefined) {
-        if (isMiddlePram(value)) {
-          return onMiddlePram<T, P>(pathPrefix, value, requestFn)
+        if (isMiddleParam(value)) {
+          return onMiddleParam<T, P>(pathPrefix, value, requestFn)
         }
         const nextPath = joinPath(pathPrefix, key)
         const nextNode = value as T[keyof T]

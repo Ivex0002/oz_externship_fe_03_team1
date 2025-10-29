@@ -1,6 +1,6 @@
 export default function RecordBreadcrumb() {
   return (
-    <div className="text-sm text-gray-500 mb-4 flex items-center gap-1">
+    <div className="text-sm text-gray-500 mb-4 flex items-center gap-2">
       <span className="hover:text-gray-700 cursor-pointer">홈</span>
       <span className="text-gray-400">{">"}</span>
       

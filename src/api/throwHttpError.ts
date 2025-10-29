@@ -1,4 +1,4 @@
-import type { SurverErrorResponse } from '@/types/ApiTree'
+import type { ServerErrorResponse } from '@/types/ApiTree'
 import { AxiosError } from 'axios'
 
 export class ApiError extends Error {
@@ -17,7 +17,7 @@ export class ApiError extends Error {
  * 응답 상태 코드에 따라 에러 메시지를 배출해주는 메서드
  * 모든 에러를 throw 처리 하므로 반드시 try-catch 내부에서 사용해야됨
  */
-export async function throwHttpError(error: AxiosError): Promise<never> {
+export function throwHttpError(error: AxiosError): Promise<never> {
   const status = error.response?.status || 0
   const data = error.response?.data
   const errorResponse = isErrorResponse(data) ? data : null
@@ -33,13 +33,13 @@ export async function throwHttpError(error: AxiosError): Promise<never> {
 /**
  * 서버에서 보낸 에러 타입인가 확인
  */
-function isErrorResponse(data: unknown): data is SurverErrorResponse {
+function isErrorResponse(data: unknown): data is ServerErrorResponse {
   return (
     typeof data === 'object' &&
     data !== null &&
-    (typeof (data as SurverErrorResponse).message === 'string' ||
-      typeof (data as SurverErrorResponse).code === 'string' ||
-      (data as SurverErrorResponse).details !== undefined)
+    (typeof (data as ServerErrorResponse).message === 'string' ||
+      typeof (data as ServerErrorResponse).code === 'string' ||
+      (data as ServerErrorResponse).details !== undefined)
   )
 }
 

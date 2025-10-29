@@ -1,6 +1,6 @@
-import axios from 'axios'
 import type { TokenStorage } from './tokenManager'
-import { BASE_URL, LOGIN_PAGE_URL } from './api'
+import { LOGIN_PAGE_URL } from './api'
+import { refreshAccessToken } from './refreshAccessToken'
 
 export interface WebSocketClientConfig {
   url: string
@@ -22,7 +22,7 @@ export class WebSocketClient {
   private config: WebSocketClientConfig
   private reconnectAttempts: number = 0
   private maxReconnectAttempts: number = 5
-  private reconnectTimer: NodeJS.Timeout | null = null
+  private reconnectTimer: number | null = null
 
   constructor(config: WebSocketClientConfig) {
     this.url = config.url
@@ -31,6 +31,8 @@ export class WebSocketClient {
   }
 
   public async connect(): Promise<void> {
+    this.clearPrev()
+
     let token = this.tokenStorage.getAccessToken()
 
     // 토큰 없으면 리프레시
@@ -68,12 +70,18 @@ export class WebSocketClient {
         this.config.onClose(event)
       }
 
-      // 토큰 만료 감지 (서버에서 code 401로 보낸다고 가정)
+      // 토큰 만료 감지 (서버에서 code 4001로 보낸다고 가정)
       // TODO:실제 서버 코드로 변경 해야함
-      if (event.code === 401) {
+      // 명세서에 없음
+      if (event.code === 4001) {
+        if (this.reconnectAttempts >= this.maxReconnectAttempts) {
+          this.tokenStorage.clearTokens()
+          window.location.href = LOGIN_PAGE_URL
+          return
+        }
         const success = await this.tryRefreshToken()
         if (success) {
-          this.connect() // 성공 시 재연결
+          await this.connect() // 성공 시 재연결
           return
         }
         return
@@ -86,7 +94,7 @@ export class WebSocketClient {
         this.reconnectAttempts++
         const interval = this.config.reconnectInterval || 3000
 
-        this.reconnectTimer = setTimeout(() => {
+        this.reconnectTimer = window.setTimeout(() => {
           // console.log(
           //   `WebSocket 재연결 시도 ${this.reconnectAttempts}/${this.maxReconnectAttempts}`
           // )
@@ -97,9 +105,24 @@ export class WebSocketClient {
     }
   }
 
+  private clearPrev() {
+    if (this.ws) {
+      this.ws.onopen = null
+      this.ws.onmessage = null
+      this.ws.onerror = null
+      this.ws.onclose = null
+      if (
+        this.ws.readyState === WebSocket.OPEN ||
+        this.ws.readyState === WebSocket.CONNECTING
+      ) {
+        this.ws.close()
+      }
+    }
+  }
+
   private async tryRefreshToken(): Promise<boolean> {
     try {
-      const newToken = await this.refreshAccessToken()
+      const newToken = await refreshAccessToken()
       if (newToken) {
         this.tokenStorage.setAccessToken(newToken)
         return true
@@ -112,33 +135,19 @@ export class WebSocketClient {
     }
   }
 
-  private async refreshAccessToken(): Promise<string | null> {
-    try {
-      const refreshClient = axios.create({
-        baseURL: BASE_URL,
-        withCredentials: true,
-        headers: { 'Content-Type': 'application/json' },
-      })
-      const res = await refreshClient.post('/api/v1/auth/refresh')
-      if (res.data?.accessToken) return res.data.accessToken
-      return null
-    } catch {
-      return null
-    }
-  }
-
   public send(data: string | ArrayBufferLike | Blob | ArrayBufferView): void {
     if (this.ws && this.ws.readyState === WebSocket.OPEN) {
       this.ws.send(data)
     } else {
       // console.error('WebSocket이 연결되지 않았습니다.')
       // toast 연결 필요
+      throw new Error(`WebSocket is not connected:${this.getReadyState()}`)
     }
   }
 
   public close(code?: number, reason?: string): void {
     if (this.reconnectTimer) {
-      clearTimeout(this.reconnectTimer)
+      window.clearTimeout(this.reconnectTimer)
       this.reconnectTimer = null
     }
 

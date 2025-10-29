@@ -5,17 +5,18 @@ export interface TokenStorage {
 }
 
 export class TokenManager implements TokenStorage {
-  private accessTokenKey = 'accessToken'
+  // 메모리에만 저장 (XSS 공격 방지)
+  private accessToken: string | null = null
 
   getAccessToken(): string | null {
-    return localStorage.getItem(this.accessTokenKey)
+    return this.accessToken
   }
 
   setAccessToken(token: string): void {
-    localStorage.setItem(this.accessTokenKey, token)
+    this.accessToken = token
   }
 
   clearTokens(): void {
-    localStorage.removeItem(this.accessTokenKey)
+    this.accessToken = null
   }
 }

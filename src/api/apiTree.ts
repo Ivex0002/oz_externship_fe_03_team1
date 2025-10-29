@@ -242,11 +242,27 @@ function isRequestConfig<T>(value: unknown): value is RequestConfig<T> {
   }
   const obj = value as Record<string, unknown>
 
+  // 1순위: 명시적 마커 체크
+  if ('__isConfig' in obj) {
+    return true
+  }
+
+  // 2순위: data 속성 존재 (일반 payload는 data로 안 감쌈)
+  if ('data' in obj) {
+    return true
+  }
+
+  // 3순위: 여러 개의 config 키 존재 (오판 방지)
+  let configKeyCount = 0
   for (const key in obj) {
     if (CONFIG_KEYS_SET.has(key)) {
-      return true
+      configKeyCount++
+      if (configKeyCount >= 2) {
+        return true
+      }
     }
   }
+
   return false
 }
 

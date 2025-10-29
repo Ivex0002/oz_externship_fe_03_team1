@@ -41,7 +41,7 @@ type Review = {
 
 // ===================== Study =====================
 
-// ===================== Pagenation =====================
+// ===================== Pagination =====================
 // type Pagenation = {
 //   page: number
 //   page_size: number

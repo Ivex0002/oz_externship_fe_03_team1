@@ -12,6 +12,7 @@ import type {
   RetryableRequestConfig,
 } from '@/types/ApiTree'
 import { LOGIN_PAGE_URL } from './api'
+import { refreshAccessToken } from './refreshAccessToken'
 
 interface HttpClientConfig {
   baseURL: string
@@ -28,6 +29,8 @@ export class HttpClient {
   private client: AxiosInstance
   private tokenStorage: TokenStorage
   private onError?: AxiosErrorHandler
+  private isRefreshing = false
+  private refreshPromise: Promise<string | null> | null = null
 
   constructor(config: HttpClientConfig) {
     this.tokenStorage = config.tokenStorage
@@ -73,11 +76,24 @@ export class HttpClient {
 
           try {
             // refresh 요청 (refresh용 axios 인스턴스 따로 사용 > 무한루프 방지)
-            const newToken = await this.refreshAccessToken()
+            if (!this.isRefreshing) {
+              this.isRefreshing = true
+              this.refreshPromise = refreshAccessToken()
+                .catch((e) => {
+                  throw new Error(`리프레쉬 실패:${e}`)
+                })
+                .finally(() => {
+                  this.isRefreshing = false
+                  this.refreshPromise = null
+                })
+            }
+            const newToken = await this.refreshPromise
             if (newToken) {
               this.tokenStorage.setAccessToken(newToken)
               // 헤더 갱신 후 원래 요청 재시도
-              originalRequest.headers.Authorization = `Bearer ${newToken}`
+              if (originalRequest.headers) {
+                originalRequest.headers.Authorization = `Bearer ${newToken}`
+              }
               return this.client(originalRequest)
             }
           } catch (refreshError) {
@@ -85,6 +101,7 @@ export class HttpClient {
             if (this.onError) await this.onError(refreshError as AxiosError)
             this.tokenStorage.clearTokens()
             window.location.href = LOGIN_PAGE_URL
+            return Promise.reject(refreshError)
           }
         }
 
@@ -92,21 +109,6 @@ export class HttpClient {
         return Promise.reject(error)
       }
     )
-  }
-
-  private async refreshAccessToken(): Promise<string | null> {
-    try {
-      const refreshClient = axios.create({
-        baseURL: this.client.defaults.baseURL,
-        withCredentials: true,
-        headers: { 'Content-Type': 'application/json' },
-      })
-      const res = await refreshClient.post('/api/v1/auth/refresh')
-      if (res.data?.accessToken) return res.data.accessToken
-      return null
-    } catch {
-      return null
-    }
   }
 
   /**

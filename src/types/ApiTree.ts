@@ -1,4 +1,9 @@
-import type { AxiosError, InternalAxiosRequestConfig, Method } from 'axios'
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+  Method,
+} from 'axios'
 
 // 반드시 대문자로 Http메서드를 적도록 명시(가독성)
 export type HttpMethod = Uppercase<Method>
@@ -42,10 +47,29 @@ export type RequestExecutor = <Req, Res>(
   config?: RequestConfig<Req>
 ) => Promise<Res>
 
-// id, 검색어, 페이지 옵션 등등 지원용 옵션 타입
-export interface RequestConfig<Req> {
-  params?: Record<string, unknown>
-  data?: Req
+/**
+ * RequestConfig 사용 가이드
+ *
+ * 1. 일반적인 경우 - 자동 인식됨:
+ *    api.users.POST({ name: 'John' })  // payload
+ *    api.users.GET({ params: { page: 1 } })  // config
+ *
+ * 2. payload에 axios config 키가 포함된 경우:
+ *    api.jobs.POST({
+ *      __isConfig: true,
+ *      data: { timeout: 5000 }  // timeout을 데이터로 전송
+ *    })
+ *
+ * 3. 고급 axios 설정이 필요한 경우:
+ *    api.users.GET({
+ *      params: { search: 'test' },
+ *      headers: { 'X-Custom': 'value' },
+ *      timeout: 3000,
+ *      signal: controller.signal
+ *    })
+ */
+export interface RequestConfig<Req = unknown> extends AxiosRequestConfig<Req> {
+  __isConfig?: true
 }
 
 // 에러 핸들링
@@ -54,7 +78,7 @@ export type AxiosErrorHandler = (error: AxiosError) => void | Promise<never>
 // 서버에서 주는 에러 타입
 // {type:'error' ...} 도 있던데
 // 실제로 쓸지는 모름
-export type SurverErrorResponse = {
+export type ServerErrorResponse = {
   message?: string
   code?: string
   details?: unknown

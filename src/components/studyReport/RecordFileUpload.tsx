@@ -10,7 +10,7 @@ export default function RecordFileUpload({ file, onFileChange }: RecordFileUploa
       <div className="border-2 border-dashed border-[#E5E7EB] text-center py-10 rounded-xl">
         <label className="cursor-pointer flex flex-col items-center gap-2 text-gray-500">
           <img
-            src="/images/Vector@2x.png"
+            src="../../public/images/Vector@2x.png"
             alt="파일 업로드"
             className="w-10 h-10"
           />

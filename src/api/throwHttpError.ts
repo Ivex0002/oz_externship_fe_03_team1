@@ -17,7 +17,7 @@ export class ApiError extends Error {
  * 응답 상태 코드에 따라 에러 메시지를 배출해주는 메서드
  * 모든 에러를 throw 처리 하므로 반드시 try-catch 내부에서 사용해야됨
  */
-export function throwHttpError(error: AxiosError): Promise<never> {
+export function throwHttpError(error: AxiosError): never {
   const status = error.response?.status || 0
   const data = error.response?.data
   const errorResponse = isErrorResponse(data) ? data : null

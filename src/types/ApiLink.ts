@@ -1,42 +1,4 @@
-// ===================== Chat =====================
-type Chat = {
-  id: number
-  sender_id: number
-  sender_nickname: string
-  study_group_id: number
-  content: string
-  file_url: string | null
-  is_read: boolean
-  created_at: string
-}
-
-// ===================== Chat:WS =====================
-// 어째서 웹 소캣 연결시 성공 타입과 메시지 목록 조회의 메시지 타입이 다르지?
-interface WSChatMessageEvent {
-  type: 'chat.message'
-  data: {
-    message_id: number
-    sender_id: number
-    study_group_id: number
-    content: string
-    created_at: string
-  }
-}
-
-interface WSChatErrorEvent {
-  type: 'error'
-  code: 'NOT_A_MEMBER' | 'INVALID_TOKEN' | 'UNKNOWN_ERROR'
-  message: string
-}
-
-export interface WSChatMessageReq {
-  type: 'chat.message'
-  content: string
-}
-
-// ===================== Study =====================
-
-// ===================== Study:Lecture =====================
+// ===================== Lecture =====================
 // /api/v1/lectures : 강의 목록 조희 요청에 사용자에 따른 추천 항목이 포함됨
 // /api/v1/lectures/recommendations : 사용자에 따른 추천 항목
 // 어째서 메서드가 반복되는가?
@@ -60,12 +22,31 @@ type Lecture = {
   is_bookmarked: boolean
 }
 
-// ===================== Pagenation =====================
-type Pagenation = {
-  page: number
-  page_size: number
-  total_count: number
+// ===================== Lecture:Review =====================
+// rating이 string인 이유?
+// 이후에 10점, 100점 등 확장 예정이면 %로 하는게 낫지않나?
+type rating =
+  | '5_OUT_OF_5_STARS'
+  | '4_OUT_OF_5_STARS'
+  | '3_OUT_OF_5_STARS'
+  | '2_OUT_OF_5_STARS'
+  | '1_OUT_OF_5_STARS'
+
+type Review = {
+  id: number
+  rating: rating
+  content: string
+  created_at: string
 }
+
+// ===================== Study =====================
+
+// ===================== Pagination =====================
+// type Pagenation = {
+//   page: number
+//   page_size: number
+//   total_count: number
+// }
 
 // ===================== etc =====================
 interface DetailEvent {
@@ -126,30 +107,49 @@ interface ErrorEvent {
  * api.v1.studies.groups(123).PUT({ name: "New Name" }, { params: { updateType: "partial" } }) 로 사용
  *  (req_url:`api/v1/studies/groups/123`, "PUT", { data: { name: "New Name" }, params: { updateType: "partial" } }) 과 같음
  */
-export interface ApiLinks {
+export const ApiLinks = {
   v1: {
     auth: {
-      refresh: {
-        POST: {
-          res: {
-            detail: string
-            data: {
-              access_token: string
-              token_type: string
-              expires_in: number
-            }
-          }
-        }
-      }
       logout: {
-        POST: {
+        POST: {} as {
           res: DetailEvent | ErrorEvent
+        },
+      },
+    },
+    lectures: {
+      GET: {} as {
+        res: {
+          count: number
+          next: string
+          previous: string
+          results: Lecture[]
+          user_nickname: string
+          recommended_lectures: Lecture[]
         }
-      }
-    }
+      },
+      categories: {
+        GET: {} as {
+          res: LectureCategory[]
+        },
+      },
+      dynamicSub: {
+        reviews: {
+          GET: {} as {
+            res: {
+              reviews: Review[]
+            }
+          },
+          // POST: {} as {
+          //   req: {}
+          //   res: {}
+          // },
+          // 리뷰 삭제, 포스팅, 변경 로직 없음
+        },
+      },
+    },
     studies: {
       groups: {
-        POST: {
+        POST: {} as {
           req: {
             name: string
             introduction: string
@@ -174,34 +174,8 @@ export interface ApiLinks {
               lectures: Lecture[]
             }
           }
-        }
-      }
-    }
-  }
-  ws: {
-    studyGroups: (id: number) => {
-      // 메시지 검색하는게 ui상에 있었나?
-      // 피그마엔 안보임
-      // api 명세서 잘못 적은듯
-      chat: {
-        connect: {
-          req: WSChatMessageReq
-          res: WSChatMessageEvent | WSChatErrorEvent
-        }
-      }
-      messages: {
-        GET: {
-          res: {
-            status: string
-            code: string
-            message: string
-            data: {
-              messages: Chat[]
-              pagination: Pagenation
-            }
-          }
-        }
-      }
-    }
-  }
-}
+        },
+      },
+    },
+  },
+} as const

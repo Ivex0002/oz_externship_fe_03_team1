@@ -1,7 +1,21 @@
-import type { ApiLinks } from '@/types/apiLinks'
 import { createApiTree } from './apiTree'
+import { ApiClientFactory } from './apiClient'
+import { TokenManager } from './tokenManager'
+import { throwHttpError } from './throwHttpError'
+import { ApiLinks } from '@/types/ApiLink'
 
-export const BASE_URL = '/api' // 추후 실제 서버 주소로 교체
+// 추후 실제 주소로 교체
+export const BASE_URL = '/api'
+export const LOGIN_PAGE_URL = '/login'
+const WEB_SOCKET_URL = '/ws'
 
-// 현재 createApiTree를 직접 참조하나, createApiClient 로직을 작성하여 토큰 관리와 에러 핸들러를 다룰 예정
-export const api = createApiTree<ApiLinks>({} as ApiLinks)
+const tokenManager = new TokenManager()
+const apiFactory = new ApiClientFactory(tokenManager)
+
+const httpClient = apiFactory.createHttpClient(BASE_URL, throwHttpError)
+const requestExecutor = httpClient.getRequestExecutor()
+
+// 일반 http 통신은 트리 구조로 접근
+export const api = createApiTree(ApiLinks, requestExecutor)
+// 웹소켓은 http 통신이 아니므로 따로 처리
+export const wsApi = apiFactory.createWebSocketClient(WEB_SOCKET_URL)

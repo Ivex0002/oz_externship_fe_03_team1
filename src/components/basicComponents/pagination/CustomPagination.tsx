@@ -4,8 +4,8 @@ import { ChevronLeft, ChevronRight } from 'lucide-react'
 
 type PaginationProps = {
   pageCount: number
-  onPageChange: (selected: number) => void
-  currentPage?: number
+  onPageChange: (selectedPage: number) => void
+  currentPage: number
 }
 
 const CustomPagination = ({
@@ -39,7 +39,7 @@ const CustomPagination = ({
       forcePage={currentPage}
       containerClassName="center-center gap-2 pt-8"
       pageClassName="list-none"
-      pageLinkClassName="px-3 py-2.5 text-base text-gray-700 active:bg-gray-100 active:border-gray-400 active:text-gray-900 rounded-lg bg-white border border-gray-300 hover:bg-gray-50 hover:bg-gray-200"
+      pageLinkClassName="px-3 py-2.5 text-base text-gray-700 active:bg-gray-100 active:border-gray-400 active:text-gray-900 rounded-lg bg-white border border-gray-300 hover:bg-gray-50"
       activeLinkClassName="bg-yellow-500 hover:bg-yellow-600 active:bg-yellow-700 text-white"
     />
   )

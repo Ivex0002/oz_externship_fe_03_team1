@@ -243,7 +243,7 @@ function isRequestConfig<T>(value: unknown): value is RequestConfig<T> {
   const obj = value as Record<string, unknown>
 
   // 1순위: 명시적 마커 체크
-  if ('__isConfig' in obj) {
+  if (obj.__isConfig === true) {
     return true
   }
 

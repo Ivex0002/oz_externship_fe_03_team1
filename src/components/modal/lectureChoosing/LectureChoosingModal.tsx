@@ -2,14 +2,16 @@ import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { useState } from 'react'
 import LectureCard from './LectureCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { ChevronLeft, ChevronRight, Search } from 'lucide-react'
-import { lectureList } from '@/assets/dummyData/lectureList'
+import { Search } from 'lucide-react'
+import { lectureData } from '@/assets/dummyData/lectureData'
 import { storeLecture } from '@/store/storeLecture'
 import { useModal } from '@/hooks/useModal'
+import CustomPagination from '@/components/basicComponents/pagination/CustomPagination'
 // import { useLoaderData } from 'react-router'
 
 const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
+  const [currentPage, setCurrentPage] = useState(0)
   const {
     selectedLectureList,
     previousLectureList,
@@ -20,9 +22,16 @@ const LectureChoosingModal = () => {
   //   const lectureList = useLoaderData()
   const { closeModal } = useModal()
 
+  const lecturesPerPage = 5
+  const pageCount = Math.ceil(lectureData.count / lecturesPerPage)
+
+  const lectureList = lectureData.results
+
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value)
   }
+
+  const onPageChange = (page: number) => setCurrentPage(page)
 
   const handleClickRevert = () => {
     setSelectedLectureList(previousLectureList)
@@ -47,17 +56,14 @@ const LectureChoosingModal = () => {
         </div>
         <div className="flex flex-col gap-4 pt-6">
           {lectureList.map((lecture) => (
-            <LectureCard key={lecture.id} lecture={lecture} />
+            <LectureCard key={lecture.uuid} lecture={lecture} />
           ))}
         </div>
-        <div className="center-center gap-2 pt-8">
-          <BasicButton type="outline">
-            <ChevronLeft />
-          </BasicButton>
-          <BasicButton type="outline">
-            <ChevronRight />
-          </BasicButton>
-        </div>
+        <CustomPagination
+          pageCount={pageCount}
+          onPageChange={onPageChange}
+          currentPage={currentPage}
+        />
       </main>
       <footer className="flex justify-between border-t border-gray-200 p-6">
         <span className="text-sm font-normal text-gray-600">

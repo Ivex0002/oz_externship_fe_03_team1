@@ -23,7 +23,7 @@ export default function TestE() {
         </div>
       </nav>
 
-      <div className="min-h-screen bg-gray-50 pt-[65px]">
+      <div className="min-h-screen bg-white pt-[65px]">
         <StudyRecordDetail />
       </div>
     </>

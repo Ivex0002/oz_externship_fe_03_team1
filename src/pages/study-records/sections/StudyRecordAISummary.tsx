@@ -46,7 +46,7 @@ export default function StudyRecordAISummary({ summaryData }: AISummaryProps) {
       </div>
 
       {isOpen && (
-        <div className="rounded-xl border border-[#E4E0C6] bg-[#FEFCE8] p-6 text-gray-800">
+        <div className="rounded-xl bg-[#FEFCE8] p-6 text-gray-800">
           <p className="mb-4">{summaryData.title}</p>
 
           <div className="space-y-6">

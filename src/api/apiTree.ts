@@ -173,7 +173,7 @@ function isDynamicSub(schema: unknown): schema is { dynamicSub: object } {
  * 경로 중간에 파라미터(동적 세그먼트)가 포함된 경우 처리.
  * ex) /users/:id → users(id)
  */
-function onMiddlePram<T extends object, P extends string = ''>(
+function onMiddleParam<T extends object, P extends string = ''>(
   pathPrefix: P,
   value: (T & Record<string, unknown>)[keyof T] & DynamicFn,
   requestFn: RequestExecutor
@@ -228,7 +228,7 @@ function onHttpMethod<T extends object, P extends string = ''>(
  * 값이 동적 경로 함수인지 판별.
  * ex) /users/:id → users(id)
  */
-function isMiddlePram(value: unknown): value is DynamicFn {
+function isMiddleParam(value: unknown): value is DynamicFn {
   return typeof value === 'function'
 }
 

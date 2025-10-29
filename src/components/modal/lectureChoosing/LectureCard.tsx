@@ -1,6 +1,7 @@
 import { storeLecture } from '@/store/storeLecture'
 import type { Lecture } from '@/types/Lecture'
 import clsx from 'clsx'
+import dayjs from '@/lib/dayjs'
 import { Circle, CircleCheck, Clock3 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
@@ -17,11 +18,15 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
   const formattedPrice = new Intl.NumberFormat('ko-Kr', {
     style: 'currency',
     currency: 'KRW',
-  }).format(lecture.price)
+  }).format(lecture.original_price)
+
+  const formattedDuration = dayjs
+    .duration(lecture.duration, 'minutes')
+    .format('HH:mm')
 
   useEffect(() => {
     selectedLectureList?.forEach(
-      (lec) => lecture.id === lec.id && setIsChecked(true)
+      (lec) => lecture.uuid === lec.uuid && setIsChecked(true)
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -70,7 +75,7 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
               {lecture.platform}
             </span>
             <span className="flex items-center gap-1 text-xs text-gray-600">
-              <Clock3 size={12} /> {lecture.duration}
+              <Clock3 size={12} /> {formattedDuration}
             </span>
             <span className="text-sm font-semibold">{formattedPrice}</span>
           </p>

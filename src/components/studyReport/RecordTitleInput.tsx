@@ -11,12 +11,12 @@ interface RecordTitleInputProps {
 
 const MAX_TITLE_LENGTH = 100
 
-function RecordTitleInput({
+export const RecordTitleInput = ({
   title,
   setTitle,
   status = 'default',
   errorMessage,
-}: RecordTitleInputProps) {
+}: RecordTitleInputProps) => {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
   }
@@ -43,5 +43,3 @@ function RecordTitleInput({
     </div>
   )
 }
-
-export { RecordTitleInput }

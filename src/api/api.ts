@@ -1,8 +1,8 @@
-import { ApiLinks } from '@/types/ApiLinks'
 import { createApiTree } from './apiTree'
 import { ApiClientFactory } from './apiClient'
 import { TokenManager } from './tokenManager'
 import { throwHttpError } from './throwHttpError'
+import { ApiLinks } from '@/types/ApiLinks'
 
 // 추후 실제 주소로 교체
 export const BASE_URL = '/api'

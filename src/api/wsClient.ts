@@ -74,6 +74,7 @@ export class WebSocketClient {
       // TODO:실제 서버 코드로 변경 해야함
       // 명세서에 없음
       if (event.code === 4001) {
+        this.reconnectAttempts++
         if (this.reconnectAttempts >= this.maxReconnectAttempts) {
           this.tokenStorage.clearTokens()
           window.location.href = LOGIN_PAGE_URL
@@ -106,6 +107,10 @@ export class WebSocketClient {
   }
 
   private clearPrev() {
+    if (this.reconnectTimer) {
+      window.clearTimeout(this.reconnectTimer)
+      this.reconnectTimer = null
+    }
     if (this.ws) {
       this.ws.onopen = null
       this.ws.onmessage = null

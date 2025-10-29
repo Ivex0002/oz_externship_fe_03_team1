@@ -3,8 +3,12 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 
 export default function TestG() {
   const handleClick = async () => {
-    const res = await api.v1.lectures.GET()
-    console.log(res)
+    try {
+      const res = await api.v1.lectures.GET()
+      console.log(res)
+    } catch (error) {
+      console.error('API call failed:', error)
+    }
   }
   return (
     <div className="mx-auto w-[567px] p-4">

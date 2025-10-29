@@ -29,7 +29,7 @@ export class HttpClient {
   private client: AxiosInstance
   private tokenStorage: TokenStorage
   private onError?: AxiosErrorHandler
-  private isRefreshing = false
+
   private refreshPromise: Promise<string | null> | null = null
 
   constructor(config: HttpClientConfig) {
@@ -76,26 +76,19 @@ export class HttpClient {
 
           try {
             // refresh 요청 (refresh용 axios 인스턴스 따로 사용 > 무한루프 방지)
-            if (!this.isRefreshing) {
-              this.isRefreshing = true
-              this.refreshPromise = refreshAccessToken()
-                .catch((e) => {
-                  throw new Error(`리프레쉬 실패:${e}`)
-                })
-                .finally(() => {
-                  this.isRefreshing = false
-                  this.refreshPromise = null
-                })
+            if (!this.refreshPromise) {
+              this.refreshPromise = refreshAccessToken().finally(() => {
+                this.refreshPromise = null
+              })
             }
             const newToken = await this.refreshPromise
-            if (newToken) {
-              this.tokenStorage.setAccessToken(newToken)
-              // 헤더 갱신 후 원래 요청 재시도
-              if (originalRequest.headers) {
-                originalRequest.headers.Authorization = `Bearer ${newToken}`
-              }
-              return this.client(originalRequest)
+            if (!newToken) throw new Error('Refresh token returned null')
+
+            this.tokenStorage.setAccessToken(newToken)
+            if (originalRequest.headers) {
+              originalRequest.headers.Authorization = `Bearer ${newToken}`
             }
+            return this.client(originalRequest)
           } catch (refreshError) {
             // 리프래쉬 에러가 있다면 에러 핸들러로 던지기
             if (this.onError) await this.onError(refreshError as AxiosError)

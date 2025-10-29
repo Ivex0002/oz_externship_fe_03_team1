@@ -8,19 +8,29 @@ import TestG from './test/TestG'
 import TestH from './test/TestH'
 import TestY from './test/TestY'
 import BasicModal from './components/basicComponents/basicModal/BasicModal'
-import ReviewPostingModal from './components/modal/reviewPosting/ReviewPostingModal'
+import ReviewModal from './components/modal/review/ReviewModal'
 import DatePickerModal from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
 import LectureChoosingModal from './components/modal/lectureChoosing/LectureChoosingModal'
 import ScheduleModal from './components/modal/schedule/ScheduleModal'
 import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
+import StudyGroup from './pages/StudyGroup'
+import CreateStudyGroup from './pages/study-groups/CreateStudyGroup'
 
 const router = createBrowserRouter([
   {
     path: '/',
     Component: App,
     children: [
+      {
+        path: '/',
+        Component: StudyGroup,
+      },
+      {
+        path: '/create_study_group',
+        Component: CreateStudyGroup,
+      },
       {
         path: '/testModal',
         Component: TestModal,
@@ -30,12 +40,17 @@ const router = createBrowserRouter([
         Component: BasicModal,
         children: [
           {
-            path: '/modal/review_posting',
+            path: '/modal/post_review/:studyGroupId',
             loader: () => {},
-            Component: ReviewPostingModal,
+            Component: ReviewModal,
           },
           {
-            path: '/modal/review_detail',
+            path: '/modal/edit_review/:studyGroupId/:reviewId',
+            loader: () => {},
+            Component: ReviewModal,
+          },
+          {
+            path: '/modal/review_detail/:studyGroupId',
             loader: () => {},
             Component: ReviewDetailModal,
           },

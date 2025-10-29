@@ -61,9 +61,26 @@ body {
 }
 
 /* 채팅, 알림 창에서 사용할 투명한 스크롤 바 */
-.transparent-scrollbar {
-  @apply overflow-y-auto;
-  &::-webkit-scrollbar {
-    @apply w-0;
+
+@layer utilities {
+  .transparent-scrollbar {
+    overflow-y: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .transparent-scrollbar::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+  }
+
+  .transparent-scrollbar-x {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .transparent-scrollbar-x::-webkit-scrollbar {
+    width: 0;
+    height: 0;
   }
 }

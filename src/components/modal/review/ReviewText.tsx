@@ -1,8 +1,9 @@
-import { useState } from 'react'
+type ReviewTextProps = {
+  inputValue: string
+  setInputValue: React.Dispatch<React.SetStateAction<string>>
+}
 
-const ReviewText = () => {
-  const [inputValue, setInputValue] = useState('')
-
+const ReviewText = ({ inputValue, setInputValue }: ReviewTextProps) => {
   return (
     <div className="flex w-[448px] flex-col gap-3 py-6">
       <label htmlFor="review" className="text-sm font-medium">

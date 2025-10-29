@@ -1,14 +1,11 @@
-import React from 'react'
 import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
-import { useState } from 'react'
-import type { Study } from '@/types/StudyGroupTypes'
+import React, { useState } from 'react'
+import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 import StudyCard from '@/components/studyGroup/StudyCard'
-import {
-  studiesCompleted,
-  studiesOngoing,
-} from '@/assets/dummyData/studiesData'
+import { studyGroupList } from '@/assets/dummyData/studiesData'
+import { useNavigate } from 'react-router'
 
 const SearchBar: React.FC = () => (
   <div className="mb-8 w-1/3">
@@ -22,7 +19,7 @@ const SearchBar: React.FC = () => (
   </div>
 )
 
-const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
+const StudySection: React.FC<{ title: string; studies: StudyGroupType[] }> = ({
   title,
   studies,
 }) => {
@@ -92,13 +89,25 @@ const StudySection: React.FC<{ title: string; studies: Study[] }> = ({
   )
 }
 
-const StudyGroup: React.FC = () => {
-  const ongoingWithLeader = studiesOngoing.map((s, i) =>
-    i === 0 ? { ...s, isLeader: true } : s
+const StudyGroup = () => {
+  const navigate = useNavigate()
+
+  const ongoingStudyGroupList = studyGroupList.filter(
+    (study) => study.status === 'ONGOING'
   )
-  const completedWithLeader = studiesCompleted.map((s, i) =>
-    i === 0 ? { ...s, isLeader: true } : s
+  const completedStudyGroupList = studyGroupList.filter(
+    (study) => study.status === 'ENDED'
   )
+  // const ongoingWithLeader = studiesOngoing.map((s, i) =>
+  //   i === 0 ? { ...s, isLeader: true } : s
+  // )
+  // const completedWithLeader = studiesCompleted.map((s, i) =>
+  //   i === 0 ? { ...s, isLeader: true } : s
+  // )
+
+  const handleClickCreateStudy = () => {
+    navigate('/create_study_group')
+  }
 
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
@@ -113,7 +122,11 @@ const StudyGroup: React.FC = () => {
               함께 공부하며 성장하는 스터디 그룹에 참여해보세요
             </p>
           </div>
-          <BasicButton type="primary" size="medium">
+          <BasicButton
+            type="primary"
+            onClick={handleClickCreateStudy}
+            size="medium"
+          >
             <Plus size={16} /> 새 스터디 만들기
           </BasicButton>
         </div>
@@ -122,8 +135,8 @@ const StudyGroup: React.FC = () => {
         <SearchBar />
 
         {/* 스터디 섹션 */}
-        <StudySection title="진행중인 스터디" studies={ongoingWithLeader} />
-        <StudySection title="완료된 스터디" studies={completedWithLeader} />
+        <StudySection title="진행중인 스터디" studies={ongoingStudyGroupList} />
+        <StudySection title="완료된 스터디" studies={completedStudyGroupList} />
       </main>
     </div>
   )

@@ -1,9 +1,9 @@
-import DetailScheduleModal from '@/components/modal/detailSchedule/DetailScheduleModal'
+import ReviewDetailModal from '@/components/modal/reviewDetail/ReviewDetailModal'
 
 function TestH() {
   return (
     <div>
-      <DetailScheduleModal />
+      <ReviewDetailModal />
     </div>
   )
 }

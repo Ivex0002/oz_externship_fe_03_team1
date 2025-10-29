@@ -11,7 +11,7 @@ export default function StudyRecordAttachments({
   attachments,
 }: AttachmentsProps) {
   return (
-    <section className="mt-10">
+    <section className="mt-6">
       <div className="mb-4 flex items-center gap-2 text-gray-800">
         <img
           src="/icons/attachment.svg"
@@ -27,7 +27,7 @@ export default function StudyRecordAttachments({
         {attachments.map((file) => (
           <div
             key={file.filename}
-            className="flex h-[62px] w-[383px] flex-1 items-center justify-between rounded-lg border border-[#E5E7EB] bg-white px-4 py-[13px]"
+            className="flex min-w-[300px] flex-1 items-center justify-between rounded-lg border border-[#E5E7EB] bg-white px-4 py-[13px]"
           >
             <div className="flex items-center gap-3">
               <img

@@ -14,9 +14,7 @@ export default function StudyRecordDetail() {
   const { title, author, content, ai_summary, attachments, created_at } = data
   const [isImageError, setIsImageError] = useState(false)
 
-  const handleBack = () => {
-    alert('스터디 그룹으로 돌아가기')
-  }
+  const handleBack = () => alert('스터디 그룹으로 돌아가기')
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">
@@ -28,12 +26,23 @@ export default function StudyRecordDetail() {
             <h1 className="text-2xl font-bold text-gray-900">{title}</h1>
 
             <div className="flex gap-2">
-              <button className="rounded-lg bg-[#F3F4F6] px-3 py-1.5 text-sm font-medium text-[#374151] transition hover:bg-gray-100">
+              <BasicButton
+                type="secondary"
+                size="small"
+                className="!h-[32px] !rounded-lg !bg-[#F3F4F6] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#374151]"
+                onClick={() => alert('수정하기')}
+              >
                 수정하기
-              </button>
-              <button className="rounded-lg bg-[#FEE2E2] px-3 py-1.5 text-sm font-medium text-[#B91C1C] transition hover:bg-[#FCA5A5]/40">
+              </BasicButton>
+
+              <BasicButton
+                type="danger"
+                size="small"
+                className="!h-[32px] !rounded-lg !bg-[#FEE2E2] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#B91C1C] hover:!bg-[#FEE2E2] active:!bg-[#FEE2E2]"
+                onClick={() => alert('삭제하기')}
+              >
                 삭제하기
-              </button>
+              </BasicButton>
             </div>
           </div>
 

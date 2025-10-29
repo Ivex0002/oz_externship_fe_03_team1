@@ -7,7 +7,10 @@ interface RecordBreadcrumbProps {
 
 export default function RecordBreadcrumb({ current }: RecordBreadcrumbProps) {
   return (
-    <nav className="mb-6 flex items-center text-sm text-gray-500">
+    <nav
+      aria-label="breadcrumb"
+      className="mb-6 flex items-center text-sm text-gray-500"
+    >
       <Link to="/" className="hover:text-gray-700">
         홈
       </Link>

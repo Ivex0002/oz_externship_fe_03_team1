@@ -77,9 +77,7 @@ export class HttpClient {
           try {
             // refresh 요청 (refresh용 axios 인스턴스 따로 사용 > 무한루프 방지)
             if (!this.refreshPromise) {
-              this.refreshPromise = refreshAccessToken().finally(() => {
-                this.refreshPromise = null
-              })
+              this.refreshPromise = refreshAccessToken()
             }
             const newToken = await this.refreshPromise
             if (!newToken) throw new Error('Refresh token returned null')
@@ -95,6 +93,8 @@ export class HttpClient {
             this.tokenStorage.clearTokens()
             window.location.href = LOGIN_PAGE_URL
             return Promise.reject(refreshError)
+          } finally {
+            this.refreshPromise = null
           }
         }
 

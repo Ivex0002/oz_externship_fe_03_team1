@@ -6,12 +6,14 @@ import localizedFormat from 'dayjs/plugin/localizedFormat' // e.g. L, LL
 import isBetween from 'dayjs/plugin/isBetween'
 import isSameOrBefore from 'dayjs/plugin/isSameOrBefore'
 import isSameOrAfter from 'dayjs/plugin/isSameOrAfter'
+import duration from 'dayjs/plugin/duration'
 
 dayjs.extend(relativeTime)
 dayjs.extend(localizedFormat)
 dayjs.extend(isBetween)
 dayjs.extend(isSameOrBefore)
 dayjs.extend(isSameOrAfter)
+dayjs.extend(duration)
 dayjs.locale('ko')
 
 export default dayjs

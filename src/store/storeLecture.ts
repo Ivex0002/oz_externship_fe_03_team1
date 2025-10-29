@@ -24,7 +24,7 @@ export const storeLecture = create<StoreLecture>((set) => ({
 
   addToSelectedLectureList: (lecture) =>
     set((prev) =>
-      prev.selectedLectureList.find((lec) => lec.id === lecture.id)
+      prev.selectedLectureList.find((lec) => lec.uuid === lecture.uuid)
         ? { selectedLectureList: [...prev.selectedLectureList] }
         : { selectedLectureList: [...prev.selectedLectureList, lecture] }
     ),
@@ -32,7 +32,7 @@ export const storeLecture = create<StoreLecture>((set) => ({
   deleteFromSelectedLectureList: (lecture) =>
     set((prev) => ({
       selectedLectureList: prev.selectedLectureList.filter(
-        (lec) => lecture.id !== lec.id
+        (lec) => lecture.uuid !== lec.uuid
       ),
     })),
 

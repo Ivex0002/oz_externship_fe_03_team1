@@ -5,7 +5,7 @@ import RecordMarkdownEditor from '@/components/studyReport/RecordMarkdownEditor'
 import RecordFileUpload from '@/components/studyReport/RecordFileUpload'
 import RecordActionButtons from '@/components/studyReport/RecordActionButtons'
 
-export function StudyRecordForm() {
+export default function StudyRecordForm() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [file, setFile] = useState<File | null>(null)

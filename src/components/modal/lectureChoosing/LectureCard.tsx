@@ -12,6 +12,15 @@ interface LectureCardProps {
 const MAX_LECTURE = 5
 
 export const LectureCard = ({ lecture }: LectureCardProps) => {
+  const {
+    thumbnail_img_url,
+    title,
+    platform,
+    duration,
+    original_price,
+    instructor,
+    uuid,
+  } = lecture
   const [isChecked, setIsChecked] = useState(false)
   const {
     selectedLectureList,
@@ -22,15 +31,13 @@ export const LectureCard = ({ lecture }: LectureCardProps) => {
   const formattedPrice = new Intl.NumberFormat('ko-Kr', {
     style: 'currency',
     currency: 'KRW',
-  }).format(lecture.original_price)
+  }).format(original_price)
 
-  const formattedDuration = dayjs
-    .duration(lecture.duration, 'minutes')
-    .format('HH:mm')
+  const formattedDuration = dayjs.duration(duration, 'minutes').format('HH:mm')
 
   useEffect(() => {
     selectedLectureList?.forEach(
-      (lec) => lecture.uuid === lec.uuid && setIsChecked(true)
+      (lec) => uuid === lec.uuid && setIsChecked(true)
     )
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
@@ -56,27 +63,27 @@ export const LectureCard = ({ lecture }: LectureCardProps) => {
       )}
     >
       <div className="center-center gap-4">
-        {lecture.thumbnail_img_url ? (
+        {thumbnail_img_url ? (
           <img
-            src={lecture.thumbnail_img_url}
-            alt={`${lecture.title}의 이미지`}
+            src={thumbnail_img_url}
+            alt={`${title}의 이미지`}
             className="h-16 w-24 rounded-lg"
           />
         ) : (
           <div className="h-16 w-24 rounded-lg bg-gray-200"></div>
         )}
         <div className="flex flex-col gap-1">
-          <h3 className="text-gray-900">{lecture.title}</h3>
-          <p className="text-sm text-gray-600">{lecture.instructor}</p>
+          <h3 className="text-gray-900">{title}</h3>
+          <p className="text-sm text-gray-600">{instructor}</p>
           <p className="flex items-center gap-3">
             <span
               className={clsx(
-                lecture.platform === 'inflearn' &&
-                  'bg-[#dcfce7] text-[#166534]',
+                platform === 'INFLEARN' && 'bg-[#dcfce7] text-[#166534]',
+                platform === 'UDEMY' && 'bg-[#f3e8ff] text-[#6b21a8]',
                 'rounded-sm px-2 py-1 text-center text-xs font-medium'
               )}
             >
-              {lecture.platform}
+              {platform}
             </span>
             <span className="flex items-center gap-1 text-xs text-gray-600">
               <Clock3 size={12} /> {formattedDuration}

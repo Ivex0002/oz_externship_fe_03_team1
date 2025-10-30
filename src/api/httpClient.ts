@@ -66,8 +66,8 @@ export class HttpClient {
       (config) => {
         // NO_AUTH_URLS_SET에 포함된 url요청은 인증회피
         const url = config.url || ''
-        const needsAuth = !NO_AUTH_URLS_SET.has(url)
-        if (needsAuth) return config
+        const isNoAuth = NO_AUTH_URLS_SET.has(url)
+        if (isNoAuth) return config
 
         const token = this.tokenStorage.getAccessToken()
 

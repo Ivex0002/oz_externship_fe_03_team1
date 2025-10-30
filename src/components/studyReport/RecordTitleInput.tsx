@@ -24,9 +24,9 @@ const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
   return (
     <div className="mb-8">
       {/* 레이블 구조를 MarkdownEditor와 통일 */}
-      <label className="block font-semibold mb-2">
+      <span className="mb-2 block font-semibold">
         제목 <span className="text-red-500">*</span>
-      </label>
+      </span>
 
       <BasicInput
         placeholder="스터디 기록의 제목을 입력하세요"
@@ -37,7 +37,7 @@ const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
         errorMessage={errorMessage}
       />
 
-      <div className="text-right text-sm text-gray-400 mt-1">
+      <div className="mt-1 text-right text-sm text-gray-400">
         {title.length}/{MAX_TITLE_LENGTH}자
       </div>
     </div>
@@ -45,4 +45,3 @@ const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
 }
 
 export default RecordTitleInput
-

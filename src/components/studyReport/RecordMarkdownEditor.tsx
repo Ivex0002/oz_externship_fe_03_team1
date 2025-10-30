@@ -1,8 +1,8 @@
-import MarkdownWrite from "../markdown/MarkdownWrite";
+import MarkdownWrite from '../markdown/MarkdownWrite'
 
 interface RecordMarkdownEditorProps {
-  content: string;
-  setContent: (value: string) => void;
+  content: string
+  setContent: (value: string) => void
 }
 
 export default function RecordMarkdownEditor({
@@ -11,15 +11,14 @@ export default function RecordMarkdownEditor({
 }: RecordMarkdownEditorProps) {
   return (
     <div className="mb-8">
-      <label className="block font-semibold mb-2">
+      <span className="mb-2 block font-semibold">
         내용 <span className="text-red-500">*</span>
-      </label>
+      </span>
       <MarkdownWrite
         value={content}
         onChange={(e) => setContent(e.target.value)}
         placeholder="학습한 내용을 마크다운 형식으로 작성하세요..."
       />
     </div>
-  );
+  )
 }
-

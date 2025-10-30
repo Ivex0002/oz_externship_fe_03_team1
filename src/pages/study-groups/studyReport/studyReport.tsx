@@ -5,22 +5,40 @@ import RecordMarkdownEditor from '@/components/studyReport/RecordMarkdownEditor'
 import RecordFileUpload from '@/components/studyReport/RecordFileUpload'
 import RecordActionButtons from '@/components/studyReport/RecordActionButtons'
 
-export function StudyRecordForm() {
-  const [title, setTitle] = useState('')
-  const [content, setContent] = useState('')
-  const [file, setFile] = useState<File | null>(null)
+type Mode = 'create' | 'edit'
+
+interface StudyRecordFormProps {
+  initialMode?: Mode
+  initialTitle?: string
+  initialContent?: string
+  initialFile?: File | null
+}
+
+export function StudyRecordForm({
+  initialMode = 'create',
+  initialTitle = '',
+  initialContent = '',
+  initialFile = null,
+}: StudyRecordFormProps) {
+  const [title, setTitle] = useState<string>(initialTitle)
+  const [content, setContent] = useState<string>(initialContent)
+  const [file, setFile] = useState<File | null>(initialFile)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedFile = e.target.files?.[0]
-    if (selectedFile) setFile(selectedFile)
+    const selectedFile = e.target.files?.[0] ?? null
+    setFile(selectedFile)
   }
 
   const handleCancel = () => {
     // TODO: 라우팅 or 입력 초기화 로직 추가
+    setTitle(initialTitle)
+    setContent(initialContent)
+    setFile(initialFile)
   }
 
   const handleSave = () => {
     // TODO: 저장 로직 추가
+    console.log({ title, content, file })
   }
 
   return (
@@ -28,7 +46,9 @@ export function StudyRecordForm() {
       {/* 제목, 설명문 카드 밖으로 이동 */}
       <div className="mb-6 w-full max-w-3xl">
         <RecordBreadcrumb />
-        <h1 className="mb-2 text-2xl font-bold">스터디 기록 작성</h1>
+        <h1 className="mb-2 text-2xl font-bold">
+          {initialMode === 'create' ? '스터디 기록 작성' : '스터디 기록 수정'}
+        </h1>
         <p className="text-gray-600">학습한 내용을 자세히 기록해보세요</p>
       </div>
 
@@ -40,7 +60,11 @@ export function StudyRecordForm() {
 
       {/* 카드 바깥에 버튼 추가 */}
       <div className="mt-6 flex w-full max-w-3xl justify-between px-10">
-        <RecordActionButtons onCancel={handleCancel} onSave={handleSave} />
+        <RecordActionButtons
+          onCancel={handleCancel}
+          onSave={handleSave}
+          mode={initialMode} // 모드 전달
+        />
       </div>
     </div>
   )

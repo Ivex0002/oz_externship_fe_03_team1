@@ -1,6 +1,6 @@
 import { ArrowDownToLine } from 'lucide-react'
 
-export interface AttachmentsProps {
+interface AttachmentsProps {
   attachments: {
     filename: string
     url: string

@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 
-export interface AISummaryProps {
+interface AISummaryProps {
   summaryData: {
     title: string
     summary: string

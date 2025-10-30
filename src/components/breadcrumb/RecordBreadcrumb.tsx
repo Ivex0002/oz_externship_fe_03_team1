@@ -1,7 +1,7 @@
 import { Link, useParams } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 
-export interface RecordBreadcrumbProps {
+interface RecordBreadcrumbProps {
   current: '작성' | '상세'
   homeTo?: string
   groupsTo?: string
@@ -13,7 +13,7 @@ interface StudyParams {
 }
 
 const DEFAULT_HOME = '/'
-const DEFAULT_GROUPS = '/study-groups'
+const DEFAULT_GROUPS = '/'
 
 export const RecordBreadcrumb = ({
   current,

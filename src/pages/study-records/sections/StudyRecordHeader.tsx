@@ -3,7 +3,7 @@ import { User } from 'lucide-react'
 import dayjs from '@/lib/dayjs'
 import { useState } from 'react'
 
-export interface StudyRecordHeaderProps {
+interface StudyRecordHeaderProps {
   title: string
   author: {
     nickname: string

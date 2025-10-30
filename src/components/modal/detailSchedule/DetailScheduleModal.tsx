@@ -32,10 +32,14 @@ const DetailScheduleModal = () => {
           생성일: {formattedCreatedScheduleDate}
         </span>
         <div className="flex gap-3">
-          <BasicButton type="primary" size="medium" onClick={handleClickEdit}>
+          <BasicButton
+            variant="primary"
+            size="medium"
+            onClick={handleClickEdit}
+          >
             수정
           </BasicButton>
-          <BasicButton type="danger" size="medium">
+          <BasicButton variant="danger" size="medium">
             삭제
           </BasicButton>
         </div>

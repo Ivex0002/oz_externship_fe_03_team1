@@ -1,11 +1,11 @@
-type ScheduleParticipantsSelectingProps = {
-  selectedParticipants: { id: number; nickname: string; is_leader: boolean }[]
-  setSelectedParticipants: React.Dispatch<
-    React.SetStateAction<{ id: number; nickname: string; is_leader: boolean }[]>
-  >
+import type { Participant } from './ScheduleModal'
+
+interface ScheduleParticipantsSelectingProps {
+  selectedParticipants: Participant[]
+  setSelectedParticipants: React.Dispatch<React.SetStateAction<Participant[]>>
 }
 
-const ScheduleParticipantsSelecting = ({
+export const ScheduleParticipantsSelecting = ({
   selectedParticipants,
   setSelectedParticipants,
 }: ScheduleParticipantsSelectingProps) => {
@@ -127,5 +127,3 @@ const ScheduleParticipantsSelecting = ({
     </section>
   )
 }
-
-export default ScheduleParticipantsSelecting

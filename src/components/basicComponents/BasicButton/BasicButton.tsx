@@ -59,7 +59,8 @@ const BUTTON_COLORS: Record<string, ButtonColorSet> = {
 
 // 프롭스 및 타입
 type ButtonProps = {
-  type?: keyof typeof BUTTON_COLORS
+  variant?: keyof typeof BUTTON_COLORS
+  type?: 'button' | 'submit' | 'reset'
   size?: ButtonSize
   disabled?: boolean
   isLoading?: boolean
@@ -76,7 +77,8 @@ type ButtonStatus = 'default' | 'hover' | 'active' | 'disabled' | 'loading'
 // 로딩 디자인 해야됨 > text와 동일한 색상?
 // Spinner 라이브러리 고려
 export function BasicButton({
-  type = 'primary',
+  variant = 'primary',
+  type = 'button',
   size = 'medium',
   disabled = false,
   isLoading = false,
@@ -97,8 +99,9 @@ export function BasicButton({
   }, [isLoading, disabled])
 
   const colorSet =
-    BUTTON_COLORS[type][status as keyof (typeof BUTTON_COLORS)[typeof type]] ||
-    BUTTON_COLORS[type].default
+    BUTTON_COLORS[variant][
+      status as keyof (typeof BUTTON_COLORS)[typeof variant]
+    ] || BUTTON_COLORS[variant].default
 
   const sizeMap = {
     small: 'px-2 h-8 text-sm',
@@ -120,7 +123,7 @@ export function BasicButton({
 
   return (
     <button
-      type="button"
+      type={type}
       aria-disabled={!isInteractive}
       aria-busy={isLoading}
       onClick={isInteractive ? onClick : undefined}

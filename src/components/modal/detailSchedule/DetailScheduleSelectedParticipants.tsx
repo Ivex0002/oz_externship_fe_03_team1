@@ -2,15 +2,15 @@ import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { User } from 'lucide-react'
 
 const DetailScheduleSelectedParticipants = () => {
-  const { participants } = dummySchedule
+  const { schedule_members } = dummySchedule
 
-  const leader = participants.find((participant) => participant.is_leader)
-  const others = participants.filter((participant) => !participant.is_leader)
+  const leader = schedule_members.find((member) => member.is_leader)
+  const others = schedule_members.filter((member) => !member.is_leader)
 
   return (
     <section className="flex flex-col gap-2">
       <h4 className="text-sm font-medium text-gray-700">
-        참여자 목록 {`(${participants.length}명)`}
+        참여자 목록 {`(${schedule_members.length}명)`}
       </h4>
       <ul className="flex max-h-48 flex-col gap-2 overflow-y-auto rounded-lg border border-gray-200 p-4">
         {leader && (
@@ -24,12 +24,12 @@ const DetailScheduleSelectedParticipants = () => {
             </span>
           </li>
         )}
-        {others.map((participant) => (
-          <li key={participant.id} className="flex items-center gap-3 text-sm">
+        {others.map((member) => (
+          <li key={member.id} className="flex items-center gap-3 text-sm">
             <div className="center-center bg-primary-100 h-8 w-8 rounded-full">
               <User className="text-primary-600" size={18} />
             </div>
-            {participant.nickname}
+            {member.nickname}
           </li>
         ))}
       </ul>

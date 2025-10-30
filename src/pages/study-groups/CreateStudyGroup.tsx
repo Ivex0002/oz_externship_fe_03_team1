@@ -105,14 +105,14 @@ export default function CreateStudyGroup() {
 
         <div className="flex justify-end gap-3 pt-8">
           <BasicButton
-            type="outline"
+            variant="outline"
             onClick={handleBack}
             className="h-[50px] min-w-[80px] px-[25px] py-[13px] text-[14px] font-medium text-[#374151] hover:bg-[#F9FAFB]"
           >
             취소
           </BasicButton>
 
-          <BasicButton type="primary" onClick={handleSubmit}>
+          <BasicButton variant="primary" onClick={handleSubmit}>
             {isEdit ? '스터디 그룹 수정하기' : '스터디 그룹 만들기'}
           </BasicButton>
         </div>

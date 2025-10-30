@@ -9,8 +9,8 @@ export interface AttachmentsProps {
 
 export const StudyRecordAttachments = ({ attachments }: AttachmentsProps) => {
   return (
-    <section className="mt-6">
-      <div className="mb-4 flex items-center gap-2 text-gray-800">
+    <div className="mt-6 text-gray-800">
+      <div className="mb-4 flex items-center gap-2">
         <img
           src="/icons/attachment.svg"
           alt="attachment"
@@ -52,6 +52,6 @@ export const StudyRecordAttachments = ({ attachments }: AttachmentsProps) => {
           </div>
         ))}
       </div>
-    </section>
+    </div>
   )
 }

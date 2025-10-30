@@ -27,7 +27,10 @@ export const LectureSection = () => {
             강의 선택
           </h2>
           <p className="mt-[2px] text-[14px] leading-[20px] text-[#4B5563]">
-            스터디에서 함께 공부할 강의를 선택하세요 (최대 5개)
+            스터디에서 함께 공부할 강의를 선택하세요{' '}
+            {previousLectureList.length > 0
+              ? `(${previousLectureList.length}/5)`
+              : '(최대 5개)'}
           </p>
         </div>
 

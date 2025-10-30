@@ -1,11 +1,12 @@
 import { NavLink, Outlet } from 'react-router'
 import { UserMenu } from './userMenu/UserMenu'
 import { ChatButton } from '../chat/ChatButton'
+import clsx from 'clsx'
 
 export default function NavbarLayout() {
   return (
     <div className="flex min-h-screen flex-col">
-      <nav className="fixed top-0 right-0 left-0 h-[65px] border-b border-gray-200 bg-white px-20">
+      <nav className="fixed top-0 right-0 left-0 z-10 h-[65px] border-b border-gray-200 bg-white px-20">
         <div className="flex h-full items-center justify-between px-8">
           <Logo />
 
@@ -16,15 +17,16 @@ export default function NavbarLayout() {
         </div>
       </nav>
 
-      <main className="mt-[65px] flex w-full flex-1 items-center justify-center bg-white">
+      <main className="mt-[65px] flex w-full flex-1 flex-col items-center justify-center bg-white">
         <Outlet />
+        <Footer />
       </main>
       <ChatButton />
     </div>
   )
 }
 
-function Logo() {
+const Logo = () => {
   return (
     <NavLink to="/" className="flex items-center space-x-2">
       <div className="bg-primary-400 flex h-8 w-8 items-center justify-center rounded-lg font-semibold text-white">
@@ -41,7 +43,7 @@ const linkArr = [
   { path: '/jobs', label: '구인 공고' },
 ]
 
-function Links() {
+const Links = () => {
   return (
     <>
       {linkArr.map((link) => (
@@ -56,5 +58,50 @@ function Links() {
         </NavLink>
       ))}
     </>
+  )
+}
+
+const Footer = () => {
+  const linkStyle = clsx('text-base text-gray-300 ')
+  const titleStyle = clsx('pb-4 text-base font-semibold text-white')
+  return (
+    <div className="h-[313px] w-full bg-gray-900 px-20 py-12">
+      <div className="flex h-[217px] max-w-[1280px] flex-col px-8">
+        <div className="flex h-[128px] gap-8">
+          <div className="flex h-[128px] w-[592px] flex-col">
+            <span className="text-primary-400 mb-4 text-2xl font-bold">
+              StudyHub
+            </span>
+            <span className="text-base text-gray-300">
+              IT 전문가로 성장하는 여정에 함께합니다. 최고의 강의와 스터디
+              그룹으로 실무 역량을 키워보세요.
+            </span>
+          </div>
+          <div className="flex h-[128px] w-[280px] flex-col">
+            <span className={titleStyle}>서비스</span>
+            <div className="flex flex-col gap-2">
+              <span className={linkStyle}>강의 목록</span>
+              <span className={linkStyle}>스터디 그룹</span>
+              <span className={linkStyle}>구인 공고</span>
+            </div>
+          </div>
+          <div className="flex h-[128px] w-[280px] flex-col">
+            <span className={titleStyle}>지원</span>
+            <div className="flex flex-col gap-2">
+              <span className={linkStyle}>고객센터</span>
+              <span className={linkStyle}>FAQ</span>
+              <span className={linkStyle}>개인정보처리방침</span>
+            </div>
+          </div>
+        </div>
+        <div className="h-[89px] w-full pt-8">
+          <div className="flex justify-center border-t border-gray-800 pt-[33px]">
+            <span className="text-base text-gray-400">
+              © 2024 StudyHub. All rights reserved.
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
   )
 }

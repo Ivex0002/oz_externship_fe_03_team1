@@ -43,7 +43,7 @@ export const LectureSection = () => {
               key={lecture.uuid}
               className="flex items-center justify-between rounded-md border border-gray-200 px-4 py-2 text-sm text-gray-800"
             >
-              <LectureCard lecture={lecture} />
+              <SelectedLectureCard lecture={lecture} />
             </li>
           ))}
         </ul>
@@ -63,8 +63,13 @@ export const LectureSection = () => {
   )
 }
 
-const LectureCard = ({ lecture }: { lecture: Lecture }) => {
+interface SelectedLectureCardProps {
+  lecture: Lecture
+}
+
+const SelectedLectureCard = ({ lecture }: SelectedLectureCardProps) => {
   const { thumbnail_img_url, title, platform, instructor } = lecture
+
   return (
     <div className="flex w-full items-center gap-2 p-2">
       {thumbnail_img_url ? (

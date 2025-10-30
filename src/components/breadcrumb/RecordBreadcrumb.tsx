@@ -7,12 +7,20 @@ export interface RecordBreadcrumbProps {
   groupsTo?: string
 }
 
+interface StudyParams {
+  id?: string
+  groupId?: string
+}
+
+const DEFAULT_HOME = '/'
+const DEFAULT_GROUPS = '/study-groups'
+
 export const RecordBreadcrumb = ({
   current,
-  homeTo = '/',
-  groupsTo = '/study-groups',
+  homeTo = DEFAULT_HOME,
+  groupsTo = DEFAULT_GROUPS,
 }: RecordBreadcrumbProps) => {
-  const { id, groupId } = useParams() as { id?: string; groupId?: string }
+  const { id, groupId } = useParams() as StudyParams
   const resolvedGroupId = groupId ?? id ?? '1'
 
   return (

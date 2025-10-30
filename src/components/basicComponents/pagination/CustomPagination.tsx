@@ -2,13 +2,13 @@ import ReactPaginate from 'react-paginate'
 import { BasicButton } from '../BasicButton/BasicButton'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 
-type PaginationProps = {
+interface PaginationProps {
   pageCount: number
   onPageChange: (selectedPage: number) => void
   currentPage: number
 }
 
-const CustomPagination = ({
+export const CustomPagination = ({
   pageCount,
   onPageChange,
   currentPage,
@@ -44,5 +44,3 @@ const CustomPagination = ({
     />
   )
 }
-
-export default CustomPagination

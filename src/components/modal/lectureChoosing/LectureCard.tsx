@@ -5,9 +5,13 @@ import dayjs from '@/lib/dayjs'
 import { Circle, CircleCheck, Clock3 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+interface LectureCardProps {
+  lecture: Lecture
+}
+
 const MAX_LECTURE = 5
 
-const LectureCard = ({ lecture }: { lecture: Lecture }) => {
+export const LectureCard = ({ lecture }: LectureCardProps) => {
   const [isChecked, setIsChecked] = useState(false)
   const {
     selectedLectureList,
@@ -69,7 +73,7 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
               className={clsx(
                 lecture.platform === 'inflearn' &&
                   'bg-[#dcfce7] text-[#166534]',
-                'rounded-sm px-2 py-1 text-xs font-medium'
+                'rounded-sm px-2 py-1 text-center text-xs font-medium'
               )}
             >
               {lecture.platform}
@@ -89,5 +93,3 @@ const LectureCard = ({ lecture }: { lecture: Lecture }) => {
     </div>
   )
 }
-
-export default LectureCard

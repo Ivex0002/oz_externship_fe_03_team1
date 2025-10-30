@@ -21,6 +21,18 @@ interface HttpClientConfig {
   onError?: (error: AxiosError) => void
 }
 
+const NO_AUTH_URLS_SET = new Set<string>([
+  '/api/v1/auth/refresh',
+  '/api/v1/lectures/categories',
+  // '/api/v1/lectures' GET 의 경우 정확히 일치할때만 패스 되도록 따로 지정이 필요함
+  // (로그인 전에 강의만 살펴보는 경우) => 실제로 지원하는 기능인지 확인 필요
+
+  // (스웨거) NotificationTypeEnum이 제공 되나, 추후에 타입만 따로 받아올 가능성 있음
+  // 로그인전에 타입만 따로 받아오기
+  //    => ux 증진(ui에 표시되는 속도 향상)
+  //    => 불필요한 데이터 통신 비용 증가
+])
+
 /**
  * 토큰 삽입과 요청만 처리
  * 에러는 핸들러로 위임
@@ -52,7 +64,13 @@ export class HttpClient {
     // 요청 인터셉터 - 토큰 자동 삽입
     this.client.interceptors.request.use(
       (config) => {
+        // NO_AUTH_URLS_SET에 포함된 url요청은 인증회피
+        const url = config.url || ''
+        const needsAuth = !NO_AUTH_URLS_SET.has(url)
+        if (needsAuth) return config
+
         const token = this.tokenStorage.getAccessToken()
+
         if (token && config.headers) {
           config.headers.Authorization = `Bearer ${token}`
         }

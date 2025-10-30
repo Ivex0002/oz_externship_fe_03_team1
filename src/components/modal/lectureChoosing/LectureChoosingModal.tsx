@@ -1,15 +1,17 @@
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { useState } from 'react'
-import LectureCard from './LectureCard'
+import { LectureCard } from './LectureCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { Search } from 'lucide-react'
 import { lectureData } from '@/assets/dummyData/lectureData'
 import { storeLecture } from '@/store/storeLecture'
 import { useModal } from '@/hooks/useModal'
-import CustomPagination from '@/components/basicComponents/pagination/CustomPagination'
+import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
 // import { useLoaderData } from 'react-router'
 
-const LectureChoosingModal = () => {
+const LECTURES_PER_PAGE = 5
+
+export const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
   const [currentPage, setCurrentPage] = useState(0)
   const {
@@ -22,8 +24,7 @@ const LectureChoosingModal = () => {
   //   const lectureList = useLoaderData()
   const { closeModal } = useModal()
 
-  const lecturesPerPage = 5
-  const pageCount = Math.ceil(lectureData.count / lecturesPerPage)
+  const pageCount = Math.ceil(lectureData.count / LECTURES_PER_PAGE)
 
   const lectureList = lectureData.results
 
@@ -40,6 +41,7 @@ const LectureChoosingModal = () => {
 
   const handleClickConfirm = () => {
     setPreviousLectureList(selectedLectureList)
+    closeModal()
   }
 
   return (
@@ -81,5 +83,3 @@ const LectureChoosingModal = () => {
     </div>
   )
 }
-
-export default LectureChoosingModal

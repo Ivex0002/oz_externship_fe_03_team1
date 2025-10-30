@@ -1,9 +1,9 @@
-interface LectureCategory {
+type LectureCategory = {
   id: number
   name: string
 }
 
-export interface Lecture {
+export type Lecture = {
   uuid: string
   title: string
   instructor: string

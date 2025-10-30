@@ -3,7 +3,7 @@ import { ArrowLeft } from 'lucide-react'
 import type { StudyGroupForm } from '../../types/StudyGroupTypes'
 import BasicInfoSection from './sections/BasicInfoSection'
 import PeriodSection from './sections/PeriodSection'
-import LectureSection from './sections/LectureSection'
+import { LectureSection } from './sections/LectureSection'
 import BasicModal from '../../components/basicComponents/basicModal/BasicModal'
 import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
 import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
@@ -100,7 +100,7 @@ export default function CreateStudyGroup() {
         </section>
 
         <section className="rounded-2xl bg-white p-10 shadow-sm">
-          <LectureSection form={form} setForm={setForm} />
+          <LectureSection />
         </section>
 
         <div className="flex justify-end gap-3 pt-8">

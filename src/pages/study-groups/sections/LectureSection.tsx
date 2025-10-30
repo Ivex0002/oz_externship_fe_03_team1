@@ -1,15 +1,19 @@
 import { Book } from 'lucide-react'
 import { BasicButton } from '../../../components/basicComponents/BasicButton/BasicButton'
-import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
+// import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import { useModal } from '../../../hooks/useModal'
+import { storeLecture } from '@/store/storeLecture'
+import type { Lecture } from '@/types/Lecture'
+import clsx from 'clsx'
 
-interface Props {
-  form: StudyGroupForm
-  setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
-}
+// interface Props {
+//   form: StudyGroupForm
+//   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
+// }
 
-export default function LectureSection({ form }: Props) {
+export const LectureSection = () => {
   const { openModal } = useModal()
+  const { previousLectureList } = storeLecture()
 
   const handleOpenLectureModal = () => {
     openModal('/modal/choosing_lecture', '강의 선택')
@@ -32,7 +36,18 @@ export default function LectureSection({ form }: Props) {
         </BasicButton>
       </div>
 
-      {form.lectures.length === 0 ? (
+      {previousLectureList.length > 0 ? (
+        <ul className="flex flex-col gap-3">
+          {previousLectureList.map((lecture) => (
+            <li
+              key={lecture.uuid}
+              className="flex items-center justify-between rounded-md border border-gray-200 px-4 py-2 text-sm text-gray-800"
+            >
+              <LectureCard lecture={lecture} />
+            </li>
+          ))}
+        </ul>
+      ) : (
         <div className="flex flex-col items-center justify-center py-12">
           <Book
             className="mb-2 text-[#6B7280]"
@@ -43,18 +58,37 @@ export default function LectureSection({ form }: Props) {
             강의 추가하기 버튼을 클릭해서 강의를 선택해보세요.
           </p>
         </div>
-      ) : (
-        <ul className="flex flex-col gap-3">
-          {form.lectures.map((lecture, idx) => (
-            <li
-              key={idx}
-              className="flex items-center justify-between rounded-md border border-gray-200 px-4 py-2 text-sm text-gray-800"
-            >
-              {lecture}
-            </li>
-          ))}
-        </ul>
       )}
     </section>
+  )
+}
+
+const LectureCard = ({ lecture }: { lecture: Lecture }) => {
+  const { thumbnail_img_url, title, platform, instructor } = lecture
+  return (
+    <div className="flex w-full items-center gap-2 p-2">
+      {thumbnail_img_url ? (
+        <img
+          src={thumbnail_img_url}
+          alt={`${title}의 이미지`}
+          className="h-16 w-24 rounded-lg"
+        />
+      ) : (
+        <div className="h-16 w-24 rounded-lg bg-gray-200"></div>
+      )}
+      <div className="flex w-full justify-between gap-2 p-2 font-medium text-gray-800">
+        <p>
+          {title} <span className="text-gray-500">{`(${instructor})`}</span>
+        </p>
+        <span
+          className={clsx(
+            platform === 'inflearn' && 'bg-[#dcfce7] text-[#166534]',
+            'rounded-sm px-2 py-1 text-center text-xs font-medium'
+          )}
+        >
+          {platform}
+        </span>
+      </div>
+    </div>
   )
 }

@@ -1,4 +1,4 @@
-import StudyRecordDetail from '../pages/study-records/StudyRecordDetail'
+import { StudyRecordDetail } from '../pages/study-records/StudyRecordDetail'
 
 export default function TestE() {
   return (

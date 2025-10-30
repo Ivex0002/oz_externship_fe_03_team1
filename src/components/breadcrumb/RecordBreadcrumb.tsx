@@ -1,17 +1,17 @@
 import { Link, useParams } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 
-interface RecordBreadcrumbProps {
+export interface RecordBreadcrumbProps {
   current: '작성' | '상세'
   homeTo?: string
   groupsTo?: string
 }
 
-export default function RecordBreadcrumb({
+export const RecordBreadcrumb = ({
   current,
   homeTo = '/',
-  groupsTo = '/',
-}: RecordBreadcrumbProps) {
+  groupsTo = '/study-groups',
+}: RecordBreadcrumbProps) => {
   const { id, groupId } = useParams() as { id?: string; groupId?: string }
   const resolvedGroupId = groupId ?? id ?? '1'
 

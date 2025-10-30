@@ -4,8 +4,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, User } from 'lucide-react'
-import { StudyRecordAISummary } from './sections/StudyRecordAISummary'
-import { StudyRecordAttachments } from './sections/StudyRecordAttachments'
+import { StudyRecordAISummary, StudyRecordAttachments } from './sections'
 import dayjs from '@/lib/dayjs'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 

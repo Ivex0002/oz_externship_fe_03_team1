@@ -1,3 +1,26 @@
+// TODO
+// 1. StudyGroupDetail.member 타입 v
+//    api 명세서 :
+//      {
+//        "id": 1,
+//        "nickname": "",
+//        "is_leader": false
+//      }
+
+// 2. StudyGroup.status 타입 v
+//    api 명세서 :
+//      PENDING | ONGOING | ENDED
+
+// 3. StudyGroupPost.lectures 타입 v
+//    api 명세서 :
+//      "lectures": [
+//        {
+//          "id": 1,
+//          "title": "",
+//          "instructor": ""
+//        },
+//      ]
+
 // ===================== User =====================
 // type RoleEnum = 'admin' | 'staff' | 'user'
 // (스웨거) RoleEnum이 존재하나 어디에도 쓰이지 않음
@@ -63,6 +86,9 @@ type Lecture = {
 // ===================== Study =====================
 
 // ===================== Study:Group =====================
+// api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
+type StudyGroupStatus = 'PENDING' | 'ONGOING' | 'ENDED'
+
 type StudyGroup = {
   id: number
   name: string
@@ -70,17 +96,29 @@ type StudyGroup = {
   max_headcount: number
   start_at: string
   end_at: string
-  status: string
+  status: StudyGroupStatus
   current_headcount: number
   is_leader: boolean
   lectures: Lecture[]
 }
 
+// api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
+type Member = {
+  id: number
+  nickname: string
+  is_leader: boolean
+}
+
 type StudyGroupDetail = StudyGroup & {
-  // (스웨거) members 타입 누락
-  // 임시로 UserProfile[]로 대체
-  // UserProfile인지 partial<UserProfile>인지 확인 필요
-  members: UserProfile[]
+  // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
+  members: Member[]
+}
+
+// api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
+type StudyGroupPostLecture = {
+  id: number
+  title: string
+  instructor: string
 }
 
 type StudyGroupPost = {
@@ -90,8 +128,8 @@ type StudyGroupPost = {
   start_at: string
   end_at: string
   introduction: string
-  // (스웨거) type Lecture 인지 lecture_id 인지 불명확함.
-  lectures: number[]
+  // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
+  lectures: StudyGroupPostLecture[]
 }
 
 // ===================== Study:Review =====================

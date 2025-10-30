@@ -21,8 +21,8 @@ export default TestD;
 //   <NavbarLayout />
   
 //   {/* 진행중인 스터디가 없을 때 */}
-//   <NoStudyFound type="active" />
+//   <NoStudiesResult type="active" />
   
 //   {/* 완료된 스터디가 없을 때 */}
-//   <NoStudyFound type="completed" />
+//   <NoStudiesResult type="completed" />
 // </div>

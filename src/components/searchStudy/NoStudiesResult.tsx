@@ -7,8 +7,8 @@ import test1 from '/medal.svg'
 type StudyType = 'active' | 'completed'
 
 // 컴포넌트가(NoStudyFound) 받을 props의 형태를 정의
-interface NoStudyFoundProps {
-  type: StudyType
+interface NoStudiesResultProps {
+  type: StudyType;
   // 검색 결과가 없을 때만 표시해야하기 때문에 추가한 불린 타입.
   isSearchResult?: boolean
 }
@@ -24,7 +24,7 @@ interface StatusConfig {
 
 // 현재 파일의 메인 컴포넌트. 위 type: StudyType이고, type을 프롭스로
 // 받으며 컨텐츠가 없을 때 화면을 출력하기에 isSearchResult는 false이다.
-export const NoStudyFound: React.FC<NoStudyFoundProps> = ({
+export const NoStudiesResult: React.FC<NoStudiesResultProps> = ({ 
   type,
   isSearchResult = false,
 }) => {

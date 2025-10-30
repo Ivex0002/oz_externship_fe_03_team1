@@ -7,9 +7,10 @@ import { lectureData } from '@/assets/dummyData/lectureData'
 import { storeLecture } from '@/store/storeLecture'
 import { useModal } from '@/hooks/useModal'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
+import { useDebounce } from '@/hooks/useDebounce'
 // import { useLoaderData } from 'react-router'
 
-const LECTURES_PER_PAGE = 5
+const LECTURES_PER_PAGE = 5 // api 데이터 받아올때 page_size의 값으로 보냄. (page_size=value)
 
 export const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
@@ -24,9 +25,16 @@ export const LectureChoosingModal = () => {
   //   const lectureList = useLoaderData()
   const { closeModal } = useModal()
 
+  const debouncedSearchInputValue = useDebounce(searchInputValue, 500)
+
   const pageCount = Math.ceil(lectureData.count / LECTURES_PER_PAGE)
 
-  const lectureList = lectureData.results
+  // api 연결시에는 쿼리파라미터로 검색어를 보내서 리스트를 받아옴. (search=searchValue)
+  const lectureList = lectureData.results.filter(
+    (lecture) =>
+      lecture.instructor.includes(debouncedSearchInputValue) ||
+      lecture.title.includes(debouncedSearchInputValue)
+  )
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value)

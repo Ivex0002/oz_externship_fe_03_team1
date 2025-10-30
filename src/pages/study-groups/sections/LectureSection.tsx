@@ -91,6 +91,7 @@ const SelectedLectureCard = ({ lecture }: SelectedLectureCardProps) => {
         <span
           className={clsx(
             platform === 'inflearn' && 'bg-[#dcfce7] text-[#166534]',
+            platform === 'UDEMY' && 'bg-[#f3e8ff] text-[#6b21a8]',
             'rounded-sm px-2 py-1 text-center text-xs font-medium'
           )}
         >

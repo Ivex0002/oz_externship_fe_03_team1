@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 
-type AISummaryProps = {
+export interface AISummaryProps {
   summaryData: {
     title: string
     summary: string
@@ -10,7 +10,7 @@ type AISummaryProps = {
   }
 }
 
-export default function StudyRecordAISummary({ summaryData }: AISummaryProps) {
+export const StudyRecordAISummary = ({ summaryData }: AISummaryProps) => {
   const [isOpen, setIsOpen] = useState(true)
 
   return (

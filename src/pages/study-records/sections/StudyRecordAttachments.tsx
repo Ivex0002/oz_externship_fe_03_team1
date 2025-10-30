@@ -1,15 +1,13 @@
 import { ArrowDownToLine } from 'lucide-react'
 
-type AttachmentsProps = {
+export interface AttachmentsProps {
   attachments: {
     filename: string
     url: string
   }[]
 }
 
-export default function StudyRecordAttachments({
-  attachments,
-}: AttachmentsProps) {
+export const StudyRecordAttachments = ({ attachments }: AttachmentsProps) => {
   return (
     <section className="mt-6">
       <div className="mb-4 flex items-center gap-2 text-gray-800">

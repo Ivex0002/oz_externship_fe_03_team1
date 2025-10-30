@@ -1,27 +1,39 @@
-import { Link } from 'react-router'
+import { Link, useParams } from 'react-router'
 import { ChevronRight } from 'lucide-react'
 
 interface RecordBreadcrumbProps {
   current: '작성' | '상세'
+  homeTo?: string
+  groupsTo?: string
 }
 
-export default function RecordBreadcrumb({ current }: RecordBreadcrumbProps) {
+export default function RecordBreadcrumb({
+  current,
+  homeTo = '/',
+  groupsTo = '/',
+}: RecordBreadcrumbProps) {
+  const { id, groupId } = useParams() as { id?: string; groupId?: string }
+  const resolvedGroupId = groupId ?? id ?? '1'
+
   return (
     <nav
       aria-label="breadcrumb"
       className="mb-6 flex items-center text-sm text-gray-500"
     >
-      <Link to="/" className="hover:text-gray-700">
+      <Link to={homeTo} className="hover:text-gray-700">
         홈
       </Link>
       <ChevronRight size={16} className="mx-1" />
 
-      <Link to="/study-groups" className="hover:text-gray-700">
+      <Link to={groupsTo} className="hover:text-gray-700">
         스터디 그룹
       </Link>
       <ChevronRight size={16} className="mx-1" />
 
-      <Link to="/study-groups/1" className="hover:text-gray-700">
+      <Link
+        to={`/study_group/${resolvedGroupId}`}
+        className="hover:text-gray-700"
+      >
         스터디 상세
       </Link>
       <ChevronRight size={16} className="mx-1" />

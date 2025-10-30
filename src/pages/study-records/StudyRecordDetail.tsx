@@ -4,12 +4,12 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { ArrowLeft, User } from 'lucide-react'
-import StudyRecordAISummary from './sections/StudyRecordAISummary'
-import StudyRecordAttachments from './sections/StudyRecordAttachments'
+import { StudyRecordAISummary } from './sections/StudyRecordAISummary'
+import { StudyRecordAttachments } from './sections/StudyRecordAttachments'
 import dayjs from '@/lib/dayjs'
-import RecordBreadcrumb from '@/components/breadcrumb/RecordBreadcrumb'
+import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 
-export default function StudyRecordDetail() {
+export const StudyRecordDetail = () => {
   const { data } = dummyStudyRecordDetail
   const { title, author, content, ai_summary, attachments, created_at } = data
   const [isImageError, setIsImageError] = useState(false)

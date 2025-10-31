@@ -4,19 +4,19 @@ import React from 'react'
 
 interface RecordTitleInputProps {
   title: string
-  setTitle: (value: string) => void
+  setTitle: React.Dispatch<React.SetStateAction<string>>
   status?: InputStatus
   errorMessage?: string
 }
 
 const MAX_TITLE_LENGTH = 100
 
-const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
+function RecordTitleInput({
   title,
   setTitle,
   status = 'default',
   errorMessage,
-}) => {
+}: RecordTitleInputProps) {
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value)
   }

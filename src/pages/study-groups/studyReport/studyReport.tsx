@@ -5,7 +5,7 @@ import RecordFileUpload from '@/components/studyReport/RecordFileUpload'
 import RecordActionButtons from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 
-export function StudyReport() {
+const StudyReport = () => {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const [file, setFile] = useState<File | null>(null)
@@ -22,7 +22,7 @@ export function StudyReport() {
   }
 
   const handleSave = () => {
-    console.log({ title, content, file })
+    // 저장 로직 추가 예정
   }
 
   return (
@@ -49,3 +49,5 @@ export function StudyReport() {
     </div>
   )
 }
+
+export default StudyReport

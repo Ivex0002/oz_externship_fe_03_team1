@@ -21,7 +21,7 @@ export default function RecordFileUpload({
           onClick={handleClick}
         >
           <img
-            src="../../public/images/Vector@2x.png"
+            src="../../public/icons/Vector@2x.png"
             alt="파일 업로드"
             className="h-10 w-10"
           />

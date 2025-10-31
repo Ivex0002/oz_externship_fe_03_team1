@@ -37,7 +37,7 @@ const RecordTitleInput: React.FC<RecordTitleInputProps> = ({
         errorMessage={errorMessage}
       />
 
-      <div className="mt-1 text-right text-sm text-gray-400">
+      <div className="mt-1 text-sm text-gray-400">
         {title.length}/{MAX_TITLE_LENGTH}자
       </div>
     </div>

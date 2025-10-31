@@ -13,7 +13,7 @@ export default function RecordFileUpload({
   }
 
   return (
-    <div className="mb-10">
+    <div>
       <label className="mb-2 block font-semibold">첨부 파일</label>
       <div className="rounded-xl border-2 border-dashed border-[#E5E7EB] py-10 text-center">
         <span

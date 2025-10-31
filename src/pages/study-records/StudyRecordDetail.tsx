@@ -47,7 +47,7 @@ export const StudyRecordDetail = () => {
 
       <div className="mt-6 flex justify-start">
         <BasicButton
-          type="ghost"
+          variant="ghost"
           size="medium"
           className="flex items-center gap-2 text-gray-600 hover:text-gray-800"
           onClick={handleBack}

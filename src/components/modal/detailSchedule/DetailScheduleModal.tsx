@@ -9,7 +9,7 @@ import { useParams } from 'react-router'
 
 const DetailScheduleModal = () => {
   const params = useParams<{ id: string }>()
-  const { modalToModal } = useModal()
+  const { modalToModal, closeModal } = useModal()
   const { setPreviousSchedule, setIsEdit } = storeSchedule()
   const formattedCreatedScheduleDate = dayjs(dummySchedule.created_at).format(
     'LLL'
@@ -19,6 +19,12 @@ const DetailScheduleModal = () => {
     setPreviousSchedule(dummySchedule)
     setIsEdit(true)
     modalToModal(`/modal/edit_schedule/${params.id}`, '스케줄 수정')
+  }
+
+  const handleClickDelete = () => {
+    // api 로직
+    // api 성공시
+    // closeModal()
   }
 
   return (
@@ -39,7 +45,11 @@ const DetailScheduleModal = () => {
           >
             수정
           </BasicButton>
-          <BasicButton variant="danger" size="medium">
+          <BasicButton
+            variant="danger"
+            size="medium"
+            onClick={handleClickDelete}
+          >
             삭제
           </BasicButton>
         </div>

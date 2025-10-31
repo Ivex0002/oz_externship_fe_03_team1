@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { RecordTitleInput } from '@/components/studyReport/RecordTitleInput'
 import RecordMarkdownEditor from '@/components/studyReport/RecordMarkdownEditor'
 import RecordFileUpload from '@/components/studyReport/RecordFileUpload'
-import RecordActionButtons from '@/components/studyReport/RecordActionButtons'
+import { RecordActionButtons } from '@/components/studyReport/RecordActionButtons'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 
 export const StudyReport = () => {

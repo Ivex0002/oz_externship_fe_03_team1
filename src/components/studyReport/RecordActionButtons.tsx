@@ -6,11 +6,11 @@ interface RecordActionButtonsProps {
   mode: 'create' | 'edit'
 }
 
-export default function RecordActionButtons({
+export const RecordActionButtons = ({
   onCancel,
   onSave,
   mode,
-}: RecordActionButtonsProps) {
+}: RecordActionButtonsProps) => {
   return (
     <div className="flex w-full justify-between">
       <BasicButton type="outline" size="large" onClick={onCancel}>

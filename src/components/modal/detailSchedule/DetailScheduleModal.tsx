@@ -9,7 +9,7 @@ import { useParams } from 'react-router'
 
 export const DetailScheduleModal = () => {
   const params = useParams<{ id: string }>()
-  const { modalToModal, closeModal } = useModal()
+  const { modalToModal } = useModal()
   const { setPreviousSchedule, setIsEdit } = storeSchedule()
   const formattedCreatedScheduleDate = dayjs(dummySchedule.created_at).format(
     'LLL'

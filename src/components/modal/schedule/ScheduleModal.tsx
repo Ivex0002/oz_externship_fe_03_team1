@@ -34,18 +34,18 @@ export const ScheduleModal = () => {
   const onSubmitSchedule: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
 
-    const form = e.currentTarget // 이벤트가 걸린 <form> 요소
-    const formData = new FormData(form) // 모든 input 데이터 수집
+    // const form = e.currentTarget // 이벤트가 걸린 <form> 요소
+    // const formData = new FormData(form) // 모든 input 데이터 수집
 
-    const data = Object.fromEntries(formData.entries())
-    const payload = {
-      title: data.title,
-      objective: data.objective,
-      session_date: data.session_date,
-      start_time: data.start_time,
-      end_time: data.end_time,
-      schedule_members: selectedMembers.map((member) => member.id),
-    }
+    // const data = Object.fromEntries(formData.entries())
+    // const payload = {
+    //   title: data.title,
+    //   objective: data.objective,
+    //   session_date: data.session_date,
+    //   start_time: data.start_time,
+    //   end_time: data.end_time,
+    //   schedule_members: selectedMembers.map((member) => member.id),
+    // }
 
     // api 로직
 

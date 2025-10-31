@@ -3,10 +3,10 @@ interface RecordFileUploadProps {
   onFileChange: (e: React.ChangeEvent<HTMLInputElement>) => void
 }
 
-export default function RecordFileUpload({
+export const RecordFileUpload = ({
   file,
   onFileChange,
-}: RecordFileUploadProps) {
+}: RecordFileUploadProps) => {
   const handleClick = () => {
     const fileInput = document.getElementById('fileInput') as HTMLInputElement
     fileInput?.click()

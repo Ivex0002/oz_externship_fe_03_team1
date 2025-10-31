@@ -55,6 +55,7 @@ export const ScheduleParticipantsSelecting = ({
             >
               <input
                 id={leader.nickname}
+                name="schedule_member"
                 type="checkbox"
                 value={leader.nickname}
                 checked={isChecked(leader.id)}
@@ -93,12 +94,12 @@ export const ScheduleParticipantsSelecting = ({
             >
               <input
                 id={participant.nickname}
+                name="schedule_member"
                 type="checkbox"
                 value={participant.nickname}
                 checked={isChecked(participant.id)}
                 onChange={handleParticipantChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
-                required
               />
               <span className="absolute top-1/2 left-1.5 -translate-x-1/2 -translate-y-1/2 transform text-white opacity-0 peer-checked:opacity-100">
                 <svg

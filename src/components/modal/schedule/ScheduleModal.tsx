@@ -45,7 +45,19 @@ export const ScheduleModal = () => {
     const formData = new FormData(form) // 모든 input 데이터 수집
 
     const data = Object.fromEntries(formData.entries())
-    console.log(data)
+    const payload = {
+      title: data.title,
+      objective: data.objective,
+      session_date: data.session_date,
+      start_time: data.start_time,
+      end_time: data.end_time,
+      schedule_members: selectedParticipants.map((member) => member.id),
+    }
+
+    // api 로직
+
+    // api 통신 성공시
+    // closeModal()
   }
 
   return (
@@ -59,10 +71,10 @@ export const ScheduleModal = () => {
         />
       </main>
       <footer className="flex w-full justify-end gap-3 border-t border-gray-200 p-6">
-        <BasicButton type="outline" size="large" onClick={handleClickCancel}>
+        <BasicButton variant="outline" size="large" onClick={handleClickCancel}>
           취소
         </BasicButton>
-        <BasicButton type="primary" size="large">
+        <BasicButton variant="primary" size="large" type="submit">
           {isEdit ? '수정하기' : '추가하기'}
         </BasicButton>
       </footer>

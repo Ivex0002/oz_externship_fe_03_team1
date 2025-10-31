@@ -2,13 +2,13 @@ import MarkdownWrite from '../markdown/MarkdownWrite'
 
 interface RecordMarkdownEditorProps {
   content: string
-  setContent: (value: string) => void
+  setContent: React.Dispatch<React.SetStateAction<string>>
 }
 
-export default function RecordMarkdownEditor({
+export const RecordMarkdownEditor = ({
   content,
   setContent,
-}: RecordMarkdownEditorProps) {
+}: RecordMarkdownEditorProps) => {
   return (
     <div className="mb-8">
       <span className="mb-2 block font-semibold">

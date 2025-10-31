@@ -1,21 +1,14 @@
-import { ScheduleParticipantsSelecting } from './ScheduleParticipantsSelecting'
+import { ScheduleMembersSelecting } from './ScheduleParticipantsSelecting'
 import { useEffect, useState } from 'react'
 import { ScheduleInfo } from './ScheduleInfo'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
 import { storeSchedule } from '@/store/storeSchedule'
 import { useParams } from 'react-router'
-
-export type Participant = {
-  id: number
-  nickname: string
-  is_leader: boolean
-}
+import type { Member } from '@/types/Schedule'
 
 export const ScheduleModal = () => {
-  const [selectedParticipants, setSelectedParticipants] = useState<
-    Participant[]
-  >([])
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([])
   const { id } = useParams<{ id: string }>()
   const { closeModal, modalToModal } = useModal()
   const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
@@ -23,7 +16,7 @@ export const ScheduleModal = () => {
   useEffect(() => {
     if (!isEdit) return // 수정이 아닌 경우 초기화하지 않음
     if (previousSchedule) {
-      setSelectedParticipants(previousSchedule.schedule_members)
+      setSelectedMembers(previousSchedule.schedule_members)
     }
   }, [isEdit, previousSchedule])
 
@@ -51,7 +44,7 @@ export const ScheduleModal = () => {
       session_date: data.session_date,
       start_time: data.start_time,
       end_time: data.end_time,
-      schedule_members: selectedParticipants.map((member) => member.id),
+      schedule_members: selectedMembers.map((member) => member.id),
     }
 
     // api 로직
@@ -65,9 +58,9 @@ export const ScheduleModal = () => {
       <main className="flex flex-col gap-6 p-6">
         <ScheduleInfo />
 
-        <ScheduleParticipantsSelecting
-          selectedParticipants={selectedParticipants}
-          setSelectedParticipants={setSelectedParticipants}
+        <ScheduleMembersSelecting
+          selectedMembers={selectedMembers}
+          setSelectedMembers={setSelectedMembers}
         />
       </main>
       <footer className="flex w-full justify-end gap-3 border-t border-gray-200 p-6">

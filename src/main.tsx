@@ -14,7 +14,7 @@ import TestModal from './test/TestModal'
 import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
 import { LectureChoosingModal } from './components/modal/lectureChoosing/LectureChoosingModal'
 import { ScheduleModal } from './components/modal/schedule/ScheduleModal'
-import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
+import { DetailScheduleModal } from './components/modal/detailSchedule/DetailScheduleModal'
 import StudyGroup from './pages/StudyGroup'
 import CreateStudyGroup from './pages/study-groups/CreateStudyGroup'
 

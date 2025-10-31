@@ -1,7 +1,7 @@
 import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { User } from 'lucide-react'
 
-const DetailScheduleSelectedParticipants = () => {
+export const DetailScheduleSelectedParticipants = () => {
   const { schedule_members } = dummySchedule
 
   const leader = schedule_members.find((member) => member.is_leader)
@@ -36,5 +36,3 @@ const DetailScheduleSelectedParticipants = () => {
     </section>
   )
 }
-
-export default DetailScheduleSelectedParticipants

@@ -1,15 +1,15 @@
-import type { Participant } from './ScheduleModal'
+import type { Member } from '@/types/Schedule'
 
-interface ScheduleParticipantsSelectingProps {
-  selectedParticipants: Participant[]
-  setSelectedParticipants: React.Dispatch<React.SetStateAction<Participant[]>>
+interface ScheduleMembersSelectingProps {
+  selectedMembers: Member[]
+  setSelectedMembers: React.Dispatch<React.SetStateAction<Member[]>>
 }
 
-export const ScheduleParticipantsSelecting = ({
-  selectedParticipants,
-  setSelectedParticipants,
-}: ScheduleParticipantsSelectingProps) => {
-  const participants = [
+export const ScheduleMembersSelecting = ({
+  selectedMembers,
+  setSelectedMembers,
+}: ScheduleMembersSelectingProps) => {
+  const members = [
     { id: 1, nickname: '김개발', is_leader: true },
     { id: 2, nickname: '박리엑트', is_leader: false },
     { id: 3, nickname: '이프론트', is_leader: false },
@@ -18,25 +18,21 @@ export const ScheduleParticipantsSelecting = ({
     { id: 6, nickname: '오컴포넌트', is_leader: false },
   ]
 
-  const leader = participants.find((participant) => participant.is_leader)
-  const others = participants.filter((participant) => !participant.is_leader)
+  const leader = members.find((member) => member.is_leader)
+  const others = members.filter((member) => !member.is_leader)
   const isChecked = (id: number) =>
-    selectedParticipants.some((participant) => participant.id === id)
+    selectedMembers.some((member) => member.id === id)
 
-  const handleParticipantChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleMemberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target
     if (checked) {
-      const participantToAdd = participants.find(
-        (participant) => participant.nickname === value
-      )
-      if (participantToAdd) {
-        setSelectedParticipants([...selectedParticipants, participantToAdd])
+      const memberToAdd = members.find((member) => member.nickname === value)
+      if (memberToAdd) {
+        setSelectedMembers([...selectedMembers, memberToAdd])
       }
     } else {
-      setSelectedParticipants(
-        selectedParticipants.filter(
-          (participant) => participant.nickname !== value
-        )
+      setSelectedMembers(
+        selectedMembers.filter((member) => member.nickname !== value)
       )
     }
   }
@@ -59,7 +55,7 @@ export const ScheduleParticipantsSelecting = ({
                 type="checkbox"
                 value={leader.nickname}
                 checked={isChecked(leader.id)}
-                onChange={handleParticipantChange}
+                onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
                 required
               />
@@ -86,19 +82,19 @@ export const ScheduleParticipantsSelecting = ({
             </label>
           </div>
         )}
-        {others.map((participant) => (
-          <div key={participant.id} className="flex items-center gap-2">
+        {others.map((member) => (
+          <div key={member.id} className="flex items-center gap-2">
             <label
-              htmlFor={participant.nickname}
+              htmlFor={member.nickname}
               className="relative flex items-center gap-2 text-sm"
             >
               <input
-                id={participant.nickname}
+                id={member.nickname}
                 name="schedule_member"
                 type="checkbox"
-                value={participant.nickname}
-                checked={isChecked(participant.id)}
-                onChange={handleParticipantChange}
+                value={member.nickname}
+                checked={isChecked(member.id)}
+                onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
               />
               <span className="absolute top-1/2 left-1.5 -translate-x-1/2 -translate-y-1/2 transform text-white opacity-0 peer-checked:opacity-100">
@@ -117,13 +113,13 @@ export const ScheduleParticipantsSelecting = ({
                   ></path>
                 </svg>
               </span>
-              {participant.nickname}
+              {member.nickname}
             </label>
           </div>
         ))}
       </div>
       <span className="text-xs text-gray-500">
-        선택된 참여자: {selectedParticipants.length}명
+        선택된 참여자: {selectedMembers.length}명
       </span>
     </section>
   )

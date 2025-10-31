@@ -1,13 +1,13 @@
 import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
-import DetailScheduleInfo from './DetailScheduleInfo'
-import DetailScheduleSelectedParticipants from './DetailScheduleSelectedParticipants'
+import { DetailScheduleInfo } from './DetailScheduleInfo'
+import { DetailScheduleSelectedParticipants } from './DetailScheduleSelectedParticipants'
 import dayjs from '@/lib/dayjs'
 import { storeSchedule } from '@/store/storeSchedule'
 import { useParams } from 'react-router'
 
-const DetailScheduleModal = () => {
+export const DetailScheduleModal = () => {
   const params = useParams<{ id: string }>()
   const { modalToModal, closeModal } = useModal()
   const { setPreviousSchedule, setIsEdit } = storeSchedule()
@@ -57,5 +57,3 @@ const DetailScheduleModal = () => {
     </div>
   )
 }
-
-export default DetailScheduleModal

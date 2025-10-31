@@ -32,10 +32,14 @@ const DatePickerFooter = ({ selected, target }: DatePickerFooterProps) => {
           : '날짜를 선택하세요.'}
       </p>
       <div className="flex gap-3">
-        <BasicButton type="outline" size="large" onClick={handleClickCancel}>
+        <BasicButton variant="outline" size="large" onClick={handleClickCancel}>
           취소
         </BasicButton>
-        <BasicButton type="secondary" size="large" onClick={handleClickConfirm}>
+        <BasicButton
+          variant="secondary"
+          size="large"
+          onClick={handleClickConfirm}
+        >
           선택완료
         </BasicButton>
       </div>

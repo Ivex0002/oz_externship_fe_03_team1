@@ -67,7 +67,7 @@ const ReviewModal = () => {
       </main>
       <footer className="flex w-full justify-between gap-2.5 p-6 pt-0">
         <BasicButton
-          type="outline"
+          variant="outline"
           onClick={(e) => handleClickCancel(e)}
           size="medium"
           className="w-full flex-1"
@@ -76,7 +76,7 @@ const ReviewModal = () => {
         </BasicButton>
         <BasicButton
           className="w-full flex-1"
-          type="secondary"
+          variant="secondary"
           onClick={handleSubmit}
           size="medium"
         >

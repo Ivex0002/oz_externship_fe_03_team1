@@ -1,4 +1,4 @@
-type ScheduleParticipant = {
+export type Member = {
   id: number
   nickname: string
   is_leader: boolean
@@ -7,10 +7,10 @@ type ScheduleParticipant = {
 export type Schedule = {
   id?: number
   title: string
-  goal: string
-  date: string
-  startTime: string
-  endTime: string
+  objective: string
+  session_date: string
+  start_time: string
+  end_time: string
   created_at?: string
-  participants: ScheduleParticipant[]
+  schedule_members: Member[]
 }

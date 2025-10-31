@@ -31,7 +31,7 @@ export const ScheduleModal = () => {
     closeModal()
   }
 
-  const onSubmit: React.FormEventHandler<HTMLFormElement> = (e) => {
+  const onSubmitSchedule: React.FormEventHandler<HTMLFormElement> = (e) => {
     e.preventDefault()
 
     const form = e.currentTarget // 이벤트가 걸린 <form> 요소
@@ -54,7 +54,7 @@ export const ScheduleModal = () => {
   }
 
   return (
-    <form onSubmit={onSubmit} className="w-[672px] text-gray-900">
+    <form onSubmit={onSubmitSchedule} className="w-[672px] text-gray-900">
       <main className="flex flex-col gap-6 p-6">
         <ScheduleInfo />
 

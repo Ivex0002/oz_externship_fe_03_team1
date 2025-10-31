@@ -1,4 +1,4 @@
-import { StudyReport } from '@/pages/study-groups/studyReport/studyReport'
+import { StudyReport } from '@/pages/study-groups/studyReport/StudyReport'
 
 function TestY() {
   return (

@@ -44,4 +44,4 @@ function RecordTitleInput({
   )
 }
 
-export default RecordTitleInput
+export { RecordTitleInput }

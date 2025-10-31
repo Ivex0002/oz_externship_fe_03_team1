@@ -21,9 +21,7 @@ const StudyReport = () => {
     setFile(null)
   }
 
-  const handleSave = () => {
-    // 저장 로직 추가 예정
-  }
+  const handleSave = () => {}
 
   return (
     <div className="flex min-h-screen w-full flex-col items-center px-20 pt-[65px] pb-20">

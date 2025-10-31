@@ -1,9 +1,9 @@
 import { useState } from 'react'
-import RecordBreadcrumb from '@/components/studyReport/RecordBreadcrumb'
 import RecordTitleInput from '@/components/studyReport/RecordTitleInput'
 import RecordMarkdownEditor from '@/components/studyReport/RecordMarkdownEditor'
 import RecordFileUpload from '@/components/studyReport/RecordFileUpload'
 import RecordActionButtons from '@/components/studyReport/RecordActionButtons'
+import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 
 export function StudyReport() {
   const [title, setTitle] = useState('')
@@ -28,7 +28,7 @@ export function StudyReport() {
   return (
     <div className="flex min-h-screen w-full flex-col items-center px-20 pt-[65px] pb-20">
       <div className="mb-6 w-full max-w-3xl">
-        <RecordBreadcrumb />
+        <RecordBreadcrumb current="작성" />
         <h1 className="mb-2 text-2xl font-bold">스터디 기록 작성</h1>
         <p className="text-gray-600">학습한 내용을 자세히 기록해보세요</p>
       </div>

@@ -17,10 +17,12 @@ import ScheduleModal from './components/modal/schedule/ScheduleModal'
 import DetailScheduleModal from './components/modal/detailSchedule/DetailScheduleModal'
 import StudyGroup from './pages/StudyGroup'
 import CreateStudyGroup from './pages/study-groups/CreateStudyGroup'
+import { loadUserProfile } from './loaders/loadUserProfile'
 
 const router = createBrowserRouter([
   {
     path: '/',
+    loader: loadUserProfile(),
     Component: App,
     children: [
       {

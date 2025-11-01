@@ -1,26 +1,3 @@
-// TODO
-// 1. StudyGroupDetail.member 타입 v
-//    api 명세서 :
-//      {
-//        "id": 1,
-//        "nickname": "",
-//        "is_leader": false
-//      }
-
-// 2. StudyGroup.status 타입 v
-//    api 명세서 :
-//      PENDING | ONGOING | ENDED
-
-// 3. StudyGroupPost.lectures 타입 v
-//    api 명세서 :
-//      "lectures": [
-//        {
-//          "id": 1,
-//          "title": "",
-//          "instructor": ""
-//        },
-//      ]
-
 // ===================== User =====================
 // type RoleEnum = 'admin' | 'staff' | 'user'
 // (스웨거) RoleEnum이 존재하나 어디에도 쓰이지 않음

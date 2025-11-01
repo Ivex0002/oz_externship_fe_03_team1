@@ -1,17 +1,14 @@
+// StudyGroupDetail.tsx
 import { useState } from 'react';
-import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-import { StudyCalendar } from './study-group-detail/StudyCalendar';
-import { StudyPostList } from './study-group-detail/StudyPostList';
-import { StudyInfoAndCourses } from './study-group-detail/StudyInfoAndCourses';
-import { StudyMemberList } from './study-group-detail/StudyMemberList';
+import { StudyCalendar } from '../pages/study-group-detail/StudyCalendar';
+import { StudyRecordList } from '../pages/study-group-detail/StudyRecordList';
+import { StudyInfoAndCourses } from '../pages/study-group-detail/StudyInfoAndCourses';
+import { StudyMemberList } from '../pages/study-group-detail/StudyMemberList';
+import { StudyBannerSection } from '../pages/study-group-detail/StudyBannerSection';
+import { studyGroupDetail } from '@/assets/dummyData/dummyStudyGroupDetail';
 import { dummySchedule } from '@/assets/dummyData/dummySchedule';
-import { studyGroup } from '@/assets/dummyData/studyGroup.ts';
-import { StudyBannerSection } from './study-group-detail/StudyBannerSection.tsx';
 
-/**
- * 인터페이스 정의
- */
-interface Post {
+interface Record {
   title: string;
   author: string;
   date: string;
@@ -19,15 +16,27 @@ interface Post {
   attachments: number;
 }
 
-const StudyGroupDetail = () => {
-  const [isLeader, setIsLeader] = useState(studyGroup.is_leader);
-  const [_hoveredMember, setHoveredMember] = useState<string | null>(null);
-  const [showTooltip, setShowTooltip] = useState<string | null>(null);
+export const StudyGroupDetail = () => {
+  // API 데이터의 members 배열에서 현재 사용자가 리더인지 확인
+  const currentUserIsLeader = studyGroupDetail.members.some(member => member.is_leader);
+  const [isLeader, setIsLeader] = useState(currentUserIsLeader);
 
-  // StudyPostList용 더미 데이터 (나중에 API로 대체)
-  const posts: Post[] = [
-    { title: '첫 번째 스터디 후기', author: '김철수', date: '2025.10.26', time: '14:30', attachments: 2 },
-    { title: '두 번째 스터디 자료', author: '이영희', date: '2025.10.28', time: '16:00', attachments: 1 },
+  // StudyRecordList용 더미 데이터 (나중에 API로 대체)
+  const records: Record[] = [
+    { 
+      title: '첫 번째 스터디 후기', 
+      author: '김철수', 
+      date: '2025.10.26', 
+      time: '14:30', 
+      attachments: 2 
+    },
+    { 
+      title: '두 번째 스터디 자료', 
+      author: '이영희', 
+      date: '2025.10.28', 
+      time: '16:00', 
+      attachments: 1 
+    },
   ];
 
   return (
@@ -38,8 +47,7 @@ const StudyGroupDetail = () => {
         <StudyBannerSection 
           isLeader={isLeader} 
           setIsLeader={setIsLeader} 
-          studyGroup={studyGroup} 
-          BasicButton={BasicButton} 
+          studyGroup={studyGroupDetail} 
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -48,34 +56,22 @@ const StudyGroupDetail = () => {
           <div className="lg:col-span-2 space-y-6">
 
             {/* 2. 달력 부분 컴포넌트 */}
-            <StudyCalendar 
-              schedule={dummySchedule} 
-              BasicButton={BasicButton}
-            />
+            <StudyCalendar schedule={dummySchedule} />
 
             {/* 3. 스터디 기록 컴포넌트 */}
-            <StudyPostList 
-              posts={posts} 
-              BasicButton={BasicButton}
-            />
+            <StudyRecordList records={records} />
           </div>
 
-          {/* 오른쪽: 스터디 정보 + 강의 + 멤버 (숨겨진 블록) */}
+          {/* 오른쪽: 스터디 정보 + 강의 + 멤버 */}
           <div className="space-y-6 hidden lg:block">
 
             {/* 4. 스터디 정보와 스터디 강의 컴포넌트 */}
-            <StudyInfoAndCourses 
-              studyGroup={studyGroup} 
-            />
+            <StudyInfoAndCourses studyGroup={studyGroupDetail} />
 
-            {/* 5. 멤버 목록 컴포넌트 */}
+            {/* 5. 멤버 목록 컴포넌트 - API의 members 사용 */}
             <StudyMemberList 
-              participants={dummySchedule.participants}
+              members={studyGroupDetail.members}
               isLeader={isLeader}
-              showTooltip={showTooltip}
-              setHoveredMember={setHoveredMember}
-              setShowTooltip={setShowTooltip}
-              BasicButton={BasicButton}
             />
           </div>
         </div>
@@ -83,5 +79,3 @@ const StudyGroupDetail = () => {
     </div>
   );
 };
-
-export default StudyGroupDetail;

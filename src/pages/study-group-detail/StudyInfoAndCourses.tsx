@@ -1,38 +1,27 @@
-import React from 'react';
-import type { StudyGroup } from '@/types/StudyGroupTypes';
-import { lectureList } from '@/assets/dummyData/lectureList'; // 또는 실제 경로
+// StudyInfoAndCourses.tsx
+import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes';
+import { formatDate } from '@/utils/dateFormatter';
+import { getStatusText } from '@/utils/statusFormatter';
 
 interface StudyInfoAndCoursesProps {
-  studyGroup: StudyGroup;
+  studyGroup: StudyGroupDetail;
 }
 
-export const StudyInfoAndCourses: React.FC<StudyInfoAndCoursesProps> = ({ 
-  studyGroup 
-}) => {
-  // 날짜 포맷팅
-  const formatDate = (dateString: string) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('ko-KR', { 
-      year: 'numeric', 
-      month: '2-digit', 
-      day: '2-digit' 
-    }).replace(/\. /g, '.').replace(/\.$/, '');
-  };
+export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) => {
+  // 날짜 변수 상단 선언
+  const startDate = formatDate(studyGroup.start_at);
+  const endDate = formatDate(studyGroup.end_at);
+  const statusText = getStatusText(studyGroup.status);
 
-  // 상태 한글 변환
-  const getStatusText = (status: string) => {
-    switch(status) {
-      case 'ONGOING': return '진행중';
-      case 'PENDING': return '모집중';
-      case 'ENDED': return '종료';
-      default: return status;
+  // API에서 받은 lectures 사용 (studyGroup 안에 이미 포함됨)
+  const lectures = studyGroup.lectures;
+
+  // 핸들러 함수 분리
+  const handleLectureClick = (urlLink: string) => {
+    if (urlLink && urlLink !== '#') {
+      window.open(urlLink, '_blank');
     }
   };
-
-  // 테스트용: lectureList에서 5개 가져오기
-  const testLectures = lectureList.slice(0, 5);
-  const lectureCount = testLectures.length;
-  const shouldScroll = lectureCount > 2;
 
   return (
     <>
@@ -52,42 +41,42 @@ export const StudyInfoAndCourses: React.FC<StudyInfoAndCoursesProps> = ({
         <div className="space-y-4 text-sm">
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">인원</span>
-            <span className="text-gray-900">{studyGroup.current_headcount} / {studyGroup.max_headcount}명</span>
+            <span className="text-gray-900">
+              {studyGroup.current_headcount} / {studyGroup.max_headcount}명
+            </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">시작일</span>
-            <span className="text-gray-900">{formatDate(studyGroup.start_at)}</span>
+            <span className="text-gray-900">{startDate}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">종료일</span>
-            <span className="text-gray-900">{formatDate(studyGroup.end_at)}</span>
+            <span className="text-gray-900">{endDate}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">상태</span>
             <span className="px-3 py-1 bg-success-500 text-white rounded-full text-xs">
-              {getStatusText(studyGroup.status)}
+              {statusText}
             </span>
           </div>
         </div>
       </div>
 
-      {/* 스터디 강의 */}
+      {/* 스터디 강의 - 고정 높이 적용 */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
 
-        {/* 스크롤 가능한 컨테이너 */}
-        <div 
-          className={`space-y-6 ${shouldScroll ? 'overflow-y-auto hide-scrollbar max-h-[600px]' : ''}`}
-        >
-          {testLectures.map((lecture) => (
+        {/* 2개 높이 기준으로 고정, 스크롤 가능 */}
+        <div className="overflow-y-auto hide-scrollbar max-h-[660px] space-y-6">
+          {lectures.map((lecture, index) => (
             <div
-              key={lecture.id}
+              key={index}
               className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all bg-white"
             >
               {/* 강의 이미지 */}
               <div className="relative w-full">
                 <img
-                  src="/React.svg"
+                  src={lecture.thumbnail_img_url}
                   alt={lecture.title}
                   className="w-full object-cover"
                   style={{ aspectRatio: '16/9' }}
@@ -101,12 +90,15 @@ export const StudyInfoAndCourses: React.FC<StudyInfoAndCoursesProps> = ({
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">{lecture.instructor}</p>
 
-                <button className="text-yellow-600 hover:text-yellow-700 font-semibold text-sm flex items-center gap-1 group">
+                <button 
+                  className="text-primary-600 font-semibold text-sm flex items-center gap-1 group"
+                  onClick={() => handleLectureClick(lecture.url_link || '#')}
+                >
                   강의 바로가기
                   <img
                     src="/move.svg"
                     alt="move"
-                    className="w-4 h-4 group-hover:opacity-70"
+                    className="w-4 h-4"
                   />
                 </button>
               </div>

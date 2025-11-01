@@ -1,5 +1,5 @@
 import NavbarLayout from "@/components/navBar/NavBar";
-import StudyGroupDetail from "@/pages/StudyGroupDetail";
+import { StudyGroupDetail } from "@/pages/StudyGroupDetail";
 
 
 // // 검색결과컴포넌트용 임포트

@@ -1,29 +1,14 @@
-// StudyCalendar.tsx
 import { useState, useEffect, useRef, useReducer } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dayjs from '@/lib/dayjs';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-
-interface Schedule {
-  id: number;
-  title: string;
-  goal: string;
-  date: string;
-  startTime: string;
-  endTime: string;
-  created_at: string;
-  participants: {
-    id: number;
-    nickname: string;
-    is_leader: boolean;
-  }[];
-}
+import { formatTime } from '@/utils/formattedDate';
+import type { Schedule } from '@/types/Schedule';
 
 interface StudyCalendarProps {
-  schedule: Schedule;
+  groupId: number;
 }
 
-// 툴팁 상태 관리를 위한 reducer
 type TooltipState = {
   hoveredDay: number | null;
   isVisible: boolean;
@@ -44,18 +29,45 @@ const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipStat
   }
 };
 
-// 요일 배열
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
-export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
-  const [currentDate, setCurrentDate] = useState(dayjs(schedule.date));
+export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
+  const [schedules, setSchedules] = useState<Schedule[]>([]);
+  const [currentDate, setCurrentDate] = useState(dayjs());
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
     hoveredDay: null,
     isVisible: false
   });
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
-  // 핸들러 함수 분리
+  useEffect(() => {
+    // API 호출 로직
+    const fetchSchedules = async () => {
+      try {
+        // const response = await fetch(`/api/study-groups/${groupId}/schedules`);
+        // const data = await response.json();
+        // setSchedules(data.results);
+        
+        // 임시 더미 데이터
+        setSchedules([
+          {
+            id: 1,
+            title: '첫 번째 스터디',
+            objective: '주간 목표 달성',
+            session_date: '2025-11-15',
+            start_time: '14:00',
+            end_time: '16:00',
+            schedule_members: []
+          }
+        ]);
+      } catch (error) {
+        console.error('Failed to fetch schedules:', error);
+      }
+    };
+
+    fetchSchedules();
+  }, [groupId]);
+
   const handleAddSchedule = () => {return};
 
   const handlePrevMonth = () => {
@@ -79,7 +91,6 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
     dispatchTooltip({ type: 'HIDE' });
   };
 
-  // 컴포넌트 언마운트 시 타이머 정리
   useEffect(() => {
     return () => {
       if (hoverTimeoutRef.current) {
@@ -88,7 +99,6 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
     };
   }, []);
 
-  // 달력 생성 로직
   const generateCalendar = () => {
     const year = currentDate.year();
     const month = currentDate.month();
@@ -119,22 +129,27 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
     return calendar;
   };
 
-  // 스케줄이 있는 날짜 추출 (현재는 단일 스케줄, 추후 배열로 확장 가능)
-  const scheduleDay = dayjs(schedule.date).date();
-  const scheduleMonth = dayjs(schedule.date).month();
-  const scheduleYear = dayjs(schedule.date).year();
-  
-  // 현재 표시 중인 달과 스케줄 달이 같은지 확인
-  const isScheduleInCurrentMonth = 
-    scheduleYear === currentDate.year() && 
-    scheduleMonth === currentDate.month();
+  // 현재 월의 스케줄 필터링
+  const currentMonthSchedules = schedules.filter(schedule => {
+    const scheduleDate = dayjs(schedule.session_date);
+    return scheduleDate.year() === currentDate.year() && 
+           scheduleDate.month() === currentDate.month();
+  });
+
+  // 날짜별 스케줄 맵핑
+  const schedulesByDay = currentMonthSchedules.reduce((acc, schedule) => {
+    const day = dayjs(schedule.session_date).date();
+    if (!acc[day]) acc[day] = [];
+    acc[day].push(schedule);
+    return acc;
+  }, {} as Record<number, Schedule[]>);
   
   return (
     <div className="bg-white rounded-2xl p-6 border border-gray-100">
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-bold text-gray-900">스케줄 관리</h2>
         <BasicButton
-          type="primary"
+          variant="primary"
           size="medium"
           className="!px-4 !py-2 !text-sm text-white"
           onClick={handleAddSchedule}
@@ -143,7 +158,6 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
         </BasicButton>
       </div>
 
-      {/* 달력 */}
       <div className="mb-4 overflow-hidden">
         <div className="flex items-center justify-center mb-6 gap-4">
           <button
@@ -181,7 +195,7 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
         <div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
           {generateCalendar().map((week, weekIdx) =>
             week.map((day, dayIdx) => {
-              const hasSchedule = isScheduleInCurrentMonth && day === scheduleDay;
+              const daySchedules = day ? schedulesByDay[day] : [];
 
               return (
                 <div
@@ -192,9 +206,10 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
                     <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
                       <div className="text-xs text-gray-900 pb-2">{day}</div>
 
-                      {hasSchedule && (
+                      {daySchedules && daySchedules.map((schedule) => (
                         <div 
-                          className="relative bg-primary-100 rounded p-1"
+                          key={schedule.id}
+                          className="relative bg-primary-100 rounded p-1 mb-1"
                           onMouseEnter={() => handleMouseEnter(day)}
                           onMouseLeave={handleMouseLeave}
                         >
@@ -202,16 +217,13 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
                             {schedule.title}
                           </h4>
                           <p className="text-[10px] text-primary-800/75 leading-tight">
-                            {schedule.startTime} - {schedule.endTime}
+                            {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
                           </p>
 
-                          {/* 간소화된 툴팁 (제목, 시간만) */}
                           {tooltipState.isVisible && tooltipState.hoveredDay === day && (
                             <div className="absolute z-50 left-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl p-3 animate-fade-in">
-                              {/* 화살표 */}
                               <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
                               
-                              {/* 툴팁 내용 */}
                               <div className="relative z-10 bg-white">
                                 <h4 className="text-sm font-bold text-gray-900 mb-2">
                                   {schedule.title}
@@ -219,14 +231,14 @@ export const StudyCalendar = ({ schedule }: StudyCalendarProps) => {
                                 <div className="text-xs text-gray-600">
                                   <div className="flex items-center gap-2">
                                     <span className="font-semibold">시간:</span>
-                                    <span>{schedule.startTime} - {schedule.endTime}</span>
+                                    <span>{formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}</span>
                                   </div>
                                 </div>
                               </div>
                             </div>
                           )}
                         </div>
-                      )}
+                      ))}
                     </div>
                   ) : (
                     <div className="h-full bg-gray-50"></div>

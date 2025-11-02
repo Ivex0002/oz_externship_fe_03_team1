@@ -24,6 +24,8 @@ export interface StudyGroupDetail {
   lectures: LectureDetail[];
 }
 
+// 알아본뒤에 필요없으면 삭제 이유가 명확하면 설명 후 사용.
+// 서버에서 데이터를 감싼 형태로 보내는 경우를 위한 타입
 export interface StudyGroupDetailApiResponse {
   data: StudyGroupDetail;
 }

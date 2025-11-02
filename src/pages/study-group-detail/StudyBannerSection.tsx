@@ -1,7 +1,6 @@
-// StudyBannerSection.tsx
 import { Calendar } from 'lucide-react';
 import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes';
-import { formatDate } from '@/utils/dateFormatter';
+import { formatDate } from '@/utils/formattedDate';
 import { getStatusText } from '@/utils/statusFormatter';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 
@@ -65,7 +64,7 @@ export const StudyBannerSection = ({
         <div className="absolute top-[25px] right-[24px] flex gap-2">
           {isLeader && (
             <BasicButton
-              type="secondary"
+              variant="secondary"
               size="small"
               className="flex items-center gap-2 !px-4 !py-2 !text-sm"
               onClick={handleEditClick}
@@ -75,7 +74,7 @@ export const StudyBannerSection = ({
             </BasicButton>
           )}
           <BasicButton
-            type="danger"
+            variant="danger"
             size="small"
             className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
             onClick={handleLeaveClick}

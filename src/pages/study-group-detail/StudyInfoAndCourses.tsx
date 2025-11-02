@@ -1,6 +1,5 @@
-// StudyInfoAndCourses.tsx
 import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes';
-import { formatDate } from '@/utils/dateFormatter';
+import { formatDate } from '@/utils/formattedDate';
 import { getStatusText } from '@/utils/statusFormatter';
 
 interface StudyInfoAndCoursesProps {
@@ -8,15 +7,11 @@ interface StudyInfoAndCoursesProps {
 }
 
 export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) => {
-  // 날짜 변수 상단 선언
   const startDate = formatDate(studyGroup.start_at);
   const endDate = formatDate(studyGroup.end_at);
   const statusText = getStatusText(studyGroup.status);
-
-  // API에서 받은 lectures 사용 (studyGroup 안에 이미 포함됨)
   const lectures = studyGroup.lectures;
 
-  // 핸들러 함수 분리
   const handleLectureClick = (urlLink: string) => {
     if (urlLink && urlLink !== '#') {
       window.open(urlLink, '_blank');
@@ -25,16 +20,6 @@ export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) =>
 
   return (
     <>
-      <style>{`
-        .hide-scrollbar {
-          -ms-overflow-style: none;
-          scrollbar-width: none;
-        }
-        .hide-scrollbar::-webkit-scrollbar {
-          display: none;
-        }
-      `}</style>
-
       {/* 스터디 정보 */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 정보</h2>
@@ -62,24 +47,37 @@ export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) =>
         </div>
       </div>
 
-      {/* 스터디 강의 - 고정 높이 적용 */}
+      {/* 스터디 강의 */}
       <div className="bg-white rounded-2xl p-6 border border-gray-100">
         <h2 className="text-xl font-bold mb-5 text-gray-900">스터디 강의</h2>
 
-        {/* 2개 높이 기준으로 고정, 스크롤 가능 */}
-        <div className="overflow-y-auto hide-scrollbar max-h-[660px] space-y-6">
+        <div
+          className="
+            overflow-y-auto 
+            space-y-6 
+            h-[620px] 
+            [&::-webkit-scrollbar]:hidden
+          "
+        >
           {lectures.map((lecture, index) => (
             <div
               key={index}
-              className="border border-gray-200 rounded-2xl overflow-hidden shadow-sm hover:shadow-md transition-all bg-white"
+              className="
+                border border-gray-200 
+                rounded-2xl 
+                overflow-hidden 
+                shadow-sm 
+                hover:shadow-md 
+                transition-all 
+                bg-white
+              "
             >
               {/* 강의 이미지 */}
-              <div className="relative w-full">
+              <div className="relative w-full aspect-video">
                 <img
                   src={lecture.thumbnail_img_url}
                   alt={lecture.title}
-                  className="w-full object-cover"
-                  style={{ aspectRatio: '16/9' }}
+                  className="w-full h-full object-cover"
                 />
               </div>
 
@@ -90,16 +88,12 @@ export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) =>
                 </h3>
                 <p className="text-sm text-gray-600 mb-3">{lecture.instructor}</p>
 
-                <button 
+                <button
                   className="text-primary-600 font-semibold text-sm flex items-center gap-1 group"
                   onClick={() => handleLectureClick(lecture.url_link || '#')}
                 >
                   강의 바로가기
-                  <img
-                    src="/move.svg"
-                    alt="move"
-                    className="w-4 h-4"
-                  />
+                  <img src="/move.svg" alt="move" className="w-4 h-4" />
                 </button>
               </div>
             </div>

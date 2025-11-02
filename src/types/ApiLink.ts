@@ -147,13 +147,20 @@ type Pagination<T> = {
 }
 
 // ===================== etc =====================
-type BaseResponse = {
+export type BaseResponse = {
   status: string
   message: string
   error?: {
     code: string
     detail: string
   }
+}
+
+export type Req<T> = {
+  req: T
+}
+export type Res<T> = {
+  res: T
 }
 
 /**
@@ -165,90 +172,68 @@ type BaseResponse = {
  * 스웨거
  * https://api.ozcoding.site/api/schema/swagger-ui/#/
  */
-export const ApiLinks = {
+export type ApiLinks = {
   v1: {
     users: {
       me: {
-        GET: {} as {
-          res: UserProfile
-        },
-      },
-    },
+        GET: Res<UserProfile>
+      }
+    }
     auth: {
       // (스웨거) 로그아웃 기능 누락
       logout: {
-        POST: {} as {
-          res: BaseResponse
-        },
-      },
-    },
+        POST: Res<BaseResponse>
+      }
+    }
     notifications: {
-      GET: {} as {
-        res: Pagination<Notification>
-      },
-    },
+      GET: Res<Pagination<Notification>>
+    }
     lectures: {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
-      GET: {} as {
-        res: {
-          count: number
-          next: string
-          previous: string
-          results: Lecture[]
-          user_nickname: string
-          recommended_lectures: Lecture[]
-        }
-      },
+      GET: Res<{
+        count: number
+        next: string
+        previous: string
+        results: Lecture[]
+        user_nickname: string
+        recommended_lectures: Lecture[]
+      }>
+
       categories: {
-        GET: {} as {
-          res: LectureCategory[]
-        },
-      },
-    },
+        GET: Res<LectureCategory[]>
+      }
+    }
     studies: {
       groups: {
-        GET: {} as {
-          res: StudyGroup[]
-        },
-        POST: {} as {
-          req: StudyGroupPost
+        GET: Res<StudyGroup[]>
+
+        POST: Req<StudyGroupPost> &
           // (스웨거) post res 응답 누락
           // 임시로 디테일 이벤트 걸어놓음
-          res: BaseResponse
-        },
+          Res<BaseResponse>
+
         // (스웨거) 전체 get 메서드와 단일 get 메서드 상의 group 타입이 다름
-        // group_id
-        dynamicSub: {
-          GET: {} as {
-            res: StudyGroupDetail
-          },
-          'delegate-leader': {
-            POST: {} as {
-              req: {
-                target_user_id: number
-              }
-              res: BaseResponse
-            },
-          },
+        (group_id: number): {
+          GET: Res<StudyGroupDetail>
+
+          // $ 기호를 사용하여 케밥 케이스 표현
+          delegate$leader: {
+            POST: Req<{
+              target_user_id: number
+            }> &
+              Res<BaseResponse>
+          }
           leave: {
-            DELETE: {} as {
-              res: BaseResponse
-            },
-          },
-          members: (_member_id: number) => ({
-            DELETE: {} as {
-              res: BaseResponse
-            },
-          }),
+            DELETE: Res<BaseResponse>
+          }
+          members: { (_member_id: number): { DELETE: Res<BaseResponse> } }
           // (스웨거) 리뷰는 현재 포스트 하나만 존재함
           // get, delete, patch 누락
           reviews: {
-            POST: {} as {
-              req: StudyReview
-            },
-          },
-        },
-      },
-    },
-  },
-} as const
+            POST: Req<StudyReview>
+          }
+        }
+      }
+    }
+  }
+}

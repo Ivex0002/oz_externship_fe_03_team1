@@ -1,4 +1,4 @@
-import type { ServerErrorResponse } from '@/types/ApiTree'
+import type { BaseResponse } from '@/types/ApiLink'
 import { AxiosError } from 'axios'
 
 export class ApiError extends Error {
@@ -24,8 +24,8 @@ export function throwHttpError(error: AxiosError): never {
 
   // 서버에서 보낸 에러 메시지 우선 사용
   const message = errorResponse?.message || getDefaultErrorMessage(status)
-  const code = errorResponse?.code
-  const details = errorResponse?.details
+  const code = errorResponse?.error?.code
+  const details = errorResponse?.error?.detail
 
   throw new ApiError(status, message, code, details)
 }
@@ -33,13 +33,13 @@ export function throwHttpError(error: AxiosError): never {
 /**
  * 서버에서 보낸 에러 타입인가 확인
  */
-function isErrorResponse(data: unknown): data is ServerErrorResponse {
+function isErrorResponse(data: unknown): data is BaseResponse {
   return (
     typeof data === 'object' &&
     data !== null &&
-    (typeof (data as ServerErrorResponse).message === 'string' ||
-      typeof (data as ServerErrorResponse).code === 'string' ||
-      (data as ServerErrorResponse).details !== undefined)
+    (typeof (data as BaseResponse).message === 'string' ||
+      typeof (data as BaseResponse).error?.code === 'string' ||
+      (data as BaseResponse).error?.detail !== undefined)
   )
 }
 

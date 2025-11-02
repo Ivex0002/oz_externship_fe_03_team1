@@ -7,7 +7,6 @@ import axios, {
 import type { TokenStorage } from './tokenManager'
 import type {
   AxiosErrorHandler,
-  RequestConfig,
   RequestExecutor,
   RetryableRequestConfig,
 } from '@/types/ApiTree'
@@ -128,12 +127,12 @@ export class HttpClient {
   public async request<Req = void, Res = unknown>(
     url: string,
     method: Method,
-    config?: RequestConfig<Req>
+    data?: Req
   ): Promise<Res> {
     const res: AxiosResponse<Res> = await this.client.request<Res>({
       url,
       method,
-      ...config,
+      data,
     })
 
     return res.data

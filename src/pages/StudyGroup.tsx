@@ -28,7 +28,6 @@ const SearchBar = ({
   </div>
 )
 
-/** 메인 StudyGroup 페이지 */
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
 

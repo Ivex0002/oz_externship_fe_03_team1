@@ -1,10 +1,26 @@
 // import { api } from '@/api/api'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 
-export default function TestG() {
+// const dummyStudyGroup = {
+//   name: '리액트 스터디',
+//   profile_img_url: '/images/react.png',
+//   max_headcount: 8,
+//   start_at: '2025-11-10',
+//   end_at: '2025-12-10',
+//   introduction: '리액트를 처음부터 끝까지!',
+//   lectures: [{ id: 1, title: 'React Hooks 마스터', instructor: '홍길동' }],
+// }
+
+const TestG = () => {
   const handleClick = async () => {
     // try {
-    //   const res = await api.v1.lectures.GET()
+    //   // const res = await api.v1.lectures.GET()
+    //   // const res = await api.v1.studies.groups(111).GET()
+    //   // const res = await api.v1.studies.groups(222).delegate$leader.POST({
+    //   //   target_user_id: 333,
+    //   // })
+    //   // const res = await api.v1.studies.groups(444).members(555).DELETE()
+    //   // const res = await api.v1.studies.groups.POST(dummyStudyGroup)
     //   console.log(res)
     // } catch (error) {
     //   console.error('API call failed:', error)
@@ -18,3 +34,5 @@ export default function TestG() {
     </div>
   )
 }
+
+export default TestG

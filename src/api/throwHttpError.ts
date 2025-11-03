@@ -1,4 +1,4 @@
-import type { ServerErrorResponse } from '@/types/ApiTree'
+import type { BaseResponse } from '@/types/ApiLink'
 import { AxiosError } from 'axios'
 
 export class ApiError extends Error {
@@ -6,7 +6,7 @@ export class ApiError extends Error {
     public status: number,
     message: string,
     public code?: string,
-    public details?: unknown
+    public detail?: string
   ) {
     super(message)
     this.name = 'ApiError'
@@ -17,36 +17,42 @@ export class ApiError extends Error {
  * 응답 상태 코드에 따라 에러 메시지를 배출해주는 메서드
  * 모든 에러를 throw 처리 하므로 반드시 try-catch 내부에서 사용해야됨
  */
-export function throwHttpError(error: AxiosError): never {
+export const throwHttpError = (error: AxiosError): never => {
   const status = error.response?.status || 0
   const data = error.response?.data
   const errorResponse = isErrorResponse(data) ? data : null
 
   // 서버에서 보낸 에러 메시지 우선 사용
   const message = errorResponse?.message || getDefaultErrorMessage(status)
-  const code = errorResponse?.code
-  const details = errorResponse?.details
+  const code = errorResponse?.error?.code
+  const detail = errorResponse?.error?.detail
 
-  throw new ApiError(status, message, code, details)
+  throw new ApiError(status, message, code, detail)
 }
 
 /**
  * 서버에서 보낸 에러 타입인가 확인
  */
-function isErrorResponse(data: unknown): data is ServerErrorResponse {
+const isErrorResponse = (data: unknown): data is BaseResponse => {
+  if (typeof data !== 'object' || data === null) {
+    return false
+  }
+
+  const response = data as BaseResponse
+
+  // error 객체가 있고, code 또는 detail이 존재하면 에러 응답
   return (
-    typeof data === 'object' &&
-    data !== null &&
-    (typeof (data as ServerErrorResponse).message === 'string' ||
-      typeof (data as ServerErrorResponse).code === 'string' ||
-      (data as ServerErrorResponse).details !== undefined)
+    response.error !== null &&
+    response.error !== undefined &&
+    (typeof response.error.code === 'string' ||
+      typeof response.error.detail === 'string')
   )
 }
 
 /**
  * HTTP 상태 코드별 기본 에러 메시지
  */
-function getDefaultErrorMessage(status: number): string {
+const getDefaultErrorMessage = (status: number): string => {
   switch (status) {
     case 400:
       return '잘못된 요청입니다.'

@@ -15,11 +15,11 @@ interface StoreSchedule {
 
 const initialSchedule: Schedule = {
   title: '',
-  goal: '',
-  date: '',
-  startTime: '',
-  endTime: '',
-  participants: [],
+  objective: '',
+  session_date: '',
+  start_time: '',
+  end_time: '',
+  schedule_members: [],
 }
 
 export const storeSchedule = create<StoreSchedule>((set) => ({

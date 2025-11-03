@@ -14,12 +14,12 @@ export const CustomPagination = ({
   currentPage,
 }: PaginationProps) => {
   const previousLabel = (
-    <BasicButton type="outline" disabled={currentPage === 0}>
+    <BasicButton variant="outline" disabled={currentPage === 0}>
       <ChevronLeft />
     </BasicButton>
   )
   const nextLabel = (
-    <BasicButton type="outline" disabled={currentPage === pageCount - 1}>
+    <BasicButton variant="outline" disabled={currentPage === pageCount - 1}>
       <ChevronRight />
     </BasicButton>
   )

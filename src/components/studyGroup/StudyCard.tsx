@@ -140,7 +140,7 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
 
           {/* 버튼이 카드 하단 전체를 꽉 채움 */}
           <BasicButton
-            type={isReviewed ? 'secondary' : 'primary'}
+            variant={isReviewed ? 'secondary' : 'primary'}
             size="small"
             onClick={isReviewed ? handleClickEditReview : handleClickPostReview}
           >

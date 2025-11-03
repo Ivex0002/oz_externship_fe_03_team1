@@ -1,13 +1,13 @@
 import axios, {
   type AxiosError,
   type AxiosInstance,
+  type AxiosRequestConfig,
   type AxiosResponse,
   type Method,
 } from 'axios'
 import type { TokenStorage } from './tokenManager'
 import type {
   AxiosErrorHandler,
-  RequestConfig,
   RequestExecutor,
   RetryableRequestConfig,
 } from '@/types/ApiTree'
@@ -128,14 +128,25 @@ export class HttpClient {
   public async request<Req = void, Res = unknown>(
     url: string,
     method: Method,
-    config?: RequestConfig<Req>
+    data?: Req,
+    // 'url' | 'method' | 'data' 을 제외한 나머지는 config로 간주
+    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
   ): Promise<Res> {
-    const res: AxiosResponse<Res> = await this.client.request<Res>({
+    const upperMethod = method.toUpperCase()
+    const requestConfig: AxiosRequestConfig = {
       url,
       method,
       ...config,
-    })
+    }
 
+    if (paramsMethodSet.has(upperMethod)) {
+      requestConfig.params = data
+    } else {
+      requestConfig.data = data
+    }
+
+    const res: AxiosResponse<Res> =
+      await this.client.request<Res>(requestConfig)
     return res.data
   }
 
@@ -144,6 +155,8 @@ export class HttpClient {
    * - createApiTree 주입용
    */
   public getRequestExecutor(): RequestExecutor {
-    return this.request.bind(this)
+    return this.request.bind(this) as RequestExecutor
   }
 }
+
+const paramsMethodSet = new Set(['GET', 'DELETE', 'HEAD'])

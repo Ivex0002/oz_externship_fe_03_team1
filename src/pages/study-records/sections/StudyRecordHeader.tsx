@@ -26,7 +26,7 @@ export const StudyRecordHeader = ({
 
         <div className="flex gap-2">
           <BasicButton
-            type="secondary"
+            variant="secondary"
             size="small"
             className="!h-[32px] !rounded-lg !bg-[#F3F4F6] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#374151]"
             onClick={() => alert('수정하기')}
@@ -35,7 +35,7 @@ export const StudyRecordHeader = ({
           </BasicButton>
 
           <BasicButton
-            type="danger"
+            variant="danger"
             size="small"
             className="!h-[32px] !rounded-lg !bg-[#FEE2E2] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#B91C1C] hover:!bg-[#FEE2E2] active:!bg-[#FEE2E2]"
             onClick={() => alert('삭제하기')}

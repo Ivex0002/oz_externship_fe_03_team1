@@ -9,7 +9,7 @@ type RefreshAccessToken = {
  * 리프레쉬 메서드
  * @returns {} {"access": "string"}
  */
-export async function refreshAccessToken(): Promise<string | null> {
+export const refreshAccessToken = async (): Promise<string | null> => {
   try {
     const refreshClient = axios.create({
       baseURL: BASE_URL,

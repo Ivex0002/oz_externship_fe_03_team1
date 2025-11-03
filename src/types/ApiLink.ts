@@ -124,8 +124,8 @@ type Pagination<T> = {
 }
 
 // ===================== etc =====================
-type BaseResponse = {
-  status: string
+export type BaseResponse = {
+  status: number
   message: string
   error?: {
     code: string
@@ -142,31 +142,25 @@ type BaseResponse = {
  * 스웨거
  * https://api.ozcoding.site/api/schema/swagger-ui/#/
  */
-export const ApiLinks = {
+export type ApiLinks = {
   v1: {
     users: {
       me: {
-        GET: {} as {
-          res: UserProfile
-        },
-      },
-    },
+        GET: { res: UserProfile }
+      }
+    }
     auth: {
       // (스웨거) 로그아웃 기능 누락
       logout: {
-        POST: {} as {
-          res: BaseResponse
-        },
-      },
-    },
+        POST: { res: BaseResponse }
+      }
+    }
     notifications: {
-      GET: {} as {
-        res: Pagination<Notification>
-      },
-    },
+      GET: { res: Pagination<Notification> }
+    }
     lectures: {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
-      GET: {} as {
+      GET: {
         res: {
           count: number
           next: string
@@ -175,57 +169,34 @@ export const ApiLinks = {
           user_nickname: string
           recommended_lectures: Lecture[]
         }
-      },
+      }
+
       categories: {
-        GET: {} as {
-          res: LectureCategory[]
-        },
-      },
-    },
+        GET: { res: LectureCategory[] }
+      }
+    }
     studies: {
-      groups: {
-        GET: {} as {
-          res: StudyGroup[]
-        },
-        POST: {} as {
-          req: StudyGroupPost
-          // (스웨거) post res 응답 누락
-          // 임시로 디테일 이벤트 걸어놓음
-          res: BaseResponse
-        },
-        // (스웨거) 전체 get 메서드와 단일 get 메서드 상의 group 타입이 다름
-        // group_id
-        dynamicSub: {
-          GET: {} as {
-            res: StudyGroupDetail
-          },
-          'delegate-leader': {
-            POST: {} as {
-              req: {
-                target_user_id: number
-              }
-              res: BaseResponse
-            },
-          },
-          leave: {
-            DELETE: {} as {
-              res: BaseResponse
-            },
-          },
-          members: (_member_id: number) => ({
-            DELETE: {} as {
-              res: BaseResponse
-            },
-          }),
-          // (스웨거) 리뷰는 현재 포스트 하나만 존재함
-          // get, delete, patch 누락
-          reviews: {
-            POST: {} as {
-              req: StudyReview
-            },
-          },
-        },
-      },
-    },
-  },
-} as const
+      groups: GroupApi
+    }
+  }
+}
+
+type GroupApi = {
+  GET: { res: StudyGroup[] }
+  POST: { req: StudyGroupPost; res: BaseResponse }
+
+  (group_id: number): {
+    GET: { res: StudyGroupDetail }
+    delegate$leader: {
+      POST: {
+        req: { target_user_id: number }
+        res: BaseResponse
+      }
+    }
+    leave: { DELETE: { res: BaseResponse } }
+    members: { (_member_id: number): { DELETE: { res: BaseResponse } } }
+    // (스웨거) res 타입 명시되지 않음
+    // 확실하게 BaseResponse인지 확인 필요
+    reviews: { POST: { req: StudyReview; res: BaseResponse } }
+  }
+}

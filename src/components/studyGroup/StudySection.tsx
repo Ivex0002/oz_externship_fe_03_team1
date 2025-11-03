@@ -41,7 +41,7 @@ const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
       {totalPages > 1 && (
         <div className="mt-8 flex items-center justify-center gap-2">
           <BasicButton
-            type="secondary"
+            variant="secondary"
             size="small"
             disabled={currentPage === 1}
             onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
@@ -51,7 +51,7 @@ const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
           {[...Array(totalPages)].map((_, idx) => (
             <BasicButton
               key={idx}
-              type={currentPage === idx + 1 ? 'primary' : 'outline'}
+              variant={currentPage === idx + 1 ? 'primary' : 'outline'}
               size="small"
               onClick={() => setCurrentPage(idx + 1)}
             >
@@ -59,7 +59,7 @@ const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
             </BasicButton>
           ))}
           <BasicButton
-            type="secondary"
+            variant="secondary"
             size="small"
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}

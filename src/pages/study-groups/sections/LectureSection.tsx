@@ -34,7 +34,7 @@ export const LectureSection = () => {
           </p>
         </div>
 
-        <BasicButton type="primary" onClick={handleOpenLectureModal}>
+        <BasicButton variant="primary" onClick={handleOpenLectureModal}>
           + 강의 추가하기
         </BasicButton>
       </div>

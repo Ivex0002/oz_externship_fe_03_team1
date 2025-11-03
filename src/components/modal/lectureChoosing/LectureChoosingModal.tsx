@@ -80,10 +80,10 @@ export const LectureChoosingModal = () => {
           {selectedLectureList.length}개 강의 선택됨
         </span>
         <div className="flex gap-3">
-          <BasicButton onClick={handleClickRevert} type="outline">
+          <BasicButton onClick={handleClickRevert} variant="outline">
             취소
           </BasicButton>
-          <BasicButton onClick={handleClickConfirm} type="primary">
+          <BasicButton onClick={handleClickConfirm} variant="primary">
             선택 완료
           </BasicButton>
         </div>

@@ -218,6 +218,8 @@ type GroupApi = {
     }
     leave: { DELETE: { res: BaseResponse } }
     members: { (_member_id: number): { DELETE: { res: BaseResponse } } }
-    reviews: { POST: { res: StudyReview } }
+    // (스웨거) res 타입 명시되지 않음
+    // 확실하게 BaseResponse인지 확인 필요
+    reviews: { POST: { req: StudyReview; res: BaseResponse } }
   }
 }

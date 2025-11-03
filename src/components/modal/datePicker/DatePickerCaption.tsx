@@ -2,7 +2,7 @@ import { useDayPicker, type MonthCaptionProps } from 'react-day-picker'
 import { ChevronLeft, ChevronRight } from 'lucide-react'
 import dayjs from '@/lib/dayjs'
 
-const DatePickerCaption = (props: MonthCaptionProps) => {
+export const DatePickerCaption = (props: MonthCaptionProps) => {
   const { goToMonth, nextMonth, previousMonth, dayPickerProps } = useDayPicker()
   const { startMonth, endMonth } = dayPickerProps
 
@@ -60,5 +60,3 @@ const DatePickerCaption = (props: MonthCaptionProps) => {
     </div>
   )
 }
-
-export default DatePickerCaption

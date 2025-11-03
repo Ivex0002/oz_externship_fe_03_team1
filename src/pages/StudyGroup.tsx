@@ -89,7 +89,7 @@ const StudySection: React.FC<{ title: string; studies: StudyGroupType[] }> = ({
   )
 }
 
-const StudyGroup = () => {
+export const StudyGroup = () => {
   const navigate = useNavigate()
 
   const ongoingStudyGroupList = studyGroupList.filter(
@@ -141,5 +141,3 @@ const StudyGroup = () => {
     </div>
   )
 }
-
-export default StudyGroup

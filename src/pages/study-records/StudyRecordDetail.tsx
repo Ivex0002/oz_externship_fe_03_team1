@@ -4,12 +4,9 @@ import remarkGfm from 'remark-gfm'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { RecordBreadcrumb } from '@/components/breadcrumb/RecordBreadcrumb'
 import { dummyStudyRecordDetail } from '@/assets/dummyData/dummyStudyRecordDetail'
-
-import {
-  StudyRecordHeader,
-  StudyRecordAISummary,
-  StudyRecordAttachments,
-} from './sections'
+import { StudyRecordHeader } from './sections/StudyRecordHeader'
+import { StudyRecordAISummary } from './sections/StudyRecordAISummary'
+import { StudyRecordAttachments } from './sections/StudyRecordAttachments'
 
 export const StudyRecordDetail = () => {
   const { data } = dummyStudyRecordDetail

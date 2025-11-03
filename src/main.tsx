@@ -1,22 +1,25 @@
 import ReactDOM from 'react-dom/client'
 import { createBrowserRouter } from 'react-router'
 import { RouterProvider } from 'react-router/dom'
-import App from './App'
+import { App } from './App'
 import TestD from './test/TestD'
 import TestE from './test/TestE'
 import TestG from './test/TestG'
 import TestH from './test/TestH'
 import TestY from './test/TestY'
-import BasicModal from './components/basicComponents/basicModal/BasicModal'
-import ReviewModal from './components/modal/review/ReviewModal'
-import DatePickerModal from './components/modal/datePicker/DatePickerModal'
+import { BasicModal } from './components/basicComponents/basicModal/BasicModal'
+import { ReviewModal } from './components/modal/review/ReviewModal'
+import { DatePickerModal } from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
-import ReviewDetailModal from './components/modal/reviewDetail/ReviewDetailModal'
+import { ReviewDetailModal } from './components/modal/reviewDetail/ReviewDetailModal'
 import { LectureChoosingModal } from './components/modal/lectureChoosing/LectureChoosingModal'
 import { ScheduleModal } from './components/modal/schedule/ScheduleModal'
 import { DetailScheduleModal } from './components/modal/detailSchedule/DetailScheduleModal'
-import StudyGroup from './pages/StudyGroup'
-import CreateStudyGroup from './pages/study-groups/CreateStudyGroup'
+import { StudyGroup } from './pages/StudyGroup'
+import { CreateStudyGroup } from './pages/study-groups/CreateStudyGroup'
+import { StudyGroupDetail } from './pages/StudyGroupDetail'
+import { StudyRecord } from './pages/study-groups/StudyRecord/StudyRecord'
+import { StudyRecordDetail } from './pages/study-records/StudyRecordDetail'
 
 const router = createBrowserRouter([
   {
@@ -32,8 +35,24 @@ const router = createBrowserRouter([
         Component: CreateStudyGroup,
       },
       {
-        path: '/testModal',
-        Component: TestModal,
+        path: '/edit_study_group/:studyGroupId',
+        Component: CreateStudyGroup,
+      },
+      {
+        path: '/study_group_detail/:studyGroupId',
+        Component: StudyGroupDetail,
+      },
+      {
+        path: '/create_study_record/:studyGroupId',
+        Component: StudyRecord,
+      },
+      {
+        path: '/edit_study_record/:studyGroupId/:studyRecordId',
+        Component: StudyRecord,
+      },
+      {
+        path: '/study_record_detail/:studyGroupId/:studyRecordId',
+        Component: StudyRecordDetail,
       },
       {
         path: '/modal',
@@ -64,18 +83,22 @@ const router = createBrowserRouter([
             Component: LectureChoosingModal,
           },
           {
-            path: '/modal/add_schedule',
+            path: '/modal/add_schedule/:studyGroupId',
             Component: ScheduleModal,
           },
           {
-            path: '/modal/edit_schedule/:id',
+            path: '/modal/edit_schedule/:studyGroupId/:scheduleId',
             Component: ScheduleModal,
           },
           {
-            path: '/modal/schedule_detail/:id',
+            path: '/modal/schedule_detail/:studyGroupId/:scheduleId',
             Component: DetailScheduleModal,
           },
         ],
+      },
+      {
+        path: '/testModal',
+        Component: TestModal,
       },
     ],
   },

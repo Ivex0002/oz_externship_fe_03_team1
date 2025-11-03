@@ -4,7 +4,7 @@ import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { useLocation, Outlet } from 'react-router'
 import { storeModalOpen } from '@/store/storeModalOpen'
-import ModalHeader from '@/components/modal/ModalHeader'
+import { ModalHeader } from '@/components/modal/ModalHeader'
 import { useModal } from '@/hooks/useModal'
 
 /**
@@ -22,7 +22,7 @@ import { useModal } from '@/hooks/useModal'
  * }
  * ```
  */
-export default function BasicModal() {
+export const BasicModal = () => {
   const location = useLocation()
   const modalRef = useRef<HTMLDivElement>(null)
   const { closeModal } = useModal()

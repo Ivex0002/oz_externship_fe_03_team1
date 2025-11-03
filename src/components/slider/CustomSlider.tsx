@@ -6,13 +6,13 @@ interface CustomSliderProps {
   color?: string
 }
 
-export default function CustomSlider({
+export const CustomSlider = ({
   min,
   max,
   value,
   onChange,
   color = '#007BFF',
-}: CustomSliderProps) {
+}: CustomSliderProps) => {
   const percentage = ((value - min) / (max - min)) * 100
 
   return (

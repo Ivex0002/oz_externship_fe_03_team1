@@ -3,7 +3,7 @@ import { UserMenu } from './userMenu/UserMenu'
 import { ChatButton } from '../chat/ChatButton'
 import clsx from 'clsx'
 
-export default function NavbarLayout() {
+export const NavbarLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <nav className="fixed top-0 right-0 left-0 z-10 h-[65px] border-b border-gray-200 bg-white px-20">

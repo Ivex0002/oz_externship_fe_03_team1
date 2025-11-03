@@ -1,12 +1,14 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import StudyCard from './StudyCard'
+import { StudyCard } from './StudyCard'
 import type { StudyGroup } from '@/types/StudyGroupTypes'
 
-const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
-  title,
-  studies,
-}) => {
+interface StudySectionProps {
+  title: string
+  studies: StudyGroup[]
+}
+
+export const StudySection = ({ title, studies }: StudySectionProps) => {
   const [currentPage, setCurrentPage] = useState(1)
   const studiesPerPage = 9
   const totalPages = Math.ceil(studies.length / studiesPerPage)
@@ -71,5 +73,3 @@ const StudySection: React.FC<{ title: string; studies: StudyGroup[] }> = ({
     </section>
   )
 }
-
-export default StudySection

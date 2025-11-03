@@ -3,7 +3,7 @@ import { User, LogOut } from 'lucide-react'
 import { NavLink } from 'react-router'
 import { NotiButton } from '@/components/notification/NotiButton'
 
-export function LoginedMenu() {
+export const LoginedMenu = () => {
   const [isUserPanelOpen, setIsUserPanelOpen] = useState(false)
   const menuRef = useRef<HTMLDivElement | null>(null)
 
@@ -63,7 +63,7 @@ export function LoginedMenu() {
     </div>
   )
 }
-function UserPanel({ onClose }: { onClose: () => void }) {
+const UserPanel = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="absolute right-0 z-50 mt-2 flex h-[100px] w-48 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
       <NavLink

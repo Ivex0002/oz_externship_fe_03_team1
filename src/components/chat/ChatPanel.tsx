@@ -5,11 +5,11 @@ import { ChatMessagesPanel } from './ChatMessagesPanel'
 import { usePanelClose } from '@/hooks/usePanelClose'
 import { motion } from 'framer-motion'
 
-export function ChatPanel({
+export const ChatPanel = ({
   buttonRef,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement | null>
-}) {
+}) => {
   const { setIsPanelOpen, isPanelOpen, currentPanel } = storeChat()
   const chatPanelRef = useRef<HTMLDivElement>(null)
 

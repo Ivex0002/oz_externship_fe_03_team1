@@ -1,6 +1,10 @@
 import { Star } from 'lucide-react'
 
-function RatedStar({ rating }: { rating: number }) {
+interface RatedStarProps {
+  rating: number
+}
+
+export const RatedStar = ({ rating }: RatedStarProps) => {
   return (
     <span className="flex">
       {Array.from({ length: 5 }, (_, i) => i).map((star) => (
@@ -14,5 +18,3 @@ function RatedStar({ rating }: { rating: number }) {
     </span>
   )
 }
-
-export default RatedStar

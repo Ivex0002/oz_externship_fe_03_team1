@@ -1,4 +1,4 @@
-import RatedStar from '@/components/basicComponents/ratedStar/RatedStar'
+import { RatedStar } from '@/components/basicComponents/ratedStar/RatedStar'
 
 interface ReviewDetailAverageProps {
   averageRating: number

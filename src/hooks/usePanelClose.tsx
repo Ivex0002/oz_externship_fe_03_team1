@@ -21,12 +21,12 @@ interface usePanelCloseProps {
  * })
  * ````
  */
-export function usePanelClose({
+export const usePanelClose = ({
   isOpen,
   setIsOpen,
   panelRef,
   buttonRef,
-}: usePanelCloseProps) {
+}: usePanelCloseProps) => {
   const setIsOpenRef = useRef(setIsOpen)
 
   useEffect(() => {

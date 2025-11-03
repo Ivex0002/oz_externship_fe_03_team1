@@ -1,7 +1,7 @@
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import ImageUploadBox from '../../../components/upload/ImageUploadBox'
-import MarkdownWrite from '../../../components/markdown/MarkdownWrite'
+import { ImageUploadBox } from '../../../components/upload/ImageUploadBox'
+import { MarkdownWrite } from '../../../components/markdown/MarkdownWrite'
 
 interface Props {
   form: StudyGroupForm
@@ -11,11 +11,7 @@ interface Props {
   ) => void
 }
 
-export default function BasicInfoSection({
-  form,
-  setForm,
-  handleChange,
-}: Props) {
+export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
   const handleFileSelect = (file: File | null) => {
     setForm((prev: StudyGroupForm) => ({ ...prev, image: file }))
   }

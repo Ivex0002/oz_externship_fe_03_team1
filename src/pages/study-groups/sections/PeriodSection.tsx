@@ -2,7 +2,7 @@
 import { useModal } from '../../../hooks/useModal'
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import CustomSlider from '../../../components/slider/CustomSlider'
+import { CustomSlider } from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
@@ -12,7 +12,7 @@ interface Props {
   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
 }
 
-export default function PeriodSection({ form, setForm }: Props) {
+export const PeriodSection = ({ form, setForm }: Props) => {
   const { openModal } = useModal()
   const { previousStartDate, previousEndDate } = storeStudyGroupDate()
 

@@ -14,10 +14,10 @@ interface MarkdownToolbarProps {
   onUpdate: (newValue: string) => void
 }
 
-export default function MarkdownToolbar({
+export const MarkdownToolbar = ({
   textareaRef,
   onUpdate,
-}: MarkdownToolbarProps) {
+}: MarkdownToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const wrapSelectedText = (wrapper: string, closingWrapper?: string) => {

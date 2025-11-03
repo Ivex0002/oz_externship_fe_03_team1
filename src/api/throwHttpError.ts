@@ -6,7 +6,7 @@ export class ApiError extends Error {
     public status: number,
     message: string,
     public code?: string,
-    public detail?: unknown
+    public detail?: string
   ) {
     super(message)
     this.name = 'ApiError'
@@ -34,12 +34,18 @@ export const throwHttpError = (error: AxiosError): never => {
  * 서버에서 보낸 에러 타입인가 확인
  */
 const isErrorResponse = (data: unknown): data is BaseResponse => {
+  if (typeof data !== 'object' || data === null) {
+    return false
+  }
+
+  const response = data as BaseResponse
+
+  // error 객체가 있고, code 또는 detail이 존재하면 에러 응답
   return (
-    typeof data === 'object' &&
-    data !== null &&
-    (typeof (data as BaseResponse).message === 'string' ||
-      typeof (data as BaseResponse).error?.code === 'string' ||
-      (data as BaseResponse).error?.detail !== undefined)
+    response.error !== null &&
+    response.error !== undefined &&
+    (typeof response.error.code === 'string' ||
+      typeof response.error.detail === 'string')
   )
 }
 

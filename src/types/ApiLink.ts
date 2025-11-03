@@ -148,7 +148,7 @@ type Pagination<T> = {
 
 // ===================== etc =====================
 export type BaseResponse = {
-  status: string
+  status: number
   message: string
   error?: {
     code: string

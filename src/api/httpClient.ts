@@ -1,6 +1,7 @@
 import axios, {
   type AxiosError,
   type AxiosInstance,
+  type AxiosRequestConfig,
   type AxiosResponse,
   type Method,
 } from 'axios'
@@ -129,14 +130,23 @@ export class HttpClient {
     method: Method,
     data?: Req,
     // 'url' | 'method' | 'data' 을 제외한 나머지는 config로 간주
-    config?: Omit<RetryableRequestConfig, 'url' | 'method' | 'data'>
+    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
   ): Promise<Res> {
-    const res: AxiosResponse<Res> = await this.client.request<Res>({
+    const upperMethod = method.toUpperCase()
+    const requestConfig: AxiosRequestConfig = {
       url,
       method,
-      data,
       ...config,
-    })
+    }
+
+    if (paramsMethodSet.has(upperMethod)) {
+      requestConfig.params = data
+    } else {
+      requestConfig.data = data
+    }
+
+    const res: AxiosResponse<Res> =
+      await this.client.request<Res>(requestConfig)
     return res.data
   }
 
@@ -148,3 +158,5 @@ export class HttpClient {
     return this.request.bind(this) as RequestExecutor
   }
 }
+
+const paramsMethodSet = new Set(['GET', 'DELETE', 'HEAD'])

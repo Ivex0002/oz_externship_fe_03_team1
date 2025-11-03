@@ -78,7 +78,7 @@ export const StudyMemberList = ({
   };
 
   const handleDelegateClick = (nickname: string) => {
-    if (window.confirm(`${nickname}님에게 리더를 위임하시겠습니까?`)) {
+    if (window.confirm(`${nickname}님에게 리더를 위임하시겠습니까??`)) {
       // API 호출
       return;
     }

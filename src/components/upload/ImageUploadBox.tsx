@@ -7,10 +7,10 @@ interface ImageUploadBoxProps {
   currentFile?: File | null
 }
 
-export default function ImageUploadBox({
+export const ImageUploadBox = ({
   onFileSelect,
   currentFile,
-}: ImageUploadBoxProps) {
+}: ImageUploadBoxProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {

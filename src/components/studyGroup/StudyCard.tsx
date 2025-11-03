@@ -1,7 +1,7 @@
 import { Calendar, Book } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import type { StudyGroup } from '@/types/StudyGroupTypes'
-import RatedStar from '../basicComponents/ratedStar/RatedStar'
+import { RatedStar } from '../basicComponents/ratedStar/RatedStar'
 import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
 import { useEffect } from 'react'
@@ -9,8 +9,12 @@ import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
 
+interface StudyCardProps {
+  study: StudyGroup
+}
+
 // StudyCard 컴포넌트
-const StudyCard = ({ study }: { study: StudyGroup }) => {
+export const StudyCard = ({ study }: StudyCardProps) => {
   const { openModal } = useModal()
   const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
     storeReview()
@@ -157,5 +161,3 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     </div>
   )
 }
-
-export default StudyCard

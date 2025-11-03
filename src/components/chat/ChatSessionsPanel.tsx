@@ -3,7 +3,7 @@ import { storeChat } from '@/store/storeChat'
 import type { ChatSessionUI } from '@/types/Chat'
 import { X } from 'lucide-react'
 
-export function ChatSessionsPanel() {
+export const ChatSessionsPanel = () => {
   const { sessions } = storeChat()
   return (
     <>
@@ -16,7 +16,7 @@ export function ChatSessionsPanel() {
     </>
   )
 }
-function ChatSessionHeader() {
+const ChatSessionHeader = () => {
   const { totalUnreadCount, setIsPanelOpen } = storeChat()
   const handlePanelClose = () => {
     setIsPanelOpen(false)
@@ -43,7 +43,7 @@ function ChatSessionHeader() {
   )
 }
 
-function SessionItem(session: ChatSessionUI) {
+const SessionItem = (session: ChatSessionUI) => {
   const { togglePanel } = storeChat()
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()

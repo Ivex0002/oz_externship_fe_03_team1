@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react'
 import { NotiPanel } from './NotiPanel'
 import { useRef } from 'react'
 
-export function NotiButton() {
+export const NotiButton = () => {
   const { unreadCount, isNotiPanelOpen, setIsNotiPanelOpen } =
     storeNotification()
   const notiCount = unreadCount

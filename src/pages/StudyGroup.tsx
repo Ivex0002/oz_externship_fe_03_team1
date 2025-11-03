@@ -1,13 +1,11 @@
 import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
-import React, { useState } from 'react'
-import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
-import StudyCard from '@/components/studyGroup/StudyCard'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useNavigate } from 'react-router'
+import { StudySection } from '@/components/studyGroup/StudySection'
 
-const SearchBar: React.FC = () => (
+const SearchBar = () => (
   <div className="mb-8 w-1/3">
     <BasicInput
       placeholder="스터디 그룹 검색..."
@@ -19,77 +17,7 @@ const SearchBar: React.FC = () => (
   </div>
 )
 
-const StudySection: React.FC<{ title: string; studies: StudyGroupType[] }> = ({
-  title,
-  studies,
-}) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const studiesPerPage = 9
-  const totalPages = Math.ceil(studies.length / studiesPerPage)
-  const indexOfLastStudy = currentPage * studiesPerPage
-  const indexOfFirstStudy = indexOfLastStudy - studiesPerPage
-  const currentStudies = studies.slice(indexOfFirstStudy, indexOfLastStudy)
-
-  const isOngoing = title.includes('진행중')
-
-  return (
-    <section className="mb-16">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
-
-        {/* ✅ 개수 뱃지 스타일 변경 */}
-        <span
-          className={`rounded-full border px-3 py-1 text-xs font-medium ${
-            isOngoing
-              ? 'border-green-300 bg-green-200 text-green-700'
-              : 'border-gray-300 bg-gray-200 text-gray-700'
-          }`}
-        >
-          {studies.length}개 {isOngoing ? '진행중' : '완료'}
-        </span>
-      </div>
-
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {currentStudies.map((study) => (
-          <StudyCard key={study.id} study={study} />
-        ))}
-      </div>
-
-      {totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-2">
-          <BasicButton
-            variant="secondary"
-            size="small"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            이전
-          </BasicButton>
-          {[...Array(totalPages)].map((_, idx) => (
-            <BasicButton
-              key={idx}
-              variant={currentPage === idx + 1 ? 'primary' : 'outline'}
-              size="small"
-              onClick={() => setCurrentPage(idx + 1)}
-            >
-              {idx + 1}
-            </BasicButton>
-          ))}
-          <BasicButton
-            variant="secondary"
-            size="small"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          >
-            다음
-          </BasicButton>
-        </div>
-      )}
-    </section>
-  )
-}
-
-const StudyGroup = () => {
+export const StudyGroup = () => {
   const navigate = useNavigate()
 
   const ongoingStudyGroupList = studyGroupList.filter(
@@ -141,5 +69,3 @@ const StudyGroup = () => {
     </div>
   )
 }
-
-export default StudyGroup

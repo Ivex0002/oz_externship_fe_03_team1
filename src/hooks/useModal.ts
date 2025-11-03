@@ -17,7 +17,7 @@ import { useNavigate, useLocation } from 'react-router'
  * }
  * ```
  */
-export function useModal() {
+export const useModal = () => {
   const navigate = useNavigate()
   const location = useLocation()
 

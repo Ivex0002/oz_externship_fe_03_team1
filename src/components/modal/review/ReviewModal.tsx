@@ -1,6 +1,6 @@
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
-import ReviewRating from './ReviewRating'
-import ReviewText from './ReviewText'
+import { ReviewRating } from './ReviewRating'
+import { ReviewText } from './ReviewText'
 import { useModal } from '@/hooks/useModal'
 import dayjs from '@/lib/dayjs'
 import { storeReview } from '@/store/storeReview'
@@ -22,7 +22,7 @@ const ReviewStudyBasicInfo = () => {
   )
 }
 
-const ReviewModal = () => {
+export const ReviewModal = () => {
   const [rating, setRating] = useState(0)
   const [reviewInputValue, setReviewInputValue] = useState('')
   //loader 설정시 아래 코드로 변경
@@ -86,5 +86,3 @@ const ReviewModal = () => {
     </form>
   )
 }
-
-export default ReviewModal

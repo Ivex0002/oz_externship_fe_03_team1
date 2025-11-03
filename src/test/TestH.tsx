@@ -1,4 +1,4 @@
-import ReviewDetailModal from '@/components/modal/reviewDetail/ReviewDetailModal'
+import { ReviewDetailModal } from '@/components/modal/reviewDetail/ReviewDetailModal'
 
 function TestH() {
   return (

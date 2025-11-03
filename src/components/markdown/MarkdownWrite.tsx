@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
-import MarkdownToolbar from './MarkdownToolbar'
+import { MarkdownToolbar } from './MarkdownToolbar'
 
 interface MarkdownWriteProps {
   value: string
@@ -9,11 +9,11 @@ interface MarkdownWriteProps {
   placeholder?: string
 }
 
-export default function MarkdownWrite({
+export const MarkdownWrite = ({
   value,
   onChange,
   placeholder = '내용을 입력하세요. 마크다운 문법을 사용할 수 있습니다.',
-}: MarkdownWriteProps) {
+}: MarkdownWriteProps) => {
   const [tab, setTab] = useState<'edit' | 'preview'>('edit')
   const textareaRef = useRef<HTMLTextAreaElement>(null)
   const [previewValue, setPreviewValue] = useState(value)

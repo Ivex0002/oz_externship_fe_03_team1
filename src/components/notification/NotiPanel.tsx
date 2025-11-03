@@ -8,11 +8,11 @@ import { usePanelClose } from '@/hooks/usePanelClose'
 // 1. store : 초기값 api 요청 로직 작성
 // 2. Header : 모두 읽음 버튼 api 로직 연결
 // 3. ItemList : 알림 클릭시 해당 링크로 이동하는 로직 필요(백엔드 api 명세 확인 필요)
-export function NotiPanel({
+export const NotiPanel = ({
   buttonRef,
 }: {
   buttonRef: React.RefObject<HTMLButtonElement | null>
-}) {
+}) => {
   const { isNotiPanelOpen, setIsNotiPanelOpen } = storeNotification()
   const NotiPanelRef = useRef<HTMLDivElement>(null)
 
@@ -42,7 +42,7 @@ export function NotiPanel({
   )
 }
 
-function NotiHeader() {
+const NotiHeader = () => {
   const { markAllAsRead } = storeNotification()
   const handleClick = () => {
     // TODO : 모두 읽음 처리 로직
@@ -62,7 +62,7 @@ function NotiHeader() {
   )
 }
 
-function NotiTabs() {
+const NotiTabs = () => {
   const { notiArr, unreadCount, readCount, currentFilter, filterNoti } =
     storeNotification()
 
@@ -110,7 +110,7 @@ function NotiTabs() {
   )
 }
 
-function NotiItemList() {
+const NotiItemList = () => {
   const { filtered } = storeNotification()
 
   // TODO : 해당 알림 링크로 이동하는 로직 필요

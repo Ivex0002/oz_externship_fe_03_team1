@@ -12,7 +12,7 @@ import { toast } from 'react-toastify'
 // 1. 현재 사용자가 누구인지 파악하는 로직이 없음
 //    더미데이터의 세션 첫번째 유저가 사용자인것으로 가정하고 작성함
 //    추후에 수정 필요
-export function ChatMessagesPanel() {
+export const ChatMessagesPanel = () => {
   const { currentSession, setMessagesAsAllRead } = storeChat()
 
   useEffect(() => {
@@ -30,7 +30,7 @@ export function ChatMessagesPanel() {
   )
 }
 
-function ChatHeader() {
+const ChatHeader = () => {
   const { currentSession, sessions, togglePanel, setIsPanelOpen } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
 
@@ -86,7 +86,7 @@ function ChatHeader() {
   )
 }
 
-function ChatMembers() {
+const ChatMembers = () => {
   const { currentSession, sessions } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
   const membersRef = useRef<HTMLDivElement>(null)
@@ -117,7 +117,7 @@ function ChatMembers() {
   )
 }
 
-function Member({ member, isMe }: { member: ChatUser; isMe: boolean }) {
+const Member = ({ member, isMe }: { member: ChatUser; isMe: boolean }) => {
   const onlineDot = clsx('w-2 h-2 rounded-full', {
     'bg-gray-300': !member.is_online,
     'bg-[#4ADE80]': member.is_online,
@@ -136,7 +136,7 @@ function Member({ member, isMe }: { member: ChatUser; isMe: boolean }) {
   )
 }
 
-function ChatMessages() {
+const ChatMessages = () => {
   const { currentSession, messages } = storeChat()
   const messageArr = messages.filter((el) => el.session_id === currentSession)
   const containerRef = useRef<HTMLDivElement>(null)
@@ -162,7 +162,7 @@ function ChatMessages() {
   )
 }
 
-function Message({ message }: { message: ChatMessage }) {
+const Message = ({ message }: { message: ChatMessage }) => {
   const { currentSession, sessions } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
   const isMe = session?.member[0] === message.sender
@@ -199,7 +199,7 @@ function Message({ message }: { message: ChatMessage }) {
   )
 }
 
-function ChatInput() {
+const ChatInput = () => {
   const { currentSession, addMessage, sessions } = storeChat()
   const session = sessions.find((s) => s.id === currentSession)
   const me = session?.member[0]

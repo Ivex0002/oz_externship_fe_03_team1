@@ -5,7 +5,7 @@ import { ChatPanel } from './ChatPanel'
 import clsx from 'clsx'
 import { AnimatePresence } from 'framer-motion'
 
-export function ChatButton() {
+export const ChatButton = () => {
   const { totalUnreadCount, setIsPanelOpen, isPanelOpen } = storeChat()
   const buttonRef = useRef<HTMLButtonElement>(null)
 

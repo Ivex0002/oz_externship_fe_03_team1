@@ -2,12 +2,15 @@ import { useModal } from '@/hooks/useModal'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 
-type DatePickerFooterProps = {
+interface DatePickerFooterProps {
   selected: Date | undefined
   target?: string | null
 }
 
-const DatePickerFooter = ({ selected, target }: DatePickerFooterProps) => {
+export const DatePickerFooter = ({
+  selected,
+  target,
+}: DatePickerFooterProps) => {
   const { closeModal } = useModal()
   const { setNewStartDate, setNewEndDate } = storeStudyGroupDate()
 
@@ -46,5 +49,3 @@ const DatePickerFooter = ({ selected, target }: DatePickerFooterProps) => {
     </footer>
   )
 }
-
-export default DatePickerFooter

@@ -1,11 +1,11 @@
-import RatedStar from '@/components/basicComponents/ratedStar/RatedStar'
+import { RatedStar } from '@/components/basicComponents/ratedStar/RatedStar'
 
-type ReviewDetailAverageProps = {
+interface ReviewDetailAverageProps {
   averageRating: number
   totalReview: number
 }
 
-const ReviewDetailAverage = ({
+export const ReviewDetailAverage = ({
   averageRating,
   totalReview,
 }: ReviewDetailAverageProps) => {
@@ -19,5 +19,3 @@ const ReviewDetailAverage = ({
     </div>
   )
 }
-
-export default ReviewDetailAverage

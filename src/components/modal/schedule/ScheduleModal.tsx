@@ -6,10 +6,11 @@ import { useModal } from '@/hooks/useModal'
 import { storeSchedule } from '@/store/storeSchedule'
 import { useParams } from 'react-router'
 import type { Member } from '@/types/Schedule'
+import type { ScheduleParams } from '@/types/Params'
 
 export const ScheduleModal = () => {
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([])
-  const { id } = useParams<{ id: string }>()
+  const { scheduleId, studyGroupId } = useParams<ScheduleParams>()
   const { closeModal, modalToModal } = useModal()
   const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
 
@@ -24,7 +25,10 @@ export const ScheduleModal = () => {
     e.preventDefault()
     if (isEdit) {
       clearSchedules()
-      modalToModal(`/modal/schedule_detail/${id}`, '스케줄 상세보기')
+      modalToModal(
+        `/modal/schedule_detail/${studyGroupId}/${scheduleId}`,
+        '스케줄 상세보기'
+      )
       return
     }
     clearSchedules()

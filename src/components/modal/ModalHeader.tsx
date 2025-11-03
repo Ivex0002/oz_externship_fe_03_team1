@@ -2,7 +2,7 @@ import { useModal } from '@/hooks/useModal'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import { X } from 'lucide-react'
 
-const ModalHeader = () => {
+export const ModalHeader = () => {
   const { closeModal } = useModal()
   const { title, subTitle } = storeModalOpen().modalState
 
@@ -23,5 +23,3 @@ const ModalHeader = () => {
     </header>
   )
 }
-
-export default ModalHeader

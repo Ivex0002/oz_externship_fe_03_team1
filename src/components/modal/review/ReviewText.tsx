@@ -1,9 +1,9 @@
-type ReviewTextProps = {
+interface ReviewTextProps {
   inputValue: string
   setInputValue: React.Dispatch<React.SetStateAction<string>>
 }
 
-const ReviewText = ({ inputValue, setInputValue }: ReviewTextProps) => {
+export const ReviewText = ({ inputValue, setInputValue }: ReviewTextProps) => {
   return (
     <div className="flex w-[448px] flex-col gap-3 py-6">
       <label htmlFor="review" className="text-sm font-medium">
@@ -23,5 +23,3 @@ const ReviewText = ({ inputValue, setInputValue }: ReviewTextProps) => {
     </div>
   )
 }
-
-export default ReviewText

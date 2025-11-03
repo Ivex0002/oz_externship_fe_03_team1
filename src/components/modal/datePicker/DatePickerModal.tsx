@@ -2,13 +2,13 @@ import { useEffect, useState } from 'react'
 import { DayPicker } from 'react-day-picker'
 import { ko } from 'react-day-picker/locale'
 import 'react-day-picker/style.css'
-import DatePickerCaption from './DatePickerCaption'
-import DatePickerFooter from './DatePickerFooter'
+import { DatePickerCaption } from './DatePickerCaption'
+import { DatePickerFooter } from './DatePickerFooter'
 import dayjs from '@/lib/dayjs'
 import { useSearchParams } from 'react-router'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 
-const DatePickerModal = () => {
+export const DatePickerModal = () => {
   const [selected, setSelected] = useState<Date>()
   const params = useSearchParams()
   const target = params[0].get('target')
@@ -66,5 +66,3 @@ const DatePickerModal = () => {
     </div>
   )
 }
-
-export default DatePickerModal

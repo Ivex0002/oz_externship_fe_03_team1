@@ -156,13 +156,6 @@ export type BaseResponse = {
   }
 }
 
-export type Req<T> = {
-  req: T
-}
-export type Res<T> = {
-  res: T
-}
-
 /**
  * 모든 api 링크에 따른 타입 명시
  *
@@ -176,64 +169,55 @@ export type ApiLinks = {
   v1: {
     users: {
       me: {
-        GET: Res<UserProfile>
+        GET: { res: UserProfile }
       }
     }
     auth: {
       // (스웨거) 로그아웃 기능 누락
       logout: {
-        POST: Res<BaseResponse>
+        POST: { res: BaseResponse }
       }
     }
     notifications: {
-      GET: Res<Pagination<Notification>>
+      GET: { res: Pagination<Notification> }
     }
     lectures: {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
-      GET: Res<{
-        count: number
-        next: string
-        previous: string
-        results: Lecture[]
-        user_nickname: string
-        recommended_lectures: Lecture[]
-      }>
+      GET: {
+        res: {
+          count: number
+          next: string
+          previous: string
+          results: Lecture[]
+          user_nickname: string
+          recommended_lectures: Lecture[]
+        }
+      }
 
       categories: {
-        GET: Res<LectureCategory[]>
+        GET: { res: LectureCategory[] }
       }
     }
     studies: {
-      groups: {
-        GET: Res<StudyGroup[]>
+      groups: GroupApi
+    }
+  }
+}
 
-        POST: Req<StudyGroupPost> &
-          // (스웨거) post res 응답 누락
-          // 임시로 디테일 이벤트 걸어놓음
-          Res<BaseResponse>
+type GroupApi = {
+  GET: { res: StudyGroup[] }
+  POST: { req: StudyGroupPost; res: BaseResponse }
 
-        // (스웨거) 전체 get 메서드와 단일 get 메서드 상의 group 타입이 다름
-        (group_id: number): {
-          GET: Res<StudyGroupDetail>
-
-          // $ 기호를 사용하여 케밥 케이스 표현
-          delegate$leader: {
-            POST: Req<{
-              target_user_id: number
-            }> &
-              Res<BaseResponse>
-          }
-          leave: {
-            DELETE: Res<BaseResponse>
-          }
-          members: { (_member_id: number): { DELETE: Res<BaseResponse> } }
-          // (스웨거) 리뷰는 현재 포스트 하나만 존재함
-          // get, delete, patch 누락
-          reviews: {
-            POST: Req<StudyReview>
-          }
-        }
+  (group_id: number): {
+    GET: { res: StudyGroupDetail }
+    delegate$leader: {
+      POST: {
+        req: { target_user_id: number }
+        res: BaseResponse
       }
     }
+    leave: { DELETE: { res: BaseResponse } }
+    members: { (_member_id: number): { DELETE: { res: BaseResponse } } }
+    reviews: { POST: { res: StudyReview } }
   }
 }

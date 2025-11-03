@@ -1,25 +1,27 @@
-import type { AxiosError, InternalAxiosRequestConfig, Method } from 'axios'
-import type { Req, Res } from './ApiLink'
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+  Method,
+} from 'axios'
 
-// 반드시 대문자로 Http메서드를 적도록 명시(가독성)
+// 반드시 대문자로 Http메서드를 적도록(가독성)
 export type HttpMethod = Uppercase<Method>
 
 // HttpMethod 일때 req 유무에 따른 분기처리
-type MethodHandler<T> = T extends Req<infer Q> & Res<infer S>
+type MethodHandler<T> = T extends { req: infer Q } & { res: infer S }
   ? (data: Q) => Promise<S>
-  : T extends Res<infer S>
+  : T extends { res: infer S }
     ? () => Promise<S>
     : never
 
-export type DynamicFn = (...args: (string | number)[]) => object
-
 // src\api\apiTree.ts 타입 지정용
 // 들어온 타입객체 키값에 따른 분기처리
-export type ApiTree<T> = T extends (...args: infer Args) => infer R
+export type ApiTree<T> = {
+  [K in keyof T]: K extends HttpMethod ? MethodHandler<T[K]> : ApiTree<T[K]>
+} & (T extends (...args: infer Args) => infer R
   ? (...args: Args) => ApiTree<R>
-  : {
-      [K in keyof T]: K extends HttpMethod ? MethodHandler<T[K]> : ApiTree<T[K]>
-    }
+  : unknown)
 
 /**
  * API 요청을 수행하는 함수 시그니처.
@@ -28,7 +30,8 @@ export type ApiTree<T> = T extends (...args: infer Args) => infer R
 export type RequestExecutor = <Req, Res>(
   url: string,
   method: Method,
-  data?: Req
+  data?: Req,
+  config?: AxiosRequestConfig
 ) => Promise<Res>
 
 // 에러 핸들링

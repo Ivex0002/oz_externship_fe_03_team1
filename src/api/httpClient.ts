@@ -127,14 +127,16 @@ export class HttpClient {
   public async request<Req = void, Res = unknown>(
     url: string,
     method: Method,
-    data?: Req
+    data?: Req,
+    // 'url' | 'method' | 'data' 을 제외한 나머지는 config로 간주
+    config?: Omit<RetryableRequestConfig, 'url' | 'method' | 'data'>
   ): Promise<Res> {
     const res: AxiosResponse<Res> = await this.client.request<Res>({
       url,
       method,
       data,
+      ...config,
     })
-
     return res.data
   }
 
@@ -143,6 +145,6 @@ export class HttpClient {
    * - createApiTree 주입용
    */
   public getRequestExecutor(): RequestExecutor {
-    return this.request.bind(this)
+    return this.request.bind(this) as RequestExecutor
   }
 }

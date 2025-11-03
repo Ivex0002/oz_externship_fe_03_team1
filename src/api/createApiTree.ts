@@ -15,13 +15,15 @@ export const HTTP_METHODS = new Set<HttpMethod>([
   'PATCH',
 ])
 
+type GetNestedType<T, K extends string> = K extends keyof T ? T[K] : object
+
 /**
  * API Tree 생성 함수
  *
  * 타입만으로 자동완성을 제공하고, 런타임에는 경로를 파싱하여 요청을 실행
  *
  */
-export const createApiTree = <T extends object>(
+export const createApiTree = <T>(
   requestFn: RequestExecutor, // 요청 로직
   pathSegments: string[] = [] // 경로 누적 저장용
 ): ApiTree<T> => {
@@ -33,7 +35,10 @@ export const createApiTree = <T extends object>(
       }
 
       // 모든 프로퍼티를 경로 세그먼트로 추가
-      return createApiTree<object>(requestFn, [...pathSegments, prop])
+      return createApiTree<GetNestedType<T, typeof prop>>(requestFn, [
+        ...pathSegments,
+        prop,
+      ])
     },
 
     // 함수 호출
@@ -59,11 +64,7 @@ export const createApiTree = <T extends object>(
 
       // 2순위: 파라미터 삽입 (직접 호출)
       if (args.length > 0) {
-        const param = args[0]
-        return createApiTree<object>(requestFn, [
-          ...pathSegments,
-          String(param),
-        ])
+        return createApiTree<T>(requestFn, [...pathSegments, String(args[0])])
       }
 
       throw new Error(`Cannot call path: ${pathSegments.join('/')}`)

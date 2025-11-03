@@ -18,7 +18,9 @@ type MethodHandler<T> = T extends { req: infer Q } & { res: infer S }
 // src\api\apiTree.ts 타입 지정용
 // 들어온 타입객체 키값에 따른 분기처리
 export type ApiTree<T> = {
-  [K in keyof T]: K extends HttpMethod ? MethodHandler<T[K]> : ApiTree<T[K]>
+  [K in keyof T]: K extends HttpMethod
+    ? MethodHandler<T[K]>
+    : ApiTree<T[K] extends object ? T[K] : unknown>
 } & (T extends (...args: infer Args) => infer R
   ? (...args: Args) => ApiTree<R>
   : unknown)

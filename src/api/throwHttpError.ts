@@ -6,7 +6,7 @@ export class ApiError extends Error {
     public status: number,
     message: string,
     public code?: string,
-    public details?: unknown
+    public detail?: unknown
   ) {
     super(message)
     this.name = 'ApiError'
@@ -25,9 +25,9 @@ export const throwHttpError = (error: AxiosError): never => {
   // 서버에서 보낸 에러 메시지 우선 사용
   const message = errorResponse?.message || getDefaultErrorMessage(status)
   const code = errorResponse?.error?.code
-  const details = errorResponse?.error?.detail
+  const detail = errorResponse?.error?.detail
 
-  throw new ApiError(status, message, code, details)
+  throw new ApiError(status, message, code, detail)
 }
 
 /**

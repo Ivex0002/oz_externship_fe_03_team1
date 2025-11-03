@@ -40,8 +40,8 @@ type Notification = {
 // ===================== Lecture =====================
 type LectureCategory = { id: number; name: string }
 // 명시적으로 Enum이 제공되었으나, 추후에 string으로 대체될 가능성 있음
-type DifficultyEnum = 'EASY' | 'NORMAL' | 'HARD'
-type PlatformEnum = 'UDEMY' | 'INFLEARN '
+export type DifficultyEnum = 'EASY' | 'NORMAL' | 'HARD'
+export type PlatformEnum = 'UDEMY' | 'INFLEARN '
 
 type Lecture = {
   id: number
@@ -64,7 +64,7 @@ type Lecture = {
 
 // ===================== Study:Group =====================
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
-type StudyGroupStatus = 'PENDING' | 'ONGOING' | 'ENDED'
+export type StudyGroupStatus = 'PENDING' | 'ONGOING' | 'ENDED'
 
 type StudyGroup = {
   id: number

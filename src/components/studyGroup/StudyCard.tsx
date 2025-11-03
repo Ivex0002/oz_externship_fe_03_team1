@@ -13,7 +13,6 @@ interface StudyCardProps {
   study: StudyGroup
 }
 
-// StudyCard 컴포넌트
 export const StudyCard = ({ study }: StudyCardProps) => {
   const { openModal } = useModal()
   const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
@@ -38,14 +37,12 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     if (study.status === 'ONGOING') return
     if (study.status === 'ENDED') {
       // todo 스터디 리뷰 api 호출
-      // setReviewData(api로 받아온 리뷰 데이터)
       setReviewData(reviewDetailData)
     }
   }, [study.status, setReviewData])
 
   const handleClickDetailReview = () => {
     if (study.status === 'ONGOING') return
-
     setBasicStudyInfo(basicStudyInfo)
     openModal('REVIEW_DETAIL', {
       title: '리뷰 상세',
@@ -56,7 +53,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
 
   const handleClickPostReview = () => {
     if (isReviewed) return
-
     setBasicStudyInfo(basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 작성',
@@ -66,7 +62,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
-
     setPreviousMyReview(myReview, basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 수정',
@@ -75,13 +70,13 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   }
 
   return (
-    <div className="flex min-h-[360px] w-96 flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
+    <div className="flex min-h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
       {/* 이미지 섹션 */}
       <div className="relative">
         <img
-          src={study.profile_img_url}
+          src={study.profile_img_url || '/default-study.jpg'}
           alt={study.name}
-          className="h-52 w-full object-cover"
+          className="h-52 w-full bg-gray-100 object-cover"
         />
 
         {/* 진행 상태 - 좌측 상단 */}
@@ -152,7 +147,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             </span>
           </div>
 
-          {/* 버튼이 카드 하단 전체를 꽉 채움 */}
+          {/* 버튼 */}
           <BasicButton
             variant={isReviewed ? 'secondary' : 'primary'}
             size="small"

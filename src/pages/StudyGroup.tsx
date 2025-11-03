@@ -3,7 +3,8 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useNavigate } from 'react-router'
-import { StudySection } from '@/components/studyGroup/StudySection'
+import { StudyCard } from '@/components/studyGroup/StudyCard'
+import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
 const SearchBar = () => (
   <div className="mb-8 w-1/3">
@@ -17,6 +18,29 @@ const SearchBar = () => (
   </div>
 )
 
+const StudySection = ({
+  title,
+  studies,
+}: {
+  title: string
+  studies: StudyGroupType[]
+}) => {
+  return (
+    <section className="mb-16">
+      <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
+      {studies.length === 0 ? (
+        <p className="text-gray-500">해당 스터디가 없습니다.</p>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          {studies.map((study) => (
+            <StudyCard key={study.id} study={study} />
+          ))}
+        </div>
+      )}
+    </section>
+  )
+}
+
 export const StudyGroup = () => {
   const navigate = useNavigate()
 
@@ -26,12 +50,6 @@ export const StudyGroup = () => {
   const completedStudyGroupList = studyGroupList.filter(
     (study) => study.status === 'ENDED'
   )
-  // const ongoingWithLeader = studiesOngoing.map((s, i) =>
-  //   i === 0 ? { ...s, isLeader: true } : s
-  // )
-  // const completedWithLeader = studiesCompleted.map((s, i) =>
-  //   i === 0 ? { ...s, isLeader: true } : s
-  // )
 
   const handleClickCreateStudy = () => {
     navigate('/create_study_group')

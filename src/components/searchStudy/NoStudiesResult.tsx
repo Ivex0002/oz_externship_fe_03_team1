@@ -24,10 +24,10 @@ interface StatusConfig {
 
 // 현재 파일의 메인 컴포넌트. 위 type: StudyType이고, type을 프롭스로
 // 받으며 컨텐츠가 없을 때 화면을 출력하기에 isSearchResult는 false이다.
-export const NoStudiesResult: React.FC<NoStudiesResultProps> = ({ 
+export const NoStudiesResult= ({ 
   type,
   isSearchResult = false,
-}) => {
+}: NoStudiesResultProps) => {
   // 타입 매핑 (키에 따라 서로 다른 상태 설정을 매핑하는 객체)
   // Record< K:키(StudyType), T:타입(StatusConfig) > 유틸리티 타입.
   // K:진행중인 스터디가 없을 때 or  완료된 스터디가 없을 때

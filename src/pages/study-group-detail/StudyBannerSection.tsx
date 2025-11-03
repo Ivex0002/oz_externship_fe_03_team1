@@ -1,24 +1,24 @@
 import { Calendar } from 'lucide-react';
-import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes';
-import { formatDate } from '@/utils/formattedDate';
-import { getStatusText } from '@/utils/statusFormatter';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
+import type { FormattedInfo } from './StudyInfoAndCourses';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
   setIsLeader: (value: boolean) => void;
-  studyGroup: StudyGroupDetail;
+  title: string;
+  imgUrl: string;
+  formattedInfo: FormattedInfo
 }
 
 export const StudyBannerSection = ({ 
   isLeader, 
-  setIsLeader, 
-  studyGroup 
+  setIsLeader,
+  formattedInfo,
+  title,
+  imgUrl
+
 }: StudyBannerSectionProps) => {
-  // 날짜 변수 상단 선언
-  const startDate = formatDate(studyGroup.start_at);
-  const endDate = formatDate(studyGroup.end_at);
-  const statusText = getStatusText(studyGroup.status);
+  
 
   // 핸들러 함수 분리
   const handleEditClick = () => {return};
@@ -36,7 +36,7 @@ export const StudyBannerSection = ({
       {/* 스터디 배너 섹션 */}
       <div className="relative mb-6 rounded-lg overflow-hidden mt-[36.5px]">
         <img
-          src={studyGroup.profile_img_url || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop"}
+          src={imgUrl || "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop"}
           alt="Study Banner"
           className="w-full h-[598px] object-cover"
         />
@@ -44,18 +44,18 @@ export const StudyBannerSection = ({
         <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/30 to-transparent rounded-lg"></div>
         
         <div className="absolute bottom-0 left-0 right-0 p-6 text-white">
-          <h1 className="text-3xl font-bold mb-2">{studyGroup.name}</h1>
+          <h1 className="text-3xl font-bold mb-2">{title}</h1>
           <div className="flex items-center gap-3 text-sm text-gray-100 mb-2">
             <img 
               src="/icons/group-members-icon.svg" 
               alt="members" 
               className="w-4 h-4" 
             />
-            <span>{studyGroup.current_headcount} / {studyGroup.max_headcount}명</span>
+            <span>{formattedInfo.memberCount}명</span>
             <Calendar className="w-4 h-4" />
-            <span>{startDate} ~ {endDate}</span>
+            <span>{formattedInfo.startDate} ~ {formattedInfo.endDate}</span>
             <span className="px-3 py-1 bg-success-500 text-white rounded-full text-xs">
-              {statusText}
+              {formattedInfo.statusText}
             </span>
           </div>
         </div>
@@ -69,7 +69,7 @@ export const StudyBannerSection = ({
               className="flex items-center gap-2 !px-4 !py-2 !text-sm"
               onClick={handleEditClick}
             >
-              <img src="/pen.svg" alt="edit" className="w-4 h-4" />
+              <img src="/icons/pen.svg" alt="edit" className="w-4 h-4" />
               수정하기
             </BasicButton>
           )}
@@ -79,7 +79,7 @@ export const StudyBannerSection = ({
             className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
             onClick={handleLeaveClick}
           >
-            <img src="/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />
+            <img src="/icons/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />
             나가기
           </BasicButton>
         </div>

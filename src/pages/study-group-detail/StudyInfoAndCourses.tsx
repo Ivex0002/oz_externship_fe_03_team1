@@ -1,16 +1,21 @@
-import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes';
-import { formatDate } from '@/utils/formattedDate';
-import { getStatusText } from '@/utils/statusFormatter';
+import type { LectureDetail } from '@/types/StudyGroupDetailTypes';
+import { SquareArrowOutUpRight } from 'lucide-react';
 
 interface StudyInfoAndCoursesProps {
-  studyGroup: StudyGroupDetail;
-}
-
-export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) => {
-  const startDate = formatDate(studyGroup.start_at);
-  const endDate = formatDate(studyGroup.end_at);
-  const statusText = getStatusText(studyGroup.status);
-  const lectures = studyGroup.lectures;
+    formattedInfo: FormattedInfo;
+    lectures: LectureDetail[];
+};
+export interface FormattedInfo {
+    startDate: string
+    endDate: string
+    statusText: string
+    memberCount: string
+  };
+// export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) => {
+export const StudyInfoAndCourses = ({
+  formattedInfo,
+  lectures
+}: StudyInfoAndCoursesProps) =>{
 
   const handleLectureClick = (urlLink: string) => {
     if (urlLink && urlLink !== '#') {
@@ -27,21 +32,21 @@ export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) =>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">인원</span>
             <span className="text-gray-900">
-              {studyGroup.current_headcount} / {studyGroup.max_headcount}명
+              {formattedInfo.memberCount}명
             </span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">시작일</span>
-            <span className="text-gray-900">{startDate}</span>
+            <span className="text-gray-900">{formattedInfo.startDate}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">종료일</span>
-            <span className="text-gray-900">{endDate}</span>
+            <span className="text-gray-900">{formattedInfo.endDate}</span>
           </div>
           <div className="flex justify-between items-center">
             <span className="text-gray-600 font-medium">상태</span>
             <span className="px-3 py-1 bg-success-500 text-white rounded-full text-xs">
-              {statusText}
+              {formattedInfo.statusText}
             </span>
           </div>
         </div>
@@ -93,7 +98,7 @@ export const StudyInfoAndCourses = ({ studyGroup }: StudyInfoAndCoursesProps) =>
                   onClick={() => handleLectureClick(lecture.url_link || '#')}
                 >
                   강의 바로가기
-                  <img src="/move.svg" alt="move" className="w-4 h-4" />
+                  <SquareArrowOutUpRight className="w-4 h-4" />
                 </button>
               </div>
             </div>

@@ -2,7 +2,6 @@ import { useState, useEffect, useRef, useReducer } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import dayjs from '@/lib/dayjs';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-import { formatTime } from '@/utils/formattedDate';
 import type { Schedule } from '@/types/Schedule';
 
 interface StudyCalendarProps {
@@ -28,6 +27,7 @@ const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipStat
       return state;
   }
 };
+
 
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
 
@@ -159,7 +159,7 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
       </div>
 
       <div className="mb-4 overflow-hidden">
-        <div className="flex items-center justify-center mb-6 gap-4">
+        <div className="flex items-center justify-between mb-6 gap-4">
           <button
             onClick={handlePrevMonth}
             className="p-1 hover:bg-gray-100 rounded transition-colors"
@@ -192,63 +192,64 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
           ))}
         </div>
 
-        <div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
-          {generateCalendar().map((week, weekIdx) =>
-            week.map((day, dayIdx) => {
-              const daySchedules = day ? schedulesByDay[day] : [];
+<div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
+  {generateCalendar().map((week, weekIdx) =>
+    week.map((day, dayIdx) => {
+      const daySchedules = day ? schedulesByDay[day] : [];
 
-              return (
-                <div
-                  key={`${weekIdx}-${dayIdx}`}
-                  className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
+      return (
+        <div
+          key={`${weekIdx}-${dayIdx}`}
+          className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
+        >
+          {day ? (
+            <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
+              <div className="text-xs text-gray-900 pb-2">{day}</div>
+
+              {daySchedules && daySchedules.map((schedule) => {
+                return(
+                <div 
+                  key={schedule.id}
+                  className="relative bg-primary-100 rounded p-1 mb-1"
+                  onMouseEnter={() => handleMouseEnter(day)}
+                  onMouseLeave={handleMouseLeave}
                 >
-                  {day ? (
-                    <div className="h-full bg-white hover:border-gray-300 transition-all cursor-pointer p-2">
-                      <div className="text-xs text-gray-900 pb-2">{day}</div>
+                  <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
+                    {schedule.title}
+                  </h4>
+                  <p className="text-[10px] text-primary-800/75 leading-tight">
+                    {dayjs(schedule.start_time).format('HH시mm분')} ~ {dayjs(schedule.end_time).format('HH시mm분')}
+                  </p>
 
-                      {daySchedules && daySchedules.map((schedule) => (
-                        <div 
-                          key={schedule.id}
-                          className="relative bg-primary-100 rounded p-1 mb-1"
-                          onMouseEnter={() => handleMouseEnter(day)}
-                          onMouseLeave={handleMouseLeave}
-                        >
-                          <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
-                            {schedule.title}
-                          </h4>
-                          <p className="text-[10px] text-primary-800/75 leading-tight">
-                            {formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}
-                          </p>
-
-                          {tooltipState.isVisible && tooltipState.hoveredDay === day && (
-                            <div className="absolute z-50 left-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl p-3 animate-fade-in">
-                              <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
-                              
-                              <div className="relative z-10 bg-white">
-                                <h4 className="text-sm font-bold text-gray-900 mb-2">
-                                  {schedule.title}
-                                </h4>
-                                <div className="text-xs text-gray-600">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-semibold">시간:</span>
-                                    <span>{formatTime(schedule.start_time)} - {formatTime(schedule.end_time)}</span>
-                                  </div>
-                                </div>
-                              </div>
-                            </div>
-                          )}
+                  {tooltipState.isVisible && tooltipState.hoveredDay === day && (
+                    <div className="absolute z-50 left-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl p-3 animate-fade-in">
+                      <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
+                      
+                      <div className="relative z-10 bg-white">
+                        <h4 className="text-sm font-bold text-gray-900 mb-2">
+                          {schedule.title}
+                        </h4>
+                        <div className="text-xs text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <span className="font-semibold">시간:</span>
+                            <span>{dayjs(schedule.start_time).format('HH시mm분')} ~ {dayjs(schedule.end_time).format('HH시mm분')}</span>
+                          </div>
                         </div>
-                      ))}
+                      </div>
                     </div>
-                  ) : (
-                    <div className="h-full bg-gray-50"></div>
                   )}
                 </div>
-              );
-            })
+                ) 
+              })}
+            </div>
+          ) : (
+            <div className="h-full bg-gray-50"></div>
           )}
         </div>
-      </div>
-    </div>
-  );
-};
+      );
+    }) 
+  )}
+</div>
+</div>
+</div>
+  )}

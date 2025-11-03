@@ -2,6 +2,7 @@ import { useRef, useReducer, useMemo } from 'react';
 import { TooltipPortal } from '../../utils/TooltipPortal';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { Member } from '@/types/Schedule';
+import { Crown, X } from 'lucide-react';
 
 interface StudyMemberListProps {
   members: Member[];
@@ -183,10 +184,13 @@ export const StudyMemberList = ({
                     <BasicButton
                       variant="secondary"
                       size="small"
-                      className="!w-6 !h-6 !rounded-full !bg-blue-50 !text-blue-600 !text-xs"
+                      className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs"
                       onClick={() => handleDelegateClick(member.nickname)}
                     >
-                      ↑
+                      <Crown
+                      className='hover:text-blue-600' 
+                      size={20}
+                      />
                     </BasicButton>
                   </div>
 
@@ -205,7 +209,10 @@ export const StudyMemberList = ({
                       className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500"
                       onClick={() => handleExpelClick(member.nickname)}
                     >
-                      X
+                      <X 
+                      size={20}
+                      className='hover:text-danger-800'
+                      />
                     </BasicButton>
                   </div>
                 </div>

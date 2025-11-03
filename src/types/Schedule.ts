@@ -5,7 +5,7 @@ export type Member = {
 }
 
 export type Schedule = {
-  id: number
+  id?: number
   title: string
   objective: string
   session_date: string

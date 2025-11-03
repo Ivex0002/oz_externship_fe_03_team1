@@ -1,8 +1,8 @@
 // StudyRecordList.tsx
 import { useState, useEffect } from 'react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-import { formatDateTime } from '@/utils/formattedDate';
 import type { StudyRecord } from '@/types/Schedule';
+import dayjs from '@/lib/dayjs';
 
 interface StudyRecordListProps {
   groupId: number;
@@ -11,9 +11,6 @@ interface StudyRecordListProps {
 export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
   const [records, setRecords] = useState<StudyRecord[]>([]);
   const [loading, setLoading] = useState(true);
-
-  // 날짜 포맷 함수
-  const getFormattedDate = (date: string) => formatDateTime(date);
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -61,7 +58,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
           className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
           onClick={handleWriteClick}
         >
-          <img src="/pen.svg" alt="write" className="w-4 h-4 filter invert brightness-0" />
+          <img src="/icons/pen.svg" alt="write" className="w-4 h-4 filter invert brightness-0" />
           작성하기
         </BasicButton>
       </div>
@@ -78,7 +75,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
                 {record.title}
               </h3>
               <span className="text-xs text-gray-500 font-[14px]">
-                {getFormattedDate(record.created_at)} {/* ✅ 포맷 함수만 호출 */}
+                {dayjs(record.created_at).format('YYYY. MM. DD A HH:mm')}
               </span>
             </div>
 
@@ -90,7 +87,13 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
               />
               <div className="flex-1">
                 <p className="text-sm text-gray-700">{record.author.nickname}</p>
-                <p className="text-xs text-gray-500 mt-1">{record.summary}</p>
+                  <div className='flex items-center gap-2'>
+                  <img 
+                  src="/icons/attachment.svg"  
+                  className="w-[8.5px] filter: invert-47 sepia-7 saturate-755 hue-rotate-182 brightness-90 contrast-84;" 
+                  />
+                  <p className="text-xs text-gray-500 mt-1">{record.summary}</p>
+                </div>
               </div>
             </div>
           </div>

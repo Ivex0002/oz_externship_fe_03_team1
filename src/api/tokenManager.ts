@@ -1,3 +1,5 @@
+import { storeAccessToken } from '@/store/storeAccessToken'
+
 export interface TokenStorage {
   getAccessToken(): string | null
   setAccessToken(token: string): void
@@ -42,9 +44,11 @@ export class TokenManager implements TokenStorage {
 
   setAccessToken(token: string): void {
     this.accessToken = token
+    storeAccessToken.getState().setAccessToken(token)
   }
 
   clearTokens(): void {
     this.accessToken = null
+    storeAccessToken.getState().clearAccessToken()
   }
 }

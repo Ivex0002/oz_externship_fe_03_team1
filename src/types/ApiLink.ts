@@ -1,26 +1,3 @@
-// TODO
-// 1. StudyGroupDetail.member 타입 v
-//    api 명세서 :
-//      {
-//        "id": 1,
-//        "nickname": "",
-//        "is_leader": false
-//      }
-
-// 2. StudyGroup.status 타입 v
-//    api 명세서 :
-//      PENDING | ONGOING | ENDED
-
-// 3. StudyGroupPost.lectures 타입 v
-//    api 명세서 :
-//      "lectures": [
-//        {
-//          "id": 1,
-//          "title": "",
-//          "instructor": ""
-//        },
-//      ]
-
 // ===================== User =====================
 // type RoleEnum = 'admin' | 'staff' | 'user'
 // (스웨거) RoleEnum이 존재하나 어디에도 쓰이지 않음
@@ -63,8 +40,8 @@ type Notification = {
 // ===================== Lecture =====================
 type LectureCategory = { id: number; name: string }
 // 명시적으로 Enum이 제공되었으나, 추후에 string으로 대체될 가능성 있음
-type DifficultyEnum = 'EASY' | 'NORMAL' | 'HARD'
-type PlatformEnum = 'UDEMY' | 'INFLEARN '
+export type DifficultyEnum = 'EASY' | 'NORMAL' | 'HARD'
+export type PlatformEnum = 'UDEMY' | 'INFLEARN '
 
 type Lecture = {
   id: number
@@ -87,7 +64,7 @@ type Lecture = {
 
 // ===================== Study:Group =====================
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
-type StudyGroupStatus = 'PENDING' | 'ONGOING' | 'ENDED'
+export type StudyGroupStatus = 'PENDING' | 'ONGOING' | 'ENDED'
 
 type StudyGroup = {
   id: number

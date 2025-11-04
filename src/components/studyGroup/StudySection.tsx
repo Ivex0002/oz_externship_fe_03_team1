@@ -52,7 +52,7 @@ const StudySection = ({
       >
         {hasNoStudies ? (
           <div className="col-span-full flex w-full justify-center">
-            <div className="w-full max-w-[1120px]">
+            <div className="w-full">
               <NoStudiesResult type={type} isSearchResult={isSearchResult} />
             </div>
           </div>

@@ -7,6 +7,8 @@ import { useNavigate } from 'react-router'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
+import { useDebounce } from '@/hooks/useDebounce'
+
 const SearchBar = ({
   searchTerm,
   setSearchTerm,
@@ -64,8 +66,12 @@ const StudySection = ({
 export const StudyGroup = () => {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
+
+  // debounce 적용
+  const debouncedSearchTerm = useDebounce(searchTerm, 300) // 300ms 딜레이
+
   const filteredStudyGroups = studyGroupList.filter((study) =>
-    study.name.toLowerCase().includes(searchTerm.toLowerCase())
+    study.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   )
   const ongoingStudyGroupList = filteredStudyGroups.filter(
     (study) => study.status === 'ONGOING'
@@ -77,7 +83,7 @@ export const StudyGroup = () => {
     navigate('/create_study_group')
   }
   return (
-    <div className="flex min-h-screen flex-col bg-white px-20 pt-[65px] pb-20">
+    <div className="flex min-h-screen w-screen flex-col bg-white px-20 pt-[65px] pb-20">
       <header className="mb-6 flex items-center justify-between">
         <div>
           <h1 className="mb-1 text-3xl font-bold text-gray-800">스터디 그룹</h1>
@@ -97,8 +103,8 @@ export const StudyGroup = () => {
       {/* 검색창 */}
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* 메인 컨텐츠: flex-1로 남은 공간 채우기 */}
-      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
+      {/* 메인 컨텐츠 */}
+      <main className="mx-auto flex w-full flex-1 flex-col">
         <StudySection
           title="진행중인 스터디"
           studies={ongoingStudyGroupList}

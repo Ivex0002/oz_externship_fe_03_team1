@@ -40,28 +40,17 @@ const StudySection = ({
   const hasNoStudies = studies.length === 0
 
   return (
-    <section className="mb-16 w-full">
+    <section className="mb-20 flex w-full flex-col">
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
 
-      {studies.length === 0 ? (
-        <NoStudiesResult type={type} isSearchResult={isSearchResult} />
-      ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {studies.map((study) => (
-            <StudyCard key={study.id} study={study} />
-          ))}
-        </div>
-      )}
-      {/* ✅ 고정된 grid 영역 유지 */}
       <div
-        className={`grid min-h-[60vh] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+        className={`grid min-h-[60vh] w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
           hasNoStudies ? 'place-items-center' : ''
         }`}
       >
         {hasNoStudies ? (
-          // ✅ 검색결과가 없을 때 중앙에 꽉 차게 표시
           <div className="col-span-full flex w-full justify-center">
-            <div className="w-full max-w-[1100px]">
+            <div className="w-full max-w-[900px]">
               <NoStudiesResult type={type} isSearchResult={isSearchResult} />
             </div>
           </div>
@@ -88,31 +77,28 @@ export const StudyGroup = () => {
     navigate('/create_study_group')
   }
   return (
-    <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
-      <main className="mx-auto max-w-7xl">
-        {/* 헤더 */}
-        <div className="mb-6 flex items-center justify-between">
-          <div>
-            <h1 className="mb-1 text-3xl font-bold text-gray-800">
-              스터디 그룹
-            </h1>
-            <p className="text-sm text-gray-600">
-              함께 공부하며 성장하는 스터디 그룹에 참여해보세요
-            </p>
-          </div>
-          <BasicButton
-            variant="primary"
-            onClick={handleClickCreateStudy}
-            size="medium"
-          >
-            <Plus size={16} /> 새 스터디 만들기
-          </BasicButton>
+    <div className="flex min-h-screen flex-col bg-white px-20 pt-[65px] pb-20">
+      <header className="mb-6 flex items-center justify-between">
+        <div>
+          <h1 className="mb-1 text-3xl font-bold text-gray-800">스터디 그룹</h1>
+          <p className="text-sm text-gray-600">
+            함께 공부하며 성장하는 스터디 그룹에 참여해보세요
+          </p>
         </div>
+        <BasicButton
+          variant="primary"
+          onClick={handleClickCreateStudy}
+          size="medium"
+        >
+          <Plus size={16} /> 새 스터디 만들기
+        </BasicButton>
+      </header>
 
-        {/* 검색창 */}
-        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+      {/* 검색창 */}
+      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* ✅ 두 섹션 모두 동일한 빈 결과 크기 적용 */}
+      {/* 메인 컨텐츠: flex-1로 남은 공간 채우기 */}
+      <main className="mx-auto flex w-full max-w-7xl flex-1 flex-col">
         <StudySection
           title="진행중인 스터디"
           studies={ongoingStudyGroupList}

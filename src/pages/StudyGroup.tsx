@@ -1,17 +1,27 @@
+import { useState } from 'react'
 import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useNavigate } from 'react-router'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
+import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
-const SearchBar = () => (
+const SearchBar = ({
+  searchTerm,
+  setSearchTerm,
+}: {
+  searchTerm: string
+  setSearchTerm: (value: string) => void
+}) => (
   <div className="mb-8 w-1/3">
     <BasicInput
       placeholder="스터디 그룹 검색..."
       status="default"
       iconPosition="left"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
     >
       <Search className="text-gray-400" size={18} />
     </BasicInput>
@@ -43,17 +53,32 @@ const StudySection = ({
 
 export const StudyGroup = () => {
   const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState('')
 
-  const ongoingStudyGroupList = studyGroupList.filter(
+  const filteredStudyGroups = studyGroupList.filter((study) =>
+    study.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const ongoingStudyGroupList = filteredStudyGroups.filter(
     (study) => study.status === 'ONGOING'
   )
-  const completedStudyGroupList = studyGroupList.filter(
+  const completedStudyGroupList = filteredStudyGroups.filter(
     (study) => study.status === 'ENDED'
   )
 
   const handleClickCreateStudy = () => {
     navigate('/create_study_group')
   }
+
+  // ✅ 검색결과 없을 때 표시 조건
+  const isSearchActive = searchTerm.trim().length > 0
+  const noOngoingResults = isSearchActive && ongoingStudyGroupList.length === 0
+  const noCompletedResults =
+    isSearchActive && completedStudyGroupList.length === 0
+  const noResults =
+    isSearchActive &&
+    ongoingStudyGroupList.length === 0 &&
+    completedStudyGroupList.length === 0
 
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
@@ -78,11 +103,34 @@ export const StudyGroup = () => {
         </div>
 
         {/* 검색창 */}
-        <SearchBar />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* 스터디 섹션 */}
-        <StudySection title="진행중인 스터디" studies={ongoingStudyGroupList} />
-        <StudySection title="완료된 스터디" studies={completedStudyGroupList} />
+        {/* ✅ 검색결과가 전혀 없을 때 */}
+        {noResults ? (
+          <NoStudiesResult type="active" isSearchResult />
+        ) : (
+          <>
+            {/* 진행중인 스터디 섹션 */}
+            {noOngoingResults ? (
+              <NoStudiesResult type="active" isSearchResult />
+            ) : (
+              <StudySection
+                title="진행중인 스터디"
+                studies={ongoingStudyGroupList}
+              />
+            )}
+
+            {/* 완료된 스터디 섹션 */}
+            {noCompletedResults ? (
+              <NoStudiesResult type="completed" isSearchResult />
+            ) : (
+              <StudySection
+                title="완료된 스터디"
+                studies={completedStudyGroupList}
+              />
+            )}
+          </>
+        )}
       </main>
     </div>
   )

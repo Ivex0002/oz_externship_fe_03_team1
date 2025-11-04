@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { StudyCard } from './StudyCard'
+import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup } from '@/types/StudyGroupTypes'
 
 interface StudySectionProps {
@@ -34,12 +35,25 @@ export const StudySection = ({ title, studies }: StudySectionProps) => {
         </span>
       </div>
 
-      <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {currentStudies.map((study) => (
-          <StudyCard key={study.id} study={study} />
-        ))}
-      </div>
+      {/* ✅ 스터디가 없을 때 꽉 찬 화면 중앙 표시 */}
+      {currentStudies.length === 0 ? (
+        <div className="flex min-h-[70vh] w-full items-center justify-center rounded-xl bg-gray-50">
+          <div className="w-full max-w-[1100px]">
+            <NoStudiesResult
+              type={isOngoing ? 'active' : 'completed'}
+              isSearchResult={false}
+            />
+          </div>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {currentStudies.map((study) => (
+            <StudyCard key={study.id} study={study} />
+          ))}
+        </div>
+      )}
 
+      {/* 페이지네이션 */}
       {totalPages > 1 && (
         <div className="mt-8 flex items-center justify-center gap-2">
           <BasicButton
@@ -50,6 +64,7 @@ export const StudySection = ({ title, studies }: StudySectionProps) => {
           >
             이전
           </BasicButton>
+
           {[...Array(totalPages)].map((_, idx) => (
             <BasicButton
               key={idx}
@@ -60,6 +75,7 @@ export const StudySection = ({ title, studies }: StudySectionProps) => {
               {idx + 1}
             </BasicButton>
           ))}
+
           <BasicButton
             variant="secondary"
             size="small"

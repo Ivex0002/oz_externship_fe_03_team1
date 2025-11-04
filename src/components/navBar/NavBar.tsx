@@ -18,7 +18,9 @@ export const NavbarLayout = () => {
       </nav>
 
       <main className="mt-[65px] flex w-full flex-1 flex-col items-center justify-center bg-white">
-        <Outlet />
+        <div className="min-h-screen">
+          <Outlet />
+        </div>
         <Footer />
       </main>
       <ChatButton />

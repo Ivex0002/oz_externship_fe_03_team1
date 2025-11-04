@@ -1,30 +1,66 @@
 import { create } from 'zustand'
 
-type ModalState = {
-  isModalOpen: boolean
-  prevPath: string
-  title: string
-  subTitle?: string
-  isClosing: boolean
-}
-interface storeModalState {
-  modalState: ModalState
+export type ModalType =
+  | null
+  | 'REVIEW'
+  | 'REVIEW_DETAIL'
+  | 'DATE_PICKER'
+  | 'LECTURE_CHOOSING'
+  | 'SCHEDULE'
+  | 'DETAIL_SCHEDULE'
 
-  setModalState: (state: Partial<ModalState>) => void
+interface ModalState {
+  isModalOpen: boolean
+  modalType: ModalType
+  title?: string
+  subTitle?: string
+  modalProps?: Record<string, unknown>
+}
+
+interface ModalStore {
+  modalState: ModalState
+  openModal: (
+    modalType: ModalType,
+    options?: {
+      title?: string
+      subTitle?: string
+      modalProps?: Record<string, unknown>
+    }
+  ) => void
+  closeModal: () => void
   clearModal: () => void
 }
 
 const initState: ModalState = {
   isModalOpen: false,
-  prevPath: '',
+  modalType: null,
   title: '',
   subTitle: '',
-  isClosing: false,
+  modalProps: {},
 }
 
-export const storeModalOpen = create<storeModalState>((set) => ({
+export const storeModalOpen = create<ModalStore>((set) => ({
   modalState: initState,
-  setModalState: (newState) =>
-    set((cur) => ({ modalState: { ...cur.modalState, ...newState } })),
+
+  openModal: (modalType, options) =>
+    set(() => ({
+      modalState: {
+        isModalOpen: true,
+        modalType,
+        title: options?.title || '',
+        subTitle: options?.subTitle || '',
+        modalProps: options?.modalProps || {},
+      },
+    })),
+
+  closeModal: () => {
+    set((cur) => ({
+      modalState: { ...cur.modalState },
+    }))
+    setTimeout(() => {
+      set(() => ({ modalState: initState }))
+    }, 250)
+  },
+
   clearModal: () => set(() => ({ modalState: initState })),
 }))

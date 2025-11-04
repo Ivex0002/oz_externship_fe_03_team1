@@ -25,10 +25,11 @@ export const ScheduleModal = () => {
     e.preventDefault()
     if (isEdit) {
       clearSchedules()
-      modalToModal(
-        `/modal/schedule_detail/${studyGroupId}/${scheduleId}`,
-        '스케줄 상세보기'
-      )
+      if (!studyGroupId || !scheduleId) return
+      modalToModal('DETAIL_SCHEDULE', {
+        title: '스케줄 상세보기',
+        modalProps: { studyGroupId, scheduleId },
+      })
       return
     }
     clearSchedules()

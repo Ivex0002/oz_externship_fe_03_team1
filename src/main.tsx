@@ -7,14 +7,7 @@ import TestE from './test/TestE'
 import TestG from './test/TestG'
 import TestH from './test/TestH'
 import TestY from './test/TestY'
-import { BasicModal } from './components/basicComponents/basicModal/BasicModal'
-import { ReviewModal } from './components/modal/review/ReviewModal'
-import { DatePickerModal } from './components/modal/datePicker/DatePickerModal'
 import TestModal from './test/TestModal'
-import { ReviewDetailModal } from './components/modal/reviewDetail/ReviewDetailModal'
-import { LectureChoosingModal } from './components/modal/lectureChoosing/LectureChoosingModal'
-import { ScheduleModal } from './components/modal/schedule/ScheduleModal'
-import { DetailScheduleModal } from './components/modal/detailSchedule/DetailScheduleModal'
 import { StudyGroup } from './pages/StudyGroup'
 import { CreateStudyGroup } from './pages/study-groups/CreateStudyGroup'
 import { StudyGroupDetail } from './pages/StudyGroupDetail'
@@ -53,48 +46,6 @@ const router = createBrowserRouter([
       {
         path: '/study_record_detail/:studyGroupId/:studyRecordId',
         Component: StudyRecordDetail,
-      },
-      {
-        path: '/modal',
-        Component: BasicModal,
-        children: [
-          {
-            path: '/modal/post_review/:studyGroupId',
-            loader: () => {},
-            Component: ReviewModal,
-          },
-          {
-            path: '/modal/edit_review/:studyGroupId/:reviewId',
-            loader: () => {},
-            Component: ReviewModal,
-          },
-          {
-            path: '/modal/review_detail/:studyGroupId',
-            loader: () => {},
-            Component: ReviewDetailModal,
-          },
-          {
-            path: '/modal/date_picker',
-            Component: DatePickerModal,
-          },
-          {
-            path: '/modal/choosing_lecture',
-            loader: () => {},
-            Component: LectureChoosingModal,
-          },
-          {
-            path: '/modal/add_schedule/:studyGroupId',
-            Component: ScheduleModal,
-          },
-          {
-            path: '/modal/edit_schedule/:studyGroupId/:scheduleId',
-            Component: ScheduleModal,
-          },
-          {
-            path: '/modal/schedule_detail/:studyGroupId/:scheduleId',
-            Component: DetailScheduleModal,
-          },
-        ],
       },
       {
         path: '/testModal',

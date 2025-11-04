@@ -4,26 +4,26 @@ import type {
   StudyGroupStatus,
 } from '@/types/ApiLink'
 
-const createQueryKey = <const T extends readonly unknown[]>(key: T) => key
+const defineQueryKey = <const T extends readonly unknown[]>(key: T) => key
 
 export const queryKeys = {
   // ==================== Users ====================
   users: {
-    me: () => createQueryKey(['users', 'me']),
+    me: () => defineQueryKey(['users', 'me']),
   },
 
   // ==================== Notifications ====================
   notifications: {
-    all: () => createQueryKey(['notifications']),
-    lists: () => createQueryKey(['notifications', 'list']),
+    all: () => defineQueryKey(['notifications']),
+    lists: () => defineQueryKey(['notifications', 'list']),
     list: (params?: { page?: number; page_size?: number }) =>
-      createQueryKey(['notifications', 'list', params]),
+      defineQueryKey(['notifications', 'list', params]),
   },
 
   // ==================== Lectures ====================
   lectures: {
-    all: () => createQueryKey(['lectures']),
-    lists: () => createQueryKey(['lectures', 'list']),
+    all: () => defineQueryKey(['lectures']),
+    lists: () => defineQueryKey(['lectures', 'list']),
     list: (params?: {
       page?: number
       page_size?: number
@@ -31,30 +31,30 @@ export const queryKeys = {
       category?: number
       difficulty?: DifficultyEnum
       platform?: PlatformEnum
-    }) => createQueryKey(['lectures', 'list', params]),
-    categories: () => createQueryKey(['lectures', 'categories']),
-    recommended: () => createQueryKey(['lectures', 'recommended']),
+    }) => defineQueryKey(['lectures', 'list', params ?? {}]),
+    categories: () => defineQueryKey(['lectures', 'categories']),
+    recommended: () => defineQueryKey(['lectures', 'recommended']),
   },
 
   // ==================== Study Groups ====================
   studies: {
     groups: {
-      all: () => createQueryKey(['studies', 'groups']),
-      lists: () => createQueryKey(['studies', 'groups', 'list']),
+      all: () => defineQueryKey(['studies', 'groups']),
+      lists: () => defineQueryKey(['studies', 'groups', 'list']),
       list: (params?: {
         page?: number
         page_size?: number
         status?: StudyGroupStatus
-      }) => createQueryKey(['studies', 'groups', 'list', params]),
-      details: () => createQueryKey(['studies', 'groups', 'detail']),
+      }) => defineQueryKey(['studies', 'groups', 'list', params]),
+      details: () => defineQueryKey(['studies', 'groups', 'detail']),
       detail: (groupId: number) =>
-        createQueryKey(['studies', 'groups', 'detail', groupId]),
+        defineQueryKey(['studies', 'groups', 'detail', groupId]),
 
       members: (groupId: number) =>
-        createQueryKey(['studies', 'groups', groupId, 'members']),
+        defineQueryKey(['studies', 'groups', groupId, 'members']),
 
       reviews: (groupId: number) =>
-        createQueryKey(['studies', 'groups', groupId, 'reviews']),
+        defineQueryKey(['studies', 'groups', groupId, 'reviews']),
     },
   },
 } as const

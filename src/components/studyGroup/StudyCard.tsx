@@ -8,7 +8,7 @@ import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
-import Router from 'next/router'
+import { useRouter } from 'next/router'
 
 interface StudyCardProps {
   study: StudyGroup
@@ -16,6 +16,7 @@ interface StudyCardProps {
 }
 
 export const StudyCard = ({ study }: StudyCardProps) => {
+  const router = useRouter()
   const { openModal } = useModal()
   const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
     storeReview()
@@ -72,8 +73,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   }
 
   const handleGoToDetailPage = () => {
-    // 진행 중 스터디 페이지 이동
-    Router.push(`/study-group/${study.id}`)
+    router.push(`/study_group_detail/${study.id}`)
   }
 
   return (
@@ -135,15 +135,18 @@ export const StudyCard = ({ study }: StudyCardProps) => {
         </p>
       </div>
 
+      {/* 완료 / 진행 상태 구분 */}
       {study.status === 'ENDED' ? (
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">
           <div className="mb-2 flex w-full justify-between">
+            {/* 별점 표시 */}
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
               <div className="flex items-center gap-1">
-                <RatedStar rating={reviewData.averageRating} />
+                <RatedStar rating={reviewData?.averageRating || 0} />
                 <span className="flex items-center text-xs text-gray-500">
-                  {reviewData.averageRating} {`(${reviewData.count})`}
+                  {reviewData?.averageRating || 0}{' '}
+                  {`(${reviewData?.count || 0})`}
                 </span>
               </div>
             </div>

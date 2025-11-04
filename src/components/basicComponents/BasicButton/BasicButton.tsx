@@ -131,7 +131,7 @@ export const BasicButton = ({
       onMouseLeave={() => isInteractive && setStatus('default')}
       onMouseDown={() => isInteractive && setStatus('active')}
       onMouseUp={() => isInteractive && setStatus('hover')}
-      className={buttonClass + className}
+      className={clsx(buttonClass, className)}
     >
       {isLoading ? (
         <span className="flex items-center gap-2">

@@ -8,6 +8,7 @@ export type ModalType =
   | 'LECTURE_CHOOSING'
   | 'SCHEDULE'
   | 'DETAIL_SCHEDULE'
+  | 'CONFIRM'
 
 interface ModalState {
   isModalOpen: boolean
@@ -36,6 +37,7 @@ const initState: ModalState = {
   modalType: null,
   title: '',
   subTitle: '',
+
   modalProps: {},
 }
 

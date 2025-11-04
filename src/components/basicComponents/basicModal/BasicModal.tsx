@@ -11,6 +11,7 @@ import { DatePickerModal } from '@/components/modal/datePicker/DatePickerModal'
 import { LectureChoosingModal } from '@/components/modal/lectureChoosing/LectureChoosingModal'
 import { ScheduleModal } from '@/components/modal/schedule/ScheduleModal'
 import { DetailScheduleModal } from '@/components/modal/detailSchedule/DetailScheduleModal'
+import { ConfirmModal } from '@/components/modal/confirm/ConfirmModal'
 
 export const BasicModal = () => {
   const modalRef = useRef<HTMLDivElement>(null)
@@ -79,6 +80,8 @@ export const BasicModal = () => {
         return <ScheduleModal />
       case 'DETAIL_SCHEDULE':
         return <DetailScheduleModal />
+      case 'CONFIRM':
+        return <ConfirmModal />
       default:
         return null
     }

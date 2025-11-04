@@ -8,6 +8,7 @@ import TestG from './test/TestG'
 import TestH from './test/TestH'
 import TestY from './test/TestY'
 import TestModal from './test/TestModal'
+
 import { StudyGroup } from './pages/StudyGroup'
 import { CreateStudyGroup } from './pages/study-groups/CreateStudyGroup'
 import { StudyGroupDetail } from './pages/StudyGroupDetail'
@@ -17,6 +18,7 @@ import { StudyRecordDetail } from './pages/study-records/StudyRecordDetail'
 const router = createBrowserRouter([
   {
     path: '/',
+    // loader: loadUserProfile(),
     Component: App,
     children: [
       {

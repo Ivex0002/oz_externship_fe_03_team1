@@ -8,9 +8,11 @@ import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
+import Router from 'next/router'
 
 interface StudyCardProps {
   study: StudyGroup
+  onClick?: (id: number) => void
 }
 
 export const StudyCard = ({ study }: StudyCardProps) => {
@@ -37,7 +39,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   useEffect(() => {
     if (study.status === 'ONGOING') return
     if (study.status === 'ENDED') {
-      // todo 스터디 리뷰 api 호출
       setReviewData(reviewDetailData)
     }
   }, [study.status, setReviewData])
@@ -70,6 +71,11 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     })
   }
 
+  const handleGoToDetailPage = () => {
+    // 진행 중 스터디 페이지 이동
+    Router.push(`/study-group/${study.id}`)
+  }
+
   return (
     <div className="flex min-h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
       {/* 이미지 섹션 */}
@@ -82,13 +88,11 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             onError={() => setImgError(true)}
           />
         ) : (
-          // 회색 배경 대체 (이미지 없음)
           <div className="flex h-52 w-full items-center justify-center bg-gray-200 text-sm text-gray-500">
             이미지 없음
           </div>
         )}
 
-        {/* 진행 상태 - 좌측 상단 */}
         <span
           className={`absolute top-3 left-3 rounded-full px-2 py-0.5 text-[11px] text-white ${
             study.status === 'ONGOING' ? 'bg-green-500' : 'bg-gray-400'
@@ -97,14 +101,12 @@ export const StudyCard = ({ study }: StudyCardProps) => {
           {study.status === 'ONGOING' ? '진행중' : '완료'}
         </span>
 
-        {/* 리더 표시 - 우측 상단 */}
         {study.is_leader && (
           <span className="border-primary-500 bg-primary-500 absolute top-3 right-3 rounded-full border-2 px-3 py-1 text-xs font-semibold text-white shadow-sm">
             리더
           </span>
         )}
 
-        {/* 인원수 - 좌측 하단 */}
         <span className="absolute bottom-3 left-3 rounded-md border border-white bg-white px-2 py-0.5 text-xs font-semibold text-gray-800">
           {study.current_headcount}/{study.max_headcount}
         </span>
@@ -133,11 +135,9 @@ export const StudyCard = ({ study }: StudyCardProps) => {
         </p>
       </div>
 
-      {/* 완료 / 진행 상태 구분 */}
       {study.status === 'ENDED' ? (
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">
           <div className="mb-2 flex w-full justify-between">
-            {/* 별점 표시 */}
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
               <div className="flex items-center gap-1">
@@ -156,7 +156,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             </span>
           </div>
 
-          {/* 버튼 */}
           <BasicButton
             variant={isReviewed ? 'secondary' : 'primary'}
             size="small"
@@ -167,7 +166,10 @@ export const StudyCard = ({ study }: StudyCardProps) => {
         </div>
       ) : (
         <div className="flex justify-end border-t border-gray-100 px-5 py-3">
-          <span className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline">
+          <span
+            onClick={handleGoToDetailPage}
+            className="text-primary-500 hover:text-primary-600 cursor-pointer text-sm font-medium transition hover:underline"
+          >
             자세히 보기 →
           </span>
         </div>

@@ -3,12 +3,12 @@ import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
-import { useNavigate } from 'react-router'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 import { useDebounce } from '@/hooks/useDebounce'
 
+/** 검색창 컴포넌트 */
 const SearchBar = ({
   searchTerm,
   setSearchTerm,
@@ -16,7 +16,7 @@ const SearchBar = ({
   searchTerm: string
   setSearchTerm: (value: string) => void
 }) => (
-  <div className="mb-8 w-1/3">
+  <div className="mb-8 w-full max-w-md">
     <BasicInput
       placeholder="스터디 그룹 검색..."
       status="default"
@@ -29,18 +29,17 @@ const SearchBar = ({
   </div>
 )
 
+/** 스터디 섹션 컴포넌트 */
 const StudySection = ({
   title,
   studies,
   type,
   isSearchResult,
-  onStudyClick,
 }: {
   title: string
   studies: StudyGroupType[]
   type: 'active' | 'completed'
   isSearchResult: boolean
-  onStudyClick: (id: number) => void
 }) => {
   const hasNoStudies = studies.length === 0
 
@@ -60,23 +59,23 @@ const StudySection = ({
             </div>
           </div>
         ) : (
-          studies.map((study) => (
-            <StudyCard key={study.id} study={study} onClick={onStudyClick} />
-          ))
+          studies.map((study) => <StudyCard key={study.id} study={study} />)
         )}
       </div>
     </section>
   )
 }
 
+/** 메인 StudyGroup 페이지 */
 export const StudyGroup = () => {
-  const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
+  // debounce 적용
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
+  // 검색 필터링
   const filteredStudyGroups = studyGroupList.filter((study) =>
-    study.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
+    study.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   )
 
   const ongoingStudyGroupList = filteredStudyGroups.filter(
@@ -86,17 +85,10 @@ export const StudyGroup = () => {
     (study) => study.status === 'ENDED'
   )
 
-  const handleClickCreateStudy = () => {
-    navigate('/create_study_group')
-  }
-
-  const handleStudyClick = (id: number) => {
-    navigate(`/study_group_detail/${id}`)
-  }
-
   return (
-    <div className="flex min-h-screen w-screen flex-col bg-white px-20 pt-[65px] pb-20">
-      <header className="mb-6 flex items-center justify-between">
+    <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">
+      {/* 헤더 */}
+      <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
         <div>
           <h1 className="mb-1 text-3xl font-bold text-gray-800">스터디 그룹</h1>
           <p className="text-sm text-gray-600">
@@ -105,7 +97,7 @@ export const StudyGroup = () => {
         </div>
         <BasicButton
           variant="primary"
-          onClick={handleClickCreateStudy}
+          onClick={() => (window.location.href = '/create_study_group')}
           size="medium"
         >
           <Plus size={16} /> 새 스터디 만들기
@@ -122,14 +114,12 @@ export const StudyGroup = () => {
           studies={ongoingStudyGroupList}
           type="active"
           isSearchResult={!!searchTerm}
-          onStudyClick={handleStudyClick}
         />
         <StudySection
           title="완료된 스터디"
           studies={completedStudyGroupList}
           type="completed"
           isSearchResult={!!searchTerm}
-          onStudyClick={handleStudyClick}
         />
       </main>
     </div>

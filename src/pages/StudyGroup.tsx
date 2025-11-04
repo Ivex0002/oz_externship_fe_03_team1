@@ -37,8 +37,10 @@ const StudySection = ({
   type: 'active' | 'completed'
   isSearchResult: boolean
 }) => {
+  const hasNoStudies = studies.length === 0
+
   return (
-    <section className="mb-16">
+    <section className="mb-16 w-full">
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
 
       {studies.length === 0 ? (
@@ -51,9 +53,14 @@ const StudySection = ({
         </div>
       )}
       {/* ✅ 고정된 grid 영역 유지 */}
-      <div className="grid min-h-[400px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-        {studies.length === 0 ? (
-          <div className="col-span-full flex items-center justify-center">
+      <div
+        className={`grid min-h-[60vh] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
+          hasNoStudies ? 'place-items-center' : ''
+        }`}
+      >
+        {hasNoStudies ? (
+          // ✅ 검색결과가 없을 때 중앙에 꽉 차게 표시
+          <div className="col-span-full flex w-full justify-center">
             <div className="w-full max-w-[1100px]">
               <NoStudiesResult type={type} isSearchResult={isSearchResult} />
             </div>
@@ -83,7 +90,7 @@ export const StudyGroup = () => {
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
       <main className="mx-auto max-w-7xl">
-        {/* 상단 헤더 고정 */}
+        {/* 헤더 */}
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="mb-1 text-3xl font-bold text-gray-800">
@@ -105,7 +112,7 @@ export const StudyGroup = () => {
         {/* 검색창 */}
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* ✅ 결과 영역 (고정 크기 유지) */}
+        {/* ✅ 두 섹션 모두 동일한 빈 결과 크기 적용 */}
         <StudySection
           title="진행중인 스터디"
           studies={ongoingStudyGroupList}

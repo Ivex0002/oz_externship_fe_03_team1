@@ -5,6 +5,7 @@ import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useDebounce } from '@/hooks/useDebounce'
 import { StudySection } from '@/components/studyGroup/StudySection'
+import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
 
 /** 검색창 컴포넌트 */
@@ -51,15 +52,9 @@ export const StudyGroup = () => {
     (study) => study.status === 'ENDED'
   )
 
-  // 페이지네이션 데이터 분할
-  const paginatedOngoing = ongoingStudyGroupList.slice(
-    activePage * itemsPerPage,
-    activePage * itemsPerPage + itemsPerPage
-  )
-  const paginatedCompleted = completedStudyGroupList.slice(
-    completedPage * itemsPerPage,
-    completedPage * itemsPerPage + itemsPerPage
-  )
+  const handleClickCreateStudy = () => {
+    navigate('/create_study_group')
+  }
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">
@@ -83,38 +78,31 @@ export const StudyGroup = () => {
       {/* 검색창 */}
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* 메인 컨텐츠 */}
-      <main className="mx-auto flex w-full flex-1 flex-col">
-        {/* 진행중인 스터디 */}
-        <StudySection
-          title="진행중인 스터디"
-          studies={paginatedOngoing}
-          type="active"
-          isSearchResult={!!searchTerm}
-        />
+        {/* ✅ 검색결과가 전혀 없을 때 */}
+        {noResults ? (
+          <NoStudiesResult type="active" isSearchResult />
+        ) : (
+          <>
+            {/* 진행중인 스터디 섹션 */}
+            {noOngoingResults ? (
+              <NoStudiesResult type="active" isSearchResult />
+            ) : (
+              <StudySection
+                title="진행중인 스터디"
+                studies={ongoingStudyGroupList}
+              />
+            )}
 
-        {ongoingStudyGroupList.length > itemsPerPage && (
-          <CustomPagination
-            pageCount={Math.ceil(ongoingStudyGroupList.length / itemsPerPage)}
-            currentPage={activePage}
-            onPageChange={(selectedPage) => setActivePage(selectedPage)}
-          />
-        )}
-
-        {/* 완료된 스터디 */}
-        <StudySection
-          title="완료된 스터디"
-          studies={paginatedCompleted}
-          type="completed"
-          isSearchResult={!!searchTerm}
-        />
-
-        {completedStudyGroupList.length > itemsPerPage && (
-          <CustomPagination
-            pageCount={Math.ceil(completedStudyGroupList.length / itemsPerPage)}
-            currentPage={completedPage}
-            onPageChange={(selectedPage) => setCompletedPage(selectedPage)}
-          />
+            {/* 완료된 스터디 섹션 */}
+            {noCompletedResults ? (
+              <NoStudiesResult type="completed" isSearchResult />
+            ) : (
+              <StudySection
+                title="완료된 스터디"
+                studies={completedStudyGroupList}
+              />
+            )}
+          </>
         )}
       </main>
     </div>

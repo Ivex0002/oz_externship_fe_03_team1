@@ -3,17 +3,13 @@ import { Users } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import test1 from '../../../public/icons/medal.svg'
 
-// StudyType타입에 active와 completed라는 상태를 정의
 type StudyType = 'active' | 'completed'
 
-// 컴포넌트가(NoStudyFound) 받을 props의 형태를 정의
 interface NoStudiesResultProps {
   type: StudyType
-  // 검색 결과가 없을 때만 표시해야하기 때문에 추가한 불린 타입.
   isSearchResult?: boolean
 }
 
-// 각 상태별 설정( active, completed의 내부 상태 )을 묶어서 관리하기 위한 객체형태로 타입 정의.
 interface StatusConfig {
   icon: React.ReactNode
   defaultTitle: string
@@ -22,17 +18,11 @@ interface StatusConfig {
   showButton: boolean
 }
 
-// 현재 파일의 메인 컴포넌트. 위 type: StudyType이고, type을 프롭스로
-// 받으며 컨텐츠가 없을 때 화면을 출력하기에 isSearchResult는 false이다.
 export const NoStudiesResult = ({
   type,
   isSearchResult = false,
 }: NoStudiesResultProps) => {
-  // 타입 매핑 (키에 따라 서로 다른 상태 설정을 매핑하는 객체)
-  // Record< K:키(StudyType), T:타입(StatusConfig) > 유틸리티 타입.
-  // K:진행중인 스터디가 없을 때 or  완료된 스터디가 없을 때
   const status: Record<StudyType, StatusConfig> = {
-    // 진행중인 스터디가 없을 때
     active: {
       icon: <Users className="h-12 w-12 text-gray-400" />,
       defaultTitle: '진행중인 스터디가 없습니다',
@@ -40,7 +30,6 @@ export const NoStudiesResult = ({
       description: '새로운 스터디 그룹을 만들어보세요',
       showButton: true,
     },
-    // 완료된 스터디가 없을 때
     completed: {
       icon: <img src={test1} alt="메달 아이콘" className="h-12 w-12" />,
       defaultTitle: '완료된 스터디가 없습니다',
@@ -50,30 +39,24 @@ export const NoStudiesResult = ({
     },
   }
 
-  // currentStatus이름으로 status의 객체에 타입을 담아둠
   const currentStatus = status[type]
-  // 위 status의 타입이 active면 진행중인 스터디가 없을 때를 갖고 온다
-  // 위 status의 타입이 completed면 완료된 스터디가 없을 때를 갖고 온다.
   const displayTitle = isSearchResult
     ? currentStatus.searchTitle
     : currentStatus.defaultTitle
 
-  // 출력 UI 내부에 컨텐츠( 이미지, 텍스트 등 )은 프롭스로 내려받아서 사용
   return (
-    <section className="min-h-screen bg-gray-50 px-6 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-16">
-        <div className="mb-6 rounded-full bg-gray-100 p-6">
-          {currentStatus.icon}
-        </div>
-        <h3 className="mb-2 text-xl font-bold text-gray-900">{displayTitle}</h3>
-        <p className="mb-6 text-gray-600">{currentStatus.description}</p>
-        {currentStatus.showButton && (
-          <BasicButton variant="primary" size="large">
-            <span className="mr-2 text-xl">+</span>
-            <span>스터디 그룹 만들기</span>
-          </BasicButton>
-        )}
+    <div className="flex min-h-[280px] flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-10">
+      <div className="mb-6 rounded-full bg-gray-100 p-6">
+        {currentStatus.icon}
       </div>
-    </section>
+      <h3 className="mb-2 text-xl font-bold text-gray-900">{displayTitle}</h3>
+      <p className="mb-6 text-gray-600">{currentStatus.description}</p>
+      {currentStatus.showButton && (
+        <BasicButton variant="primary" size="large">
+          <span className="mr-2 text-xl">+</span>
+          <span>스터디 그룹 만들기</span>
+        </BasicButton>
+      )}
+    </div>
   )
 }

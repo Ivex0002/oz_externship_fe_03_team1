@@ -43,15 +43,18 @@ const StudySection = ({
     <section className="mb-16">
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
 
-      {studies.length === 0 ? (
-        <NoStudiesResult type={type} isSearchResult={isSearchResult} />
-      ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {studies.map((study) => (
-            <StudyCard key={study.id} study={study} />
-          ))}
-        </div>
-      )}
+      {/* ✅ 고정된 grid 영역 유지 */}
+      <div className="grid min-h-[400px] grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+        {studies.length === 0 ? (
+          <div className="col-span-full flex items-center justify-center">
+            <div className="w-full max-w-[1100px]">
+              <NoStudiesResult type={type} isSearchResult={isSearchResult} />
+            </div>
+          </div>
+        ) : (
+          studies.map((study) => <StudyCard key={study.id} study={study} />)
+        )}
+      </div>
     </section>
   )
 }
@@ -78,6 +81,7 @@ export const StudyGroup = () => {
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
       <main className="mx-auto max-w-7xl">
+        {/* 상단 헤더 고정 */}
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="mb-1 text-3xl font-bold text-gray-800">
@@ -96,8 +100,10 @@ export const StudyGroup = () => {
           </BasicButton>
         </div>
 
+        {/* 검색창 */}
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
+        {/* ✅ 결과 영역 (고정 크기 유지) */}
         <StudySection
           title="진행중인 스터디"
           studies={ongoingStudyGroupList}

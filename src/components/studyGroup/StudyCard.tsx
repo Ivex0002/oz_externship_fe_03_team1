@@ -4,7 +4,7 @@ import type { StudyGroup } from '@/types/StudyGroupTypes'
 import { RatedStar } from '../basicComponents/ratedStar/RatedStar'
 import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
@@ -17,6 +17,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   const { openModal } = useModal()
   const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
     storeReview()
+  const [imgError, setImgError] = useState(false)
 
   const reviewList = reviewDetailData.results
   const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
@@ -72,12 +73,20 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   return (
     <div className="flex min-h-[360px] w-full flex-col overflow-hidden rounded-2xl border border-gray-200 bg-white shadow-sm transition hover:shadow-md">
       {/* 이미지 섹션 */}
-      <div className="relative">
-        <img
-          src={study.profile_img_url || '/default-study.jpg'}
-          alt={study.name}
-          className="h-52 w-full bg-gray-100 object-cover"
-        />
+      <div className="relative h-52 w-full bg-gray-100">
+        {!imgError && study.profile_img_url ? (
+          <img
+            src={study.profile_img_url}
+            alt={study.name}
+            className="h-52 w-full object-cover"
+            onError={() => setImgError(true)}
+          />
+        ) : (
+          // 회색 배경 대체 (이미지 없음)
+          <div className="flex h-52 w-full items-center justify-center bg-gray-200 text-sm text-gray-500">
+            이미지 없음
+          </div>
+        )}
 
         {/* 진행 상태 - 좌측 상단 */}
         <span

@@ -5,6 +5,7 @@ import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useNavigate } from 'react-router'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
+import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
 const SearchBar = ({
@@ -30,15 +31,20 @@ const SearchBar = ({
 const StudySection = ({
   title,
   studies,
+  type,
+  isSearchResult,
 }: {
   title: string
   studies: StudyGroupType[]
+  type: 'active' | 'completed'
+  isSearchResult: boolean
 }) => {
   return (
     <section className="mb-16">
       <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
+
       {studies.length === 0 ? (
-        <p className="text-gray-500">해당 스터디가 없습니다.</p>
+        <NoStudiesResult type={type} isSearchResult={isSearchResult} />
       ) : (
         <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
           {studies.map((study) => (
@@ -54,7 +60,6 @@ export const StudyGroup = () => {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
-  // 검색어를 포함하는 스터디만 필터링
   const filteredStudyGroups = studyGroupList.filter((study) =>
     study.name.toLowerCase().includes(searchTerm.toLowerCase())
   )
@@ -73,7 +78,6 @@ export const StudyGroup = () => {
   return (
     <div className="min-h-screen bg-white px-20 pt-[65px] pb-20">
       <main className="mx-auto max-w-7xl">
-        {/* 헤더 영역 */}
         <div className="mb-6 flex items-center justify-between">
           <div>
             <h1 className="mb-1 text-3xl font-bold text-gray-800">
@@ -92,12 +96,20 @@ export const StudyGroup = () => {
           </BasicButton>
         </div>
 
-        {/* 검색창 */}
         <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* 스터디 섹션 */}
-        <StudySection title="진행중인 스터디" studies={ongoingStudyGroupList} />
-        <StudySection title="완료된 스터디" studies={completedStudyGroupList} />
+        <StudySection
+          title="진행중인 스터디"
+          studies={ongoingStudyGroupList}
+          type="active"
+          isSearchResult={!!searchTerm}
+        />
+        <StudySection
+          title="완료된 스터디"
+          studies={completedStudyGroupList}
+          type="completed"
+          isSearchResult={!!searchTerm}
+        />
       </main>
     </div>
   )

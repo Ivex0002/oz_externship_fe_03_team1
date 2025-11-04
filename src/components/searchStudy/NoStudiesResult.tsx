@@ -1,14 +1,14 @@
 import React from 'react'
 import { Users } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import test1 from '/medal.svg'
+import test1 from '../../../public/icons/medal.svg'
 
 // StudyType타입에 active와 completed라는 상태를 정의
 type StudyType = 'active' | 'completed'
 
 // 컴포넌트가(NoStudyFound) 받을 props의 형태를 정의
 interface NoStudiesResultProps {
-  type: StudyType;
+  type: StudyType
   // 검색 결과가 없을 때만 표시해야하기 때문에 추가한 불린 타입.
   isSearchResult?: boolean
 }
@@ -24,7 +24,7 @@ interface StatusConfig {
 
 // 현재 파일의 메인 컴포넌트. 위 type: StudyType이고, type을 프롭스로
 // 받으며 컨텐츠가 없을 때 화면을 출력하기에 isSearchResult는 false이다.
-export const NoStudiesResult= ({ 
+export const NoStudiesResult = ({
   type,
   isSearchResult = false,
 }: NoStudiesResultProps) => {

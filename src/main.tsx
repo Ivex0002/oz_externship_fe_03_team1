@@ -20,6 +20,7 @@ import { CreateStudyGroup } from './pages/study-groups/CreateStudyGroup'
 import { StudyGroupDetail } from './pages/StudyGroupDetail'
 import { StudyRecord } from './pages/study-groups/StudyRecord/StudyRecord'
 import { StudyRecordDetail } from './pages/study-records/StudyRecordDetail'
+import { ConfirmModal } from './components/modal/confirm/ConfirmModal'
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
           {
             path: '/modal/schedule_detail/:studyGroupId/:scheduleId',
             Component: DetailScheduleModal,
+          },
+          {
+            path: '/modal/confirm',
+            Component: ConfirmModal,
           },
         ],
       },

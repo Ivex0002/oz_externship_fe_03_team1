@@ -6,6 +6,13 @@ type ModalState = {
   title: string
   subTitle?: string
   isClosing: boolean
+
+  isConfirm?: boolean
+  message?: string
+  confirmText?: string
+  cancelText?: string
+  onConfirm?: () => void | Promise<void>
+  onCancel?: () => void
 }
 interface storeModalState {
   modalState: ModalState
@@ -20,6 +27,13 @@ const initState: ModalState = {
   title: '',
   subTitle: '',
   isClosing: false,
+
+  isConfirm: false,
+  message: '',
+  confirmText: '확인',
+  cancelText: '취소',
+  onConfirm: undefined,
+  onCancel: undefined,
 }
 
 export const storeModalOpen = create<storeModalState>((set) => ({

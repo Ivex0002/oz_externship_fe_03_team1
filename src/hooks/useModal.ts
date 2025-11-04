@@ -1,14 +1,14 @@
 import { storeModalOpen, type ModalType } from '@/store/storeModalOpen'
 
-type OpenConfirmFn = (options: {
+export type ConfirmOptions = {
+  title?: string
+  subTitle?: string
   message: string
   onConfirm: () => void | Promise<void>
   onCancel?: () => void
-  title?: string
-  subTitle?: string
   confirmText?: string
   cancelText?: string
-}) => void
+}
 
 export const useModal = () => {
   const { openModal, closeModal } = storeModalOpen.getState()
@@ -27,7 +27,7 @@ export const useModal = () => {
     }, 250)
   }
 
-  const openConfirm: OpenConfirmFn = (options) => {
+  const openConfirm = (options: ConfirmOptions) => {
     openModal('CONFIRM', {
       title: options.title ?? '확인',
       subTitle: options.subTitle ?? '',

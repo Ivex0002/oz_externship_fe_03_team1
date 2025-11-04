@@ -37,14 +37,14 @@ interface InputProps extends React.InputHTMLAttributes<HTMLInputElement> {
 }
 
 // 인풋 컴포넌트
-export function BasicInput({
+export const BasicInput = ({
   status = 'default',
   label,
   errorMessage,
   children,
   iconPosition = 'left',
   ...props
-}: InputProps) {
+}: InputProps) => {
   const color = INPUT_COLORS[status]
 
   const inputClass = clsx(

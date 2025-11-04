@@ -1,11 +1,11 @@
 import { Star } from 'lucide-react'
 
-type ReviewRatingProps = {
+interface ReviewRatingProps {
   rating: number
   setRating: React.Dispatch<React.SetStateAction<number>>
 }
 
-const ReviewRating = ({ rating, setRating }: ReviewRatingProps) => {
+export const ReviewRating = ({ rating, setRating }: ReviewRatingProps) => {
   const ratingStarCount = [1, 2, 3, 4, 5]
 
   const handleClickStar = (e: React.MouseEvent, star: number) => {
@@ -33,5 +33,3 @@ const ReviewRating = ({ rating, setRating }: ReviewRatingProps) => {
     </div>
   )
 }
-
-export default ReviewRating

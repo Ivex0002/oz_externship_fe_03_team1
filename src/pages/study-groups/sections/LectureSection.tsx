@@ -16,7 +16,9 @@ export const LectureSection = () => {
   const { previousLectureList } = storeLecture()
 
   const handleOpenLectureModal = () => {
-    openModal('/modal/choosing_lecture', '강의 선택')
+    openModal('LECTURE_CHOOSING', {
+      title: '강의 선택',
+    })
   }
 
   return (

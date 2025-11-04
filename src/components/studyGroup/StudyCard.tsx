@@ -1,7 +1,7 @@
 import { Calendar, Book } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import type { StudyGroup } from '@/types/StudyGroupTypes'
-import RatedStar from '../basicComponents/ratedStar/RatedStar'
+import { RatedStar } from '../basicComponents/ratedStar/RatedStar'
 import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
 import { useEffect } from 'react'
@@ -9,8 +9,12 @@ import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
 
+interface StudyCardProps {
+  study: StudyGroup
+}
+
 // StudyCard 컴포넌트
-const StudyCard = ({ study }: { study: StudyGroup }) => {
+export const StudyCard = ({ study }: StudyCardProps) => {
   const { openModal } = useModal()
   const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
     storeReview()
@@ -43,21 +47,31 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     if (study.status === 'ONGOING') return
 
     setBasicStudyInfo(basicStudyInfo)
-    openModal(`/modal/review_detail/${study.id}`, '리뷰 상세', study.name)
+    openModal('REVIEW_DETAIL', {
+      title: '리뷰 상세',
+      subTitle: study.name,
+      modalProps: { studyId: study.id },
+    })
   }
 
   const handleClickPostReview = () => {
     if (isReviewed) return
 
     setBasicStudyInfo(basicStudyInfo)
-    openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
+    openModal('REVIEW', {
+      title: '리뷰 작성',
+      modalProps: { studyId: study.id },
+    })
   }
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    openModal(`/modal/edit_review/${study.id}/${myReview.id}`, '리뷰 수정')
+    openModal('REVIEW', {
+      title: '리뷰 수정',
+      modalProps: { studyId: study.id, reviewId: myReview.id },
+    })
   }
 
   return (
@@ -157,5 +171,3 @@ const StudyCard = ({ study }: { study: StudyGroup }) => {
     </div>
   )
 }
-
-export default StudyCard

@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router'
 
-export function LogoutedMenu() {
+export const LogoutedMenu = () => {
   return (
     <>
       <NavLink to="/login" className="nav-links">

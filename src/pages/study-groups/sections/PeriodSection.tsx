@@ -2,7 +2,7 @@
 import { useModal } from '../../../hooks/useModal'
 import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import CustomSlider from '../../../components/slider/CustomSlider'
+import { CustomSlider } from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
@@ -12,7 +12,7 @@ interface Props {
   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
 }
 
-export default function PeriodSection({ form, setForm }: Props) {
+export const PeriodSection = ({ form, setForm }: Props) => {
   const { openModal } = useModal()
   const { previousStartDate, previousEndDate } = storeStudyGroupDate()
 
@@ -22,10 +22,10 @@ export default function PeriodSection({ form, setForm }: Props) {
   const endDate = previousEndDate ? dayjs(previousEndDate).format('L') : ''
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
-    openModal(
-      `/modal/date_picker?target=${type}`,
-      type === 'start' ? '스터디 시작일 선택' : '스터디 종료일 선택'
-    )
+    openModal('DATE_PICKER', {
+      title: type === 'start' ? '스터디 시작일 선택' : '스터디 종료일 선택',
+      modalProps: { target: type },
+    })
   }
 
   const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -3,7 +3,7 @@ import { Bell } from 'lucide-react'
 import { NotiPanel } from './NotiPanel'
 import { useRef } from 'react'
 
-export function NotiButton() {
+export const NotiButton = () => {
   const { unreadCount, isNotiPanelOpen, setIsNotiPanelOpen } =
     storeNotification()
   const notiCount = unreadCount
@@ -18,7 +18,7 @@ export function NotiButton() {
       <button
         ref={buttonRef}
         onClick={handleClick}
-        className="nav-links relative"
+        className="nav-links relative cursor-pointer"
       >
         <Bell size={22} />
         {notiCount !== 0 && (

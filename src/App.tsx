@@ -1,9 +1,13 @@
 import './App.css'
 import './font.css'
-import NavbarLayout from './components/navBar/NavBar'
+import { NavbarLayout } from './components/navBar/NavBar'
+import { BasicModal } from './components/basicComponents/basicModal/BasicModal'
 
-function App() {
-  return <NavbarLayout />
+export const App = () => {
+  return (
+    <>
+      <NavbarLayout />
+      <BasicModal />
+    </>
+  )
 }
-
-export default App

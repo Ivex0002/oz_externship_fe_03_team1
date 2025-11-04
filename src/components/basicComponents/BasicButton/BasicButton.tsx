@@ -76,7 +76,7 @@ type ButtonStatus = 'default' | 'hover' | 'active' | 'disabled' | 'loading'
 // 버튼 컴포넌트
 // 로딩 디자인 해야됨 > text와 동일한 색상?
 // Spinner 라이브러리 고려
-export function BasicButton({
+export const BasicButton = ({
   variant = 'primary',
   type = 'button',
   size = 'medium',
@@ -85,7 +85,7 @@ export function BasicButton({
   onClick,
   children,
   className = '',
-}: ButtonProps) {
+}: ButtonProps) => {
   const [status, setStatus] = useState<ButtonStatus>(
     isLoading ? 'loading' : disabled ? 'disabled' : 'default'
   )
@@ -131,7 +131,7 @@ export function BasicButton({
       onMouseLeave={() => isInteractive && setStatus('default')}
       onMouseDown={() => isInteractive && setStatus('active')}
       onMouseUp={() => isInteractive && setStatus('hover')}
-      className={buttonClass + className}
+      className={clsx(buttonClass, className)}
     >
       {isLoading ? (
         <span className="flex items-center gap-2">
@@ -146,7 +146,7 @@ export function BasicButton({
 
 // 스피너
 // 제대로 작동 되는지 확인 필요
-export function Spinner({ className }: { className?: string }) {
+export const Spinner = ({ className }: { className?: string }) => {
   return (
     <svg
       className={clsx('h-4 w-4 animate-spin', className)}

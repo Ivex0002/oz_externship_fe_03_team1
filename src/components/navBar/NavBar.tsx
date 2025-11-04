@@ -3,7 +3,7 @@ import { UserMenu } from './userMenu/UserMenu'
 import { ChatButton } from '../chat/ChatButton'
 import clsx from 'clsx'
 
-export default function NavbarLayout() {
+export const NavbarLayout = () => {
   return (
     <div className="flex min-h-screen flex-col">
       <nav className="fixed top-0 right-0 left-0 z-10 h-[65px] border-b border-gray-200 bg-white px-20">
@@ -18,7 +18,9 @@ export default function NavbarLayout() {
       </nav>
 
       <main className="mt-[65px] flex w-full flex-1 flex-col items-center justify-center bg-white">
-        <Outlet />
+        <div className="min-h-screen">
+          <Outlet />
+        </div>
         <Footer />
       </main>
       <ChatButton />
@@ -39,7 +41,7 @@ const Logo = () => {
 
 const linkArr = [
   { path: '/courses', label: '강의 목록' },
-  { path: '/groups', label: '스터디 그룹' },
+  { path: '/', label: '스터디 그룹' },
   { path: '/jobs', label: '구인 공고' },
 ]
 
@@ -62,7 +64,7 @@ const Links = () => {
 }
 
 const Footer = () => {
-  const linkStyle = clsx('text-base text-gray-300 ')
+  const linkStyle = clsx('text-base text-gray-300 cursor-pointer')
   const titleStyle = clsx('pb-4 text-base font-semibold text-white')
   return (
     <div className="h-[313px] w-full bg-gray-900 px-20 py-12">
@@ -80,9 +82,18 @@ const Footer = () => {
           <div className="flex h-[128px] w-[280px] flex-col">
             <span className={titleStyle}>서비스</span>
             <div className="flex flex-col gap-2">
-              <span className={linkStyle}>강의 목록</span>
-              <span className={linkStyle}>스터디 그룹</span>
-              <span className={linkStyle}>구인 공고</span>
+              {linkArr.map((el) => (
+                <NavLink
+                  key={el.label}
+                  className={linkStyle}
+                  to={el.path}
+                  onClick={() =>
+                    window.scrollTo({ top: 0, behavior: 'smooth' })
+                  }
+                >
+                  {el.label}
+                </NavLink>
+              ))}
             </div>
           </div>
           <div className="flex h-[128px] w-[280px] flex-col">

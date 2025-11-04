@@ -1,17 +1,16 @@
 import { useState, useEffect } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import type { StudyGroupForm } from '../../types/StudyGroupTypes'
-import BasicInfoSection from './sections/BasicInfoSection'
-import PeriodSection from './sections/PeriodSection'
+import { BasicInfoSection } from './sections/BasicInfoSection'
+import { PeriodSection } from './sections/PeriodSection'
 import { LectureSection } from './sections/LectureSection'
-import BasicModal from '../../components/basicComponents/basicModal/BasicModal'
 import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
 import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
 
-export default function CreateStudyGroup() {
+export const CreateStudyGroup = () => {
   const [form, setForm] = useState<StudyGroupForm>({
     name: '',
     description: '',
@@ -117,8 +116,6 @@ export default function CreateStudyGroup() {
           </BasicButton>
         </div>
       </main>
-
-      <BasicModal />
     </div>
   )
 }

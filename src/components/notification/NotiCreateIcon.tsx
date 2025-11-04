@@ -34,7 +34,7 @@ export const NOTIFICATION_STYLE: Record<NotificationType, NotificationStyle> = {
  * @param {NotificationStyle} 아이콘(Icon), 아이콘 색상(text), 배경색상(bg)
  * @returns 원형배경과 색상이 적용된 아이콘
  */
-export function createIconNode({ Icon, text, bg }: NotificationStyle) {
+export const createIconNode = ({ Icon, text, bg }: NotificationStyle) => {
   return (
     <div
       className="flex h-8 w-8 items-center justify-center rounded-full"

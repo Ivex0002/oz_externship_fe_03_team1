@@ -1,19 +1,20 @@
 // import { useLoaderData } from 'react-router'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
-import ReviewDetailAverage from './ReviewDetailAverage'
-import ReviewDetailCard from './ReviewDetailCard'
+import { ReviewDetailAverage } from './ReviewDetailAverage'
+import { ReviewDetailCard } from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useModal } from '@/hooks/useModal'
 import { useParams } from 'react-router'
 import { storeReview } from '@/store/storeReview'
 import dayjs from '@/lib/dayjs'
+import type { ReviewParams } from '@/types/Params'
 
-const ReviewDetailModal = () => {
+export const ReviewDetailModal = () => {
   const { modalToModal } = useModal()
   const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
-  const params = useParams()
+  const { studyGroupId } = useParams<ReviewParams>()
   //loader 설정하면 아래 코드로 변경
   //   const reviewDetailData = useLoaderData<ReviewDetailData>()
   const reviewList = reviewDetailData.results
@@ -25,19 +26,20 @@ const ReviewDetailModal = () => {
   const isReviewed = !!myReview
 
   const handleClickPostReview = () => {
-    if (isReviewed) return
+    if (isReviewed || !studyGroupId) return
 
-    modalToModal(`/modal/post_review/${params.studyGroupId}`, '리뷰 작성')
+    modalToModal('REVIEW', { title: '리뷰 작성', modalProps: { studyGroupId } })
   }
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    modalToModal(
-      `/modal/edit_review/${params.studyGroupId}/${myReview.id}`,
-      '리뷰 수정'
-    )
+    if (!studyGroupId) return
+    modalToModal('REVIEW', {
+      title: '리뷰 수정',
+      modalProps: { studyGroupId, reviewId: myReview.id },
+    })
   }
 
   return (
@@ -75,5 +77,3 @@ const ReviewDetailModal = () => {
     </div>
   )
 }
-
-export default ReviewDetailModal

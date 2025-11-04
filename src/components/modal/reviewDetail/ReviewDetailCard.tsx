@@ -1,4 +1,4 @@
-import RatedStar from '@/components/basicComponents/ratedStar/RatedStar'
+import { RatedStar } from '@/components/basicComponents/ratedStar/RatedStar'
 import type { Review } from '@/types/Review'
 import { formattedReviewUpdatedDate } from '@/utils/formattedDate'
 
@@ -7,7 +7,7 @@ type ReviewDetailCardProps = {
   isMine?: boolean
 }
 
-const ReviewDetailCard = ({ review, isMine }: ReviewDetailCardProps) => {
+export const ReviewDetailCard = ({ review, isMine }: ReviewDetailCardProps) => {
   const formattedUpdatedDate = formattedReviewUpdatedDate(review.updated_at)
 
   return (
@@ -30,5 +30,3 @@ const ReviewDetailCard = ({ review, isMine }: ReviewDetailCardProps) => {
     </div>
   )
 }
-
-export default ReviewDetailCard

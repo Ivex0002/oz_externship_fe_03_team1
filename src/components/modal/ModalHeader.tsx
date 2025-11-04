@@ -2,7 +2,7 @@ import { useModal } from '@/hooks/useModal'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import { X } from 'lucide-react'
 
-const ModalHeader = () => {
+export const ModalHeader = () => {
   const { closeModal } = useModal()
   const { title, subTitle } = storeModalOpen().modalState
 
@@ -12,7 +12,7 @@ const ModalHeader = () => {
   }
 
   return (
-    <header className="flex justify-between border-b border-gray-200 p-6 text-gray-900">
+    <header className="flex w-full justify-between border-b border-gray-200 p-6 text-gray-900">
       <div className="flex flex-col">
         <h1 className="text-lg font-semibold text-gray-900">{title}</h1>
         <h2 className="text-sm font-normal text-gray-500">{subTitle}</h2>
@@ -23,5 +23,3 @@ const ModalHeader = () => {
     </header>
   )
 }
-
-export default ModalHeader

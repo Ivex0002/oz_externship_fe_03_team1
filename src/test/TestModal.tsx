@@ -5,7 +5,7 @@ import { useModal } from '@/hooks/useModal'
 const routeArr = [
   { path: '/modal/add_schedule/1', title: '새 스케줄 추가' },
   { path: '/modal/schedule_detail/1/1', title: '스케줄 상세' },
-  { path: '/modal/date_picker', title: 'date_picker' },
+  { path: '/modal/confirm', title: '확인창' },
   { path: '/modal/choosing_lecture', title: 'choosing_lecture' },
 ]
 

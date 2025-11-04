@@ -17,6 +17,19 @@ import { useNavigate, useLocation } from 'react-router'
  * }
  * ```
  */
+
+type OpenConfirmFn = (
+  message: string,
+  onConfirm: () => void | Promise<void>,
+  options?: {
+    title?: string
+    subTitle?: string
+    confirmText?: string
+    cancelText?: string
+    onCancel?: () => void
+  }
+) => void
+
 export const useModal = () => {
   const navigate = useNavigate()
   const location = useLocation()
@@ -32,6 +45,23 @@ export const useModal = () => {
       title: title,
       subTitle: subTitle,
       isClosing: false,
+    })
+  }
+
+  const openConfirm: OpenConfirmFn = (message, onConfirm, options) => {
+    const currentPath = location.pathname
+    navigate('/modal/confirm') // 라우트는 프로젝트에 맞게
+    setModalState({
+      prevPath: currentPath,
+      isClosing: false,
+      isConfirm: true,
+      message,
+      onConfirm, // 비동기 허용
+      onCancel: options?.onCancel,
+      title: options?.title || '확인창',
+      subTitle: options?.subTitle,
+      confirmText: options?.confirmText,
+      cancelText: options?.cancelText,
     })
   }
 
@@ -68,5 +98,5 @@ export const useModal = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [location.pathname])
 
-  return { openModal, closeModal, modalToModal } as const
+  return { openModal, openConfirm, closeModal, modalToModal } as const
 }

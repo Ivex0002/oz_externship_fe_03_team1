@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router'
 
 interface StudyCardProps {
   study: StudyGroup
+  onClick?: (id: number) => void
 }
 
 export const StudyCard = ({ study }: StudyCardProps) => {
@@ -39,7 +40,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   useEffect(() => {
     if (study.status === 'ONGOING') return
     if (study.status === 'ENDED') {
-      // todo 스터디 리뷰 api 호출
       setReviewData(reviewDetailData)
     }
   }, [study.status, setReviewData])

@@ -32,15 +32,7 @@ const SearchBar = ({
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
-  // 페이지네이션
-  const [activePage, setActivePage] = useState(0)
-  const [completedPage, setCompletedPage] = useState(0)
-  const itemsPerPage = 9 // 한 페이지당 표시할 스터디 개수
-
-  // debounce
-  const debouncedSearchTerm = useDebounce(searchTerm, 300)
-
-  // 검색 필터링
+  // 검색어를 포함하는 스터디만 필터링
   const filteredStudyGroups = studyGroupList.filter((study) =>
     study.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   )
@@ -78,32 +70,9 @@ export const StudyGroup = () => {
       {/* 검색창 */}
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* ✅ 검색결과가 전혀 없을 때 */}
-        {noResults ? (
-          <NoStudiesResult type="active" isSearchResult />
-        ) : (
-          <>
-            {/* 진행중인 스터디 섹션 */}
-            {noOngoingResults ? (
-              <NoStudiesResult type="active" isSearchResult />
-            ) : (
-              <StudySection
-                title="진행중인 스터디"
-                studies={ongoingStudyGroupList}
-              />
-            )}
-
-            {/* 완료된 스터디 섹션 */}
-            {noCompletedResults ? (
-              <NoStudiesResult type="completed" isSearchResult />
-            ) : (
-              <StudySection
-                title="완료된 스터디"
-                studies={completedStudyGroupList}
-              />
-            )}
-          </>
-        )}
+        {/* 스터디 섹션 */}
+        <StudySection title="진행중인 스터디" studies={ongoingStudyGroupList} />
+        <StudySection title="완료된 스터디" studies={completedStudyGroupList} />
       </main>
     </div>
   )

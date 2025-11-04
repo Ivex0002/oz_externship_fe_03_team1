@@ -39,7 +39,7 @@ const Logo = () => {
 
 const linkArr = [
   { path: '/courses', label: '강의 목록' },
-  { path: '/groups', label: '스터디 그룹' },
+  { path: '/', label: '스터디 그룹' },
   { path: '/jobs', label: '구인 공고' },
 ]
 

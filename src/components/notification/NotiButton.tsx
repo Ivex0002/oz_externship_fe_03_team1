@@ -18,7 +18,7 @@ export const NotiButton = () => {
       <button
         ref={buttonRef}
         onClick={handleClick}
-        className="nav-links relative"
+        className="nav-links relative cursor-pointer"
       >
         <Bell size={22} />
         {notiCount !== 0 && (

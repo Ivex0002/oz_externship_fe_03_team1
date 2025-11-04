@@ -108,7 +108,7 @@ export const BasicModal = () => {
           transition={{ type: 'spring', stiffness: 280, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="transparent-scrollbar p-6">
+          <div className="transparent-scrollbar">
             <ModalHeader />
             {renderModalContent()}
           </div>

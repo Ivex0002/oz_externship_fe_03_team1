@@ -33,11 +33,13 @@ const StudySection = ({
   studies,
   type,
   isSearchResult,
+  onStudyClick,
 }: {
   title: string
   studies: StudyGroupType[]
   type: 'active' | 'completed'
   isSearchResult: boolean
+  onStudyClick: (id: number) => void
 }) => {
   const hasNoStudies = studies.length === 0
 
@@ -67,8 +69,7 @@ export const StudyGroup = () => {
   const navigate = useNavigate()
   const [searchTerm, setSearchTerm] = useState('')
 
-  // debounce 적용
-  const debouncedSearchTerm = useDebounce(searchTerm, 300) // 300ms 딜레이
+  const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
   const filteredStudyGroups = studyGroupList.filter((study) =>
     study.name.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
@@ -82,6 +83,11 @@ export const StudyGroup = () => {
   const handleClickCreateStudy = () => {
     navigate('/create_study_group')
   }
+
+  const handleStudyClick = (id: number) => {
+    navigate(`/study_group_detail/${id}`)
+  }
+
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-20 pt-[65px] pb-20">
       <header className="mb-6 flex items-center justify-between">
@@ -110,12 +116,14 @@ export const StudyGroup = () => {
           studies={ongoingStudyGroupList}
           type="active"
           isSearchResult={!!searchTerm}
+          onStudyClick={handleStudyClick}
         />
         <StudySection
           title="완료된 스터디"
           studies={completedStudyGroupList}
           type="completed"
           isSearchResult={!!searchTerm}
+          onStudyClick={handleStudyClick}
         />
       </main>
     </div>

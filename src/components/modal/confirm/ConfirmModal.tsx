@@ -2,17 +2,35 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { storeModalOpen } from '@/store/storeModalOpen'
 
 export const ConfirmModal = () => {
-  const { modalState } = storeModalOpen()
+  const { modalState, closeModal } = storeModalOpen()
+  const { modalType, modalProps } = modalState
+
+  if (modalType !== 'CONFIRM') return null
+  if (!modalProps) return null
+
   const {
-    isConfirm,
     message,
-    confirmText = '확인',
-    cancelText = '취소',
     onConfirm,
     onCancel,
-  } = modalState
+    confirmText = '확인',
+    cancelText = '취소',
+  } = modalProps as {
+    message: string
+    onConfirm: () => void | Promise<void>
+    onCancel?: () => void
+    confirmText?: string
+    cancelText?: string
+  }
 
-  if (!isConfirm) return null
+  const handleConfirm = async () => {
+    await onConfirm?.()
+    closeModal()
+  }
+
+  const handleCancel = () => {
+    onCancel?.()
+    closeModal()
+  }
 
   return (
     <div className="flex w-sm flex-col justify-center py-5">
@@ -22,14 +40,14 @@ export const ConfirmModal = () => {
       <div className="flex w-full justify-between gap-5 px-8 pt-5">
         <BasicButton
           variant="outline"
-          onClick={onCancel}
+          onClick={handleCancel}
           className="w-full flex-1"
         >
           {cancelText}
         </BasicButton>
         <BasicButton
           variant="primary"
-          onClick={onConfirm}
+          onClick={handleConfirm}
           className="w-full flex-1"
         >
           {confirmText}

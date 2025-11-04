@@ -42,7 +42,7 @@ export const ScheduleMembersSelecting = ({
       <h3 className="text-sm font-medium">
         참여자 선택 <span className="text-danger-600">*</span>
       </h3>
-      <div className="flex max-h-48 flex-col gap-2 overflow-y-auto rounded-md border border-gray-300 p-4">
+      <div className="transparent-scrollbar flex max-h-48 flex-col gap-2 rounded-md border border-gray-300 p-4">
         {leader && (
           <div className="flex items-center gap-2">
             <label

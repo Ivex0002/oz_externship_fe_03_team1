@@ -1,44 +1,68 @@
 import { create } from 'zustand'
 
-type ModalState = {
+export type ModalType =
+  | null
+  | 'REVIEW'
+  | 'REVIEW_DETAIL'
+  | 'DATE_PICKER'
+  | 'LECTURE_CHOOSING'
+  | 'SCHEDULE'
+  | 'DETAIL_SCHEDULE'
+  | 'CONFIRM'
+
+interface ModalState {
   isModalOpen: boolean
-  prevPath: string
-  title: string
+  modalType: ModalType
+  title?: string
   subTitle?: string
-  isClosing: boolean
-
-  isConfirm?: boolean
-  message?: string
-  confirmText?: string
-  cancelText?: string
-  onConfirm?: () => void | Promise<void>
-  onCancel?: () => void
+  modalProps?: Record<string, unknown>
 }
-interface storeModalState {
-  modalState: ModalState
 
-  setModalState: (state: Partial<ModalState>) => void
+interface ModalStore {
+  modalState: ModalState
+  openModal: (
+    modalType: ModalType,
+    options?: {
+      title?: string
+      subTitle?: string
+      modalProps?: Record<string, unknown>
+    }
+  ) => void
+  closeModal: () => void
   clearModal: () => void
 }
 
 const initState: ModalState = {
   isModalOpen: false,
-  prevPath: '',
+  modalType: null,
   title: '',
   subTitle: '',
-  isClosing: false,
 
-  isConfirm: false,
-  message: '',
-  confirmText: '확인',
-  cancelText: '취소',
-  onConfirm: undefined,
-  onCancel: undefined,
+  modalProps: {},
 }
 
-export const storeModalOpen = create<storeModalState>((set) => ({
+export const storeModalOpen = create<ModalStore>((set) => ({
   modalState: initState,
-  setModalState: (newState) =>
-    set((cur) => ({ modalState: { ...cur.modalState, ...newState } })),
+
+  openModal: (modalType, options) =>
+    set(() => ({
+      modalState: {
+        isModalOpen: true,
+        modalType,
+        title: options?.title || '',
+        subTitle: options?.subTitle || '',
+        modalProps: options?.modalProps || {},
+      },
+    })),
+
+  closeModal: () => {
+    set((cur) => ({
+      modalState: { ...cur.modalState },
+    }))
+    setTimeout(() => {
+      set(() => ({ modalState: initState }))
+    }, 250)
+  },
+
   clearModal: () => set(() => ({ modalState: initState })),
 }))

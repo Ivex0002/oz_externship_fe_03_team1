@@ -47,21 +47,31 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     if (study.status === 'ONGOING') return
 
     setBasicStudyInfo(basicStudyInfo)
-    openModal(`/modal/review_detail/${study.id}`, '리뷰 상세', study.name)
+    openModal('REVIEW_DETAIL', {
+      title: '리뷰 상세',
+      subTitle: study.name,
+      modalProps: { studyId: study.id },
+    })
   }
 
   const handleClickPostReview = () => {
     if (isReviewed) return
 
     setBasicStudyInfo(basicStudyInfo)
-    openModal(`/modal/post_review/${study.id}`, '리뷰 작성')
+    openModal('REVIEW', {
+      title: '리뷰 작성',
+      modalProps: { studyId: study.id },
+    })
   }
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    openModal(`/modal/edit_review/${study.id}/${myReview.id}`, '리뷰 수정')
+    openModal('REVIEW', {
+      title: '리뷰 수정',
+      modalProps: { studyId: study.id, reviewId: myReview.id },
+    })
   }
 
   return (

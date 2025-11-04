@@ -231,7 +231,7 @@ const ChatInput = () => {
     }
   }
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault()
       handleSubmit()
@@ -243,7 +243,7 @@ const ChatInput = () => {
       <motion.textarea
         ref={ref}
         value={text}
-        onKeyDown={handleKeyDown}
+        onKeyUp={handleKeyUp}
         onChange={(e) => setText(e.target.value)}
         placeholder="메시지를 입력하세요"
         animate={{ height }}

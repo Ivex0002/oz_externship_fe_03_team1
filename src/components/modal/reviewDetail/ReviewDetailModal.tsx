@@ -26,19 +26,20 @@ export const ReviewDetailModal = () => {
   const isReviewed = !!myReview
 
   const handleClickPostReview = () => {
-    if (isReviewed) return
+    if (isReviewed || !studyGroupId) return
 
-    modalToModal(`/modal/post_review/${studyGroupId}`, '리뷰 작성')
+    modalToModal('REVIEW', { title: '리뷰 작성', modalProps: { studyGroupId } })
   }
 
   const handleClickEditReview = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    modalToModal(
-      `/modal/edit_review/${studyGroupId}/${myReview.id}`,
-      '리뷰 수정'
-    )
+    if (!studyGroupId) return
+    modalToModal('REVIEW', {
+      title: '리뷰 수정',
+      modalProps: { studyGroupId, reviewId: myReview.id },
+    })
   }
 
   return (

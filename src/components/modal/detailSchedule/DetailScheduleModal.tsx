@@ -19,10 +19,11 @@ export const DetailScheduleModal = () => {
   const handleClickEdit = () => {
     setPreviousSchedule(dummySchedule)
     setIsEdit(true)
-    modalToModal(
-      `/modal/edit_schedule/${studyGroupId}/${scheduleId}`,
-      '스케줄 수정'
-    )
+    if (!studyGroupId || !scheduleId) return
+    modalToModal('SCHEDULE', {
+      title: '스케줄 수정',
+      modalProps: { studyGroupId, scheduleId },
+    })
   }
 
   const handleClickDelete = () => {

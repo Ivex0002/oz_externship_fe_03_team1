@@ -1,74 +1,44 @@
-// BasicModal.tsx
 import { createPortal } from 'react-dom'
-import { AnimatePresence, motion } from 'framer-motion'
+import { motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
-import { useLocation, Outlet } from 'react-router'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import { ModalHeader } from '@/components/modal/ModalHeader'
 import { useModal } from '@/hooks/useModal'
 
-/**
- *
- * @example
- * ```tsx
- * function MyComponent() {
- *   const { openModal } = useModal()
- *
- *  return (
- *  <button onClick={() => openModal('/modal/detail')}>
- *    모달 열기
- *  </button>
- *  )
- * }
- * ```
- */
+import { ReviewModal } from '@/components/modal/review/ReviewModal'
+import { ReviewDetailModal } from '@/components/modal/reviewDetail/ReviewDetailModal'
+import { DatePickerModal } from '@/components/modal/datePicker/DatePickerModal'
+import { LectureChoosingModal } from '@/components/modal/lectureChoosing/LectureChoosingModal'
+import { ScheduleModal } from '@/components/modal/schedule/ScheduleModal'
+import { DetailScheduleModal } from '@/components/modal/detailSchedule/DetailScheduleModal'
+import { ConfirmModal } from '@/components/modal/confirm/ConfirmModal'
+
 export const BasicModal = () => {
-  const location = useLocation()
   const modalRef = useRef<HTMLDivElement>(null)
   const { closeModal } = useModal()
 
   // Zustand store
-  const { isModalOpen, isClosing } = storeModalOpen((state) => state.modalState)
-  const setModalState = storeModalOpen((state) => state.setModalState)
+  const { modalState } = storeModalOpen()
+  const { isModalOpen, modalType } = modalState
 
-  // 무한 랜더링 방지 및 린트 회피용 ref
-  const setModalOpenRef = useRef(setModalState)
-  const closeModalRef = useRef(closeModal)
-
-  // location이 변경될 때마다 모달 상태 확인
+  // ESC로 닫기
   useEffect(() => {
-    const smorc = setModalOpenRef.current
-    const isModalRoute = location.pathname.startsWith('/modal')
-
-    if (isModalRoute && !isModalOpen && !isClosing) {
-      smorc({ isModalOpen: true })
-      document.body.style.overflow = 'hidden'
-    } else if (!isModalRoute && isModalOpen) {
-      smorc({ isModalOpen: false })
-      document.body.style.overflow = 'unset'
+    const handleEsc = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') closeModal()
     }
+    window.addEventListener('keyup', handleEsc)
+    return () => window.removeEventListener('keyup', handleEsc)
+  }, [closeModal])
 
-    // 예상 오류 시나리오
-    // 1. Modal A 열림 → isModalOpen = true
-    // 2. 비정상적으로 컴포넌트 언마운트 (예: 에러, 라우트 변경)
-    // 3. 클린업 함수가 제대로 선언되지 않을 경우 모달 상태 변수와 스크롤이 비정상 동작 가능
-    // 따라서 중복되지만 상태관리 함수와 스크롤을 명시함
-    // 위의 else if는 경로 이동에 따른 모달 상태관리
-    // 아래의 return 클린업 함수는 비정상 종료 대응용 안전장치
+  // 스크롤 잠금
+  useEffect(() => {
+    if (isModalOpen) document.body.style.overflow = 'hidden'
+    else document.body.style.overflow = 'unset'
+
     return () => {
       document.body.style.overflow = 'unset'
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [location.pathname])
-
-  // esc 누를시 이전 경로로 이동
-  useEffect(() => {
-    const handleEsc = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') closeModalRef.current()
-    }
-    window.addEventListener('keydown', handleEsc)
-    return () => window.removeEventListener('keydown', handleEsc)
-  }, [])
+  }, [isModalOpen])
 
   // 포커스 트랩
   useEffect(() => {
@@ -82,6 +52,7 @@ export const BasicModal = () => {
     }
   }, [isModalOpen])
 
+  // 모달 애니메이션
   const modalAnim = {
     hidden: { opacity: 0 },
     visible: { opacity: 1 },
@@ -94,36 +65,56 @@ export const BasicModal = () => {
     exit: { scale: 0.9, opacity: 0 },
   }
 
+  // 렌더링할 모달 내용 선택
+  const renderModalContent = () => {
+    switch (modalType) {
+      case 'REVIEW':
+        return <ReviewModal />
+      case 'REVIEW_DETAIL':
+        return <ReviewDetailModal />
+      case 'DATE_PICKER':
+        return <DatePickerModal />
+      case 'LECTURE_CHOOSING':
+        return <LectureChoosingModal />
+      case 'SCHEDULE':
+        return <ScheduleModal />
+      case 'DETAIL_SCHEDULE':
+        return <DetailScheduleModal />
+      case 'CONFIRM':
+        return <ConfirmModal />
+      default:
+        return null
+    }
+  }
+
   return createPortal(
-    <AnimatePresence mode="wait">
-      {isModalOpen && (
+    isModalOpen && (
+      <motion.div
+        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+        variants={modalAnim}
+        initial="hidden"
+        animate="visible"
+        transition={{ duration: 0.1 }}
+        role="dialog"
+        aria-modal="true"
+        onClick={closeModal}
+      >
         <motion.div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-          variants={modalAnim}
-          role="dialog"
-          aria-modal="true"
+          className="relative flex h-auto max-h-[90vh] flex-col items-center justify-center rounded-xl bg-white shadow-2xl"
+          variants={contentAnim}
+          ref={modalRef}
           initial="hidden"
           animate="visible"
-          exit="exit"
-          transition={{ duration: 0.25 }}
-          onClick={() => closeModalRef.current()}
+          transition={{ type: 'spring', stiffness: 280, damping: 25 }}
+          onClick={(e) => e.stopPropagation()}
         >
-          <motion.div
-            className="relative rounded-xl bg-white shadow-2xl"
-            variants={contentAnim}
-            ref={modalRef}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: 'spring', stiffness: 280, damping: 25 }}
-            onClick={(e) => e.stopPropagation()}
-          >
+          <div className="transparent-scrollbar p-6">
             <ModalHeader />
-            <Outlet />
-          </motion.div>
+            {renderModalContent()}
+          </div>
         </motion.div>
-      )}
-    </AnimatePresence>,
+      </motion.div>
+    ),
     document.body
   )
 }

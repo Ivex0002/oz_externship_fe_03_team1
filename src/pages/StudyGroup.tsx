@@ -32,7 +32,6 @@ const SearchBar = ({
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
-  // 검색어를 포함하는 스터디만 필터링
   const filteredStudyGroups = studyGroupList.filter((study) =>
     study.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
   )
@@ -67,12 +66,20 @@ export const StudyGroup = () => {
         </BasicButton>
       </header>
 
-      {/* 검색창 */}
-      <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-        {/* 스터디 섹션 */}
-        <StudySection title="진행중인 스터디" studies={ongoingStudyGroupList} />
-        <StudySection title="완료된 스터디" studies={completedStudyGroupList} />
+        <StudySection
+          title="진행중인 스터디"
+          studies={ongoingStudyGroupList}
+          type="active"
+          isSearchResult={!!searchTerm}
+        />
+        <StudySection
+          title="완료된 스터디"
+          studies={completedStudyGroupList}
+          type="completed"
+          isSearchResult={!!searchTerm}
+        />
       </main>
     </div>
   )

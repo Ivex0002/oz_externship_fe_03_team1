@@ -1,91 +1,126 @@
 import { useState } from 'react'
+import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { StudyCard } from './StudyCard'
+import { BasicInput } from '@/components/basicComponents/input/BasicInput'
+import { studyGroupList } from '@/assets/dummyData/studiesData'
+import { useNavigate } from 'react-router'
+import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
-import type { StudyGroup } from '@/types/StudyGroupTypes'
+import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
-interface StudySectionProps {
+const SearchBar = ({
+  searchTerm,
+  setSearchTerm,
+}: {
+  searchTerm: string
+  setSearchTerm: (value: string) => void
+}) => (
+  <div className="mb-8 w-full">
+    <BasicInput
+      placeholder="스터디 그룹 검색..."
+      status="default"
+      iconPosition="left"
+      value={searchTerm}
+      onChange={(e) => setSearchTerm(e.target.value)}
+    >
+      <Search className="text-gray-400" size={18} />
+    </BasicInput>
+  </div>
+)
+
+const StudySection = ({
+  title,
+  studies,
+  type,
+  isSearchResult,
+}: {
   title: string
-  studies: StudyGroup[]
-}
-
-export const StudySection = ({ title, studies }: StudySectionProps) => {
-  const [currentPage, setCurrentPage] = useState(1)
-  const studiesPerPage = 9
-  const totalPages = Math.ceil(studies.length / studiesPerPage)
-  const indexOfLastStudy = currentPage * studiesPerPage
-  const indexOfFirstStudy = indexOfLastStudy - studiesPerPage
-  const currentStudies = studies.slice(indexOfFirstStudy, indexOfLastStudy)
-
-  const isOngoing = title.includes('진행중')
+  studies: StudyGroupType[]
+  type: 'active' | 'completed'
+  isSearchResult: boolean
+}) => {
+  const hasNoStudies = studies.length === 0
 
   return (
-    <section className="mb-16">
-      <div className="mb-4 flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{title}</h2>
+    <section className="mb-20 flex w-full flex-col">
+      <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
 
-        <span
-          className={`rounded-full border px-3 py-1 text-xs font-medium ${
-            isOngoing
-              ? 'border-green-300 bg-green-200 text-green-700'
-              : 'border-gray-300 bg-gray-200 text-gray-700'
-          }`}
+      <div
+        className={`grid min-h-[60vh] w-full grid-cols-3 gap-6 ${
+          hasNoStudies ? 'place-items-center' : ''
+        }`}
+      >
+        {hasNoStudies ? (
+          <div className="col-span-full flex w-full justify-center">
+            <div className="w-full max-w-[1120px]">
+              <NoStudiesResult type={type} isSearchResult={isSearchResult} />
+            </div>
+          </div>
+        ) : (
+          studies.map((study) => <StudyCard key={study.id} study={study} />)
+        )}
+      </div>
+    </section>
+  )
+}
+
+export const StudyGroup = () => {
+  const navigate = useNavigate()
+  const [searchTerm, setSearchTerm] = useState('')
+
+  const filteredStudyGroups = studyGroupList.filter((study) =>
+    study.name.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
+  const ongoingStudyGroupList = filteredStudyGroups.filter(
+    (study) => study.status === 'ONGOING'
+  )
+  const completedStudyGroupList = filteredStudyGroups.filter(
+    (study) => study.status === 'ENDED'
+  )
+
+  const handleClickCreateStudy = () => {
+    navigate('/create_study_group')
+  }
+
+  return (
+    <div className="flex min-h-screen flex-col bg-white">
+      <header className="mx-auto mb-6 flex w-full max-w-[1120px] items-center justify-between">
+        <div>
+          <h1 className="mb-1 text-3xl font-bold text-gray-800">스터디 그룹</h1>
+          <p className="text-sm text-gray-600">
+            함께 공부하며 성장하는 스터디 그룹에 참여해보세요
+          </p>
+        </div>
+        <BasicButton
+          variant="primary"
+          onClick={handleClickCreateStudy}
+          size="medium"
         >
-          {studies.length}개 {isOngoing ? '진행중' : '완료'}
-        </span>
+          <Plus size={16} /> 새 스터디 만들기
+        </BasicButton>
+      </header>
+
+      {/* 검색창 */}
+      <div className="mx-auto w-full max-w-[1120px]">
+        <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
       </div>
 
-      {/* ✅ 스터디가 없을 때 꽉 찬 화면 중앙 표시 */}
-      {currentStudies.length === 0 ? (
-        <div className="flex min-h-[70vh] w-full items-center justify-center rounded-xl bg-gray-50">
-          <div className="w-full max-w-[1100px]">
-            <NoStudiesResult
-              type={isOngoing ? 'active' : 'completed'}
-              isSearchResult={false}
-            />
-          </div>
-        </div>
-      ) : (
-        <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {currentStudies.map((study) => (
-            <StudyCard key={study.id} study={study} />
-          ))}
-        </div>
-      )}
-
-      {/* 페이지네이션 */}
-      {totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-2">
-          <BasicButton
-            variant="secondary"
-            size="small"
-            disabled={currentPage === 1}
-            onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
-          >
-            이전
-          </BasicButton>
-
-          {[...Array(totalPages)].map((_, idx) => (
-            <BasicButton
-              key={idx}
-              variant={currentPage === idx + 1 ? 'primary' : 'outline'}
-              size="small"
-              onClick={() => setCurrentPage(idx + 1)}
-            >
-              {idx + 1}
-            </BasicButton>
-          ))}
-
-          <BasicButton
-            variant="secondary"
-            size="small"
-            disabled={currentPage === totalPages}
-            onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
-          >
-            다음
-          </BasicButton>
-        </div>
-      )}
-    </section>
+      {/* 메인 컨텐츠 */}
+      <main className="mx-auto flex w-full max-w-[1120px] flex-1 flex-col">
+        <StudySection
+          title="진행중인 스터디"
+          studies={ongoingStudyGroupList}
+          type="active"
+          isSearchResult={!!searchTerm}
+        />
+        <StudySection
+          title="완료된 스터디"
+          studies={completedStudyGroupList}
+          type="completed"
+          isSearchResult={!!searchTerm}
+        />
+      </main>
+    </div>
   )
 }

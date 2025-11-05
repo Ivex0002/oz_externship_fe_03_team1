@@ -5,6 +5,7 @@ import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useDebounce } from '@/hooks/useDebounce'
 import { StudySection } from '@/components/studyGroup/StudySection'
+import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
 
 /** 검색창 컴포넌트 */
 const SearchBar = ({
@@ -31,7 +32,12 @@ const SearchBar = ({
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
 
-  // debounce 적용
+  // 페이지네이션
+  const [activePage, setActivePage] = useState(0)
+  const [completedPage, setCompletedPage] = useState(0)
+  const itemsPerPage = 9 // 한 페이지당 표시할 스터디 개수
+
+  // debounce
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
 
   // 검색 필터링
@@ -44,6 +50,16 @@ export const StudyGroup = () => {
   )
   const completedStudyGroupList = filteredStudyGroups.filter(
     (study) => study.status === 'ENDED'
+  )
+
+  // 페이지네이션 데이터 분할
+  const paginatedOngoing = ongoingStudyGroupList.slice(
+    activePage * itemsPerPage,
+    activePage * itemsPerPage + itemsPerPage
+  )
+  const paginatedCompleted = completedStudyGroupList.slice(
+    completedPage * itemsPerPage,
+    completedPage * itemsPerPage + itemsPerPage
   )
 
   return (
@@ -70,18 +86,37 @@ export const StudyGroup = () => {
 
       {/* 메인 컨텐츠 */}
       <main className="mx-auto flex w-full flex-1 flex-col">
+        {/* 진행중인 스터디 */}
         <StudySection
           title="진행중인 스터디"
-          studies={ongoingStudyGroupList}
+          studies={paginatedOngoing}
           type="active"
           isSearchResult={!!searchTerm}
         />
+
+        {ongoingStudyGroupList.length > itemsPerPage && (
+          <CustomPagination
+            pageCount={Math.ceil(ongoingStudyGroupList.length / itemsPerPage)}
+            currentPage={activePage}
+            onPageChange={(selectedPage) => setActivePage(selectedPage)}
+          />
+        )}
+
+        {/* 완료된 스터디 */}
         <StudySection
           title="완료된 스터디"
-          studies={completedStudyGroupList}
+          studies={paginatedCompleted}
           type="completed"
           isSearchResult={!!searchTerm}
         />
+
+        {completedStudyGroupList.length > itemsPerPage && (
+          <CustomPagination
+            pageCount={Math.ceil(completedStudyGroupList.length / itemsPerPage)}
+            currentPage={completedPage}
+            onPageChange={(selectedPage) => setCompletedPage(selectedPage)}
+          />
+        )}
       </main>
     </div>
   )

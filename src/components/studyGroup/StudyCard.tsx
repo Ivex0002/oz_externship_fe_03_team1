@@ -87,9 +87,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             onError={() => setImgError(true)}
           />
         ) : (
-          <div className="flex h-52 w-full items-center justify-center bg-gray-200 text-sm text-gray-500">
-            이미지 없음
-          </div>
+          <div className="h-52 w-full bg-gray-200" />
         )}
 
         <span

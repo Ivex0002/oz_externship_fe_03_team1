@@ -3,10 +3,8 @@ import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
-import { StudyCard } from '@/components/studyGroup/StudyCard'
-import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
-import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 import { useDebounce } from '@/hooks/useDebounce'
+import { StudySection } from '@/components/studyGroup/StudySection'
 import { useNavigate } from 'react-router'
 
 /** 검색창 컴포넌트 */
@@ -29,41 +27,8 @@ const SearchBar = ({
     </BasicInput>
   </div>
 )
-const StudySection = ({
-  title,
-  studies,
-  type,
-  isSearchResult,
-}: {
-  title: string
-  studies: StudyGroupType[]
-  type: 'active' | 'completed'
-  isSearchResult: boolean
-}) => {
-  const hasNoStudies = studies.length === 0
 
-  return (
-    <section className="mb-20 flex w-full flex-col">
-      <h2 className="mb-6 text-2xl font-semibold text-gray-800">{title}</h2>
-
-      <div
-        className={`grid min-h-[60vh] w-full grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 ${
-          hasNoStudies ? 'place-items-center' : ''
-        }`}
-      >
-        {hasNoStudies ? (
-          <div className="col-span-full flex w-full justify-center">
-            <div className="w-full max-w-[900px]">
-              <NoStudiesResult type={type} isSearchResult={isSearchResult} />
-            </div>
-          </div>
-        ) : (
-          studies.map((study) => <StudyCard key={study.id} study={study} />)
-        )}
-      </div>
-    </section>
-  )
-}
+/** 메인 StudyGroup 페이지 */
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const navigate = useNavigate()

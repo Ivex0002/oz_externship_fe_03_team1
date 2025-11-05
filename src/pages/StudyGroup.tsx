@@ -98,7 +98,6 @@ export const StudyGroup = () => {
           variant="primary"
           onClick={handleClickCreateStudy}
           size="medium"
-          className="cursor-pointer"
         >
           <Plus size={16} /> 새 스터디 만들기
         </BasicButton>

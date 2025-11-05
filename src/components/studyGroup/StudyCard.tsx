@@ -50,7 +50,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     openModal('REVIEW_DETAIL', {
       title: '리뷰 상세',
       subTitle: study.name,
-      modalProps: { studyId: study.id },
+      modalProps: { studyGroupId: study.id },
     })
   }
 
@@ -60,7 +60,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setBasicStudyInfo(basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 작성',
-      modalProps: { studyId: study.id },
+      modalProps: { studyGroupId: study.id },
     })
   }
 
@@ -70,7 +70,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setPreviousMyReview(myReview, basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyId: study.id, reviewId: myReview.id },
+      modalProps: { studyGroupId: study.id, reviewId: myReview.id },
     })
   }
 

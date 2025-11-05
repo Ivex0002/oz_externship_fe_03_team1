@@ -35,5 +35,5 @@ export type StudyRecordsResponse = {
   page: number
   size: number
   order: string
-  group_id: number
+  group_id: string
 }

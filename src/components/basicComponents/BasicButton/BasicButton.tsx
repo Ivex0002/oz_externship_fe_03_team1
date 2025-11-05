@@ -110,7 +110,7 @@ export const BasicButton = ({
   }
 
   const buttonClass = clsx(
-    'flex items-center justify-center rounded-lg font-medium transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-primary-400 focus:outline-none',
+    'flex items-center cursor-pointer justify-center rounded-lg font-medium transition-colors duration-150 focus-visible:ring-2 focus-visible:ring-primary-400 focus:outline-none',
     sizeMap[size],
     colorSet.bg,
     colorSet.text,

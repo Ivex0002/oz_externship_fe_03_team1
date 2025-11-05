@@ -68,6 +68,12 @@ export const BasicModal = () => {
   // 렌더링할 모달 내용 선택
   const renderModalContent = () => {
     switch (modalType) {
+      case 'CONFIRM':
+        return <ConfirmModal />
+      case 'SCHEDULE':
+        return <ScheduleModal />
+      case 'DETAIL_SCHEDULE':
+        return <DetailScheduleModal />
       case 'REVIEW':
         return <ReviewModal />
       case 'REVIEW_DETAIL':
@@ -76,12 +82,6 @@ export const BasicModal = () => {
         return <DatePickerModal />
       case 'LECTURE_CHOOSING':
         return <LectureChoosingModal />
-      case 'SCHEDULE':
-        return <ScheduleModal />
-      case 'DETAIL_SCHEDULE':
-        return <DetailScheduleModal />
-      case 'CONFIRM':
-        return <ConfirmModal />
       default:
         return null
     }
@@ -108,7 +108,7 @@ export const BasicModal = () => {
           transition={{ type: 'spring', stiffness: 280, damping: 25 }}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="transparent-scrollbar p-6">
+          <div className="transparent-scrollbar">
             <ModalHeader />
             {renderModalContent()}
           </div>

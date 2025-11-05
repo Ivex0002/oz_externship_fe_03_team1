@@ -2,7 +2,7 @@ import type { StudyGroup } from '@/types/StudyGroupTypes'
 
 export const studyGroupList: StudyGroup[] = [
   {
-    id: 1,
+    id: '1',
     name: 'React 실무 프로젝트 스터디',
     status: 'ONGOING',
     start_at: '2024-04-01T09:00:00Z',
@@ -25,7 +25,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-76.png',
   },
   {
-    id: 2,
+    id: '2',
     name: 'Python 데이터 분석 스터디',
     status: 'ONGOING',
     start_at: '2024-05-01T10:00:00Z',
@@ -48,7 +48,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-136.png',
   },
   {
-    id: 3,
+    id: '3',
     name: 'AI 모델링 스터디',
     status: 'ONGOING',
     start_at: '2024-06-01T11:00:00Z',
@@ -71,7 +71,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-206.png',
   },
   {
-    id: 4,
+    id: '4',
     name: 'Flutter 앱 개발 스터디',
     status: 'ONGOING',
     start_at: '2024-07-01T09:30:00Z',
@@ -94,7 +94,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '../images/IMG-287.png',
   },
   {
-    id: 5,
+    id: '5',
     name: 'SQL 데이터베이스 스터디',
     status: 'ONGOING',
     start_at: '2024-08-01T10:30:00Z',
@@ -118,7 +118,7 @@ export const studyGroupList: StudyGroup[] = [
   },
 
   {
-    id: 6,
+    id: '6',
     name: 'Node.js 백엔드 개발반',
     status: 'ENDED',
     start_at: '2024-03-01T09:00:00Z',
@@ -141,7 +141,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '/images/node-study.jpg',
   },
   {
-    id: 7,
+    id: '7',
     name: 'Vue.js 마스터 스터디',
     status: 'ENDED',
     start_at: '2024-02-01T10:00:00Z',
@@ -164,7 +164,7 @@ export const studyGroupList: StudyGroup[] = [
     profile_img_url: '/images/vue-study.jpg',
   },
   {
-    id: 8,
+    id: '8',
     name: 'TypeScript 심화 스터디',
     status: 'ENDED',
     start_at: '2024-01-01T11:00:00Z',

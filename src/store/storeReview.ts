@@ -2,7 +2,7 @@ import type { Review, ReviewDetailData, ReviewForm } from '@/types/Review'
 import { create } from 'zustand'
 
 type BasicStudyInfo = {
-  id: number
+  id: string
   name: string
   start_at: string
   end_at: string

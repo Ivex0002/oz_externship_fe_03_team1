@@ -4,8 +4,9 @@ type Lectures = {
   instructor: string
 }[]
 
+// 스터디 그룹만 id 값이 uuid로 들어옴
 export type StudyGroup = {
-  id: number
+  id: string
   name: string
   profile_img_url: string
   max_headcount: number

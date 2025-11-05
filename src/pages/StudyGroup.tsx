@@ -4,8 +4,8 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useDebounce } from '@/hooks/useDebounce'
+import { StudySection } from '@/components/studyGroup/StudySection'
 import { useNavigate } from 'react-router'
-import { StudySection } from '../components/studyGroup/StudySection'
 
 /** 검색창 컴포넌트 */
 const SearchBar = ({
@@ -31,10 +31,13 @@ const SearchBar = ({
 /** 메인 StudyGroup 페이지 */
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
-  const navigate = useNavigate()
-  // debounce 적용
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
+  const navigate = useNavigate()
 
+  /** 새 스터디 만들기 버튼 클릭 핸들러 */
+  const handleClickCreateStudy = () => {
+    navigate('/create_study_group')
+  }
   // 검색 필터링
   const filteredStudyGroups = studyGroupList.filter((study) =>
     study.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
@@ -45,9 +48,6 @@ export const StudyGroup = () => {
   const completedStudyGroupList = filteredStudyGroups.filter(
     (study) => study.status === 'ENDED'
   )
-  const handleClickCreateStudy = () => {
-    navigate('/create_study_group')
-  }
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">

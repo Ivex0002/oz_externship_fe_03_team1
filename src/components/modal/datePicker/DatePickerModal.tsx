@@ -5,15 +5,17 @@ import 'react-day-picker/style.css'
 import { DatePickerCaption } from './DatePickerCaption'
 import { DatePickerFooter } from './DatePickerFooter'
 import dayjs from '@/lib/dayjs'
-import { useSearchParams } from 'react-router'
 import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import { motion } from 'framer-motion'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
 
 export const DatePickerModal = () => {
   const [selected, setSelected] = useState<Date>()
-  const params = useSearchParams()
 
-  const target = params[0].get('target')
+  const modalProps = storeModalOpen().modalState.modalProps
+
+  const target = (modalProps as ModalPropsMap['DATE_PICKER']).target
 
   const { previousStartDate, previousEndDate } = storeStudyGroupDate()
 

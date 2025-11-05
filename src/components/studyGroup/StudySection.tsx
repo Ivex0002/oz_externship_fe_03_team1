@@ -9,12 +9,12 @@ interface StudySectionProps {
   isSearchResult: boolean
 }
 
-export const StudySection: React.FC<StudySectionProps> = ({
+export const StudySection = ({
   title,
   studies,
   type,
   isSearchResult,
-}) => {
+}: StudySectionProps) => {
   const hasNoStudies = studies.length === 0
 
   return (

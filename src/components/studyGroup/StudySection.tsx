@@ -2,16 +2,18 @@ import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
-export const StudySection = ({
-  title,
-  studies,
-  type,
-  isSearchResult,
-}: {
+interface StudySectionProps {
   title: string
   studies: StudyGroupType[]
   type: 'active' | 'completed'
   isSearchResult: boolean
+}
+
+export const StudySection: React.FC<StudySectionProps> = ({
+  title,
+  studies,
+  type,
+  isSearchResult,
 }) => {
   const hasNoStudies = studies.length === 0
 

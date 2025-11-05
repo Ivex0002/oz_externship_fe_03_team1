@@ -4,8 +4,8 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useDebounce } from '@/hooks/useDebounce'
-import { StudySection } from '@/components/studyGroup/StudySection'
 import { useNavigate } from 'react-router'
+import { StudySection } from '../components/studyGroup/StudySection'
 
 /** 검색창 컴포넌트 */
 const SearchBar = ({

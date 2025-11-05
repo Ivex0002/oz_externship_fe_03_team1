@@ -162,7 +162,11 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             size="small"
             onClick={(e) => {
               e.stopPropagation()
-              isReviewed ? handleClickEditReview() : handleClickPostReview()
+              if (isReviewed) {
+                handleClickEditReview()
+              } else {
+                handleClickPostReview()
+              }
             }}
           >
             {isReviewed ? '리뷰 수정하기' : '리뷰 작성하기'}

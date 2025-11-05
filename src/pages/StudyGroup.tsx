@@ -99,7 +99,6 @@ export const StudyGroup = () => {
           variant="primary"
           onClick={() => (window.location.href = '/create_study_group')}
           size="medium"
-          className="cursor-pointer"
         >
           <Plus size={16} /> 새 스터디 만들기
         </BasicButton>

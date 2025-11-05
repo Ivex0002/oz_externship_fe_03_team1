@@ -164,7 +164,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
               e.stopPropagation()
               isReviewed ? handleClickEditReview() : handleClickPostReview()
             }}
-            className="cursor-pointer"
           >
             {isReviewed ? '리뷰 수정하기' : '리뷰 작성하기'}
           </BasicButton>

@@ -100,6 +100,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
                 <div className="flex items-center gap-2">
                   <img
                     src="/icons/attachment.svg"
+                    alt="파일 첨부"
                     className="filter: contrast-84; w-[8.5px] brightness-90 hue-rotate-182 invert-47 saturate-755 sepia-7"
                   />
                   <p className="mt-1 text-xs text-gray-500">{record.summary}</p>

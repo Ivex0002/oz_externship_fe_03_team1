@@ -174,7 +174,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
         </div>
       ) : (
         <div
-          className="flex justify-end border-t border-gray-100 px-5 py-3"
+          className="flex cursor-pointer justify-end border-t border-gray-100 px-5 py-3"
           onClick={handleNavigateDetail}
         >
           <span className="text-primary-600 hover:text-primary-500 text-sm font-medium">

@@ -1,7 +1,7 @@
 import type { StudyGroup } from '@/types/StudyGroupTypes'
 
 export const studyGroup: StudyGroup = {
-  id: 1,
+  id: '1',
   name: 'string',
   profile_img_url: 'string',
   current_headcount: 5,

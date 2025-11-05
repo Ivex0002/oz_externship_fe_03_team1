@@ -1,6 +1,14 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import type { ConfirmOptions } from '@/hooks/useModal'
 import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
+
+// modalProps: {
+//   message: options.message,
+//   onConfirm: options.onConfirm,
+//   onCancel: options.onCancel,
+//   confirmText: options.confirmText ?? '확인',
+//   cancelText: options.cancelText ?? '취소',
+// },
 
 export const ConfirmModal = () => {
   const { modalState, closeModal } = storeModalOpen()
@@ -8,7 +16,7 @@ export const ConfirmModal = () => {
 
   if (modalType !== 'CONFIRM' || !modalProps) return null
 
-  const props = modalProps as ConfirmOptions
+  const props = modalProps as ModalPropsMap['CONFIRM']
 
   const handleConfirm = async () => {
     await props.onConfirm?.()
@@ -31,14 +39,14 @@ export const ConfirmModal = () => {
           onClick={handleCancel}
           className="w-full flex-1"
         >
-          {props.cancelText}
+          {props.cancelText ?? '취소'}
         </BasicButton>
         <BasicButton
           variant="primary"
           onClick={handleConfirm}
           className="w-full flex-1"
         >
-          {props.confirmText}
+          {props.confirmText ?? '확인'}
         </BasicButton>
       </div>
     </div>

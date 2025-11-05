@@ -1,31 +1,22 @@
+import type { ModalPropsMap, ModalType } from '@/types/Modal'
 import { create } from 'zustand'
 
-export type ModalType =
-  | null
-  | 'REVIEW'
-  | 'REVIEW_DETAIL'
-  | 'DATE_PICKER'
-  | 'LECTURE_CHOOSING'
-  | 'SCHEDULE'
-  | 'DETAIL_SCHEDULE'
-  | 'CONFIRM'
-
-interface ModalState {
+interface ModalState<T extends ModalType = ModalType> {
   isModalOpen: boolean
-  modalType: ModalType
+  modalType: T | null
   title?: string
   subTitle?: string
-  modalProps?: Record<string, unknown>
+  modalProps?: ModalPropsMap[T]
 }
 
 interface ModalStore {
   modalState: ModalState
-  openModal: (
-    modalType: ModalType,
+  openModal: <T extends ModalType>(
+    modalType: T,
     options?: {
       title?: string
       subTitle?: string
-      modalProps?: Record<string, unknown>
+      modalProps?: ModalPropsMap[T]
     }
   ) => void
   closeModal: () => void

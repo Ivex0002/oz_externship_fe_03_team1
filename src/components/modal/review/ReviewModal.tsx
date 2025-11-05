@@ -25,7 +25,7 @@ const ReviewStudyBasicInfo = () => {
 export const ReviewModal = () => {
   const [rating, setRating] = useState(0)
   const [reviewInputValue, setReviewInputValue] = useState('')
-  //loader 설정시 아래 코드로 변경
+  // loader 설정시 아래 코드로 변경
   // const studyGroup = useLoaderData<StudyGroup>()
 
   const { closeModal } = useModal()

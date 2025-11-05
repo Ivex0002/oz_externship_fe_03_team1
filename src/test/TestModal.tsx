@@ -1,37 +1,51 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { useModal, type ConfirmOptions } from '@/hooks/useModal'
-import type { ModalType } from '@/store/storeModalOpen'
+import { useModal } from '@/hooks/useModal'
+import type { ModalPropsMap, ModalType } from '@/types/Modal'
 
-const modalTestList: {
-  modalType: Exclude<ModalType, null>
+type ModalTestItem<T extends ModalType> = {
+  modalType: T
   title: string
   subTitle?: string
-  modalProps?: Record<string, unknown>
-}[] = [
-  { modalType: 'SCHEDULE', title: '새 스케줄 추가' },
+  modalProps?: ModalPropsMap[T]
+}
+
+type ModalTestUnion = {
+  [K in Exclude<ModalType, null>]: ModalTestItem<K>
+}[Exclude<ModalType, null>]
+
+const modalTestList: ModalTestUnion[] = [
+  {
+    modalType: 'SCHEDULE',
+    title: '새 스케줄 추가',
+    modalProps: { studyGroupId: '1', scheduleId: 1 },
+  },
   {
     modalType: 'DETAIL_SCHEDULE',
     title: '스케줄 상세',
-    modalProps: { scheduleId: 1 },
+    modalProps: { studyGroupId: '1', scheduleId: 1 },
   },
-  { modalType: 'DATE_PICKER', title: '날짜 선택' },
+  {
+    modalType: 'DATE_PICKER',
+    title: '날짜 선택',
+    modalProps: { target: 'start' },
+  },
   { modalType: 'LECTURE_CHOOSING', title: '강의 선택' },
   {
     modalType: 'REVIEW',
     title: '리뷰 작성',
-    modalProps: { studyGroupId: 1 },
+    modalProps: { studyGroupId: '10' },
   },
   {
     modalType: 'REVIEW_DETAIL',
     title: '리뷰 상세',
-    modalProps: { studyGroupId: 1 },
+    modalProps: { studyGroupId: '10' },
   },
 ]
 
 function TestModal() {
   const { openModal, closeModal, openConfirm } = useModal()
 
-  const options: ConfirmOptions = {
+  const options = {
     message: '리더를 위임하시겠습니까?',
     onConfirm: closeModal,
     onCancel: closeModal,

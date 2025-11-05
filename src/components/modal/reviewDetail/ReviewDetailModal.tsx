@@ -28,7 +28,10 @@ export const ReviewDetailModal = () => {
   const handleClickPostReview = () => {
     if (isReviewed || !studyGroupId) return
 
-    modalToModal('REVIEW', { title: '리뷰 작성', modalProps: { studyGroupId } })
+    modalToModal('REVIEW', {
+      title: '리뷰 작성',
+      modalProps: { studyGroupId: studyGroupId },
+    })
   }
 
   const handleClickEditReview = () => {
@@ -38,7 +41,7 @@ export const ReviewDetailModal = () => {
     if (!studyGroupId) return
     modalToModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyGroupId, reviewId: myReview.id },
+      modalProps: { studyGroupId: studyGroupId, reviewId: myReview.id },
     })
   }
 

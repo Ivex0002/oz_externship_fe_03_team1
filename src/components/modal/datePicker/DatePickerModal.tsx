@@ -5,10 +5,10 @@ import 'react-day-picker/style.css'
 import { DatePickerCaption } from './DatePickerCaption'
 import { DatePickerFooter } from './DatePickerFooter'
 import dayjs from '@/lib/dayjs'
-import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import { motion } from 'framer-motion'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
+import { storeDatePicker } from '@/store/storeDatePicker'
 
 export const DatePickerModal = () => {
   const [selected, setSelected] = useState<Date>()
@@ -17,19 +17,18 @@ export const DatePickerModal = () => {
 
   const target = (modalProps as ModalPropsMap['DATE_PICKER']).target
 
-  const { previousStartDate, previousEndDate } = storeStudyGroupDate()
+  const { startDate, endDate, date } = storeDatePicker()
 
   const today = dayjs().toDate()
   const [month, setMonth] = useState(dayjs(today).set('date', 1).toDate())
 
   useEffect(() => {
-    if (target === 'start' && previousStartDate) {
-      setSelected(previousStartDate)
-    }
-    if (target === 'end' && previousEndDate) {
-      setSelected(previousEndDate)
-    }
-  }, [target, previousStartDate, previousEndDate])
+    if (target === 'start' && startDate) setSelected(startDate)
+
+    if (target === 'end' && endDate) setSelected(endDate)
+
+    if (target === 'single' && date) setSelected(date)
+  }, [target, startDate, endDate, date])
 
   return (
     <motion.div
@@ -50,13 +49,13 @@ export const DatePickerModal = () => {
             target === 'start'
               ? {
                   before: today,
-                  after: previousEndDate
-                    ? dayjs(previousEndDate).subtract(5, 'day').toDate()
+                  after: endDate
+                    ? dayjs(endDate).subtract(5, 'day').toDate()
                     : undefined,
                 }
               : {
-                  before: previousStartDate
-                    ? dayjs(previousStartDate).add(5, 'day').toDate()
+                  before: startDate
+                    ? dayjs(startDate).add(5, 'day').toDate()
                     : dayjs(today).add(5, 'day').toDate(),
                 }
           }
@@ -67,7 +66,11 @@ export const DatePickerModal = () => {
           onSelect={setSelected}
           month={month}
           onMonthChange={setMonth}
-          startMonth={dayjs(today).set('date', 1).toDate()}
+          startMonth={
+            selected
+              ? dayjs(selected).set('date', 1).toDate()
+              : dayjs(today).set('date', 1).toDate()
+          }
           components={{ MonthCaption: DatePickerCaption }}
           classNames={{
             today: 'text-black',

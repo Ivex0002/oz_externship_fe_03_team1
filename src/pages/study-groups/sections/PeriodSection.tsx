@@ -4,8 +4,8 @@ import { BasicInput } from '../../../components/basicComponents/input/BasicInput
 import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
 import { CustomSlider } from '../../../components/slider/CustomSlider'
 import { Calendar } from 'lucide-react'
-import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
+import { storeDatePicker } from '@/store/storeDatePicker'
 
 interface Props {
   form: StudyGroupForm
@@ -14,12 +14,10 @@ interface Props {
 
 export const PeriodSection = ({ form, setForm }: Props) => {
   const { openModal } = useModal()
-  const { previousStartDate, previousEndDate } = storeStudyGroupDate()
+  const { startDate, endDate } = storeDatePicker()
 
-  const startDate = previousStartDate
-    ? dayjs(previousStartDate).format('L')
-    : ''
-  const endDate = previousEndDate ? dayjs(previousEndDate).format('L') : ''
+  const studyStartDate = startDate ? dayjs(startDate).format('L') : ''
+  const studyEndDate = endDate ? dayjs(endDate).format('L') : ''
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
     openModal('DATE_PICKER', {
@@ -48,7 +46,7 @@ export const PeriodSection = ({ form, setForm }: Props) => {
             <BasicInput
               name="startDate"
               placeholder="날짜를 선택하세요"
-              value={startDate}
+              value={studyStartDate}
               readOnly
               onClick={() => handleOpenDatePicker('start')}
             />
@@ -67,7 +65,7 @@ export const PeriodSection = ({ form, setForm }: Props) => {
             <BasicInput
               name="endDate"
               placeholder="날짜를 선택하세요"
-              value={endDate}
+              value={studyEndDate}
               readOnly
               onClick={() => handleOpenDatePicker('end')}
             />

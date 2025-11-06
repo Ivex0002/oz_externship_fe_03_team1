@@ -22,7 +22,7 @@ export interface ModalPropsMap {
   // 나머지는 int
   SCHEDULE: {
     studyGroupId: string
-    scheduleId: number
+    scheduleId?: number
   }
   DETAIL_SCHEDULE: {
     studyGroupId: string

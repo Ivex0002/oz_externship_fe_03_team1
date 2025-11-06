@@ -139,6 +139,8 @@ export type BaseResponse = {
  * 사용법 상세
  * https://github.com/OZ-Coding-School/oz_externship_fe_03_team1/pull/74
  *
+ * https://github.com/Ivex0002/key-is-link
+ *
  * 스웨거
  * https://api.ozcoding.site/api/schema/swagger-ui/#/
  */
@@ -146,21 +148,21 @@ export type ApiLinks = {
   v1: {
     users: {
       me: {
-        GET: { res: UserProfile }
+        GET: () => { res: UserProfile }
       }
     }
     auth: {
       // (스웨거) 로그아웃 기능 누락
       logout: {
-        POST: { res: BaseResponse }
+        POST: () => { res: BaseResponse }
       }
     }
     notifications: {
-      GET: { res: Pagination<Notification> }
+      GET: () => { res: Pagination<Notification> }
     }
     lectures: {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
-      GET: {
+      GET: () => {
         res: {
           count: number
           next: string
@@ -172,7 +174,7 @@ export type ApiLinks = {
       }
 
       categories: {
-        GET: { res: LectureCategory[] }
+        GET: () => { res: LectureCategory[] }
       }
     }
     studies: {
@@ -182,21 +184,20 @@ export type ApiLinks = {
 }
 
 type GroupApi = {
-  GET: { res: StudyGroup[] }
-  POST: { req: StudyGroupPost; res: BaseResponse }
+  GET: () => { res: StudyGroup[] }
+  POST: (req: StudyGroupPost) => { res: BaseResponse }
 
   (group_id: number): {
-    GET: { res: StudyGroupDetail }
+    GET: () => { res: StudyGroupDetail }
     delegate$leader: {
-      POST: {
-        req: { target_user_id: number }
+      POST: (req: { target_user_id: number }) => {
         res: BaseResponse
       }
     }
-    leave: { DELETE: { res: BaseResponse } }
-    members: { (_member_id: number): { DELETE: { res: BaseResponse } } }
+    leave: { DELETE: () => { res: BaseResponse } }
+    members: { (_member_id: number): { DELETE: () => { res: BaseResponse } } }
     // (스웨거) res 타입 명시되지 않음
     // 확실하게 BaseResponse인지 확인 필요
-    reviews: { POST: { req: StudyReview; res: BaseResponse } }
+    reviews: { POST: () => { req: StudyReview; res: BaseResponse } }
   }
 }

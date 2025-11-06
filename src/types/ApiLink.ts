@@ -1,6 +1,14 @@
 // ===================== User =====================
 // type RoleEnum = 'admin' | 'staff' | 'user'
 // (스웨거) RoleEnum이 존재하나 어디에도 쓰이지 않음
+
+import type {
+  AxiosError,
+  AxiosRequestConfig,
+  InternalAxiosRequestConfig,
+  Method,
+} from 'axios'
+
 // (예상) UserProfile에 RoleEnum 추가 가능성 있음
 type UserProfile = {
   id: number
@@ -200,4 +208,22 @@ type GroupApi = {
     // 확실하게 BaseResponse인지 확인 필요
     reviews: { POST: () => { req: StudyReview; res: BaseResponse } }
   }
+}
+
+export type AxiosErrorHandler = (error: AxiosError) => void | Promise<never>
+
+/**
+ * API 요청을 수행하는 함수 시그니처.
+ * - createApiTree에 주입되어 모든 요청이 이를 통해 수행됨.
+ */
+export type RequestExecutor = <Req, Res>(
+  url: string,
+  method: Method,
+  data?: Req,
+  config?: AxiosRequestConfig
+) => Promise<Res>
+
+// 리프레시
+export interface RetryableRequestConfig extends InternalAxiosRequestConfig {
+  _retry?: boolean
 }

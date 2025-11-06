@@ -28,19 +28,11 @@ export const studyGroupApiResponse = {
         is_leader: false,
       },
     ],
-<<<<<<< HEAD
-    profile_img_url:
-      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop',
-    start_at: '2025-01-15',
-    end_at: '2025-03-15',
-    status: 'ONGOING' as const,
-=======
     profile_img_url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop",
     start_at: "2025-01-15",
     end_at: "2025-03-15",
     status: "ONGOING" as const,
     is_leader: true,
->>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)
     lectures: [
       {
         thumbnail_img_url: '/React.svg',

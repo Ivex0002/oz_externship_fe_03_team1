@@ -1,6 +1,6 @@
 import { useModal } from '@/hooks/useModal'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
-import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
+import { storeDatePicker } from '@/store/storeDatePicker'
 
 interface DatePickerFooterProps {
   selected: Date | undefined
@@ -12,7 +12,7 @@ export const DatePickerFooter = ({
   target,
 }: DatePickerFooterProps) => {
   const { closeModal } = useModal()
-  const { setNewStartDate, setNewEndDate } = storeStudyGroupDate()
+  const { setStartDate, setEndDate, setDate } = storeDatePicker()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -22,8 +22,9 @@ export const DatePickerFooter = ({
   const handleClickConfirm = (e: React.MouseEvent) => {
     e.preventDefault()
     if (!selected) return
-    if (target === 'start') setNewStartDate(selected)
-    if (target === 'end') setNewEndDate(selected)
+    if (target === 'start') setStartDate(selected)
+    if (target === 'end') setEndDate(selected)
+    if (target === 'single') setDate(selected)
     closeModal()
   }
 

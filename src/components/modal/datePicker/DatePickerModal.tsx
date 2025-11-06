@@ -5,29 +5,30 @@ import 'react-day-picker/style.css'
 import { DatePickerCaption } from './DatePickerCaption'
 import { DatePickerFooter } from './DatePickerFooter'
 import dayjs from '@/lib/dayjs'
-import { useSearchParams } from 'react-router'
-import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import { motion } from 'framer-motion'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
+import { storeDatePicker } from '@/store/storeDatePicker'
 
 export const DatePickerModal = () => {
   const [selected, setSelected] = useState<Date>()
-  const params = useSearchParams()
 
-  const target = params[0].get('target')
+  const modalProps = storeModalOpen().modalState.modalProps
 
-  const { previousStartDate, previousEndDate } = storeStudyGroupDate()
+  const target = (modalProps as ModalPropsMap['DATE_PICKER']).target
+
+  const { startDate, endDate, date } = storeDatePicker()
 
   const today = dayjs().toDate()
   const [month, setMonth] = useState(dayjs(today).set('date', 1).toDate())
 
   useEffect(() => {
-    if (target === 'start' && previousStartDate) {
-      setSelected(previousStartDate)
-    }
-    if (target === 'end' && previousEndDate) {
-      setSelected(previousEndDate)
-    }
-  }, [target, previousStartDate, previousEndDate])
+    if (target === 'start' && startDate) setSelected(startDate)
+
+    if (target === 'end' && endDate) setSelected(endDate)
+
+    if (target === 'single' && date) setSelected(date)
+  }, [target, startDate, endDate, date])
 
   return (
     <motion.div
@@ -41,6 +42,7 @@ export const DatePickerModal = () => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -30 }}
         transition={{ duration: 0.25, ease: 'easeInOut' }}
+        className="h-[403.93px]"
       >
         <DayPicker
           mode="single"
@@ -48,13 +50,13 @@ export const DatePickerModal = () => {
             target === 'start'
               ? {
                   before: today,
-                  after: previousEndDate
-                    ? dayjs(previousEndDate).subtract(5, 'day').toDate()
+                  after: endDate
+                    ? dayjs(endDate).subtract(5, 'day').toDate()
                     : undefined,
                 }
               : {
-                  before: previousStartDate
-                    ? dayjs(previousStartDate).add(5, 'day').toDate()
+                  before: startDate
+                    ? dayjs(startDate).add(5, 'day').toDate()
                     : dayjs(today).add(5, 'day').toDate(),
                 }
           }
@@ -65,7 +67,11 @@ export const DatePickerModal = () => {
           onSelect={setSelected}
           month={month}
           onMonthChange={setMonth}
-          startMonth={dayjs(today).set('date', 1).toDate()}
+          startMonth={
+            selected
+              ? dayjs(selected).set('date', 1).toDate()
+              : dayjs(today).set('date', 1).toDate()
+          }
           components={{ MonthCaption: DatePickerCaption }}
           classNames={{
             today: 'text-black',
@@ -75,7 +81,7 @@ export const DatePickerModal = () => {
             chevron: 'hidden',
             outside: 'text-gray-300',
             day_button:
-              'rounded-lg w-[53.7px] h-[40px] outline outline-2 outline-transparent transition-colors duration-200 hover:bg-gray-100',
+              'rounded-lg w-[53.7px] h-[40px] hover:cursor-pointer outline outline-2 outline-transparent transition-colors duration-200 hover:bg-gray-100',
             disabled: 'text-gray-400 hover:cursor-not-allowed',
           }}
           className="py-6"

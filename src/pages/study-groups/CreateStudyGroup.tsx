@@ -6,9 +6,9 @@ import { PeriodSection } from './sections/PeriodSection'
 import { LectureSection } from './sections/LectureSection'
 import { studyGroupFormMock } from '../../assets/dummyData/dummyStudyGroup'
 import { BasicButton } from '../../components/basicComponents/BasicButton/BasicButton'
-import { storeStudyGroupDate } from '@/store/storeStudyGroupDate'
 import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
+import { storeDatePicker } from '@/store/storeDatePicker'
 
 export const CreateStudyGroup = () => {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -22,7 +22,9 @@ export const CreateStudyGroup = () => {
   })
 
   const [isEdit, setIsEdit] = useState(false)
-  const { newStartDate, newEndDate, clearDates } = storeStudyGroupDate()
+
+  const { startDate, endDate, reset } = storeDatePicker()
+
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -52,14 +54,14 @@ export const CreateStudyGroup = () => {
     }
     setForm({
       ...form,
-      startDate: dayjs(newStartDate).toISOString(),
-      endDate: dayjs(newEndDate).toISOString(),
+      startDate: dayjs(startDate).format('YYYY-MM-DD'),
+      endDate: dayjs(endDate).format('YYYY-MM-DD'),
     })
-    clearDates()
+    reset()
   }
 
   const handleBack = () => {
-    clearDates()
+    reset()
     navigate('/')
   }
 

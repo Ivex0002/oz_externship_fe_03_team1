@@ -39,7 +39,7 @@ export const DatePickerCaption = (props: MonthCaptionProps) => {
           {year}년 {month}월
         </span>
         <button
-          className="text-primary-500 hover:text-primary-600 text-sm hover:cursor-pointer"
+          className="text-primary-500 hover:text-primary-600 pt-1 text-sm hover:cursor-pointer"
           onClick={goToday}
         >
           오늘

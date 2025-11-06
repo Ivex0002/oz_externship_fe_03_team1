@@ -42,7 +42,7 @@ export interface ModalPropsMap {
 
   // [5] 날짜 선택 모달
   DATE_PICKER: {
-    target: 'start' | 'end'
+    target: 'start' | 'end' | 'single'
   }
 
   // 강의 선택 모달 현재 props 없음

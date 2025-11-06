@@ -1,16 +1,30 @@
+<<<<<<< HEAD
 // StudyRecordList.tsx
 import { useState, useEffect } from 'react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import type { StudyRecord } from '@/types/Schedule'
 import dayjs from '@/lib/dayjs'
+=======
+import { useState, useEffect } from 'react';
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
+import type { StudyRecord } from '@/types/Schedule';
+import dayjs from '@/lib/dayjs';
+import { useNavigate } from 'react-router';
+>>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)
 
 interface StudyRecordListProps {
   groupId: string
 }
 
 export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
+<<<<<<< HEAD
   const [records, setRecords] = useState<StudyRecord[]>([])
   const [loading, setLoading] = useState(true)
+=======
+  const [records, setRecords] = useState<StudyRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+>>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -41,8 +55,16 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
     fetchRecords()
   }, [groupId])
 
+<<<<<<< HEAD
   const handleWriteClick = () => {}
   const handleRecordClick = (_recordId: number) => {}
+=======
+  const handleWriteClick = () => {
+    navigate(`/create_study_record/${groupId}`);
+  };
+  
+  const handleRecordClick = (_recordId: number) => {};
+>>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)
 
   if (loading) {
     return (
@@ -59,7 +81,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         <BasicButton
           variant="primary"
           size="small"
-          className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+          className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
           onClick={handleWriteClick}
         >
           <img
@@ -111,5 +133,10 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         ))}
       </div>
     </div>
+<<<<<<< HEAD
   )
 }
+=======
+  );
+};
+>>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)

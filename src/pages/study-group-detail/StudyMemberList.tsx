@@ -1,4 +1,4 @@
-import { useRef, useReducer, useMemo } from 'react';
+import { useRef, useReducer, useMemo, useState } from 'react';
 import { TooltipPortal } from '../../utils/TooltipPortal';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { Member } from '@/types/Schedule';
@@ -7,6 +7,8 @@ import { Crown, X } from 'lucide-react';
 interface StudyMemberListProps {
   members: Member[];
   currentHeadcount: number;
+  isLeader: boolean;
+  studyGroupId: number;
 }
 
 interface TooltipPosition {
@@ -45,7 +47,8 @@ const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipStat
 
 export const StudyMemberList = ({ 
   members,
-  currentHeadcount
+  currentHeadcount,
+  isLeader
 }: StudyMemberListProps) => {
   const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
@@ -55,11 +58,10 @@ export const StudyMemberList = ({
     position: null
   });
 
-  // 현재 사용자가 리더인지 확인
-  const currentUserIsLeader = useMemo(() => 
-    members.some(member => member.is_leader), 
-    [members]
-  );
+  // 로컬 모달 상태 관리
+  const [showModal, setShowModal] = useState(false);
+  const [modalType, setModalType] = useState<'expel' | 'delegate' | null>(null);
+  const [targetMember, setTargetMember] = useState<string | null>(null);
 
   // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
@@ -70,20 +72,26 @@ export const StudyMemberList = ({
     });
   }, [members]);
 
+  // 버튼 클릭 시 모달 오픈
   const handleExpelClick = (nickname: string) => {
-    if (window.confirm(`${nickname}님을 추방하시겠습니까?`)) {
-      // API 호출
-      return;
-    }
+    setModalType('expel');
+    setTargetMember(nickname);
+    setShowModal(true);
   };
 
   const handleDelegateClick = (nickname: string) => {
-    if (window.confirm(`${nickname}님에게 리더를 위임하시겠습니까??`)) {
-      // API 호출
-      return;
-    }
+    setModalType('delegate');
+    setTargetMember(nickname);
+    setShowModal(true);
   };
 
+  // 모달 확인 버튼 클릭 시 처리
+  const handleModalConfirm = () => {
+    if (modalType === 'expel') {return;} else if (modalType === 'delegate') {return;}
+    setShowModal(false);
+  };
+
+  // Tooltip 관련
   const updateTooltipPosition = (
     targetIndex: number, 
     nickname: string, 
@@ -92,7 +100,6 @@ export const StudyMemberList = ({
     const buttonElement = buttonRefs.current[targetIndex];
     if (buttonElement) {
       const rect = buttonElement.getBoundingClientRect();
-      
       dispatchTooltip({
         type: 'SHOW',
         action,
@@ -110,28 +117,20 @@ export const StudyMemberList = ({
     nickname: string, 
     action: 'expel' | 'delegate'
   ) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       updateTooltipPosition(index, nickname, action);
     }, 1000);
   };
 
   const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     dispatchTooltip({ type: 'HIDE' });
   };
 
   const getTooltipText = () => {
     if (!tooltipState.action || !tooltipState.targetMember) return '';
-    
-    if (tooltipState.action === 'expel') {
-      return `${tooltipState.targetMember}님을 추방`;
-    }
+    if (tooltipState.action === 'expel') return `${tooltipState.targetMember}님을 추방`;
     return `${tooltipState.targetMember}님에게 리더 위임`;
   };
 
@@ -141,8 +140,7 @@ export const StudyMemberList = ({
         <h2 className="text-xl font-bold text-gray-900">멤버 목록</h2>
         <span className="text-sm text-gray-500 font-medium">{currentHeadcount}명</span>
       </div>
-      
-      {/* 고정 높이: 485px (7.5명 분량) */}
+
       <div className="h-[485px] overflow-y-auto scrollbar-hide">
         <div className="space-y-3">
           {sortedMembers.map((member, index) => (
@@ -170,7 +168,8 @@ export const StudyMemberList = ({
                 </div>
               </div>
 
-              {currentUserIsLeader && !member.is_leader && (
+              {/* 리더일 경우만 표시 */}
+              {isLeader && !member.is_leader && (
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {/* 리더 위임 버튼 */}
                   <div
@@ -184,13 +183,10 @@ export const StudyMemberList = ({
                     <BasicButton
                       variant="secondary"
                       size="small"
-                      className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs"
+                      className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs cursor-pointer"
                       onClick={() => handleDelegateClick(member.nickname)}
                     >
-                      <Crown
-                      className='hover:text-blue-600' 
-                      size={20}
-                      />
+                      <Crown className='hover:text-blue-600' size={20} />
                     </BasicButton>
                   </div>
 
@@ -206,13 +202,10 @@ export const StudyMemberList = ({
                     <BasicButton
                       variant="danger"
                       size="small"
-                      className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500"
+                      className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500 cursor-pointer"
                       onClick={() => handleExpelClick(member.nickname)}
                     >
-                      <X 
-                      size={20}
-                      className='hover:text-danger-800'
-                      />
+                      <X size={20} className='hover:text-danger-800' />
                     </BasicButton>
                   </div>
                 </div>
@@ -222,6 +215,7 @@ export const StudyMemberList = ({
         </div>
       </div>
 
+      {/* Tooltip */}
       {tooltipState.targetMember && tooltipState.position && (
         <TooltipPortal>
           <div 
@@ -234,6 +228,39 @@ export const StudyMemberList = ({
             {getTooltipText()}
           </div>
         </TooltipPortal>
+      )}
+
+      {/* 모달 */}
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-[9999]">
+          <div className="bg-white rounded-xl shadow-lg p-6 w-[380px] text-center animate-fade-in">
+            <h2 className="text-lg font-bold mb-2">
+              {modalType === 'expel' ? '멤버 추방' : '리더 위임'}
+            </h2>
+            <p className="text-gray-600 mb-6">
+              {modalType === 'expel'
+                ? `${targetMember}님을 추방하시겠습니까?`
+                : `${targetMember}님에게 리더를 위임하시겠습니까?`}
+            </p>
+
+            <div className="flex justify-center gap-3">
+              <BasicButton
+                variant={modalType === 'expel' ? 'danger' : 'primary'}
+                onClick={handleModalConfirm}
+              >
+                확인
+              </BasicButton>
+
+              <BasicButton
+                variant="secondary"
+                onClick={() => setShowModal(false)}
+                className="!bg-gray-200 !text-gray-600"
+              >
+                취소
+              </BasicButton>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

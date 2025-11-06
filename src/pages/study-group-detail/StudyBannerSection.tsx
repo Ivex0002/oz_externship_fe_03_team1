@@ -1,13 +1,15 @@
 import { Calendar } from 'lucide-react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { FormattedInfo } from './StudyInfoAndCourses';
+import { useNavigate } from 'react-router';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
   setIsLeader: (value: boolean) => void;
   title: string;
   imgUrl: string;
-  formattedInfo: FormattedInfo
+  formattedInfo: FormattedInfo;
+  studyGroupId: number;
 }
 
 export const StudyBannerSection = ({ 
@@ -15,13 +17,15 @@ export const StudyBannerSection = ({
   setIsLeader,
   formattedInfo,
   title,
-  imgUrl
-
+  imgUrl,
+  studyGroupId
 }: StudyBannerSectionProps) => {
-  
+  const navigate = useNavigate();
 
   // 핸들러 함수 분리
-  const handleEditClick = () => {return};
+  const handleEditClick = () => {
+    navigate(`/edit_study_group/${studyGroupId}`);
+  };
 
   const handleLeaveClick = () => {
     if (window.confirm('정말로 스터디를 나가시겠습니까?')) {return};
@@ -66,7 +70,7 @@ export const StudyBannerSection = ({
             <BasicButton
               variant="secondary"
               size="small"
-              className="flex items-center gap-2 !px-4 !py-2 !text-sm"
+              className="flex items-center gap-2 !px-4 !py-2 !text-sm cursor-pointer"
               onClick={handleEditClick}
             >
               <img src="/icons/pen.svg" alt="edit" className="w-4 h-4" />
@@ -76,7 +80,7 @@ export const StudyBannerSection = ({
           <BasicButton
             variant="danger"
             size="small"
-            className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+            className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
             onClick={handleLeaveClick}
           >
             <img src="/icons/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />

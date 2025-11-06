@@ -10,7 +10,7 @@ import { getStatusText } from '@/utils/statusFormatter';
 
 export const StudyGroupDetail = () => {
   const currentUserIsLeader = studyGroupDetail.members.some(member => member.is_leader);
-  const [isLeader, setIsLeader] = useState(currentUserIsLeader);
+  const [_isLeader, setIsLeader] = useState(currentUserIsLeader);
   const startDate = dayjs(studyGroupDetail.start_at).format('L');
   const endDate = dayjs(studyGroupDetail.end_at).format('L');
   const statusText = getStatusText(studyGroupDetail.status);
@@ -25,12 +25,12 @@ export const StudyGroupDetail = () => {
       <div className="pt-[60.5px] mx-auto px-[80px]">
 
         <StudyBannerSection 
-
-          isLeader={isLeader} 
+          isLeader={studyGroupDetail.is_leader} 
           setIsLeader={setIsLeader} 
           formattedInfo={formattedInfo}
           title={studyGroupDetail.name}
           imgUrl={studyGroupDetail.profile_img_url}
+          studyGroupId={studyGroupDetail.id}
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
@@ -48,6 +48,8 @@ export const StudyGroupDetail = () => {
             <StudyMemberList 
               members={studyGroupDetail.members}
               currentHeadcount={studyGroupDetail.current_headcount}
+              isLeader={studyGroupDetail.is_leader}
+              studyGroupId={studyGroupDetail.id}
             />
           </div>
         </div>

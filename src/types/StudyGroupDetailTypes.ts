@@ -13,6 +13,7 @@ export interface LectureDetail {
 
 // 스터디 그룹만 id 값이 uuid로 들어옴
 export interface StudyGroupDetail {
+<<<<<<< HEAD
   id: string
   name: string
   current_headcount: number
@@ -23,6 +24,19 @@ export interface StudyGroupDetail {
   end_at: string
   status: 'ONGOING' | 'PENDING' | 'ENDED'
   lectures: LectureDetail[]
+=======
+  id: number;
+  name: string;
+  current_headcount: number;
+  max_headcount: number;
+  members: Member[];
+  profile_img_url: string;
+  start_at: string;
+  end_at: string;
+  status: 'ONGOING' | 'PENDING' | 'ENDED';
+  is_leader: boolean;
+  lectures: LectureDetail[];
+>>>>>>> 7f9becb (feat 리더권한 중 위임, 강퇴 알러트에서 모달변경)
 }
 
 // 알아본뒤에 필요없으면 삭제 이유가 명확하면 설명 후 사용.

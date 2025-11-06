@@ -42,6 +42,7 @@ export const DatePickerModal = () => {
         animate={{ opacity: 1, x: 0 }}
         exit={{ opacity: 0, x: -30 }}
         transition={{ duration: 0.25, ease: 'easeInOut' }}
+        className="h-[403.93px]"
       >
         <DayPicker
           mode="single"
@@ -80,7 +81,7 @@ export const DatePickerModal = () => {
             chevron: 'hidden',
             outside: 'text-gray-300',
             day_button:
-              'rounded-lg w-[53.7px] h-[40px] outline outline-2 outline-transparent transition-colors duration-200 hover:bg-gray-100',
+              'rounded-lg w-[53.7px] h-[40px] hover:cursor-pointer outline outline-2 outline-transparent transition-colors duration-200 hover:bg-gray-100',
             disabled: 'text-gray-400 hover:cursor-not-allowed',
           }}
           className="py-6"

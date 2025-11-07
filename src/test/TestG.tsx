@@ -20,7 +20,7 @@ const TestG = () => {
     //   //   target_user_id: 333,
     //   // })
     //   // const res = await api.v1.studies.groups(444).members(555).DELETE()
-    //   // const res = await api.v1.studies.groups.POST(dummyStudyGroup)
+    //   const res = await api.v1.studies.groups.POST(dummyStudyGroup)
     //   console.log(res)
     // } catch (error) {
     //   console.error('API call failed:', error)

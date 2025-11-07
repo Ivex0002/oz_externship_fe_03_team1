@@ -6,13 +6,14 @@ import axios, {
   type Method,
 } from 'axios'
 import type { TokenStorage } from './tokenManager'
+
+import { LOGIN_PAGE_URL } from './api'
+import { refreshAccessToken } from './refreshAccessToken'
 import type {
   AxiosErrorHandler,
   RequestExecutor,
   RetryableRequestConfig,
-} from '@/types/ApiTree'
-import { LOGIN_PAGE_URL } from './api'
-import { refreshAccessToken } from './refreshAccessToken'
+} from '@/types/ApiLink'
 
 interface HttpClientConfig {
   baseURL: string

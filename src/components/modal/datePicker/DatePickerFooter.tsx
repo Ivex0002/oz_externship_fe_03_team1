@@ -12,20 +12,26 @@ export const DatePickerFooter = ({
   target,
 }: DatePickerFooterProps) => {
   const { closeModal } = useModal()
-  const { setStartDate, setEndDate, setDate } = storeDatePicker()
+  const { mode, setStartDate, setEndDate, setDate } = storeDatePicker()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
-    closeModal()
+    if (mode === 'single' || target === 'single') return
+    else closeModal()
   }
 
   const handleClickConfirm = (e: React.MouseEvent) => {
     e.preventDefault()
     if (!selected) return
-    if (target === 'start') setStartDate(selected)
-    if (target === 'end') setEndDate(selected)
-    if (target === 'single') setDate(selected)
-    closeModal()
+    if (target === 'start') {
+      setStartDate(selected)
+      closeModal()
+    }
+    if (target === 'end') {
+      setEndDate(selected)
+      closeModal()
+    }
+    if (mode === 'single' || target === 'single') setDate(selected)
   }
 
   return (

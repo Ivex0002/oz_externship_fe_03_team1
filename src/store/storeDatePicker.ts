@@ -21,13 +21,7 @@ export const storeDatePicker = create<StoreDatePicker>((set) => ({
   startDate: null,
   endDate: null,
 
-  setMode: (mode) =>
-    set(() => ({
-      mode: mode,
-      date: null,
-      startDate: null,
-      endDate: null,
-    })),
+  setMode: (mode) => set({ mode: mode }),
 
   setDate: (d) => set({ date: d }),
 

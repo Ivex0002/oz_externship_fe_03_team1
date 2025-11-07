@@ -3,6 +3,7 @@ import { TooltipPortal } from '../../utils/TooltipPortal';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { Member } from '@/types/Schedule';
 import { Crown, X } from 'lucide-react';
+import { useModal } from '@/hooks/useModal';
 
 interface StudyMemberListProps {
   members: Member[];
@@ -50,6 +51,7 @@ export const StudyMemberList = ({
   currentHeadcount,
   isLeader
 }: StudyMemberListProps) => {
+  const { openModal } = useModal()
   const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
@@ -57,7 +59,15 @@ export const StudyMemberList = ({
     targetMember: null,
     position: null
   });
-
+  const onConfirmExpel = () => {
+// 확인했을 때 코드 api호출 추가 필요 가람님 라이브러리,
+  }
+  const onCancelConfirmModal = () => {
+// 취소했을 때 코드 
+  }
+  const onConfirmDelegate = () => {
+// 리더 위임 코드
+  }
   // 로컬 모달 상태 관리
   // const [showModal, setShowModal] = useState(false); 오픈모달로 열거여서 필요없음
   // const [modalType, setModalType] = useState<'expel' | 'delegate' | null>(null);
@@ -74,15 +84,11 @@ export const StudyMemberList = ({
 
   // 버튼 클릭 시 모달 오픈
   const handleExpelClick = (nickname: string) => {
-    // setModalType('expel');
-    // setTargetMember(nickname);
-    // setShowModal(true);
+openModal("CONFIRM", {title:"추방하시겠습니까?",modalProps:{message:`${nickname}님을 추방하시겠습니까?`,onConfirm: onConfirmExpel,onCancel: onCancelConfirmModal }});
   };
 
   const handleDelegateClick = (nickname: string) => {
-    // setModalType('delegate');
-    // setTargetMember(nickname);
-    // setShowModal(true);
+openModal("CONFIRM", {title:"위임하시겠습니까?",modalProps:{message:`${nickname}님에게 리더를 위임하시겠습니까?`,onConfirm: onConfirmDelegate,onCancel: onCancelConfirmModal }});
   };
 
   // Tooltip 관련

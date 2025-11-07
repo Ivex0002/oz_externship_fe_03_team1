@@ -9,7 +9,7 @@ interface StudyBannerSectionProps {
   title: string;
   imgUrl: string;
   formattedInfo: FormattedInfo;
-  studyGroupId: number;
+  studyGroupId: string;
 }
 
 export const StudyBannerSection = ({ 

@@ -25,19 +25,19 @@ export const StudyGroupDetail = () => {
       <div className="pt-[60.5px] mx-auto px-[80px]">
 
         <StudyBannerSection 
-          isLeader={studyGroupDetail.is_leader} 
+          isLeader={studyGroupDetail.is_me_leader} 
           setIsLeader={setIsLeader} 
           formattedInfo={formattedInfo}
           title={studyGroupDetail.name}
           imgUrl={studyGroupDetail.profile_img_url}
-          studyGroupId={studyGroupDetail.id}
+          studyGroupId={studyGroupDetail.uuid}
         />
         
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
 
           <div className="lg:col-span-2 space-y-6">
-            <StudyCalendar groupId={studyGroupDetail.id} />
-            <StudyRecordList groupId={studyGroupDetail.id} />
+            <StudyCalendar groupId={studyGroupDetail.uuid} />
+            <StudyRecordList groupId={studyGroupDetail.uuid} />
           </div>
 
           <div className="space-y-6 hidden lg:block">
@@ -48,8 +48,8 @@ export const StudyGroupDetail = () => {
             <StudyMemberList 
               members={studyGroupDetail.members}
               currentHeadcount={studyGroupDetail.current_headcount}
-              isLeader={studyGroupDetail.is_leader}
-              studyGroupId={studyGroupDetail.id}
+              isLeader={studyGroupDetail.is_me_leader}
+              studyGroupId={studyGroupDetail.uuid}
             />
           </div>
         </div>

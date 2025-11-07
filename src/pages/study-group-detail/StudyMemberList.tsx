@@ -8,7 +8,7 @@ interface StudyMemberListProps {
   members: Member[];
   currentHeadcount: number;
   isLeader: boolean;
-  studyGroupId: number;
+  studyGroupId: string;
 }
 
 interface TooltipPosition {
@@ -59,9 +59,9 @@ export const StudyMemberList = ({
   });
 
   // 로컬 모달 상태 관리
-  const [showModal, setShowModal] = useState(false);
-  const [modalType, setModalType] = useState<'expel' | 'delegate' | null>(null);
-  const [targetMember, setTargetMember] = useState<string | null>(null);
+  // const [showModal, setShowModal] = useState(false); 오픈모달로 열거여서 필요없음
+  // const [modalType, setModalType] = useState<'expel' | 'delegate' | null>(null);
+  // const [targetMember, setTargetMember] = useState<string | null>(null);
 
   // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
@@ -74,21 +74,15 @@ export const StudyMemberList = ({
 
   // 버튼 클릭 시 모달 오픈
   const handleExpelClick = (nickname: string) => {
-    setModalType('expel');
-    setTargetMember(nickname);
-    setShowModal(true);
+    // setModalType('expel');
+    // setTargetMember(nickname);
+    // setShowModal(true);
   };
 
   const handleDelegateClick = (nickname: string) => {
-    setModalType('delegate');
-    setTargetMember(nickname);
-    setShowModal(true);
-  };
-
-  // 모달 확인 버튼 클릭 시 처리
-  const handleModalConfirm = () => {
-    if (modalType === 'expel') {return;} else if (modalType === 'delegate') {return;}
-    setShowModal(false);
+    // setModalType('delegate');
+    // setTargetMember(nickname);
+    // setShowModal(true);
   };
 
   // Tooltip 관련
@@ -145,7 +139,7 @@ export const StudyMemberList = ({
         <div className="space-y-3">
           {sortedMembers.map((member, index) => (
             <div
-              key={member.id}
+              key={member.uuid}
               className="group relative flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg transition-colors"
             >
               <div className="flex items-center gap-3">
@@ -228,39 +222,6 @@ export const StudyMemberList = ({
             {getTooltipText()}
           </div>
         </TooltipPortal>
-      )}
-
-      {/* 모달 */}
-      {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/40 z-[9999]">
-          <div className="bg-white rounded-xl shadow-lg p-6 w-[380px] text-center animate-fade-in">
-            <h2 className="text-lg font-bold mb-2">
-              {modalType === 'expel' ? '멤버 추방' : '리더 위임'}
-            </h2>
-            <p className="text-gray-600 mb-6">
-              {modalType === 'expel'
-                ? `${targetMember}님을 추방하시겠습니까?`
-                : `${targetMember}님에게 리더를 위임하시겠습니까?`}
-            </p>
-
-            <div className="flex justify-center gap-3">
-              <BasicButton
-                variant={modalType === 'expel' ? 'danger' : 'primary'}
-                onClick={handleModalConfirm}
-              >
-                확인
-              </BasicButton>
-
-              <BasicButton
-                variant="secondary"
-                onClick={() => setShowModal(false)}
-                className="!bg-gray-200 !text-gray-600"
-              >
-                취소
-              </BasicButton>
-            </div>
-          </div>
-        </div>
       )}
     </div>
   );

@@ -1,5 +1,5 @@
 export type Member = {
-  id: number
+  uuid: string
   nickname: string
   is_leader: boolean
 }

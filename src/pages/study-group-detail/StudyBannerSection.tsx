@@ -2,6 +2,8 @@ import { Calendar } from 'lucide-react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { FormattedInfo } from './StudyInfoAndCourses';
 import { useNavigate } from 'react-router';
+import { useModal } from '@/hooks/useModal';
+import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
@@ -21,6 +23,26 @@ export const StudyBannerSection = ({
   studyGroupId
 }: StudyBannerSectionProps) => {
   const navigate = useNavigate();
+  const { openModal, closeModal } = useModal();
+  const { leaveStudyGroup } = useStudyGroupMutation(Number(studyGroupId));
+  
+  const onCancelLeave = () => {
+    closeModal();
+  };
+  
+  const onConfirmLeave = () => {
+    leaveStudyGroup.mutate(undefined, {
+      onSuccess: () => {
+        closeModal();
+        // 성공 시 스터디 그룹 목록 페이지로 이동
+        navigate('/study-groups');
+      },
+      onError: () => {
+        closeModal();
+        // 에러 알림을 띄우고 싶다면 여기에 추가
+      }
+    });
+  };
 
   // 핸들러 함수 분리
   const handleEditClick = () => {
@@ -28,7 +50,14 @@ export const StudyBannerSection = ({
   };
 
   const handleLeaveClick = () => {
-    if (window.confirm('정말로 스터디를 나가시겠습니까?')) {return};
+    openModal("CONFIRM", {
+      title: "스터디 그룹을 나가시겠습니까?",
+      modalProps: {
+        message: "확인을 누르면 스터디그룹을 나갑니다",
+        onConfirm: onConfirmLeave,
+        onCancel: onCancelLeave
+      }
+    });
   };
 
   const handleToggleLeader = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,9 +111,10 @@ export const StudyBannerSection = ({
             size="small"
             className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
             onClick={handleLeaveClick}
+            disabled={leaveStudyGroup.isPending}
           >
             <img src="/icons/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />
-            나가기
+            {leaveStudyGroup.isPending ? '처리중...' : '나가기'}
           </BasicButton>
         </div>
       </div>

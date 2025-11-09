@@ -1,15 +1,16 @@
-import { useRef, useReducer, useMemo, useState } from 'react';
+import { useRef, useReducer, useMemo } from 'react';
 import { TooltipPortal } from '../../utils/TooltipPortal';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { Member } from '@/types/Schedule';
 import { Crown, X } from 'lucide-react';
 import { useModal } from '@/hooks/useModal';
+import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
 
 interface StudyMemberListProps {
   members: Member[];
   currentHeadcount: number;
   isLeader: boolean;
-  studyGroupId: string;
+  studyGroupId: number;
 }
 
 interface TooltipPosition {
@@ -49,9 +50,12 @@ const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipStat
 export const StudyMemberList = ({ 
   members,
   currentHeadcount,
-  isLeader
+  isLeader,
+  studyGroupId
 }: StudyMemberListProps) => {
-  const { openModal } = useModal()
+  const { openModal, closeModal } = useModal();
+  const { delegateLeader, expelMember } = useStudyGroupMutation(studyGroupId);
+  
   const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
@@ -59,19 +63,9 @@ export const StudyMemberList = ({
     targetMember: null,
     position: null
   });
-  const onConfirmExpel = () => {
-// 확인했을 때 코드 api호출 추가 필요 가람님 라이브러리,
-  }
-  const onCancelConfirmModal = () => {
-// 취소했을 때 코드 
-  }
-  const onConfirmDelegate = () => {
-// 리더 위임 코드
-  }
-  // 로컬 모달 상태 관리
-  // const [showModal, setShowModal] = useState(false); 오픈모달로 열거여서 필요없음
-  // const [modalType, setModalType] = useState<'expel' | 'delegate' | null>(null);
-  // const [targetMember, setTargetMember] = useState<string | null>(null);
+
+  // 현재 선택된 멤버의 ID를 저장하기 위한 ref
+  const selectedMemberIdRef = useRef<number | null>(null);
 
   // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
@@ -82,13 +76,67 @@ export const StudyMemberList = ({
     });
   }, [members]);
 
-  // 버튼 클릭 시 모달 오픈
-  const handleExpelClick = (nickname: string) => {
-openModal("CONFIRM", {title:"추방하시겠습니까?",modalProps:{message:`${nickname}님을 추방하시겠습니까?`,onConfirm: onConfirmExpel,onCancel: onCancelConfirmModal }});
+  // 추방 확인 핸들러
+  const onConfirmExpel = () => {
+    if (selectedMemberIdRef.current) {
+      expelMember.mutate(selectedMemberIdRef.current, {
+        onSuccess: () => {
+          closeModal();
+          // 성공 알림을 띄우고 싶다면 여기에 추가
+        },
+        onError: () => {
+          closeModal();
+          // 에러 알림을 띄우고 싶다면 여기에 추가
+        }
+      });
+    }
   };
 
-  const handleDelegateClick = (nickname: string) => {
-openModal("CONFIRM", {title:"위임하시겠습니까?",modalProps:{message:`${nickname}님에게 리더를 위임하시겠습니까?`,onConfirm: onConfirmDelegate,onCancel: onCancelConfirmModal }});
+  // 리더 위임 확인 핸들러
+  const onConfirmDelegate = () => {
+    if (selectedMemberIdRef.current) {
+      delegateLeader.mutate(selectedMemberIdRef.current, {
+        onSuccess: () => {
+          closeModal();
+          // 성공 알림을 띄우고 싶다면 여기에 추가
+        },
+        onError: () => {
+          closeModal();
+          // 에러 알림을 띄우고 싶다면 여기에 추가
+        }
+      });
+    }
+  };
+
+  const onCancelConfirmModal = () => {
+    closeModal();
+    selectedMemberIdRef.current = null;
+  };
+
+  // 추방 버튼 클릭 시 모달 오픈
+  const handleExpelClick = (nickname: string, memberId: number) => {
+    selectedMemberIdRef.current = memberId;
+    openModal("CONFIRM", {
+      title: "추방하시겠습니까?",
+      modalProps: {
+        message: `${nickname}님을 추방하시겠습니까?`,
+        onConfirm: onConfirmExpel,
+        onCancel: onCancelConfirmModal
+      }
+    });
+  };
+
+  // 리더 위임 버튼 클릭 시 모달 오픈
+  const handleDelegateClick = (nickname: string, memberId: number) => {
+    selectedMemberIdRef.current = memberId;
+    openModal("CONFIRM", {
+      title: "위임하시겠습니까?",
+      modalProps: {
+        message: `${nickname}님에게 리더를 위임하시겠습니까?`,
+        onConfirm: onConfirmDelegate,
+        onCancel: onCancelConfirmModal
+      }
+    });
   };
 
   // Tooltip 관련
@@ -184,7 +232,8 @@ openModal("CONFIRM", {title:"위임하시겠습니까?",modalProps:{message:`${n
                       variant="secondary"
                       size="small"
                       className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs cursor-pointer"
-                      onClick={() => handleDelegateClick(member.nickname)}
+                      onClick={() => handleDelegateClick(member.nickname, Number(member.uuid))}
+                      disabled={delegateLeader.isPending}
                     >
                       <Crown className='hover:text-blue-600' size={20} />
                     </BasicButton>
@@ -203,7 +252,8 @@ openModal("CONFIRM", {title:"위임하시겠습니까?",modalProps:{message:`${n
                       variant="danger"
                       size="small"
                       className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500 cursor-pointer"
-                      onClick={() => handleExpelClick(member.nickname)}
+                      onClick={() => handleExpelClick(member.nickname, Number(member.uuid))}
+                      disabled={expelMember.isPending}
                     >
                       <X size={20} className='hover:text-danger-800' />
                     </BasicButton>

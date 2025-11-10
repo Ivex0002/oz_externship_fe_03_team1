@@ -77,7 +77,6 @@ export const MarkdownWrite = ({
                   <ul className="list-disc pl-6 text-gray-700">{children}</ul>
                 ),
                 li: ({ children }) => <li className="ml-2">{children}</li>,
-
                 code({
                   inline,
                   className,
@@ -150,10 +149,14 @@ export const MarkdownWrite = ({
       )}
 
       <div className="border-t border-gray-200 bg-[#F9FAFB] px-4 py-2 text-xs text-gray-600">
-        마크다운 문법을 사용할 수 있습니다.{' '}
-        <span className="font-medium text-gray-600">
-          **굵게** _기울임_ `코드` [링크](URL) ## 제목
-        </span>
+        마크다운 문법을 사용할 수 있습니다.
+        <div className="mt-1 flex flex-wrap items-center gap-2 font-medium text-gray-600">
+          <span>**굵게**</span>
+          <span>_기울임_</span>
+          <span>`코드`</span>
+          <span>[링크](URL)</span>
+          <span>## 제목</span>
+        </div>
       </div>
     </div>
   )

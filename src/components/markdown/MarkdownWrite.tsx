@@ -6,7 +6,6 @@ import {
   type SetStateAction,
 } from 'react'
 import ReactMarkdown from 'react-markdown'
-import remarkBreaks from 'remark-breaks'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { MarkdownToolbar } from './MarkdownToolbar'
@@ -66,7 +65,7 @@ export const MarkdownWrite = ({
         <div className="min-h-[180px] bg-white p-4 text-sm text-gray-700">
           {previewValue.trim() ? (
             <ReactMarkdown
-              remarkPlugins={[remarkBreaks]}
+              remarkPlugins={[]}
               components={{
                 a: ({ node, ...props }) => {
                   let href = props.href?.trim() || ''

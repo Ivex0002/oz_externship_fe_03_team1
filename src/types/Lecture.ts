@@ -4,6 +4,7 @@ type LectureCategory = {
 }
 
 export type Lecture = {
+  id: number
   uuid: string
   title: string
   instructor: string
@@ -13,8 +14,17 @@ export type Lecture = {
   original_price: number
   discount_price: number
   platform: string
-  average_rating: number
+  average_rating: string
   url_link: string
   is_bookmarked: boolean
   duration: number // 단위: 분
+}
+
+export type ApiLectureList = {
+  count: number
+  next: string
+  previous: string
+  results: Lecture[]
+  user_nickname: string
+  recommended_lectures: Lecture[]
 }

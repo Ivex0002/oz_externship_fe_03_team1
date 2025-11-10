@@ -10,6 +10,7 @@ import remarkBreaks from 'remark-breaks'
 import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
 import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { MarkdownToolbar } from './MarkdownToolbar'
+import { MarkdownGuide } from './MarkdownGuide'
 
 interface MarkdownWriteProps {
   value: string
@@ -67,6 +68,40 @@ export const MarkdownWrite = ({
             <ReactMarkdown
               remarkPlugins={[remarkBreaks]}
               components={{
+                a: ({ node, ...props }) => {
+                  let href = props.href?.trim() || ''
+                  const linkText = String(props.children).trim()
+
+                  if (
+                    (!href || href === 'https://' || href === 'http://') &&
+                    /^(https?:\/\/|www\.)[^\s]+$/.test(linkText)
+                  ) {
+                    href = linkText
+                  }
+
+                  if (!/^https?:\/\//.test(href)) {
+                    href = `https://${href.replace(/^\/+/, '')}`
+                  }
+
+                  const handleClick = (
+                    e: React.MouseEvent<HTMLAnchorElement>
+                  ) => {
+                    e.preventDefault()
+                    window.open(href, '_blank', 'noopener,noreferrer')
+                  }
+
+                  return (
+                    <a
+                      {...props}
+                      href={href}
+                      onClick={handleClick}
+                      className="text-amber-600 hover:underline"
+                    >
+                      {props.children}
+                    </a>
+                  )
+                },
+
                 h2: ({ node: _, ...props }) => (
                   <h2
                     {...props}
@@ -148,16 +183,7 @@ export const MarkdownWrite = ({
         </div>
       )}
 
-      <div className="border-t border-gray-200 bg-[#F9FAFB] px-4 py-2 text-xs text-gray-600">
-        마크다운 문법을 사용할 수 있습니다.
-        <div className="mt-1 flex flex-wrap items-center gap-2 font-medium text-gray-600">
-          <span>**굵게**</span>
-          <span>_기울임_</span>
-          <span>`코드`</span>
-          <span>[링크](URL)</span>
-          <span>## 제목</span>
-        </div>
-      </div>
+      <MarkdownGuide />
     </div>
   )
 }

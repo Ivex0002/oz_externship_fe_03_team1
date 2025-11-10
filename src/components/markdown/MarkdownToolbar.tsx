@@ -30,20 +30,24 @@ export const MarkdownToolbar = ({
 }: MarkdownToolbarProps) => {
   const fileInputRef = useRef<HTMLInputElement | null>(null)
 
+  const getLineRange = (value: string, caret: number) => {
+    const start = value.lastIndexOf('\n', Math.max(0, caret - 1)) + 1
+    const nextNewline = value.indexOf('\n', caret)
+    const end = nextNewline === -1 ? value.length : nextNewline
+    return [start, end] as const
+  }
+
   const toggleWrap = (wrapper: string) => {
     const ta = textareaRef.current
     if (!ta) return
     const { selectionStart: ss, selectionEnd: se, value } = ta
     const selected = value.slice(ss, se)
-
     const isWrapped = selected.startsWith(wrapper) && selected.endsWith(wrapper)
     const newSelected = isWrapped
       ? selected.slice(wrapper.length, selected.length - wrapper.length)
       : `${wrapper}${selected}${wrapper}`
-
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -54,11 +58,13 @@ export const MarkdownToolbar = ({
   const toggleHeading = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    if (ss === se) [ss, se] = getLineRange(value, ss)
     const selected = value.slice(ss, se)
     const lines = selected.split('\n')
     const allHaveHeading = lines.every((line) => /^##\s/.test(line))
-
     const newLines = lines.map((line) =>
       !line.trim()
         ? line
@@ -66,11 +72,9 @@ export const MarkdownToolbar = ({
           ? line.replace(/^##\s?/, '')
           : `## ${line.replace(/^##\s?/, '')}`
     )
-
     const newSelected = newLines.join('\n')
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -81,11 +85,13 @@ export const MarkdownToolbar = ({
   const toggleList = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    if (ss === se) [ss, se] = getLineRange(value, ss)
     const selected = value.slice(ss, se)
     const lines = selected.split('\n')
     const allHaveList = lines.every((line) => /^-\s/.test(line))
-
     const newLines = lines.map((line) =>
       !line.trim()
         ? line
@@ -93,11 +99,9 @@ export const MarkdownToolbar = ({
           ? line.replace(/^-\s?/, '')
           : `- ${line.replace(/^-\s?/, '')}`
     )
-
     const newSelected = newLines.join('\n')
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -109,19 +113,13 @@ export const MarkdownToolbar = ({
     const ta = textareaRef.current
     if (!ta) return
     const { selectionStart: ss, selectionEnd: se, value } = ta
-    const selected = value.slice(ss, se)
-
-    const isBlock = /^```[\s\S]*```$/.test(selected.trim())
-
+    const selected = value.slice(ss, se).trim()
+    const isBlock = /^```[\s\S]*```$/.test(selected)
     const newSelected = isBlock
-      ? selected.replace(/^```[\s\S]*```$/, (m) =>
-          m.replace(/^```|```$/g, '').trim()
-        )
-      : `\`\`\`\n${selected.trim() || ''}\n\`\`\``
-
+      ? selected.replace(/^```|```$/g, '').trim()
+      : `\`\`\`\n${selected}\n\`\`\``
     const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
-
     requestAnimationFrame(() => {
       ta.focus()
       ta.selectionStart = ss
@@ -132,19 +130,38 @@ export const MarkdownToolbar = ({
   const toggleLink = () => {
     const ta = textareaRef.current
     if (!ta) return
-    const { selectionStart: ss, selectionEnd: se, value } = ta
-    const selected = value.slice(ss, se)
+    const { value } = ta
+    let ss = ta.selectionStart
+    let se = ta.selectionEnd
+    let selected = value.slice(ss, se)
+    const linkRegex = /\[[^\]]+\]\((?:https?:\/\/)?[^\s)]+\)/
 
-    const linkPattern = /^\[.*?\]\(.*?\)$/
-    const newValue = linkPattern.test(selected)
-      ? value.slice(0, ss) +
-        selected.replace(/^\[(.*?)\]\(.*?\)$/, '$1') +
-        value.slice(se)
-      : value.slice(0, ss) +
-        `[${selected || '링크텍스트'}](https://)` +
-        value.slice(se)
+    if (ss === se) {
+      const [ls, le] = getLineRange(value, ss)
+      const line = value.slice(ls, le)
+      const match = [...line.matchAll(linkRegex)].find((m) => {
+        const start = ls + (m.index ?? 0)
+        const end = start + m[0].length
+        return start <= ss && ss <= end
+      })
+      if (match) {
+        ss = ls + (match.index ?? 0)
+        se = ss + match[0].length
+        selected = match[0]
+      }
+    }
 
+    const isLink = linkRegex.test(selected)
+    const newSelected = isLink
+      ? selected.replace(/^\[([^\]]+)\]\([^)]*\)$/, '$1')
+      : `[${selected || '링크텍스트'}](https://)`
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
     onUpdate(newValue)
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
+    })
   }
 
   const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {

@@ -58,9 +58,6 @@ export const StudyBannerSection = ({
     });
   };
 
-  const handleToggleLeader = (e: React.ChangeEvent<HTMLInputElement>) => {
-  };
-
   return (
     <>
       {/* 스터디 배너 섹션 */}

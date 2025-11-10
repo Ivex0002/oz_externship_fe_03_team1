@@ -37,7 +37,6 @@ export const MarkdownToolbar = ({
     const selected = value.slice(ss, se)
 
     const isWrapped = selected.startsWith(wrapper) && selected.endsWith(wrapper)
-
     const newSelected = isWrapped
       ? selected.slice(wrapper.length, selected.length - wrapper.length)
       : `${wrapper}${selected}${wrapper}`
@@ -106,7 +105,29 @@ export const MarkdownToolbar = ({
     })
   }
 
-  const toggleCode = () => toggleWrap('`')
+  const toggleCodeBlock = () => {
+    const ta = textareaRef.current
+    if (!ta) return
+    const { selectionStart: ss, selectionEnd: se, value } = ta
+    const selected = value.slice(ss, se)
+
+    const isBlock = /^```[\s\S]*```$/.test(selected.trim())
+
+    const newSelected = isBlock
+      ? selected.replace(/^```[\s\S]*```$/, (m) =>
+          m.replace(/^```|```$/g, '').trim()
+        )
+      : `\`\`\`\n${selected.trim() || ''}\n\`\`\``
+
+    const newValue = value.slice(0, ss) + newSelected + value.slice(se)
+    onUpdate(newValue)
+
+    requestAnimationFrame(() => {
+      ta.focus()
+      ta.selectionStart = ss
+      ta.selectionEnd = ss + newSelected.length
+    })
+  }
 
   const toggleLink = () => {
     const ta = textareaRef.current
@@ -157,7 +178,7 @@ export const MarkdownToolbar = ({
       <Code2
         size={18}
         className="cursor-pointer hover:text-amber-500"
-        onClick={toggleCode}
+        onClick={toggleCodeBlock}
       />
       <div className="relative">
         <FileImage

@@ -7,6 +7,8 @@ import {
 } from 'react'
 import ReactMarkdown from 'react-markdown'
 import remarkBreaks from 'remark-breaks'
+import { Prism as SyntaxHighlighter } from 'react-syntax-highlighter'
+import { oneDark } from 'react-syntax-highlighter/dist/esm/styles/prism'
 import { MarkdownToolbar } from './MarkdownToolbar'
 
 interface MarkdownWriteProps {
@@ -75,6 +77,68 @@ export const MarkdownWrite = ({
                   <ul className="list-disc pl-6 text-gray-700">{children}</ul>
                 ),
                 li: ({ children }) => <li className="ml-2">{children}</li>,
+
+                code({
+                  inline,
+                  className,
+                  children,
+                  ...props
+                }: {
+                  inline?: boolean
+                  className?: string
+                  children?: React.ReactNode
+                  [key: string]: any
+                }) {
+                  const match = /language-(\w+)/.exec(className || '')
+                  let language = match ? match[1] : undefined
+                  const codeText = String(children).trim()
+
+                  if (!language) {
+                    if (/\b(type|interface|=>|<.*?>)\b/.test(codeText))
+                      language = 'typescript'
+                    else if (
+                      /\b(const|let|var|function|return|console\.log)\b/.test(
+                        codeText
+                      )
+                    )
+                      language = 'javascript'
+                    else if (/{|}/.test(codeText)) language = 'json'
+                    else language = 'plaintext'
+                  }
+
+                  if (inline) {
+                    return (
+                      <code
+                        {...props}
+                        className="rounded bg-gray-100 px-1.5 py-0.5 text-[13px] text-gray-800"
+                      >
+                        {children}
+                      </code>
+                    )
+                  }
+
+                  return (
+                    <div className="relative my-3">
+                      <div className="absolute top-2 left-2 rounded-full bg-[#1b1f2a] px-3 py-0.5 text-[11px] font-medium text-gray-400">
+                        {language}
+                      </div>
+                      <SyntaxHighlighter
+                        {...props}
+                        language={language}
+                        style={oneDark}
+                        PreTag="div"
+                        customStyle={{
+                          borderRadius: '10px',
+                          padding: '36px 16px 14px 16px',
+                          fontSize: '13px',
+                          backgroundColor: '#0f172a',
+                        }}
+                      >
+                        {codeText.replace(/\n$/, '')}
+                      </SyntaxHighlighter>
+                    </div>
+                  )
+                },
               }}
             >
               {previewValue}
@@ -86,7 +150,7 @@ export const MarkdownWrite = ({
       )}
 
       <div className="border-t border-gray-200 bg-[#F9FAFB] px-4 py-2 text-xs text-gray-600">
-        마크다운 문법을 사용할 수 있습니다.{` `}
+        마크다운 문법을 사용할 수 있습니다.{' '}
         <span className="font-medium text-gray-600">
           **굵게** _기울임_ `코드` [링크](URL) ## 제목
         </span>

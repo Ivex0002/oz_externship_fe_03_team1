@@ -23,7 +23,6 @@ interface HttpClientConfig {
 }
 
 const NO_AUTH_URLS_SET = new Set<string>([
-  '/api/v1/auth/refresh',
   '/api/v1/lectures/categories',
   // '/api/v1/lectures' GET 의 경우 정확히 일치할때만 패스 되도록 따로 지정이 필요함
   // (로그인 전에 강의만 살펴보는 경우) => 실제로 지원하는 기능인지 확인 필요
@@ -65,6 +64,8 @@ export class HttpClient {
     // 요청 인터셉터 - 토큰 자동 삽입
     this.client.interceptors.request.use(
       (config) => {
+        // console.log({ config })
+
         // NO_AUTH_URLS_SET에 포함된 url요청은 인증회피
         const url = config.url || ''
         const isNoAuth = NO_AUTH_URLS_SET.has(url)
@@ -130,25 +131,26 @@ export class HttpClient {
     url: string,
     method: Method,
     data?: Req,
-    // 'url' | 'method' | 'data' 을 제외한 나머지는 config로 간주
-    config?: Omit<AxiosRequestConfig, 'url' | 'method' | 'data'>
-  ): Promise<Res> {
-    const upperMethod = method.toUpperCase()
-    const requestConfig: AxiosRequestConfig = {
-      url,
-      method,
-      ...config,
-    }
+    config?: AxiosRequestConfig
+  ): Promise<AxiosResponse<Res>> {
+    try {
+      const requestConfig: AxiosRequestConfig = {
+        url,
+        method,
+        data,
+        ...config,
+      }
 
-    if (paramsMethodSet.has(upperMethod)) {
-      requestConfig.params = data
-    } else {
-      requestConfig.data = data
-    }
+      // console.log(requestConfig)
 
-    const res: AxiosResponse<Res> =
-      await this.client.request<Res>(requestConfig)
-    return res.data
+      const res = await this.client.request<Res>(requestConfig)
+      return res
+    } catch (error) {
+      if (this.onError) {
+        await this.onError(error as AxiosError)
+      }
+      throw error
+    }
   }
 
   /**
@@ -159,5 +161,3 @@ export class HttpClient {
     return this.request.bind(this) as RequestExecutor
   }
 }
-
-const paramsMethodSet = new Set(['GET', 'DELETE', 'HEAD'])

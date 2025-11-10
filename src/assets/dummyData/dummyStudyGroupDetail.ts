@@ -8,22 +8,26 @@ export const studyGroupApiResponse = {
     max_headcount: 5,
     members: [
       {
-        uuid: '1',
+        id: 1,
+        uuid: 'a',
         nickname: '김코딩',
         is_leader: true,
       },
       {
-        uuid: '2',
+        id: 2,
+        uuid: 'B',
         nickname: '이개발',
         is_leader: false,
       },
       {
-        uuid: '3',
+        id: 3,
+        uuid: 'c',
         nickname: '박프론트',
         is_leader: false,
       },
       {
-        uuid: '4',
+        id: 4,
+        uuid: 'D',
         nickname: '최리액트',
         is_leader: false,
       },

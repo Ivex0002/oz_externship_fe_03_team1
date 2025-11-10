@@ -1,4 +1,5 @@
 export interface Member {
+  id: number
   uuid: string
   nickname: string
   is_leader: boolean

@@ -1,13 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation } from '@tanstack/react-query';
 import { delegateLeader, expelMember, leaveStudyGroup } from '@/hooks/api/studyGroupApi';
 import { queryKeys } from '@/hooks//api/queryKeys';
+import { queryClient } from './api/queryClient';
 
-export const useStudyGroupMutation = (studyGroupId: number) => {
-  const queryClient = useQueryClient();
+export const useStudyGroupMutation = (studyGroupId: string) => {
 
   // 1. 리더 위임 mutation (기존 로직)
   const delegateLeaderMutation = useMutation({
-    mutationFn: (targetUserId: number) =>
+    mutationFn: (targetUserId: string) =>
       delegateLeader({ studyGroupId, targetUserId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -24,7 +24,7 @@ export const useStudyGroupMutation = (studyGroupId: number) => {
 
   // 2. 멤버 추방 mutation (기존 로직)
   const expelMemberMutation = useMutation({
-    mutationFn: (targetMemberId: number) =>
+    mutationFn: (targetMemberId: string) =>
       expelMember({ studyGroupId, targetMemberId }),
     onSuccess: () => {
       queryClient.invalidateQueries({

@@ -10,7 +10,7 @@ interface StudyMemberListProps {
   members: Member[];
   currentHeadcount: number;
   isLeader: boolean;
-  studyGroupId: number;
+  studyGroupId: string;
 }
 
 interface TooltipPosition {
@@ -56,7 +56,7 @@ export const StudyMemberList = ({
   const { openModal, closeModal } = useModal();
   const { delegateLeader, expelMember } = useStudyGroupMutation(studyGroupId);
   
-  const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const buttonRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
     action: null,
@@ -65,7 +65,7 @@ export const StudyMemberList = ({
   });
 
   // 현재 선택된 멤버의 ID를 저장하기 위한 ref
-  const selectedMemberIdRef = useRef<number | null>(null);
+  const selectedMemberIdRef = useRef<string | null>(null);
 
   // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
@@ -114,7 +114,7 @@ export const StudyMemberList = ({
   };
 
   // 추방 버튼 클릭 시 모달 오픈
-  const handleExpelClick = (nickname: string, memberId: number) => {
+  const handleExpelClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId;
     openModal("CONFIRM", {
       title: "추방하시겠습니까?",
@@ -127,7 +127,7 @@ export const StudyMemberList = ({
   };
 
   // 리더 위임 버튼 클릭 시 모달 오픈
-  const handleDelegateClick = (nickname: string, memberId: number) => {
+  const handleDelegateClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId;
     openModal("CONFIRM", {
       title: "위임하시겠습니까?",
@@ -138,6 +138,7 @@ export const StudyMemberList = ({
       }
     });
   };
+  console.log(selectedMemberIdRef.current)
 
   // Tooltip 관련
   const updateTooltipPosition = (
@@ -222,7 +223,7 @@ export const StudyMemberList = ({
                   {/* 리더 위임 버튼 */}
                   <div
                     ref={(el: HTMLDivElement | null) => {
-                      buttonRefs.current[index * 2] = el;
+                      buttonRefs.current[member.uuid] = el;
                     }}
                     className="relative"
                     onMouseEnter={() => handleMouseEnter(index * 2, member.nickname, 'delegate')}
@@ -232,7 +233,7 @@ export const StudyMemberList = ({
                       variant="secondary"
                       size="small"
                       className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs cursor-pointer"
-                      onClick={() => handleDelegateClick(member.nickname, Number(member.uuid))}
+                      onClick={() => handleDelegateClick(member.nickname, member.uuid)}
                       disabled={delegateLeader.isPending}
                     >
                       <Crown className='hover:text-blue-600' size={20} />
@@ -252,7 +253,7 @@ export const StudyMemberList = ({
                       variant="danger"
                       size="small"
                       className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500 cursor-pointer"
-                      onClick={() => handleExpelClick(member.nickname, Number(member.uuid))}
+                      onClick={() => handleExpelClick(member.nickname, member.uuid)}
                       disabled={expelMember.isPending}
                     >
                       <X size={20} className='hover:text-danger-800' />

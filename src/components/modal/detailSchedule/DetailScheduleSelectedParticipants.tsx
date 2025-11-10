@@ -25,7 +25,7 @@ export const DetailScheduleSelectedParticipants = () => {
           </li>
         )}
         {others.map((member) => (
-          <li key={member.id} className="flex items-center gap-3 text-sm">
+          <li key={member.uuid} className="flex items-center gap-3 text-sm">
             <div className="center-center bg-primary-100 h-8 w-8 rounded-full">
               <User className="text-primary-600" size={18} />
             </div>

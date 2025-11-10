@@ -95,7 +95,7 @@ type StudyGroup = {
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
 type Member = {
-  id: number
+  uuid: string
   nickname: string
   is_leader: boolean
 }
@@ -326,7 +326,7 @@ type GroupApi = {
     }
     leave: { DELETE: () => { res: BaseResponse } }
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
-    members: { (member_id: number): { DELETE: () => { res: BaseResponse } } }
+    members: { (member_id: string): { DELETE: () => { res: BaseResponse } } }
     notes: {
       // (스웨거) res 타입 아직 안나옴
       GET: () => { res: BaseResponse }

@@ -24,7 +24,7 @@ export const StudyBannerSection = ({
 }: StudyBannerSectionProps) => {
   const navigate = useNavigate();
   const { openModal, closeModal } = useModal();
-  const { leaveStudyGroup } = useStudyGroupMutation(Number(studyGroupId));
+  const { leaveStudyGroup } = useStudyGroupMutation(studyGroupId);
   
   const onCancelLeave = () => {
     closeModal();

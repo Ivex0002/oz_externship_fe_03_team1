@@ -1,8 +1,4 @@
-import type {
-  DifficultyEnum,
-  PlatformEnum,
-  StudyGroupStatus,
-} from '@/types/ApiLink'
+import type { PageReq } from '@/types/ApiLink'
 
 const defineQueryKey = <const T extends readonly unknown[]>(key: T) => key
 
@@ -24,14 +20,7 @@ export const queryKeys = {
   lectures: {
     all: () => defineQueryKey(['lectures']),
     lists: () => defineQueryKey(['lectures', 'list']),
-    list: (params?: {
-      page?: number
-      page_size?: number
-      search?: string
-      category?: number
-      difficulty?: DifficultyEnum
-      platform?: PlatformEnum
-    }) => defineQueryKey(['lectures', 'list', params ?? {}]),
+    list: (params: PageReq) => defineQueryKey(['lectures', 'list', params]),
     categories: () => defineQueryKey(['lectures', 'categories']),
     recommended: () => defineQueryKey(['lectures', 'recommended']),
   },
@@ -41,11 +30,8 @@ export const queryKeys = {
     groups: {
       all: () => defineQueryKey(['studies', 'groups']),
       lists: () => defineQueryKey(['studies', 'groups', 'list']),
-      list: (params?: {
-        page?: number
-        page_size?: number
-        status?: StudyGroupStatus
-      }) => defineQueryKey(['studies', 'groups', 'list', params]),
+      list: (params?: { page?: number }) =>
+        defineQueryKey(['studies', 'groups', 'list', params]),
       details: () => defineQueryKey(['studies', 'groups', 'detail']),
       detail: (groupId: number) =>
         defineQueryKey(['studies', 'groups', 'detail', groupId]),

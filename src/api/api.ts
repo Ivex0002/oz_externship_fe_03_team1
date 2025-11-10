@@ -6,7 +6,7 @@ import { keyIsLink } from 'key-is-link'
 import type { AxiosRequestConfig } from 'axios'
 
 // 추후 실제 주소로 교체
-export const BASE_URL = '/api'
+export const BASE_URL = 'import.meta.env.VITE_API_BASE_URL'
 export const LOGIN_PAGE_URL = '/login'
 const WEB_SOCKET_URL = '/ws'
 

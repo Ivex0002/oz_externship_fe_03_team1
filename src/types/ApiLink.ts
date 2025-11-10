@@ -124,7 +124,9 @@ type StudyReview = {
 }
 
 // ===================== Pagination =====================
-type Pagination<T> = {
+export type PageReq = { page: number }
+
+export type Pagination<T> = {
   count: number
   next: string | null
   previous: string | null
@@ -170,15 +172,9 @@ export type ApiLinks = {
     }
     lectures: {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
+      // 임시로 페이지 옵션만 첨부
       GET: () => {
-        res: {
-          count: number
-          next: string
-          previous: string
-          results: Lecture[]
-          user_nickname: string
-          recommended_lectures: Lecture[]
-        }
+        res: Pagination<Lecture>
       }
 
       categories: {
@@ -192,7 +188,7 @@ export type ApiLinks = {
 }
 
 type GroupApi = {
-  GET: () => { res: StudyGroup[] }
+  GET: () => { res: Pagination<StudyGroup> }
   POST: (req: StudyGroupPost) => { res: BaseResponse }
 
   (group_id: number): {

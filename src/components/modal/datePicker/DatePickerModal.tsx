@@ -17,7 +17,7 @@ export const DatePickerModal = () => {
 
   const target = (modalProps as ModalPropsMap['DATE_PICKER']).target
 
-  const { startDate, endDate, date } = storeDatePicker()
+  const { startDate, endDate, date, mode } = storeDatePicker()
 
   const today = dayjs().toDate()
   const [month, setMonth] = useState(dayjs(today).set('date', 1).toDate())
@@ -27,8 +27,8 @@ export const DatePickerModal = () => {
 
     if (target === 'end' && endDate) setSelected(endDate)
 
-    if (target === 'single' && date) setSelected(date)
-  }, [target, startDate, endDate, date])
+    if ((target === 'single' || mode === 'single') && date) setSelected(date)
+  }, [target, startDate, endDate, date, mode])
 
   return (
     <motion.div
@@ -77,8 +77,7 @@ export const DatePickerModal = () => {
             today: 'text-black',
             selected:
               'rounded-lg outline outline-2 outline-primary-400 outline-offset-[-2px] transition-colors duration-200',
-            month_caption: 'hidden',
-            chevron: 'hidden',
+            chevron: 'text-gray-600 pb-2',
             outside: 'text-gray-300',
             day_button:
               'rounded-lg w-[53.7px] h-[40px] hover:cursor-pointer outline outline-2 outline-transparent transition-colors duration-200 hover:bg-gray-100',

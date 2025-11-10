@@ -1,22 +1,20 @@
 import { api } from "@/api/api";
 
-// 리더 위임 API
-export const delegateLeader = async (params: {
+interface StudyGroupLeaderAuthorityParams {
   studyGroupId: string;
-  targetUserId: string;
-}) => {
-  const { studyGroupId, targetUserId } = params;
+  targetMemberId: string;
+}
+// 리더 위임 API
+export const delegateLeader = async (params: StudyGroupLeaderAuthorityParams) => {
+  const { studyGroupId, targetMemberId } = params;
   const response = await api.v1.studies.groups(studyGroupId).delegate$leader.POST({
-    target_member_uuid: targetUserId,
+    target_member_uuid: targetMemberId,
   });
   return response;
 };
 
 // 멤버 추방 API
-export const expelMember = async (params: {
-  studyGroupId: string;
-  targetMemberId: string;
-}) => {
+export const expelMember = async (params: StudyGroupLeaderAuthorityParams) => {
   const { studyGroupId, targetMemberId } = params;
   const response = await api.v1.studies.groups(studyGroupId).members(targetMemberId).DELETE();
   return response;

@@ -7,7 +7,6 @@ import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
-  setIsLeader: (value: boolean) => void;
   title: string;
   imgUrl: string;
   formattedInfo: FormattedInfo;
@@ -16,7 +15,6 @@ interface StudyBannerSectionProps {
 
 export const StudyBannerSection = ({ 
   isLeader, 
-  setIsLeader,
   formattedInfo,
   title,
   imgUrl,
@@ -61,7 +59,6 @@ export const StudyBannerSection = ({
   };
 
   const handleToggleLeader = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLeader(e.target.checked);
   };
 
   return (
@@ -117,19 +114,6 @@ export const StudyBannerSection = ({
             {leaveStudyGroup.isPending ? '처리중...' : '나가기'}
           </BasicButton>
         </div>
-      </div>
-
-      {/* 역할 토글 (테스트용) */}
-      <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isLeader}
-            onChange={handleToggleLeader}
-            className="w-4 h-4 accent-blue-600"
-          />
-          <span className="text-sm text-blue-900 font-medium">리더 권한 보기 (테스트용)</span>
-        </label>
       </div>
     </>
   );

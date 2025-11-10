@@ -7,8 +7,8 @@ export const useStudyGroupMutation = (studyGroupId: string) => {
 
   // 1. 리더 위임 mutation (기존 로직)
   const delegateLeaderMutation = useMutation({
-    mutationFn: (targetUserId: string) =>
-      delegateLeader({ studyGroupId, targetUserId }),
+    mutationFn: (targetMemberId: string) =>
+      delegateLeader({ studyGroupId, targetMemberId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.studies.groups.members(studyGroupId),

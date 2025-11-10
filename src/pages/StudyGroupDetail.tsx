@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { StudyCalendar } from '../pages/study-group-detail/StudyCalendar';
 import { StudyRecordList } from '../pages/study-group-detail/StudyRecordList';
 import { StudyInfoAndCourses } from '../pages/study-group-detail/StudyInfoAndCourses';
@@ -9,8 +8,6 @@ import dayjs from '@/lib/dayjs';
 import { getStatusText } from '@/utils/statusFormatter';
 
 export const StudyGroupDetail = () => {
-  const currentUserIsLeader = studyGroupDetail.members.some(member => member.is_leader);
-  const [_isLeader, setIsLeader] = useState(currentUserIsLeader);
   const startDate = dayjs(studyGroupDetail.start_at).format('L');
   const endDate = dayjs(studyGroupDetail.end_at).format('L');
   const statusText = getStatusText(studyGroupDetail.status);
@@ -26,7 +23,6 @@ export const StudyGroupDetail = () => {
 
         <StudyBannerSection 
           isLeader={studyGroupDetail.is_me_leader} 
-          setIsLeader={setIsLeader} 
           formattedInfo={formattedInfo}
           title={studyGroupDetail.name}
           imgUrl={studyGroupDetail.profile_img_url}

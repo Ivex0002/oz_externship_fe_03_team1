@@ -22,9 +22,9 @@ export type Lecture = {
 
 export type ApiLectureList = {
   count: number
-  next: string
-  previous: string
+  next: string | null
+  previous: string | null
   results: Lecture[]
-  user_nickname: string
-  recommended_lectures: Lecture[]
+  user_nickname?: string
+  recommended_lectures?: Lecture[]
 }

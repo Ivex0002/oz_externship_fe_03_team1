@@ -3,20 +3,19 @@ import { useEffect, useState } from 'react'
 import { LectureCard } from './LectureCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { Search } from 'lucide-react'
-import { lectureData } from '@/assets/dummyData/lectureData'
 import { storeLecture } from '@/store/storeLecture'
 import { useModal } from '@/hooks/useModal'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
 import { useDebounce } from '@/hooks/useDebounce'
-import { getLectureData } from '@/api/lecture'
-import type { ApiLectureList } from '@/types/Lecture'
+// import type { ApiLectureList } from '@/types/Lecture'
+import { useQueryLecture } from '@/hooks/api/queries/useQueryLecture'
 // import { useLoaderData } from 'react-router'
 
 const LECTURES_PER_PAGE = 5 // api 데이터 받아올때 page_size의 값으로 보냄. (page_size=value)
 
 export const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
-  const [lectureData, setLectureData] = useState<ApiLectureList>()
+  // const [lectureData, setLectureData] = useState<ApiLectureList>()
   const [currentPage, setCurrentPage] = useState(0)
   const {
     selectedLectureList,
@@ -37,14 +36,13 @@ export const LectureChoosingModal = () => {
   //     lecture.title.includes(debouncedSearchInputValue)
   // )
 
-  useEffect(() => {
-    const getLectureList = async () => {
-      const data = await getLectureData()
-      if (data) setLectureData(data)
-      console.log(data?.results)
-    }
-    getLectureList()
-  }, [])
+  const { data } = useQueryLecture({
+    page: currentPage,
+    search: debouncedSearchInputValue,
+    page_size: LECTURES_PER_PAGE,
+  })
+  const lectureData = data && data!.data
+  console.log(data)
 
   const pageCount =
     lectureData && Math.ceil(lectureData.count / LECTURES_PER_PAGE)

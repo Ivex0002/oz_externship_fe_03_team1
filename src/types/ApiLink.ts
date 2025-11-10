@@ -56,7 +56,6 @@ export type PlatformEnum = 'UDEMY' | 'INFLEARN '
 
 // uuid, id 혼용 이유 ?
 type Lecture = {
-  id: number
   uuid: string
   title: string
   instructor: string

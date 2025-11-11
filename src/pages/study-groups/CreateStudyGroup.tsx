@@ -9,6 +9,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
 import { storeDatePicker } from '@/store/storeDatePicker'
+import { toast } from 'react-toastify'
 
 export const CreateStudyGroup = () => {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -41,15 +42,12 @@ export const CreateStudyGroup = () => {
 
   const handleSubmit = () => {
     if (!form.name || !form.startDate) {
-      alert('필수 항목을 모두 입력해주세요.')
+      toast.warn('필수 항목을 모두 입력해주세요.')
       return
     }
 
-    if (isEdit) {
-      alert('스터디 그룹이 수정되었습니다.')
-    } else {
-      alert('스터디 그룹이 생성되었습니다.')
-    }
+    if (isEdit) toast.success('스터디 그룹이 수정되었습니다.')
+    else toast.success('스터디 그룹이 생성되었습니다.')
 
     setForm({
       ...form,

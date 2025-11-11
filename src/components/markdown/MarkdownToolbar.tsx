@@ -18,6 +18,7 @@ import {
   MAX_IMAGE_SIZE_BYTES,
   UPLOAD_ERROR_MESSAGES,
 } from '@/constants/upload'
+import { toast } from 'react-toastify'
 
 export interface MarkdownToolbarProps {
   textareaRef: RefObject<HTMLTextAreaElement | null>
@@ -168,16 +169,17 @@ export const MarkdownToolbar = ({
     const file = e.target.files?.[0]
     if (!file) return
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      alert(UPLOAD_ERROR_MESSAGES.invalidType)
+      toast.error(UPLOAD_ERROR_MESSAGES.invalidType)
       return
     }
     if (file.size > MAX_IMAGE_SIZE_BYTES) {
-      alert(UPLOAD_ERROR_MESSAGES.tooLarge)
+      toast.error(UPLOAD_ERROR_MESSAGES.tooLarge)
       return
     }
     const imageURL = URL.createObjectURL(file)
     const markdownImage = `![${file.name}](${imageURL})`
     onUpdate((prev) => prev + '\n' + markdownImage)
+    toast.success('이미지가 추가되었습니다.')
   }
 
   return (

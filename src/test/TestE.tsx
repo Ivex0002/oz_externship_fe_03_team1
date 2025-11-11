@@ -1,4 +1,6 @@
 import { CreateStudyGroup } from '@/pages/study-groups/CreateStudyGroup'
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
 
 export default function TestE() {
   // 아래줄 주석처리 후 링크 TestE 변경-생성 모드, 주석해제 후 링크 TestE 변경-수정 모드
@@ -28,6 +30,18 @@ export default function TestE() {
       <div className="min-h-screen bg-gray-50 pt-[65px]">
         <CreateStudyGroup />
       </div>
+
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        pauseOnFocusLoss={false}
+        draggable
+        pauseOnHover
+        theme="light"
+      />
     </>
   )
 }

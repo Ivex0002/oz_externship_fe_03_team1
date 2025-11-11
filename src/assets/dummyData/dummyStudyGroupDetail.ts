@@ -2,7 +2,7 @@ import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes'
 
 export const studyGroupApiResponse = {
   data: {
-    uuid: '1',
+    uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
     name: 'React 마스터 스터디',
     current_headcount: 4,
     max_headcount: 5,

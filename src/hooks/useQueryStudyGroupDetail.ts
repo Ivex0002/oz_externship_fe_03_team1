@@ -18,7 +18,7 @@ export const useStudyGroupMutation = (studyGroupId: string) => {
       });
     },
     onError: (error) => {
-      console.error('리더 위임 실패:', error);
+      console.error('리더 위임 실패:', error); //실제 에러로직 필요
     },
   });
 
@@ -32,7 +32,7 @@ export const useStudyGroupMutation = (studyGroupId: string) => {
       });
     },
     onError: (error) => {
-      console.error('멤버 추방 실패:', error);
+      console.error('멤버 추방 실패:', error); //실제 에러로직 필요
     },
   });
 
@@ -51,7 +51,7 @@ export const useStudyGroupMutation = (studyGroupId: string) => {
       });
     },
     onError: (error) => {
-      console.error('스터디 그룹 나가기 실패:', error);
+      console.error('스터디 그룹 나가기 실패:', error); //실제 에러로직 필요
     },
   });
 

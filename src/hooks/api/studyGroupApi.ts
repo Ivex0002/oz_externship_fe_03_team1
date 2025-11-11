@@ -1,5 +1,9 @@
 import { api } from "@/api/api";
 
+// 그룹디테일 정보받아오는 api필요함
+
+
+
 interface StudyGroupLeaderAuthorityParams {
   studyGroupId: string;
   targetMemberId: string;

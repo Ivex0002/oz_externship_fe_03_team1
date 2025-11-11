@@ -3,7 +3,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import type { FormattedInfo } from './StudyInfoAndCourses';
 import { useNavigate } from 'react-router';
 import { useModal } from '@/hooks/useModal';
-import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
+import { useQueryStudyGroupDetail } from '@/hooks/useQueryStudyGroupDetail';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
@@ -22,7 +22,7 @@ export const StudyBannerSection = ({
 }: StudyBannerSectionProps) => {
   const navigate = useNavigate();
   const { openModal, closeModal } = useModal();
-  const { leaveStudyGroup } = useStudyGroupMutation(studyGroupId);
+  const { leaveStudyGroup } = useQueryStudyGroupDetail(studyGroupId);
   
   const onCancelLeave = () => {
     closeModal();

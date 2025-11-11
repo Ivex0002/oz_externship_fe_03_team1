@@ -4,7 +4,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import type { Member } from '@/types/Schedule';
 import { Crown, X } from 'lucide-react';
 import { useModal } from '@/hooks/useModal';
-import { useQueryStudyGroupDetail } from '@/hooks/useQueryStudyGroupDetail';
+import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
 
 interface StudyMemberListProps {
   members: Member[];
@@ -54,7 +54,7 @@ export const StudyMemberList = ({
   studyGroupId
 }: StudyMemberListProps) => {
   const { openModal, closeModal } = useModal();
-  const { delegateLeader, expelMember } = useQueryStudyGroupDetail(studyGroupId);
+  const { delegateLeader, expelMember } = useStudyGroupMutation(studyGroupId);
   
   const buttonRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);

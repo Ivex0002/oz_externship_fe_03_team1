@@ -6,11 +6,8 @@ import { StudyBannerSection } from '../pages/study-group-detail/StudyBannerSecti
 import { studyGroupDetail } from '@/assets/dummyData/dummyStudyGroupDetail';
 import dayjs from '@/lib/dayjs';
 import { getStatusText } from '@/utils/statusFormatter';
-import { storeAccessToken } from '@/store/storeAccessToken';
-import { useEffect } from 'react';
 
 export const StudyGroupDetail = () => {
-  const {setAccessToken}=storeAccessToken() //토큰확인용 푸시 전 삭제
   const startDate = dayjs(studyGroupDetail.start_at).format('L');
   const endDate = dayjs(studyGroupDetail.end_at).format('L');
   const statusText = getStatusText(studyGroupDetail.status);
@@ -20,9 +17,6 @@ export const StudyGroupDetail = () => {
     statusText: statusText,
     memberCount: `${studyGroupDetail.current_headcount}/${studyGroupDetail.max_headcount}`
   }
-  useEffect(() => { //토큰확인용 푸시 전 삭제
-  setAccessToken("eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYyOTE5ODUwLCJpYXQiOjE3NjI4MzM0NTAsImp0aSI6Ijc4Y2E4MTEzYjcwYjQzYjk5YTViYWEwNTk0YzE0YWIwIiwidXNlcl9pZCI6IjEifQ.P2lkDEPTYSCDu0lVNwRHFk23MJDZULvJlgnQbfdz2Uk")
-  }, [])
   
   return (
     <div className="min-h-screen bg-gray-50">

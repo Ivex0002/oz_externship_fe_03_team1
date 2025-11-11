@@ -6,6 +6,8 @@ export interface TokenStorage {
   clearTokens(): void
 }
 
+// TODO:새로고침시 accesstoken 저장해놓기
+// zst persist
 /**
  * 토큰 관리 전략:
  *

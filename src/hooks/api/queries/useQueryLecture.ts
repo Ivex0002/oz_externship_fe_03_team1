@@ -14,6 +14,6 @@ export const useQueryLecture = (params: PageReq) => {
 export const useQueryLectureCategories = () => {
   return useQuery({
     queryKey: queryKeys.lectures.categories(),
-    queryFn: () => api.v1.lectures.categories.GET,
+    queryFn: () => api.v1.lectures.categories.GET(),
   })
 }

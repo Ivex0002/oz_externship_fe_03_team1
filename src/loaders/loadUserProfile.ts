@@ -1,5 +1,6 @@
 import { api } from '@/api/api'
 import { storeUser } from '@/store/storeUser'
+import axios from 'axios'
 
 export function loadUserProfile() {
   const { setUser } = storeUser()
@@ -9,7 +10,10 @@ export function loadUserProfile() {
       setUser(res)
       return { user: res }
     } catch (error) {
-      return { user: null, error: `Failed to load user data:${error}` }
+      if (axios.isAxiosError(error)) {
+        return { user: null, error: `Failed to load user data:${error}` }
+      }
+      // const errorMsg = typeof error === Error ? error.
     }
   }
 }

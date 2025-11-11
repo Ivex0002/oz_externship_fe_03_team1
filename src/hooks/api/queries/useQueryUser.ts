@@ -5,6 +5,6 @@ import { api } from '@/api/api'
 export const useQueryUser = () => {
   return useQuery({
     queryKey: queryKeys.users.me(),
-    queryFn: () => api.v1.users.me.GET,
+    queryFn: () => api.v1.users.me.GET(),
   })
 }

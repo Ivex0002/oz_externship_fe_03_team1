@@ -22,6 +22,7 @@ interface HttpClientConfig {
   onError?: (error: AxiosError) => void
 }
 
+// TODO:인증 없는 인스턴스, 인증 있는 인스턴스 분리해보기
 const NO_AUTH_URLS_SET = new Set<string>([
   '/api/v1/lectures/categories',
   // '/api/v1/lectures' GET 의 경우 정확히 일치할때만 패스 되도록 따로 지정이 필요함
@@ -87,6 +88,7 @@ export class HttpClient {
     this.client.interceptors.response.use(
       (response) => response,
       async (error: AxiosError) => {
+        // TODO: _retry 가 반드시 필요한가?
         const originalRequest = error.config as RetryableRequestConfig
         const status = error.response?.status
 

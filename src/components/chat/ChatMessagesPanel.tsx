@@ -181,7 +181,7 @@ const Message = ({ message }: { message: ChatMessage }) => {
     : { borderBottomLeftRadius: 2 }
 
   const messageContent = clsx(
-    'flex items-start rounded-lg px-3 py-2 font-roboto text-sm',
+    'flex items-start rounded-lg px-3 py-2 font-roboto text-sm break-words whitespace-pre-wrap',
     {
       'bg-primary-500 text-white': isMe,
       'bg-gray-100 text-gray-900': !isMe,

@@ -52,7 +52,7 @@ type Notification = {
 type LectureCategory = { id: number; name: string }
 // 명시적으로 Enum이 제공되었으나, 추후에 string으로 대체될 가능성 있음
 export type DifficultyEnum = 'EASY' | 'NORMAL' | 'HARD'
-export type PlatformEnum = 'UDEMY' | 'INFLEARN '
+export type PlatformEnum = 'UDEMY' | 'INFLEARN'
 
 // uuid, id 혼용 이유 ?
 type Lecture = {
@@ -232,12 +232,12 @@ export type BaseResponse = {
  * 모든 api 링크에 따른 타입 명시
  *
  * 사용법 상세
- * https://github.com/OZ-Coding-School/oz_externship_fe_03_team1/pull/74
+ * @see https://github.com/OZ-Coding-School/oz_externship_fe_03_team1/pull/74
  *
- * https://github.com/Ivex0002/key-is-link
+ * @see https://github.com/Ivex0002/key-is-link
  *
  * 스웨거
- * https://api.ozcoding.site/api/schema/swagger-ui/#/
+ * @see https://api.ozcoding.site/api/schema/swagger-ui/#/
  */
 export type ApiLinks = {
   v1: {

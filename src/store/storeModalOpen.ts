@@ -6,7 +6,7 @@ interface ModalState<T extends ModalType = ModalType> {
   modalType: T | null
   title?: string
   subTitle?: string
-  modalProps?: ModalPropsMap[T]
+  modalProps?: ModalPropsMap[T] | null
 }
 
 interface ModalStore {
@@ -29,14 +29,14 @@ const initState: ModalState = {
   title: '',
   subTitle: '',
 
-  modalProps: {},
+  modalProps: null,
 }
 
 export const storeModalOpen = create<ModalStore>((set) => ({
   modalState: initState,
 
   openModal: (modalType, options) =>
-    set(() => ({
+    set({
       modalState: {
         isModalOpen: true,
         modalType,
@@ -44,16 +44,16 @@ export const storeModalOpen = create<ModalStore>((set) => ({
         subTitle: options?.subTitle || '',
         modalProps: options?.modalProps || {},
       },
-    })),
+    }),
 
   closeModal: () => {
     set((cur) => ({
       modalState: { ...cur.modalState },
     }))
     setTimeout(() => {
-      set(() => ({ modalState: initState }))
+      set({ modalState: initState })
     }, 250)
   },
 
-  clearModal: () => set(() => ({ modalState: initState })),
+  clearModal: () => set({ modalState: initState }),
 }))

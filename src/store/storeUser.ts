@@ -15,7 +15,7 @@ type UserProfile = {
 interface StoreUser {
   user: UserProfile | null
   isLogin: boolean
-  setUser: (User: UserProfile) => void
+  setUser: (user: UserProfile) => void
   clearUser: () => void
 }
 
@@ -27,8 +27,8 @@ export const storeUser = create<StoreUser>()(
     return {
       user: null,
       isLogin: false,
-      setUser: (user) => set(() => ({ user: user })),
-      clearUser: () => set(() => ({ user: null })),
+      setUser: (user) => set({ user: user }),
+      clearUser: () => set({ user: null }),
     }
   })
 )
@@ -37,7 +37,7 @@ storeUser.subscribe(
   (state) => state.user,
   (user) => {
     storeUser.setState({
-      isLogin: user === null ? false : true,
+      isLogin: user !== null,
     })
   }
 )

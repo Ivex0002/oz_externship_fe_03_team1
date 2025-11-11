@@ -1,9 +1,9 @@
-import { BasicInput } from '../../../components/basicComponents/input/BasicInput'
-import type { StudyGroupForm } from '../../../types/StudyGroupTypes'
-import { ImageUploadBox } from '../../../components/upload/ImageUploadBox'
-import { MarkdownWrite } from '../../../components/markdown/MarkdownWrite'
+import { BasicInput } from '@/components/basicComponents/input/BasicInput'
+import type { StudyGroupForm } from '@/types/StudyGroupTypes'
+import { ImageUploadBox } from '@/components/upload/ImageUploadBox'
+import { MarkdownWrite } from '@/components/markdown/MarkdownWrite'
 
-interface Props {
+interface BasicInfoSectionProps {
   form: StudyGroupForm
   setForm: React.Dispatch<React.SetStateAction<StudyGroupForm>>
   handleChange: (
@@ -11,9 +11,13 @@ interface Props {
   ) => void
 }
 
-export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
+export const BasicInfoSection = ({
+  form,
+  setForm,
+  handleChange,
+}: BasicInfoSectionProps) => {
   const handleFileSelect = (file: File | null) => {
-    setForm((prev: StudyGroupForm) => ({ ...prev, image: file }))
+    setForm((prev) => ({ ...prev, image: file }))
   }
 
   return (
@@ -21,8 +25,9 @@ export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
       <h2 className="text-lg font-semibold text-gray-700">기본 정보</h2>
 
       <div className="w-[766px]">
-        <label className="mb-1 block text-[14px] font-medium text-gray-800">
-          스터디 그룹명<span className="ml-1 text-[#EF4444]">*</span>
+        <label className="mb-1 block text-sm font-medium text-gray-800">
+          스터디 그룹명
+          <span className="text-danger-500 ml-1">*</span>
         </label>
         <BasicInput
           name="name"
@@ -39,7 +44,15 @@ export const BasicInfoSection = ({ form, setForm, handleChange }: Props) => {
         </label>
         <MarkdownWrite
           value={form.description}
-          onChange={handleChange}
+          onChange={(action) =>
+            setForm((prev) => ({
+              ...prev,
+              description:
+                typeof action === 'function'
+                  ? action(prev.description)
+                  : action,
+            }))
+          }
           placeholder="스터디 그룹에 대한 설명을 작성하세요. 마크다운 문법을 사용할 수 있습니다."
         />
       </div>

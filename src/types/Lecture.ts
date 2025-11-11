@@ -4,7 +4,6 @@ type LectureCategory = {
 }
 
 export type Lecture = {
-  id: number
   uuid: string
   title: string
   instructor: string

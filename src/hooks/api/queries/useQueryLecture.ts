@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query'
 export interface LectureParams {
   page: number
   page_size: number
-  search: string
+  search: string | null
 }
 
 // (스웨거) 강의 목록 검색, 필터링, 정렬 조회 기능 누락

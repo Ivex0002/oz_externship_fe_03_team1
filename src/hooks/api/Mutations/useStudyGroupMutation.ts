@@ -1,7 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import { delegateLeader, expelMember, leaveStudyGroup } from '@/hooks/api/studyGroupApi';
 import { queryKeys } from '@/hooks//api/queryKeys';
-import { queryClient } from './api/queryClient';
+import { queryClient } from '../queryClient';
 
 export const useStudyGroupMutation = (studyGroupId: string) => {
 

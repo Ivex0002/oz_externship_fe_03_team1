@@ -3,7 +3,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import type { FormattedInfo } from './StudyInfoAndCourses';
 import { useNavigate } from 'react-router';
 import { useModal } from '@/hooks/useModal';
-import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
+import { useStudyGroupMutation } from '@/hooks/api/Mutations/useStudyGroupMutation';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;

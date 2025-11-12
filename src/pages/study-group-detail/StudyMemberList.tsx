@@ -4,7 +4,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import type { Member } from '@/types/Schedule';
 import { Crown, X } from 'lucide-react';
 import { useModal } from '@/hooks/useModal';
-import { useStudyGroupMutation } from '@/hooks/useStudyGroupMutation';
+import { useStudyGroupMutation } from '@/hooks/api/Mutations/useStudyGroupMutation';
 
 interface StudyMemberListProps {
   members: Member[];

@@ -27,7 +27,7 @@ export const RecordActionButtons = ({
         message: '작성 중인 내용은 사라집니다.',
         onConfirm: () => {
           closeModal()
-          onCancel() // 기존 onCancel 호출
+          onCancel()
           navigate(`/study_group_detail/${studyGroupId}`)
         },
         onCancel: () => {
@@ -48,6 +48,7 @@ export const RecordActionButtons = ({
         size="large"
         onClick={onSave}
         disabled={disabled}
+        className="disabled:cursor-not-allowed"
       >
         {mode === 'create' ? '기록 저장' : '기록 수정'}
       </BasicButton>

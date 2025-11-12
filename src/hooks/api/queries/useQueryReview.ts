@@ -11,7 +11,7 @@ export type Ordering =
 
 interface ReviewParams {
   page: number
-  page_size: number
+  page_size?: number | null
   groupId: string
   ordering?: Ordering
 }

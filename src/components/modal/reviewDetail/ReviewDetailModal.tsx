@@ -16,12 +16,12 @@ import { useEffect } from 'react'
 import { storeAccessToken } from '@/store/storeAccessToken'
 
 const ORDERING: Ordering = '-updated_at'
-const PAGE_SIZE = 3
+const PAGE_SIZE = null
 
 export const ReviewDetailModal = () => {
-  const { setAccessToken, accessToken } = storeAccessToken()
+  const { setAccessToken } = storeAccessToken()
   const dummyAccessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMDE4ODk3LCJpYXQiOjE3NjI5MzI0OTcsImp0aSI6ImE0MzNlMWEyMmVmMTQ4OTk4NzI3ZDNkMDhkMzY2NTg2IiwidXNlcl9pZCI6IjEifQ.rDLcLKHqt78FXKJgdzQluGdBDnTvmDBSXBsWuh16Tac'
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMDM4ODc1LCJpYXQiOjE3NjI5NTI0NzUsImp0aSI6IjU1YWMwMDQwOTllYTQyNzk4ZjcwOTI4NzcyYWVkNzgzIiwidXNlcl9pZCI6IjEifQ.A4HRA7yT0Y3iOPvL2H-aA9W1sKIXdCIzexxeCTVaZBs'
   const { modalToModal } = useModal()
   const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
@@ -37,20 +37,16 @@ export const ReviewDetailModal = () => {
   }
   const { data, error, isError, isPending } = useQueryReview(reviewParams)
 
+  const reviewData = data && data.data
+  const reviewList = reviewData ? reviewData.results : []
+
   console.log(data)
 
   useEffect(() => {
     setAccessToken(dummyAccessToken)
-    console.log(dummyAccessToken)
-    console.log('accessToken', accessToken)
   }, [])
 
-  const reviewList = reviewDetailData.results
-  reviewList.sort((a, b) =>
-    dayjs(a.updated_at).isBefore(dayjs(b.updated_at)) ? 1 : -1
-  )
-
-  const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
+  const myReview = reviewList.find((review) => review.isMine === true)
   const isReviewed = !!myReview
 
   const handleClickPostReview = () => {
@@ -77,17 +73,19 @@ export const ReviewDetailModal = () => {
     <div className="w-[672px]">
       <main className="flex flex-col items-center p-6">
         <ReviewDetailAverage
-          averageRating={reviewDetailData.averageRating}
-          totalReview={reviewDetailData.count}
+          averageRating={reviewData?.meta?.avg_rating}
+          totalReview={reviewData?.meta?.count_total}
         />
-        <div className="flex flex-col">
-          {reviewList.map((review) => (
-            <ReviewDetailCard
-              key={review.id}
-              review={review}
-              isMine={review === myReview}
-            />
-          ))}
+        <div className="transparent-scrollbar flex h-[326px] w-full flex-col overflow-scroll">
+          {reviewList &&
+            reviewList.map((review, i) => (
+              <ReviewDetailCard
+                index={i}
+                key={review.id}
+                review={review}
+                isMine={review.isMine}
+              />
+            ))}
         </div>
       </main>
       <footer className="flex justify-center border-t border-gray-200 p-6">

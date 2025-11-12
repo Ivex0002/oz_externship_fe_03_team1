@@ -2,7 +2,7 @@ import type { StudyGroupDetail } from '@/types/StudyGroupDetailTypes'
 
 export const studyGroupApiResponse = {
   data: {
-    uuid: '3fa85f64-5717-4562-b3fc-2c963f66afa6',
+    uuid: '57c71ffc-1a31-484f-8807-8fb985f63e7b',
     name: 'React 마스터 스터디',
     current_headcount: 4,
     max_headcount: 5,
@@ -32,10 +32,11 @@ export const studyGroupApiResponse = {
         is_leader: false,
       },
     ],
-    profile_img_url: "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop",
-    start_at: "2025-01-15",
-    end_at: "2025-03-15",
-    status: "ONGOING" as const,
+    profile_img_url:
+      'https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=1200&h=300&fit=crop',
+    start_at: '2025-01-15',
+    end_at: '2025-03-15',
+    status: 'ONGOING' as const,
     is_me_leader: true,
     lectures: [
       {

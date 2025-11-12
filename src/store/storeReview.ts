@@ -1,4 +1,4 @@
-import type { Review, ReviewDetailData, ReviewForm } from '@/types/Review'
+import type { Review, ReviewApiResponse, ReviewForm } from '@/types/Review'
 import { create } from 'zustand'
 
 type BasicStudyInfo = {
@@ -10,28 +10,42 @@ type BasicStudyInfo = {
 
 interface StoreReview {
   basicStudyInfo: BasicStudyInfo
-  reviewData: ReviewDetailData
-  previousMyReview: ReviewForm
+  reviewData: ReviewApiResponse
+  previousMyReview: Review
   newReview: ReviewForm
 
   isEditReview: boolean
 
   setBasicStudyInfo: (studyInfo: BasicStudyInfo) => void
-  setReviewData: (reviewData: ReviewDetailData) => void
+  setReviewData: (reviewData: ReviewApiResponse) => void
   setPreviousMyReview: (review: Review, studyInfo: BasicStudyInfo) => void
-  setNewReview: (review: Review) => void
+  setNewReview: (review: ReviewForm) => void
   setIsEditReview: (isEdit: boolean) => void
   clearReviews: () => void
 }
 
-const initialReview: ReviewForm = {
+const initialReview: Review = {
+  id: '',
+  isMine: false,
+  rating: 0,
+  content: '',
+  created_at: '',
+  updated_at: '',
+}
+
+const initialReviewForm: ReviewForm = {
   content: '',
   star_rating: 0,
 }
 
-const initialReviewData: ReviewDetailData = {
+const initialReviewData: ReviewApiResponse = {
   count: 0,
-  averageRating: 0,
+  meta: {
+    avg_rating: 0,
+    count_total: 0,
+    group_id: '',
+    histogram: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 },
+  },
   next: null,
   previous: null,
   results: [],
@@ -41,14 +55,14 @@ export const storeReview = create<StoreReview>((set) => ({
   basicStudyInfo: null,
   reviewData: initialReviewData,
   previousMyReview: initialReview,
-  newReview: initialReview,
+  newReview: initialReviewForm,
 
   isEditReview: false,
 
   setBasicStudyInfo: (studyInfo: BasicStudyInfo) =>
     set({ basicStudyInfo: studyInfo }),
 
-  setReviewData: (reviewData: ReviewDetailData) =>
+  setReviewData: (reviewData: ReviewApiResponse) =>
     set({ reviewData: reviewData }),
 
   setPreviousMyReview: (review: Review, studyInfo: BasicStudyInfo) =>
@@ -58,7 +72,7 @@ export const storeReview = create<StoreReview>((set) => ({
       basicStudyInfo: studyInfo,
     }),
 
-  setNewReview: (review: Review) => set({ newReview: review }),
+  setNewReview: (review: ReviewForm) => set({ newReview: review }),
 
   setIsEditReview: (isEdit: boolean) => set({ isEditReview: isEdit }),
 
@@ -67,7 +81,7 @@ export const storeReview = create<StoreReview>((set) => ({
       basicStudyInfo: null,
       reviewData: initialReviewData,
       previousMyReview: initialReview,
-      newReview: initialReview,
+      newReview: initialReviewForm,
       isEditReview: false,
     }),
 }))

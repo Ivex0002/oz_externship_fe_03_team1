@@ -35,7 +35,7 @@ export const ReviewModal = () => {
       setReviewInputValue('')
     }
     if (isEditReview) {
-      setRating(previousMyReview.star_rating)
+      setRating(previousMyReview.rating)
       setReviewInputValue(previousMyReview.content)
     }
   }, [isEditReview, previousMyReview])

@@ -4,6 +4,7 @@ import type {
   InternalAxiosRequestConfig,
   Method,
 } from 'axios'
+import type { ReviewApiResponse } from './Review'
 
 // ===================== User =====================
 // type RoleEnum = 'admin' | 'staff' | 'user'
@@ -194,18 +195,14 @@ type AdminStudyGroup = {
 }
 
 // ===================== Study:Review =====================
-// 이후 변경 가능성 매우 높음(uuid)
-type ReviewUser = {
-  id: number
-  nickname: string
-}
 
 type StudyReview = {
-  id: number
-  user: ReviewUser
-  star_rating: number
+  id: string
+  isMine: boolean
+  rating: number
   content: string
   created_at: string
+  updated_at: string
 }
 
 type StudyReviewPost = {
@@ -577,7 +574,8 @@ type GroupApi = {
 
 type ReviewApi = {
   GET: () => {
-    res: BaseResWithGeneric<Pagination<StudyReview>>
+    res: { data: ReviewApiResponse }
+    // res: BaseResWithGeneric<Pagination<StudyReview>>
   }
   POST: (req: StudyReviewPost) => {
     res: BaseResponse

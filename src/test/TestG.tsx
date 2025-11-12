@@ -7,12 +7,6 @@ const reviewParams = {
   ordering: '-updated_at',
 }
 
-const reviewParams = {
-  page: 1,
-  page_size: 3,
-  ordering: '-updated_at',
-}
-
 // const params = { page: 1 }
 const TestG = () => {
   const handleClick = async () => {

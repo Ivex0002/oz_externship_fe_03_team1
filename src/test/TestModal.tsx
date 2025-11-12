@@ -38,7 +38,7 @@ const modalTestList: ModalTestUnion[] = [
   {
     modalType: 'REVIEW_DETAIL',
     title: '리뷰 상세',
-    modalProps: { studyGroupId: '10' },
+    modalProps: { studyGroupId: '57c71ffc-1a31-484f-8807-8fb985f63e7b' },
   },
 ]
 

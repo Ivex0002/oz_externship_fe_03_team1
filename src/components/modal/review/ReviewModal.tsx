@@ -5,7 +5,6 @@ import { useModal } from '@/hooks/useModal'
 import dayjs from '@/lib/dayjs'
 import { storeReview } from '@/store/storeReview'
 import { useEffect, useState } from 'react'
-// import { useLoaderData } from 'react-router'
 
 const ReviewStudyBasicInfo = () => {
   const { basicStudyInfo } = storeReview()
@@ -25,8 +24,6 @@ const ReviewStudyBasicInfo = () => {
 export const ReviewModal = () => {
   const [rating, setRating] = useState(0)
   const [reviewInputValue, setReviewInputValue] = useState('')
-  // loader 설정시 아래 코드로 변경
-  // const studyGroup = useLoaderData<StudyGroup>()
 
   const { closeModal } = useModal()
 

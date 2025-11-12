@@ -1,22 +1,50 @@
-// import { useLoaderData } from 'react-router'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { ReviewDetailAverage } from './ReviewDetailAverage'
 import { ReviewDetailCard } from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useModal } from '@/hooks/useModal'
-import { useParams } from 'react-router'
 import { storeReview } from '@/store/storeReview'
 import dayjs from '@/lib/dayjs'
-import type { ReviewParams } from '@/types/Params'
+import {
+  useQueryReview,
+  type Ordering,
+} from '@/hooks/api/queries/useQueryReview'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
+import { useEffect } from 'react'
+import { storeAccessToken } from '@/store/storeAccessToken'
+
+const ORDERING: Ordering = '-updated_at'
+const PAGE_SIZE = 3
 
 export const ReviewDetailModal = () => {
+  const { setAccessToken, accessToken } = storeAccessToken()
+  const dummyAccessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMDE4ODk3LCJpYXQiOjE3NjI5MzI0OTcsImp0aSI6ImE0MzNlMWEyMmVmMTQ4OTk4NzI3ZDNkMDhkMzY2NTg2IiwidXNlcl9pZCI6IjEifQ.rDLcLKHqt78FXKJgdzQluGdBDnTvmDBSXBsWuh16Tac'
   const { modalToModal } = useModal()
   const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
-  const { studyGroupId } = useParams<ReviewParams>()
-  //loader 설정하면 아래 코드로 변경
-  //   const reviewDetailData = useLoaderData<ReviewDetailData>()
+  const { modalState } = storeModalOpen()
+  const modalProps = modalState.modalProps
+  const groupId = (modalProps as ModalPropsMap['REVIEW_DETAIL']).studyGroupId
+
+  const reviewParams = {
+    page: 1,
+    page_size: PAGE_SIZE,
+    groupId: groupId,
+    ordering: ORDERING,
+  }
+  const { data, error, isError, isPending } = useQueryReview(reviewParams)
+
+  console.log(data)
+
+  useEffect(() => {
+    setAccessToken(dummyAccessToken)
+    console.log(dummyAccessToken)
+    console.log('accessToken', accessToken)
+  }, [])
+
   const reviewList = reviewDetailData.results
   reviewList.sort((a, b) =>
     dayjs(a.updated_at).isBefore(dayjs(b.updated_at)) ? 1 : -1
@@ -26,11 +54,11 @@ export const ReviewDetailModal = () => {
   const isReviewed = !!myReview
 
   const handleClickPostReview = () => {
-    if (isReviewed || !studyGroupId) return
+    if (isReviewed || !groupId) return
 
     modalToModal('REVIEW', {
       title: '리뷰 작성',
-      modalProps: { studyGroupId: studyGroupId },
+      modalProps: { studyGroupId: groupId },
     })
   }
 
@@ -38,10 +66,10 @@ export const ReviewDetailModal = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    if (!studyGroupId) return
+    if (!groupId) return
     modalToModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyGroupId: studyGroupId, reviewId: myReview.id },
+      modalProps: { studyGroupId: groupId, reviewId: myReview.id },
     })
   }
 

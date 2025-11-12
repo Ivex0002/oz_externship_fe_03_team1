@@ -516,6 +516,7 @@ type GroupApi = {
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
     members: {
       (member_id: string): {
+
         DELETE: () => { res: BaseResponse }
         PATCH: () => { res: BaseResponse }
       }

@@ -1,16 +1,17 @@
-// StudyRecordList.tsx
-import { useState, useEffect } from 'react'
-import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import type { StudyRecord } from '@/types/Schedule'
-import dayjs from '@/lib/dayjs'
+import { useState, useEffect } from 'react';
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
+import type { StudyRecord } from '@/types/Schedule';
+import dayjs from '@/lib/dayjs';
+import { useNavigate } from 'react-router';
 
 interface StudyRecordListProps {
   groupId: string
 }
 
 export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
-  const [records, setRecords] = useState<StudyRecord[]>([])
-  const [loading, setLoading] = useState(true)
+  const [records, setRecords] = useState<StudyRecord[]>([]);
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchRecords = async () => {
@@ -41,8 +42,11 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
     fetchRecords()
   }, [groupId])
 
-  const handleWriteClick = () => {}
-  const handleRecordClick = (_recordId: number) => {}
+  const handleWriteClick = () => {
+    navigate(`/create_study_record/${groupId}`);
+  };
+  
+  const handleRecordClick = (_recordId: number) => {};
 
   if (loading) {
     return (
@@ -59,7 +63,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         <BasicButton
           variant="primary"
           size="small"
-          className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+          className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
           onClick={handleWriteClick}
         >
           <img
@@ -111,5 +115,5 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         ))}
       </div>
     </div>
-  )
-}
+  );
+};

@@ -2,7 +2,10 @@ import axios from 'axios'
 import { BASE_URL } from './api'
 
 type RefreshAccessToken = {
-  access: string
+  detail: string
+  data: {
+    access: string
+  }
 }
 
 /**
@@ -17,10 +20,14 @@ export const refreshAccessToken = async (): Promise<string | null> => {
       headers: { 'Content-Type': 'application/json' },
       timeout: 10000,
     })
-    const { data } = await refreshClient.post<RefreshAccessToken>(
-      '/api/v1/auth/refresh'
-    )
-    if (data.access) return data.access
+    const { data } =
+      await refreshClient.post<RefreshAccessToken>('/v1/auth/refresh')
+    // console.log({ data })
+    if (data.data.access) {
+      // console.log(data)
+      return data.data.access
+    }
+
     return null
   } catch {
     return null

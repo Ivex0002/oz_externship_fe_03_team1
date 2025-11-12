@@ -10,6 +10,7 @@ import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
 import { storeDatePicker } from '@/store/storeDatePicker'
 import { toast } from 'react-toastify'
+import { useModal } from '@/hooks/useModal'
 
 export const CreateStudyGroup = () => {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -25,6 +26,7 @@ export const CreateStudyGroup = () => {
   const [isEdit, setIsEdit] = useState(false)
   const { startDate, endDate, reset } = storeDatePicker()
   const navigate = useNavigate()
+  const { openConfirm } = useModal()
 
   useEffect(() => {
     if (window.location.pathname.includes('edit')) {
@@ -58,8 +60,15 @@ export const CreateStudyGroup = () => {
   }
 
   const handleBack = () => {
-    reset()
-    navigate('/')
+    openConfirm({
+      message: '정말 취소하시겠어요?',
+      onConfirm: async () => {
+        reset()
+        navigate('/')
+      },
+      confirmText: '확인',
+      cancelText: '취소',
+    })
   }
 
   return (

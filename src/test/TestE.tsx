@@ -1,5 +1,7 @@
 import { CreateStudyGroup } from '@/pages/study-groups/CreateStudyGroup'
 import { ToastContainer } from 'react-toastify'
+import { BasicModal } from '@/components/basicComponents/basicModal/BasicModal'
+import { createPortal } from 'react-dom'
 import 'react-toastify/dist/ReactToastify.css'
 
 export default function TestE() {
@@ -30,6 +32,9 @@ export default function TestE() {
       <div className="min-h-screen bg-gray-50 pt-[65px]">
         <CreateStudyGroup />
       </div>
+
+      {typeof document !== 'undefined' &&
+        createPortal(<BasicModal />, document.body)}
 
       <ToastContainer
         position="top-right"

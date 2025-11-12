@@ -70,19 +70,19 @@ export const LectureChoosingModal = () => {
         </div>
 
         {isError && (
-          <div className="text-danger-800 border-danger-100 w-full rounded-lg border-2 p-4.5 text-center">
+          <div className="text-danger-800 border-danger-100 w-full rounded-lg border-2 pt-6 text-center">
             {error.message}
           </div>
         )}
 
         {isPending && (
-          <div className="w-full animate-pulse rounded-lg border-2 border-gray-300 p-4.5 text-center">
+          <div className="w-full animate-pulse rounded-lg border-2 border-gray-300 pt-6 text-center">
             강의 목록을 받아오고 있습니다...
           </div>
         )}
 
         {data && (
-          <div className="flex flex-col gap-4 pt-6">
+          <div className="transparent-scrollbar flex h-[688px] flex-col gap-4 overflow-y-scroll pt-6">
             {lectureList &&
               lectureList.map((lecture) => (
                 <LectureCard key={lecture.uuid} lecture={lecture} />

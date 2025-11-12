@@ -5,6 +5,7 @@ export const lectureData = {
 
   results: [
     {
+      id: 1,
       uuid: '550e8400-e29b-41d4-a716-446655440000',
       title: 'Django 완벽 가이드',
       instructor: '홍길동',
@@ -23,6 +24,7 @@ export const lectureData = {
       duration: 600,
     },
     {
+      id: 2,
       uuid: '9b73c9a8-3bde-4b8f-a6b1-0d4376c7d101',
       title: 'React 완벽 마스터 강의 - 기초부터 고급까지',
       instructor: '김개발',
@@ -41,6 +43,7 @@ export const lectureData = {
       duration: 800,
     },
     {
+      id: 3,
       uuid: 'c10e2b6b-8261-4f55-a1d7-fb8b44f2c203',
       title: 'Node.js 백엔드 개발 완주 - 실무 프로젝트까지',
       instructor: '박서버',
@@ -59,6 +62,7 @@ export const lectureData = {
       duration: 580,
     },
     {
+      id: 4,
       uuid: 'd2a4f5ef-19e3-43c5-b928-c65a74522a04',
       title: 'Python 데이터 사이언스 마스터클레스',
       instructor: '이데이터',
@@ -77,6 +81,7 @@ export const lectureData = {
       duration: 920,
     },
     {
+      id: 5,
       uuid: 'e7b4d232-b80c-4a0f-9cd9-f5f51f21a605',
       title: 'JavaScript ES6+ 완벽 가이드 - 모던 자바스크립트',
       instructor: '최자바',
@@ -95,6 +100,7 @@ export const lectureData = {
       duration: 490,
     },
     {
+      id: 6,
       uuid: 'f9d1a7b1-3b1f-47f1-8ed9-d32b117874c3',
       title: 'Vue.js 실전 프로젝트 - SPA 개발 완성',
       instructor: '정뷰',
@@ -118,6 +124,7 @@ export const lectureData = {
 
   recommended_lectures: [
     {
+      id: 7,
       uuid: '660e8400-e29b-41d4-a716-446655440001',
       title: 'Python 기초부터 실전까지',
       instructor: '김철수',
@@ -133,6 +140,7 @@ export const lectureData = {
       duration: 500,
     },
     {
+      id: 8,
       uuid: 'b92e7a7c-f11e-4f83-a833-f4128c98e21b',
       title: 'Django REST API 마스터',
       instructor: '홍길동',

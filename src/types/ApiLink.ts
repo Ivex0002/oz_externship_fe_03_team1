@@ -56,7 +56,6 @@ export type PlatformEnum = 'UDEMY' | 'INFLEARN '
 
 // uuid, id 혼용 이유 ?
 type Lecture = {
-  id: number
   uuid: string
   title: string
   instructor: string
@@ -258,7 +257,9 @@ export type ApiLinks = {
       // (스웨거) 검색, 필터, 페이지네이션 기능 누락
       // 임시로 페이지 옵션만 첨부
       GET: () => {
-        res: Pagination<Lecture>
+        res: {
+          data: Pagination<Lecture>
+        }
       }
 
       categories: {

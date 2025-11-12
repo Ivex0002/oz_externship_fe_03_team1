@@ -3,13 +3,14 @@ import 'react-toastify/dist/ReactToastify.css'
 
 export const GlobalToast = () => (
   <ToastContainer
-    position="bottom-center"
-    autoClose={3000}
+    position="top-right"
+    autoClose={2000}
     hideProgressBar={false}
     newestOnTop={false}
     closeOnClick
-    pauseOnHover
+    pauseOnFocusLoss={false}
     draggable
+    pauseOnHover
     theme="light"
   />
 )

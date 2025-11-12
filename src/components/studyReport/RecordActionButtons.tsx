@@ -7,7 +7,7 @@ interface RecordActionButtonsProps {
   onSave: () => void
   studyGroupId: string
   mode?: 'create' | 'edit'
-  disabled?: boolean
+  disabled?: boolean // 더 이상 사용하지 않지만 유지 가능
 }
 
 export const RecordActionButtons = ({
@@ -41,6 +41,7 @@ export const RecordActionButtons = ({
         취소
       </BasicButton>
 
+      {/* 항상 클릭 가능하도록 disabled 제거 */}
       <BasicButton
         variant="secondary"
         size="large"

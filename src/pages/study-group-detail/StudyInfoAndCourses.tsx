@@ -75,6 +75,7 @@ export const StudyInfoAndCourses = ({
                 hover:shadow-md 
                 transition-all 
                 bg-white
+                cursor-pointer
               "
             >
               {/* 강의 이미지 */}
@@ -94,7 +95,7 @@ export const StudyInfoAndCourses = ({
                 <p className="text-sm text-gray-600 mb-3">{lecture.instructor}</p>
 
                 <button
-                  className="text-primary-600 font-semibold text-sm flex items-center gap-1 group"
+                  className="text-primary-600 font-semibold text-sm flex items-center gap-1 group cursor-pointer"
                   onClick={() => handleLectureClick(lecture.url_link || '#')}
                 >
                   강의 바로가기

@@ -326,7 +326,7 @@ type GroupApi = {
     }
     leave: { DELETE: () => { res: BaseResponse } }
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
-    members: { (member_id: number): { DELETE: () => { res: BaseResponse } } }
+    members: { (member_id: string): { DELETE: () => { res: BaseResponse } } }
     notes: {
       // (스웨거) res 타입 아직 안나옴
       GET: () => { res: BaseResponse }

@@ -1,34 +1,61 @@
 import { Calendar } from 'lucide-react';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { FormattedInfo } from './StudyInfoAndCourses';
+import { useNavigate } from 'react-router';
+import { useModal } from '@/hooks/useModal';
+import { useStudyGroupMutation } from '@/hooks/api/Mutations/useStudyGroupMutation';
 
 interface StudyBannerSectionProps {
   isLeader: boolean;
-  setIsLeader: (value: boolean) => void;
   title: string;
   imgUrl: string;
-  formattedInfo: FormattedInfo
+  formattedInfo: FormattedInfo;
+  studyGroupId: string;
 }
 
 export const StudyBannerSection = ({ 
   isLeader, 
-  setIsLeader,
   formattedInfo,
   title,
-  imgUrl
-
+  imgUrl,
+  studyGroupId
 }: StudyBannerSectionProps) => {
+  const navigate = useNavigate();
+  const { openModal, closeModal } = useModal();
+  const { leaveStudyGroup } = useStudyGroupMutation(studyGroupId);
   
-
-  // 핸들러 함수 분리
-  const handleEditClick = () => {return};
-
-  const handleLeaveClick = () => {
-    if (window.confirm('정말로 스터디를 나가시겠습니까?')) {return};
+  const onCancelLeave = () => {
+    closeModal();
+  };
+  
+  const onConfirmLeave = () => {
+    leaveStudyGroup.mutate(undefined, {
+      onSuccess: () => {
+        closeModal();
+        // 성공 시 스터디 그룹 목록 페이지로 이동
+        navigate('/study-groups');
+      },
+      onError: () => {
+        closeModal();
+        // 에러 알림을 띄우고 싶다면 여기에 추가
+      }
+    });
   };
 
-  const handleToggleLeader = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setIsLeader(e.target.checked);
+  // 핸들러 함수 분리
+  const handleEditClick = () => {
+    navigate(`/edit_study_group/${studyGroupId}`);
+  };
+
+  const handleLeaveClick = () => {
+    openModal("CONFIRM", {
+      title: "스터디 그룹을 나가시겠습니까?",
+      modalProps: {
+        message: "확인을 누르면 스터디그룹을 나갑니다",
+        onConfirm: onConfirmLeave,
+        onCancel: onCancelLeave
+      }
+    });
   };
 
   return (
@@ -66,7 +93,7 @@ export const StudyBannerSection = ({
             <BasicButton
               variant="secondary"
               size="small"
-              className="flex items-center gap-2 !px-4 !py-2 !text-sm"
+              className="flex items-center gap-2 !px-4 !py-2 !text-sm cursor-pointer"
               onClick={handleEditClick}
             >
               <img src="/icons/pen.svg" alt="edit" className="w-4 h-4" />
@@ -76,26 +103,14 @@ export const StudyBannerSection = ({
           <BasicButton
             variant="danger"
             size="small"
-            className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white"
+            className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
             onClick={handleLeaveClick}
+            disabled={leaveStudyGroup.isPending}
           >
             <img src="/icons/out.svg" alt="leave" className="w-4 h-4 filter invert brightness-0" />
-            나가기
+            {leaveStudyGroup.isPending ? '처리중...' : '나가기'}
           </BasicButton>
         </div>
-      </div>
-
-      {/* 역할 토글 (테스트용) */}
-      <div className="mb-6 p-3 bg-blue-50 rounded-lg border border-blue-200">
-        <label className="flex items-center gap-2 cursor-pointer">
-          <input
-            type="checkbox"
-            checked={isLeader}
-            onChange={handleToggleLeader}
-            className="w-4 h-4 accent-blue-600"
-          />
-          <span className="text-sm text-blue-900 font-medium">리더 권한 보기 (테스트용)</span>
-        </label>
       </div>
     </>
   );

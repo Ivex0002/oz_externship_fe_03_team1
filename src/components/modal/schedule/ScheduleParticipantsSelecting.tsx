@@ -10,18 +10,18 @@ export const ScheduleMembersSelecting = ({
   setSelectedMembers,
 }: ScheduleMembersSelectingProps) => {
   const members = [
-    { id: 1, nickname: '김개발', is_leader: true },
-    { id: 2, nickname: '박리엑트', is_leader: false },
-    { id: 3, nickname: '이프론트', is_leader: false },
-    { id: 4, nickname: '최자바', is_leader: false },
-    { id: 5, nickname: '한스크립트', is_leader: false },
-    { id: 6, nickname: '오컴포넌트', is_leader: false },
+    { uuid: "1", nickname: '김개발', is_leader: true },
+    { uuid: "2", nickname: '박리엑트', is_leader: false },
+    { uuid: "3", nickname: '이프론트', is_leader: false },
+    { uuid: "4", nickname: '최자바', is_leader: false },
+    { uuid: "5", nickname: '한스크립트', is_leader: false },
+    { uuid: "6", nickname: '오컴포넌트', is_leader: false },
   ]
 
   const leader = members.find((member) => member.is_leader)
   const others = members.filter((member) => !member.is_leader)
-  const isChecked = (id: number) =>
-    selectedMembers.some((member) => member.id === id)
+  const isChecked = (id: string) =>
+    selectedMembers.some((member) => member.uuid === id)
 
   const handleMemberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target
@@ -54,7 +54,7 @@ export const ScheduleMembersSelecting = ({
                 name="schedule_member"
                 type="checkbox"
                 value={leader.nickname}
-                checked={isChecked(leader.id)}
+                checked={isChecked(leader.uuid)}
                 onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
                 required
@@ -83,7 +83,7 @@ export const ScheduleMembersSelecting = ({
           </div>
         )}
         {others.map((member) => (
-          <div key={member.id} className="flex items-center gap-2">
+          <div key={member.uuid} className="flex items-center gap-2">
             <label
               htmlFor={member.nickname}
               className="relative flex items-center gap-2 text-sm"
@@ -93,7 +93,7 @@ export const ScheduleMembersSelecting = ({
                 name="schedule_member"
                 type="checkbox"
                 value={member.nickname}
-                checked={isChecked(member.id)}
+                checked={isChecked(member.uuid)}
                 onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
               />

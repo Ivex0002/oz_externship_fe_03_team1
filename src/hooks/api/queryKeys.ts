@@ -33,13 +33,13 @@ export const queryKeys = {
       list: (params?: { page?: number }) =>
         defineQueryKey(['studies', 'groups', 'list', params]),
       details: () => defineQueryKey(['studies', 'groups', 'detail']),
-      detail: (groupId: number) =>
+      detail: (groupId: string) =>
         defineQueryKey(['studies', 'groups', 'detail', groupId]),
 
-      members: (groupId: number) =>
+      members: (groupId: string) =>
         defineQueryKey(['studies', 'groups', groupId, 'members']),
 
-      reviews: (groupId: number) =>
+      reviews: (groupId: string) =>
         defineQueryKey(['studies', 'groups', groupId, 'reviews']),
     },
   },

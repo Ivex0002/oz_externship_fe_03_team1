@@ -1,5 +1,6 @@
 export interface Member {
   id: number
+  uuid: string
   nickname: string
   is_leader: boolean
 }
@@ -9,11 +10,12 @@ export interface LectureDetail {
   title: string
   instructor: string
   url_link: string
+  uuid: string
 }
 
 // 스터디 그룹만 id 값이 uuid로 들어옴
 export interface StudyGroupDetail {
-  id: string
+  uuid: string
   name: string
   current_headcount: number
   max_headcount: number
@@ -23,6 +25,7 @@ export interface StudyGroupDetail {
   end_at: string
   status: 'ONGOING' | 'PENDING' | 'ENDED'
   lectures: LectureDetail[]
+  is_me_leader: boolean
 }
 
 // 알아본뒤에 필요없으면 삭제 이유가 명확하면 설명 후 사용.

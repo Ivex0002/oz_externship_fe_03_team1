@@ -3,10 +3,14 @@ import { TooltipPortal } from '../../utils/TooltipPortal';
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
 import type { Member } from '@/types/Schedule';
 import { Crown, X } from 'lucide-react';
+import { useModal } from '@/hooks/useModal';
+import { useStudyGroupMutation } from '@/hooks/api/Mutations/useStudyGroupMutation';
 
 interface StudyMemberListProps {
   members: Member[];
   currentHeadcount: number;
+  isLeader: boolean;
+  studyGroupId: string;
 }
 
 interface TooltipPosition {
@@ -45,9 +49,14 @@ const tooltipReducer = (state: TooltipState, action: TooltipAction): TooltipStat
 
 export const StudyMemberList = ({ 
   members,
-  currentHeadcount
+  currentHeadcount,
+  isLeader,
+  studyGroupId
 }: StudyMemberListProps) => {
-  const buttonRefs = useRef<(HTMLDivElement | null)[]>([]);
+  const { openModal, closeModal } = useModal();
+  const { delegateLeader, expelMember } = useStudyGroupMutation(studyGroupId);
+  
+  const buttonRefs = useRef<Record<string, HTMLDivElement | null>>({});
   const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
     action: null,
@@ -55,11 +64,8 @@ export const StudyMemberList = ({
     position: null
   });
 
-  // 현재 사용자가 리더인지 확인
-  const currentUserIsLeader = useMemo(() => 
-    members.some(member => member.is_leader), 
-    [members]
-  );
+  // 현재 선택된 멤버의 ID를 저장하기 위한 ref
+  const selectedMemberIdRef = useRef<string | null>(null);
 
   // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
@@ -70,20 +76,71 @@ export const StudyMemberList = ({
     });
   }, [members]);
 
-  const handleExpelClick = (nickname: string) => {
-    if (window.confirm(`${nickname}님을 추방하시겠습니까?`)) {
-      // API 호출
-      return;
+  // 추방 확인 핸들러
+  const onConfirmExpel = () => {
+    if (selectedMemberIdRef.current) {
+      expelMember.mutate(selectedMemberIdRef.current, {
+        onSuccess: () => {
+          closeModal();
+          // 성공 알림을 띄우고 싶다면 여기에 추가
+        },
+        onError: () => {
+          closeModal();
+          // 에러 알림을 띄우고 싶다면 여기에 추가
+        }
+      });
     }
   };
 
-  const handleDelegateClick = (nickname: string) => {
-    if (window.confirm(`${nickname}님에게 리더를 위임하시겠습니까?`)) {
-      // API 호출
-      return;
+  // 리더 위임 확인 핸들러
+  const onConfirmDelegate = () => {
+    if (selectedMemberIdRef.current) {
+      delegateLeader.mutate(selectedMemberIdRef.current, {
+        onSuccess: () => {
+          closeModal();
+          // 성공 알림을 띄우고 싶다면 여기에 추가
+        },
+        onError: () => {
+          closeModal();
+          // 에러 알림을 띄우고 싶다면 여기에 추가
+        }
+      });
     }
   };
 
+  const onCancelConfirmModal = () => {
+    closeModal();
+    selectedMemberIdRef.current = null;
+  };
+
+  // 추방 버튼 클릭 시 모달 오픈
+  const handleExpelClick = (nickname: string, memberId: string) => {
+    selectedMemberIdRef.current = memberId;
+    openModal("CONFIRM", {
+      title: "추방하시겠습니까?",
+      modalProps: {
+        message: `${nickname}님을 추방하시겠습니까?`,
+        onConfirm: onConfirmExpel,
+        onCancel: onCancelConfirmModal
+      }
+    });
+  };
+
+  // 리더 위임 버튼 클릭 시 모달 오픈
+  const handleDelegateClick = (nickname: string, memberId: string) => {
+    selectedMemberIdRef.current = memberId;
+    openModal("CONFIRM", {
+      title: "위임하시겠습니까?",
+      modalProps: {
+        message: `${nickname}님에게 리더를 위임하시겠습니까?`,
+        onConfirm: onConfirmDelegate,
+        onCancel: onCancelConfirmModal
+      }
+    });
+  };
+  console.log(selectedMemberIdRef.current)
+
+  // Tooltip 관련
   const updateTooltipPosition = (
     targetIndex: number, 
     nickname: string, 
@@ -92,7 +149,6 @@ export const StudyMemberList = ({
     const buttonElement = buttonRefs.current[targetIndex];
     if (buttonElement) {
       const rect = buttonElement.getBoundingClientRect();
-      
       dispatchTooltip({
         type: 'SHOW',
         action,
@@ -110,28 +166,20 @@ export const StudyMemberList = ({
     nickname: string, 
     action: 'expel' | 'delegate'
   ) => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
-    
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     hoverTimeoutRef.current = setTimeout(() => {
       updateTooltipPosition(index, nickname, action);
     }, 1000);
   };
 
   const handleMouseLeave = () => {
-    if (hoverTimeoutRef.current) {
-      clearTimeout(hoverTimeoutRef.current);
-    }
+    if (hoverTimeoutRef.current) clearTimeout(hoverTimeoutRef.current);
     dispatchTooltip({ type: 'HIDE' });
   };
 
   const getTooltipText = () => {
     if (!tooltipState.action || !tooltipState.targetMember) return '';
-    
-    if (tooltipState.action === 'expel') {
-      return `${tooltipState.targetMember}님을 추방`;
-    }
+    if (tooltipState.action === 'expel') return `${tooltipState.targetMember}님을 추방`;
     return `${tooltipState.targetMember}님에게 리더 위임`;
   };
 
@@ -141,13 +189,12 @@ export const StudyMemberList = ({
         <h2 className="text-xl font-bold text-gray-900">멤버 목록</h2>
         <span className="text-sm text-gray-500 font-medium">{currentHeadcount}명</span>
       </div>
-      
-      {/* 고정 높이: 485px (7.5명 분량) */}
+
       <div className="h-[485px] overflow-y-auto scrollbar-hide">
         <div className="space-y-3">
           {sortedMembers.map((member, index) => (
             <div
-              key={member.id}
+              key={member.uuid}
               className="group relative flex items-center justify-between hover:bg-gray-50 p-2 rounded-lg transition-colors"
             >
               <div className="flex items-center gap-3">
@@ -170,12 +217,13 @@ export const StudyMemberList = ({
                 </div>
               </div>
 
-              {currentUserIsLeader && !member.is_leader && (
+              {/* 리더일 경우만 표시 */}
+              {isLeader && !member.is_leader && (
                 <div className="flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                   {/* 리더 위임 버튼 */}
                   <div
                     ref={(el: HTMLDivElement | null) => {
-                      buttonRefs.current[index * 2] = el;
+                      buttonRefs.current[member.uuid] = el;
                     }}
                     className="relative"
                     onMouseEnter={() => handleMouseEnter(index * 2, member.nickname, 'delegate')}
@@ -184,13 +232,11 @@ export const StudyMemberList = ({
                     <BasicButton
                       variant="secondary"
                       size="small"
-                      className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs"
-                      onClick={() => handleDelegateClick(member.nickname)}
+                      className="!rounded-full !bg-blue-50 !text-blue-400 !text-xs cursor-pointer"
+                      onClick={() => handleDelegateClick(member.nickname, member.uuid)}
+                      disabled={delegateLeader.isPending}
                     >
-                      <Crown
-                      className='hover:text-blue-600' 
-                      size={20}
-                      />
+                      <Crown className='hover:text-blue-600' size={20} />
                     </BasicButton>
                   </div>
 
@@ -206,13 +252,11 @@ export const StudyMemberList = ({
                     <BasicButton
                       variant="danger"
                       size="small"
-                      className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500"
-                      onClick={() => handleExpelClick(member.nickname)}
+                      className="!w-6 !h-6 !rounded-full !bg-red-50 !text-danger-500 cursor-pointer"
+                      onClick={() => handleExpelClick(member.nickname, member.uuid)}
+                      disabled={expelMember.isPending}
                     >
-                      <X 
-                      size={20}
-                      className='hover:text-danger-800'
-                      />
+                      <X size={20} className='hover:text-danger-800' />
                     </BasicButton>
                   </div>
                 </div>
@@ -222,6 +266,7 @@ export const StudyMemberList = ({
         </div>
       </div>
 
+      {/* Tooltip */}
       {tooltipState.targetMember && tooltipState.position && (
         <TooltipPortal>
           <div 

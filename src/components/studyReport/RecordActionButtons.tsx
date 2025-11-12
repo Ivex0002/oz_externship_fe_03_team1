@@ -1,8 +1,11 @@
 import { BasicButton } from '../basicComponents/BasicButton/BasicButton.tsx'
+import { useModal } from '@/hooks/useModal'
+import { useNavigate } from 'react-router'
 
 interface RecordActionButtonsProps {
   onCancel: () => void
   onSave: () => void
+  studyGroupId: string
   mode?: 'create' | 'edit'
   disabled?: boolean
 }
@@ -10,12 +13,33 @@ interface RecordActionButtonsProps {
 export const RecordActionButtons = ({
   onCancel,
   onSave,
+  studyGroupId,
   mode = 'create',
   disabled = false,
 }: RecordActionButtonsProps) => {
+  const { openModal, closeModal } = useModal()
+  const navigate = useNavigate()
+
+  const handleCancel = () => {
+    openModal('CONFIRM', {
+      title: '정말 취소하시겠습니까?',
+      modalProps: {
+        message: '작성 중인 내용은 사라집니다.',
+        onConfirm: () => {
+          closeModal()
+          onCancel() // 기존 onCancel 호출
+          navigate(`/study_group_detail/${studyGroupId}`)
+        },
+        onCancel: () => {
+          closeModal()
+        },
+      },
+    })
+  }
+
   return (
     <div className="flex w-full justify-between">
-      <BasicButton variant="outline" size="large" onClick={onCancel}>
+      <BasicButton variant="outline" size="large" onClick={handleCancel}>
         취소
       </BasicButton>
 

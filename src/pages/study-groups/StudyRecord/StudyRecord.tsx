@@ -104,12 +104,15 @@ export const StudyRecord = () => {
       </div>
 
       <div className="mt-6 flex w-full max-w-3xl justify-between">
-        <RecordActionButtons
-          onCancel={handleCancel}
-          onSave={handleSave}
-          mode={mode}
-          disabled={isSaveDisabled}
-        />
+        {studyGroupId && (
+          <RecordActionButtons
+            onCancel={handleCancel}
+            onSave={handleSave}
+            mode={mode}
+            disabled={isSaveDisabled}
+            studyGroupId={studyGroupId}
+          />
+        )}
       </div>
     </div>
   )

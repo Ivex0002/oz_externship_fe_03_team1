@@ -11,7 +11,7 @@ import {
 } from 'lucide-react'
 import 'react-toastify/dist/ReactToastify.css'
 import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
-import { toast } from 'react-toastify' // 추가
+import { toast } from 'react-toastify'
 
 interface RecordFileUploadProps {
   files: File[]

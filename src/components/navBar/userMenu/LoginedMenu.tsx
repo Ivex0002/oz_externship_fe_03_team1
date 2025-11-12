@@ -67,7 +67,7 @@ const UserPanel = ({ onClose }: { onClose: () => void }) => {
   return (
     <div className="absolute right-0 z-50 mt-2 flex h-[100px] w-48 flex-col overflow-hidden rounded-lg border border-gray-200 bg-white shadow-md">
       <NavLink
-        to="/mypage"
+        to="https://account.ozcoding.site/mypage/profile"
         className="flex flex-1 items-center space-x-2 px-4 text-sm text-gray-700 transition-colors hover:bg-gray-50"
         onClick={() => onClose()}
       >
@@ -78,7 +78,7 @@ const UserPanel = ({ onClose }: { onClose: () => void }) => {
       <div className="border border-gray-200" />
 
       <NavLink
-        to="/logout"
+        to="https://account.ozcoding.site/"
         className="text-danger-600 flex flex-1 items-center space-x-2 px-4 text-sm transition-colors hover:bg-gray-50"
         onClick={() => onClose()}
       >

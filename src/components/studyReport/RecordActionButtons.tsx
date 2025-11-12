@@ -7,7 +7,7 @@ interface RecordActionButtonsProps {
   onSave: () => void
   studyGroupId: string
   mode?: 'create' | 'edit'
-  disabled?: boolean
+  disabled?: boolean // 더 이상 사용하지 않지만 유지 가능
 }
 
 export const RecordActionButtons = ({
@@ -15,7 +15,6 @@ export const RecordActionButtons = ({
   onSave,
   studyGroupId,
   mode = 'create',
-  disabled = false,
 }: RecordActionButtonsProps) => {
   const { openModal, closeModal } = useModal()
   const navigate = useNavigate()
@@ -43,12 +42,12 @@ export const RecordActionButtons = ({
         취소
       </BasicButton>
 
+      {/* 항상 클릭 가능하도록 disabled 제거 */}
       <BasicButton
         variant="secondary"
         size="large"
         onClick={onSave}
-        disabled={disabled}
-        className="disabled:cursor-not-allowed"
+        className="cursor-pointer"
       >
         {mode === 'create' ? '기록 저장' : '기록 수정'}
       </BasicButton>

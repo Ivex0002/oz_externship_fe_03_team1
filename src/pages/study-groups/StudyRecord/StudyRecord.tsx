@@ -68,6 +68,12 @@ export const StudyRecord = () => {
   }
 
   const handleSave = async () => {
+    // 내용이 없으면 토스트로 안내하고 저장 막기
+    if (title.trim() === '' || content.trim() === '') {
+      toast.warn('제목과 내용을 모두 입력해야 저장할 수 있습니다.')
+      return
+    }
+
     const recordData = { title, content, files }
     console.log('(MOCK) 저장 데이터:', recordData)
     await new Promise((resolve) => setTimeout(resolve, 300))
@@ -80,8 +86,6 @@ export const StudyRecord = () => {
 
     if (studyGroupId) navigate(`/study_group_detail/${studyGroupId}`)
   }
-
-  const isSaveDisabled = title.trim() === '' || content.trim() === ''
 
   return (
     <div className="flex min-h-screen w-[896px] flex-col items-center px-8 pt-[65px] pb-20">
@@ -109,7 +113,6 @@ export const StudyRecord = () => {
             onCancel={handleCancel}
             onSave={handleSave}
             mode={mode}
-            disabled={isSaveDisabled}
             studyGroupId={studyGroupId}
           />
         )}

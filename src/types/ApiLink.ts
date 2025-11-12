@@ -105,7 +105,7 @@ type StudyGroup = {
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
 type Member = {
-  uuid: number
+  uuid: string
   nickname: string
   is_leader: boolean
 }
@@ -195,17 +195,17 @@ type AdminStudyGroup = {
 }
 
 // ===================== Study:Review =====================
-type ReviewEnum =
-  | '5_OUT_OF_5_STARS'
-  | '4_OUT_OF_5_STARS'
-  | '3_OUT_OF_5_STARS'
-  | '2_OUT_OF_5_STARS'
-  | '1_OUT_OF_5_STARS'
+// type ReviewEnum =
+//   | '5_OUT_OF_5_STARS'
+//   | '4_OUT_OF_5_STARS'
+//   | '3_OUT_OF_5_STARS'
+//   | '2_OUT_OF_5_STARS'
+//   | '1_OUT_OF_5_STARS'
 
 type StudyReview = {
   // (스웨거) uuid 형식
   id: string
-  rating: ReviewEnum
+  rating: number
   content: string
   created_at: string
   updated_at: string
@@ -515,7 +515,7 @@ type GroupApi = {
     leave: { DELETE: () => { res: BaseResponse } }
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
     members: {
-      (member_id: number): {
+      (member_id: string): {
         DELETE: () => { res: BaseResponse }
         PATCH: () => { res: BaseResponse }
       }

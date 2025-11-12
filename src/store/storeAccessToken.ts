@@ -7,6 +7,6 @@ interface StoreAccessToken {
 }
 export const storeAccessToken = create<StoreAccessToken>((set) => ({
   accessToken: null,
-  setAccessToken: (val) => set(() => ({ accessToken: val })),
-  clearAccessToken: () => set(() => ({ accessToken: null })),
+  setAccessToken: (val) => set({ accessToken: val }),
+  clearAccessToken: () => set({ accessToken: null }),
 }))

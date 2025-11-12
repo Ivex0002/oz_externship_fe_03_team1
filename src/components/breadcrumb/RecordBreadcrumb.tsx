@@ -12,7 +12,7 @@ interface StudyParams {
   groupId?: string
 }
 
-const DEFAULT_HOME = '/'
+const DEFAULT_HOME = 'https://account.ozcoding.site/'
 const DEFAULT_GROUPS = '/'
 
 export const RecordBreadcrumb = ({
@@ -28,9 +28,15 @@ export const RecordBreadcrumb = ({
       aria-label="breadcrumb"
       className="mb-6 flex items-center gap-2 text-sm text-gray-500"
     >
-      <Link to={homeTo} className="hover:text-gray-700">
+      <a
+        href={homeTo}
+        className="hover:text-gray-700"
+        target="_self"
+        rel="noopener noreferrer"
+      >
         홈
-      </Link>
+      </a>
+
       <ChevronRight size={16} />
 
       <Link to={groupsTo} className="hover:text-gray-700">

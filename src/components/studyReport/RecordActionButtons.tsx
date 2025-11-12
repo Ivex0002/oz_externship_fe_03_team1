@@ -7,7 +7,7 @@ interface RecordActionButtonsProps {
   onSave: () => void
   studyGroupId: string
   mode?: 'create' | 'edit'
-  disabled?: boolean // 더 이상 사용하지 않지만 유지 가능
+  disabled?: boolean
 }
 
 export const RecordActionButtons = ({
@@ -16,22 +16,21 @@ export const RecordActionButtons = ({
   studyGroupId,
   mode = 'create',
 }: RecordActionButtonsProps) => {
-  const { openModal, closeModal } = useModal()
+  const { openConfirm, closeModal } = useModal()
   const navigate = useNavigate()
 
   const handleCancel = () => {
-    openModal('CONFIRM', {
-      title: '정말 취소하시겠습니까?',
-      modalProps: {
-        message: '작성 중인 내용은 사라집니다.',
-        onConfirm: () => {
-          closeModal()
-          onCancel()
-          navigate(`/study_group_detail/${studyGroupId}`)
-        },
-        onCancel: () => {
-          closeModal()
-        },
+    openConfirm({
+      message: '정말 취소하시겠습니까?',
+      confirmText: '예',
+      cancelText: '아니오',
+      onConfirm: () => {
+        closeModal()
+        onCancel()
+        navigate(`/study_group_detail/${studyGroupId}`)
+      },
+      onCancel: () => {
+        closeModal()
       },
     })
   }
@@ -42,7 +41,6 @@ export const RecordActionButtons = ({
         취소
       </BasicButton>
 
-      {/* 항상 클릭 가능하도록 disabled 제거 */}
       <BasicButton
         variant="secondary"
         size="large"

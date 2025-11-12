@@ -7,7 +7,7 @@ interface RecordActionButtonsProps {
   onSave: () => void
   studyGroupId: string
   mode?: 'create' | 'edit'
-  disabled?: boolean // 더 이상 사용하지 않지만 유지 가능
+  disabled?: boolean
 }
 
 export const RecordActionButtons = ({

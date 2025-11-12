@@ -13,8 +13,17 @@ export type Lecture = {
   original_price: number
   discount_price: number
   platform: string
-  average_rating: number
+  average_rating: string
   url_link: string
   is_bookmarked: boolean
   duration: number // 단위: 분
+}
+
+export type ApiLectureList = {
+  count: number
+  next: string | null
+  previous: string | null
+  results: Lecture[]
+  user_nickname?: string
+  recommended_lectures?: Lecture[]
 }

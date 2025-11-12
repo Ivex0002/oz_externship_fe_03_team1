@@ -1,4 +1,4 @@
-import type { PageReq } from '@/types/ApiLink'
+import type { LectureParams } from './queries/useQueryLecture'
 
 const defineQueryKey = <const T extends readonly unknown[]>(key: T) => key
 
@@ -20,7 +20,8 @@ export const queryKeys = {
   lectures: {
     all: () => defineQueryKey(['lectures']),
     lists: () => defineQueryKey(['lectures', 'list']),
-    list: (params: PageReq) => defineQueryKey(['lectures', 'list', params]),
+    list: (params: LectureParams) =>
+      defineQueryKey(['lectures', 'list', params]),
     categories: () => defineQueryKey(['lectures', 'categories']),
     recommended: () => defineQueryKey(['lectures', 'recommended']),
   },

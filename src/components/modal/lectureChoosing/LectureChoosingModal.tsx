@@ -3,17 +3,17 @@ import { useState } from 'react'
 import { LectureCard } from './LectureCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { Search } from 'lucide-react'
-import { lectureData } from '@/assets/dummyData/lectureData'
 import { storeLecture } from '@/store/storeLecture'
 import { useModal } from '@/hooks/useModal'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
 import { useDebounce } from '@/hooks/useDebounce'
-// import { useLoaderData } from 'react-router'
+import { useQueryLecture } from '@/hooks/api/queries/useQueryLecture'
 
-const LECTURES_PER_PAGE = 5 // api 데이터 받아올때 page_size의 값으로 보냄. (page_size=value)
+const LECTURES_PER_PAGE = 5
 
 export const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
+  // const [lectureData, setLectureData] = useState<ApiLectureList>()
   const [currentPage, setCurrentPage] = useState(0)
   const {
     selectedLectureList,
@@ -21,26 +21,30 @@ export const LectureChoosingModal = () => {
     setPreviousLectureList,
     setSelectedLectureList,
   } = storeLecture()
-  //loader 생성 후 아래 코드로 변경
-  //   const lectureList = useLoaderData()
+
   const { closeModal } = useModal()
 
   const debouncedSearchInputValue = useDebounce(searchInputValue, 500)
 
-  const pageCount = Math.ceil(lectureData.count / LECTURES_PER_PAGE)
+  const lectureParams = {
+    page: currentPage + 1,
+    search: debouncedSearchInputValue || null,
+    page_size: LECTURES_PER_PAGE,
+  }
 
-  // api 연결시에는 쿼리파라미터로 검색어를 보내서 리스트를 받아옴. (search=searchValue)
-  const lectureList = lectureData.results.filter(
-    (lecture) =>
-      lecture.instructor.includes(debouncedSearchInputValue) ||
-      lecture.title.includes(debouncedSearchInputValue)
-  )
+  const { data, error, isError, isPending } = useQueryLecture(lectureParams)
+
+  const lectureData = data && data.data
+
+  const pageCount =
+    lectureData && Math.ceil(lectureData.count / LECTURES_PER_PAGE)
+  const lectureList = lectureData?.results
 
   const handleChangeInputValue = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchInputValue(e.target.value)
   }
 
-  const onPageChange = (page: number) => setCurrentPage(page)
+  const onPageChange = (page: number) => setCurrentPage(page) // 다음 페이지 api 로직
 
   const handleClickRevert = () => {
     setSelectedLectureList(previousLectureList)
@@ -64,16 +68,35 @@ export const LectureChoosingModal = () => {
             <Search size={16} />
           </BasicInput>
         </div>
-        <div className="flex flex-col gap-4 pt-6">
-          {lectureList.map((lecture) => (
-            <LectureCard key={lecture.uuid} lecture={lecture} />
-          ))}
-        </div>
-        <CustomPagination
-          pageCount={pageCount}
-          onPageChange={onPageChange}
-          currentPage={currentPage}
-        />
+
+        {isError && (
+          <div className="text-danger-800 border-danger-100 w-full rounded-lg border-2 pt-6 text-center">
+            {error.message}
+          </div>
+        )}
+
+        {isPending && (
+          <div className="w-full animate-pulse rounded-lg border-2 border-gray-300 pt-6 text-center">
+            강의 목록을 받아오고 있습니다...
+          </div>
+        )}
+
+        {data && (
+          <div className="transparent-scrollbar flex h-[688px] flex-col gap-4 overflow-y-scroll pt-6">
+            {lectureList &&
+              lectureList.map((lecture) => (
+                <LectureCard key={lecture.uuid} lecture={lecture} />
+              ))}
+          </div>
+        )}
+
+        {pageCount && pageCount > 1 && (
+          <CustomPagination
+            pageCount={pageCount}
+            onPageChange={onPageChange}
+            currentPage={currentPage}
+          />
+        )}
       </main>
       <footer className="flex justify-between border-t border-gray-200 p-6">
         <span className="text-sm font-normal text-gray-600">

@@ -194,34 +194,60 @@ type AdminStudyGroup = {
 }
 
 // ===================== Study:Review =====================
-// type ReviewEnum =
-//   | '5_OUT_OF_5_STARS'
-//   | '4_OUT_OF_5_STARS'
-//   | '3_OUT_OF_5_STARS'
-//   | '2_OUT_OF_5_STARS'
-//   | '1_OUT_OF_5_STARS'
+// 이후 변경 가능성 매우 높음(uuid)
+type ReviewUser = {
+  id: number
+  nickname: string
+}
 
 type StudyReview = {
-  // (스웨거) uuid 형식
-  id: string
-  rating: number
+  id: number
+  user: ReviewUser
+  star_rating: number
   content: string
   created_at: string
-  updated_at: string
-  // 왜 is_mine을 bool값으로 주나?
-  // owner 필드로 유저 id든 uuid든 리턴하고
-  // 프론트에서 로그인한 유저 정보에 따라 불린값으로 쓰는게
-  // 훨씬 서버 비용을 절약할수 있지않나?
-  // 유저가 많아지면 많아질수록 비효율적임
-  // 모든 유저를 램에 캐스팅해놓고 문자열 셋으로 쓴다?
-  // 데이터 비용 자체는 적겠지만 클라이언트 쪽에서 리뷰를 누가 썼는지 확인도 불가능해짐
-  // 장점보다 단점이 압도적으로 많음
-  is_mine: boolean
 }
 
 type StudyReviewPost = {
   star_rating: number
   content: string
+}
+
+type StudyReviewPatchRes = StudyReview & {
+  // (명세서) study_group_id : number로 잘못 기입되어있음
+  study_group_id: string
+  updated_at: string
+}
+
+// ===================== Study:Review-admin =====================
+// (명세서) 그룹 id number로 잘못 기입되어 있음
+type ReviewAdminGroup = { id: string; name: string }
+type ReviewDetailAdminGroup = ReviewAdminGroup & {
+  start_date: string
+  end_date: string
+}
+// 추후에 id는 string으로 바뀔 가능성 매우 높음
+type ReviewAdminUser = { id: number; nickname: string; email: string }
+
+type ReviewAdminRes = {
+  id: number
+  study_group: ReviewAdminGroup
+  user: ReviewAdminUser
+  star_rating: number
+  content: string
+  created_at: string
+  updated_at: string
+}
+
+// ReviewAdminRes에 study_group 구조만 다름
+type ReviewDetailAdminRes = {
+  id: number
+  study_group: ReviewDetailAdminGroup
+  user: ReviewAdminUser
+  star_rating: number
+  content: string
+  created_at: string
+  updated_at: string
 }
 
 // ===================== Study:Presigned-url =====================
@@ -319,25 +345,33 @@ type SchedulePost = {
 }
 
 // ===================== Chat =====================
+type LastMessage = {
+  id: number
+  content: string
+  sender_nickname: string
+  created_at: string
+}
+
 type ChatRoom = {
   uuid: string
   name: string
-  // 의문점 1 : Sender는 어디에? additionalProp 으로는 어떤 정보도 얻을 수 없음
-  // 의문점 2 : last_message 단수형인데 어째서 배열 형태?
-  last_message: string[] | null
+  last_message: LastMessage | null
   unread_message_count: number
 }
 
+// uuid로 변경 가능성 매우 높음
 type ChatSender = {
   id: number
   nickname: string
 }
 
+// study_group_uuid 삭제됨
+// 추후에 변경 가능성 매우 높음
 type ChatMessage = {
   id: number
-  study_group_uuid: string
   sender: ChatSender
   content: string
+  is_read: boolean
   created_at: string
 }
 
@@ -397,78 +431,63 @@ export type ApiLinks = {
         POST: () => { res: BaseResponse }
       }
     }
-    notifications: {
-      // 알림쪽 api 명세서 매우 미흡함
-      // 단일문서에서도 GET-POST 혼용
-      // 엔드포인트 분리 X
-      // 예정 스케줄 알림 생성 데이터 필드 누락
-      GET: () => { res: Pagination<Notification> }
-      read$all: {
-        PATCH: () => { res: BaseResponse }
-      }
-      (notification_id: number): {
-        PATCH: () => { res: BaseResponse }
-      }
-      study: {
-        join: {
-          POST: (req: NotiStudyJoinPost) => { res: BaseResponse }
-        }
-        review$request: {
-          POST: () => { res: BaseResponse }
-        }
-      }
-    }
-    lectures: {
-      // (스웨거) 검색, 필터, 페이지네이션 기능 누락
-      // 임시로 페이지 옵션만 첨부
-      GET: () => {
-        res: {
-          data: Pagination<Lecture>
-        }
-      }
-
-      categories: {
-        GET: () => { res: LectureCategory[] }
-      }
-    }
+    notifications: NotificationApi
+    lectures: LectureApi
     studies: {
       groups: GroupApi
       notes: NoteApi
-      admin: {
-        groups: {
-          // api 명세서 : BaseResWithGeneric<AdminStudyGroupList>
-          // 스웨거 : Pagination<AdminStudyGroupList>
-          // 서로 타입이 상충함
-          /**
-           * @queries {finished:boolean, sort:string, limit:int, offset:int}
-           */
-          GET: () => {
-            res: BaseResWithGeneric<{ study_groups: AdminStudyGroup[] }>
-          }
-
-          (group_uuid: string): {
-            GET: () => { res: BaseResWithGeneric<AdminStudyGroupDetail> }
-          }
-        }
-      }
-      // (스웨거) 어차피 그룹id 받는거면 주소에 groups/{group_uuid} 넣어서 엔드포인트 일치시키는게 맞지 않나?
-      // /notes 항목도 동일한 문제가 있음
+      admin: AdminApi
       study$schedules: {
         POST: (req: SchedulePost) => { res: BaseResponse }
       }
     }
-    chat: {
-      rooms: {
-        GET: () => { res: BaseResWithGeneric<ChatRoom[]> }
-        (studyGroupId: string): {
-          messages: {
-            // 해당 요청 에러시 에러 객체가 아닌 일반 메시지로 응답이 옴(403)
-            // 페이지네이션 전체 타입에 대해 정확히 Pagination<ChatMessage> 으로 오는지 확인 필요
-            // 스웨거에는 ChatMessage 만 적혀있음
-            GET: () => { res: Pagination<ChatMessage> }
-          }
-        }
+    chat: ChatApi
+  }
+}
+
+type NotificationApi = {
+  // 알림쪽 api 명세서 매우 미흡함
+  // 단일문서에서도 GET-POST 혼용
+  // 엔드포인트 분리 X
+  // 예정 스케줄 알림 생성 데이터 필드 누락
+  GET: () => {
+    res: Pagination<Notification>
+  }
+  read$all: {
+    PATCH: () => {
+      res: BaseResponse
+    }
+  }
+  (notification_id: number): {
+    PATCH: () => {
+      res: BaseResponse
+    }
+  }
+  study: {
+    join: {
+      POST: (req: NotiStudyJoinPost) => {
+        res: BaseResponse
       }
+    }
+    review$request: {
+      POST: () => {
+        res: BaseResponse
+      }
+    }
+  }
+}
+
+type LectureApi = {
+  // (스웨거) 검색, 필터, 페이지네이션 기능 누락
+  // 임시로 페이지 옵션만 첨부
+  GET: () => {
+    res: {
+      data: Pagination<Lecture>
+    }
+  }
+  categories: {
+    GET: () => {
+      res: LectureCategory[]
     }
   }
 }
@@ -517,7 +536,6 @@ type GroupApi = {
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
     members: {
       (member_id: string): {
-
         DELETE: () => { res: BaseResponse }
         PATCH: () => { res: BaseResponse }
       }
@@ -532,23 +550,22 @@ type GroupApi = {
         >
       }
     }
-    reviews: {
-      // 리뷰를 받아오는 쪽에서는 평점이 문자열
-      GET: () => { res: Pagination<StudyReview> }
-      // 리뷰를 작성하는 쪽에서는 평점이 숫자
-      // 서버쪽에서 숫자로 온 데이터를 문자열로 파싱하는 과정이 필요함
-      // 문자열로 할거면 그냥 클라이언트쪽에 통신비용 떠넘기고 타입 통일해서 서버 동작 줄이는게 낫지 않나?
-      // 어차피 5점만점 유지할거면 데이터 크기 작은 int 1~5로 받는게 낫지 않나?
-      // 숫자로 하면 메모리 8 byte 통신 1 byte
-      // 문자열로 하면 메모리 32~48 bytes 통신 17 bytes
-      // 왜 문자열로 하는거지?
-      POST: (req: StudyReviewPost) => { res: BaseResponse }
-      (review_uuid: string): {
-        // put과 patch 혼용이유가 있나?
-        // patch 하나만으로 충분히 실행 가능하지 않나?
-        PUT: (req: StudyReview) => { res: StudyReview }
-        PATCH: (req: StudyReview) => { res: StudyReview }
-      }
+    reviews: ReviewApi
+  }
+}
+
+type ReviewApi = {
+  GET: () => {
+    res: BaseResWithGeneric<Pagination<StudyReview>>
+  }
+  POST: (req: StudyReviewPost) => {
+    res: BaseResponse
+  }
+  (review_uuid: string): {
+    // (명세서) 해당 요청 detail에 data가 잘못 들어오고 있음
+    // 아무리 봐도 이건 아닌것 같아 data 필드로 가정하고 기입함
+    PATCH: (req: StudyReviewPost) => {
+      res: BaseResWithGeneric<StudyReviewPatchRes>
     }
   }
 }
@@ -565,6 +582,69 @@ type NoteApi = {
   presigned$url: {
     POST: (req: PresignedURLReq) => {
       res: BaseResWithGeneric<PresignedURLRes[]>
+    }
+  }
+}
+
+type AdminApi = {
+  groups: {
+    // api 명세서 : BaseResWithGeneric<AdminStudyGroupList>
+    // 스웨거 : Pagination<AdminStudyGroupList>
+    // 서로 타입이 상충함
+    /**
+     * @queries {finished:boolean, sort:string, limit:int, offset:int}
+     */
+    GET: () => {
+      res: BaseResWithGeneric<{
+        study_groups: AdminStudyGroup[]
+      }>
+    }
+    (group_uuid: string): {
+      GET: () => {
+        res: BaseResWithGeneric<AdminStudyGroupDetail>
+      }
+    }
+  }
+  reviews: {
+    GET: () => { res: BaseResWithGeneric<Pagination<ReviewAdminRes>> }
+
+    (uuid: string): {
+      GET: () => { res: ReviewDetailAdminRes }
+    }
+  }
+}
+
+type ChatApi = {
+  total$unread$messages: {
+    GET: () => { res: BaseResWithGeneric<{ total_unread_count: number }> }
+  }
+  rooms: {
+    GET: () => {
+      res: BaseResWithGeneric<ChatRoom[]>
+    }
+    (study_group_uuid: string): {
+      messages: {
+        // 해당 요청 에러시 에러 객체가 아닌 일반 메시지로 응답이 옴(403)
+        // 페이지네이션 전체 타입에 대해 정확히 Pagination<ChatMessage> 으로 오는지 확인 필요
+        // 스웨거에는 ChatMessage 만 적혀있음
+        // 페이지 옵션과 데이터 결과가 매우 이질적으로 되어 있음
+        // 이것만 따로 데이터 구조 다르게 기입함
+        GET: () => {
+          res: {
+            status: string
+            code: string
+            message: string
+            data: {
+              messages: ChatMessage[]
+              pagination: {
+                page: number
+                page_size: number
+                total_count: number
+              }
+            }
+          }
+        }
+      }
     }
   }
 }

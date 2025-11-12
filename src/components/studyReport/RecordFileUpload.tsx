@@ -27,7 +27,10 @@ export const RecordFileUpload = ({
   const [dragActive, setDragActive] = useState(false)
   const inputRef = useRef<HTMLInputElement | null>(null)
 
-  // 파일 선택 (클릭)
+  // 모바일 환경 감지
+  const isMobile = /iPhone|iPad|iPod|Android/i.test(navigator.userAgent)
+
+  // 파일 선택 (클릭/탭)
   const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
     const selected = e.target.files ? Array.from(e.target.files) : []
     const totalSize =
@@ -41,7 +44,7 @@ export const RecordFileUpload = ({
     toast.success(`${selected.length}개의 파일이 추가되었습니다.`)
   }
 
-  // 드래그 앤 드롭
+  // 드래그 앤 드롭 (데스크톱 전용)
   const handleDrop = (e: DragEvent<HTMLDivElement>) => {
     e.preventDefault()
     e.stopPropagation()
@@ -63,6 +66,7 @@ export const RecordFileUpload = ({
     toast.info(`파일 "${name}"이 삭제되었습니다.`)
   }
 
+  // 파일 아이콘 결정
   const getFileIcon = (file: File) => {
     const type = file.type
     const ext = file.name.split('.').pop()?.toLowerCase()
@@ -73,6 +77,8 @@ export const RecordFileUpload = ({
       return <Video className="text-gray-500" size={18} />
     if (type.startsWith('audio/'))
       return <Music className="text-gray-500" size={18} />
+    if (type.startsWith('text/') || type === 'application/json')
+      return <FileText className="text-gray-500" size={18} />
 
     switch (ext) {
       case 'pdf':
@@ -83,6 +89,9 @@ export const RecordFileUpload = ({
       case 'ppt':
       case 'pptx':
       case 'txt':
+      case 'csv':
+      case 'json':
+      case 'html':
         return <FileText className="text-gray-500" size={18} />
       default:
         return <FileIcon className="text-gray-500" size={18} />
@@ -100,15 +109,17 @@ export const RecordFileUpload = ({
             ? 'border-yellow-500 bg-yellow-50'
             : 'border-gray-200 bg-white'
         }`}
-        onDragOver={(e) => {
-          e.preventDefault()
-          setDragActive(true)
-        }}
-        onDragLeave={(e) => {
-          e.preventDefault()
-          setDragActive(false)
-        }}
-        onDrop={handleDrop}
+        {...(!isMobile && {
+          onDragOver: (e: DragEvent<HTMLDivElement>) => {
+            e.preventDefault()
+            setDragActive(true)
+          },
+          onDragLeave: (e: DragEvent<HTMLDivElement>) => {
+            e.preventDefault()
+            setDragActive(false)
+          },
+          onDrop: handleDrop,
+        })}
         onClick={() => inputRef.current?.click()}
       >
         <img
@@ -117,8 +128,19 @@ export const RecordFileUpload = ({
           className="mx-auto mb-3 h-10 w-10 opacity-70"
         />
         <p className="text-gray-500">
-          파일을 여기에 드래그하거나{' '}
-          <span className="font-semibold text-yellow-600">클릭하여 선택</span>
+          {isMobile ? (
+            <>
+              파일을{' '}
+              <span className="font-semibold text-yellow-600">탭하여 선택</span>
+            </>
+          ) : (
+            <>
+              파일을 여기에 드래그하거나{' '}
+              <span className="font-semibold text-yellow-600">
+                클릭하여 선택
+              </span>
+            </>
+          )}
         </p>
         <p className="mt-2 text-xs text-gray-400">
           모든 파일 형식 지원 (최대 10MB)
@@ -127,6 +149,8 @@ export const RecordFileUpload = ({
           ref={inputRef}
           type="file"
           multiple
+          accept="image/*,video/*,.pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt,.csv,.json,.html"
+          capture="environment"
           className="hidden"
           onChange={handleFileSelect}
         />

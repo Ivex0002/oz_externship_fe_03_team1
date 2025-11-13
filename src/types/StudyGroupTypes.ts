@@ -27,5 +27,5 @@ export interface StudyGroupForm {
   endDate: string
   maxMembers: number
   lectures: string[]
-  image: File | null
+  image_url?: string | null
 }

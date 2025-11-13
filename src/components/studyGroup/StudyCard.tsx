@@ -16,8 +16,14 @@ interface StudyCardProps {
 export const StudyCard = ({ study }: StudyCardProps) => {
   const navigate = useNavigate()
   const { openModal } = useModal()
-  const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
-    storeReview()
+  const {
+    reviewData,
+    setReviewData,
+    setPreviousMyReview,
+    setBasicStudyInfo,
+    userId, // 로그인 사용자 ID
+  } = storeReview()
+
   const [imgError, setImgError] = useState(false)
 
   const reviewList = reviewDetailData.results

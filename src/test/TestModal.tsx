@@ -1,7 +1,7 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 import { useModal } from '@/hooks/useModal'
 import type { ModalPropsMap, ModalType } from '@/types/Modal'
+import { toast } from 'react-toastify'
 
 type ModalTestItem<T extends ModalType> = {
   modalType: T
@@ -48,7 +48,9 @@ function TestModal() {
 
   const options = {
     message: '리더를 위임하시겠습니까?',
-    onConfirm: closeModal,
+    onConfirm: () => {
+      toast.info('모달-토스트 테스트')
+    },
     onCancel: closeModal,
   }
 
@@ -69,8 +71,6 @@ function TestModal() {
         </BasicButton>
       ))}
       <BasicButton onClick={() => openConfirm(options)}>확인창</BasicButton>
-
-      <GlobalToast />
     </div>
   )
 }

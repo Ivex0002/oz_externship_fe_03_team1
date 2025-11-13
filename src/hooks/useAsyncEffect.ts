@@ -5,8 +5,8 @@ interface UseAsyncEffectOptions<R> {
   asyncFn: (signal?: AbortSignal) => Promise<R | AxiosResponse<R>>
   onSuccess?: (data: R) => void
   onError?: (error: unknown) => void
-  deps?: React.DependencyList
   finallyFn?: () => void
+  deps?: React.DependencyList
 }
 
 /**
@@ -19,8 +19,8 @@ export const useAsyncEffect = <R>({
   asyncFn,
   onSuccess,
   onError,
-  deps = [],
   finallyFn,
+  deps = [],
 }: UseAsyncEffectOptions<R>) => {
   const [loading, setLoading] = useState(false)
 

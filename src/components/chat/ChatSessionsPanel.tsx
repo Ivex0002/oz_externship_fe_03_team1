@@ -1,10 +1,10 @@
 import { formatToMonthDay } from '@/hooks/useFormatDate'
 import { storeChat } from '@/store/storeChat'
-import type { ChatSessionUI } from '@/types/Chat'
+import type { ChatRoom } from '@/types/Chat'
 import { X } from 'lucide-react'
 
 export const ChatSessionsPanel = () => {
-  const { sessions } = storeChat()
+  const { chatRooms: sessions } = storeChat()
   return (
     <>
       <ChatSessionHeader />
@@ -43,7 +43,7 @@ const ChatSessionHeader = () => {
   )
 }
 
-const SessionItem = (session: ChatSessionUI) => {
+const SessionItem = (session: ChatRoom) => {
   const { togglePanel } = storeChat()
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -66,9 +66,9 @@ const SessionItem = (session: ChatSessionUI) => {
           </div>
 
           {/* unread count */}
-          {session.unreadCount > 0 && (
+          {session.unread_message_count > 0 && (
             <div className="center-center bg-danger-500 h-5 w-5 rounded-full text-xs text-white">
-              {session.unreadCount}
+              {session.unread_message_count}
             </div>
           )}
         </div>

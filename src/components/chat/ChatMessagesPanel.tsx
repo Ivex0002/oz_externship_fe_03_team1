@@ -1,7 +1,9 @@
-import { dummyUsers } from '@/assets/dummyData/dummyChat'
+import { api } from '@/api/api'
+import { useAsyncEffect } from '@/hooks/useAsyncEffect'
 import { formatToHourMin } from '@/hooks/useFormatDate'
 import { storeChat } from '@/store/storeChat'
-import type { ChatMessage, ChatUser } from '@/types/Chat'
+import { storeUser } from '@/store/storeUser'
+import type { ChatMessage } from '@/types/Chat'
 import clsx from 'clsx'
 import { motion } from 'framer-motion'
 import { ArrowLeft, Send, X } from 'lucide-react'
@@ -13,26 +15,43 @@ import { toast } from 'react-toastify'
 //    더미데이터의 세션 첫번째 유저가 사용자인것으로 가정하고 작성함
 //    추후에 수정 필요
 export const ChatMessagesPanel = () => {
-  const { currentSession, setMessagesAsAllRead } = storeChat()
+  const { currentChatRoomUUID } = storeChat()
 
   useEffect(() => {
-    if (!currentSession) return
-    setMessagesAsAllRead(currentSession)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [currentSession])
+    if (!currentChatRoomUUID) return
+  }, [currentChatRoomUUID])
   return (
     <>
+      <GETChatMessages currentChatRoomUUID={currentChatRoomUUID} />
       <ChatHeader />
-      <ChatMembers />
+      {/* <ChatMembers /> */}
       <ChatMessages />
       <ChatInput />
     </>
   )
 }
 
+const GETChatMessages = ({
+  currentChatRoomUUID,
+}: {
+  currentChatRoomUUID: string | null
+}) => {
+  const { setMessages } = storeChat()
+  useAsyncEffect(
+    async () => {
+      if (!currentChatRoomUUID) return
+      return await api.v1.chat.rooms(currentChatRoomUUID).messages.GET()
+    },
+    (data) => data && setMessages(data.data.messages),
+    []
+  )
+  return null
+}
+
 const ChatHeader = () => {
-  const { currentSession, sessions, togglePanel, setIsPanelOpen } = storeChat()
-  const session = sessions.find((s) => s.id === currentSession)
+  const { currentChatRoomUUID, chatRooms, togglePanel, setIsPanelOpen } =
+    storeChat()
+  const currentChatRoom = chatRooms.find((s) => s.uuid === currentChatRoomUUID)
 
   useEffect(() => {
     return () => {}
@@ -46,16 +65,16 @@ const ChatHeader = () => {
     setIsPanelOpen(false)
   }
 
-  const onlineMemberCount =
-    session?.member.filter((id) => {
-      const user = dummyUsers.find((u) => u.id === id)
-      return user?.is_online
-    }).length ?? 0
+  // const onlineMemberCount =
+  //   session?.member.filter((id) => {
+  //     const user = dummyUsers.find((u) => u.id === id)
+  //     return user?.is_online
+  //   }).length ?? 0
 
-  const onlineDot = clsx('w-2 h-2 rounded-full', {
-    'bg-gray-300': onlineMemberCount === 0,
-    'bg-[#22C55E]': onlineMemberCount !== 0,
-  })
+  // const onlineDot = clsx('w-2 h-2 rounded-full', {
+  //   'bg-gray-300': onlineMemberCount === 0,
+  //   'bg-[#22C55E]': onlineMemberCount !== 0,
+  // })
 
   const closeButton = clsx(
     'center-center h-8 w-8 cursor-pointer rounded-md transition-colors hover:bg-gray-100'
@@ -68,14 +87,14 @@ const ChatHeader = () => {
           <ArrowLeft className="text-gray-600" size={20} />
         </div>
         <div className="flex h-9 flex-col pl-2">
-          <span className="text-sm font-semibold">{session?.title}</span>
+          <span className="text-sm font-semibold">{currentChatRoom?.name}</span>
           <div className="flex h-4 flex-row items-center gap-1">
-            <span className={onlineDot} />
+            {/* <span className={onlineDot} />
             <span className="font-roboto text-xs text-gray-600">
               {onlineMemberCount === 0
                 ? `0명 온라인`
                 : `${onlineMemberCount}명 온라인`}
-            </span>
+            </span> */}
           </div>
         </div>
       </div>
@@ -86,59 +105,60 @@ const ChatHeader = () => {
   )
 }
 
-const ChatMembers = () => {
-  const { currentSession, sessions } = storeChat()
-  const session = sessions.find((s) => s.id === currentSession)
-  const membersRef = useRef<HTMLDivElement>(null)
+// const ChatMembers = () => {
+//   const {  currentChatRoomUUID,  chatRooms } =
+//     storeChat()
+//   const session = chatRooms.find((s) => s.uuid === currentChatRoomUUID)
+//   const membersRef = useRef<HTMLDivElement>(null)
 
-  const members: ChatUser[] =
-    session?.member
-      .map((userId) => dummyUsers.find((user) => user.id === userId))
-      .filter((user): user is ChatUser => user !== undefined) ?? []
+//   const members: ChatUser[] =
+//     session?.member
+//       .map((userId) => dummyUsers.find((user) => user.id === userId))
+//       .filter((user): user is ChatUser => user !== undefined) ?? []
 
-  const handleWheel = (e: React.WheelEvent) => {
-    if (membersRef.current) {
-      membersRef.current.scrollLeft += e.deltaY
-    }
-  }
+//   const handleWheel = (e: React.WheelEvent) => {
+//     if (membersRef.current) {
+//       membersRef.current.scrollLeft += e.deltaY
+//     }
+//   }
 
-  return (
-    <div
-      ref={membersRef}
-      onWheel={handleWheel}
-      className="transparent-scrollbar-x h-[41px] border-b border-gray-200 bg-gray-50 px-2"
-    >
-      <div className="inline-flex h-full flex-row items-center gap-2">
-        {members.map((el, idx) => (
-          <Member member={el} isMe={idx === 0} key={el.id} />
-        ))}
-      </div>
-    </div>
-  )
-}
+//   return (
+//     <div
+//       ref={membersRef}
+//       onWheel={handleWheel}
+//       className="transparent-scrollbar-x h-[41px] border-b border-gray-200 bg-gray-50 px-2"
+//     >
+//       <div className="inline-flex h-full flex-row items-center gap-2">
+//         {members.map((el, idx) => (
+//           <Member member={el} isMe={idx === 0} key={el.id} />
+//         ))}
+//       </div>
+//     </div>
+//   )
+// }
 
-const Member = ({ member, isMe }: { member: ChatUser; isMe: boolean }) => {
-  const onlineDot = clsx('w-2 h-2 rounded-full', {
-    'bg-gray-300': !member.is_online,
-    'bg-[#4ADE80]': member.is_online,
-  })
+// const Member = ({ member, isMe }: { member: ChatUser; isMe: boolean }) => {
+//   const onlineDot = clsx('w-2 h-2 rounded-full', {
+//     'bg-gray-300': !member.is_online,
+//     'bg-[#4ADE80]': member.is_online,
+//   })
 
-  const nickName = clsx('text-xs font-roboto center-center whitespace-nowrap', {
-    'text-primary-600': isMe,
-    'text-gray-700': !isMe,
-  })
+//   const nickName = clsx('text-xs font-roboto center-center whitespace-nowrap', {
+//     'text-primary-600': isMe,
+//     'text-gray-700': !isMe,
+//   })
 
-  return (
-    <div className="flex h-6 flex-row items-center gap-1 rounded-full bg-white px-2 py-1">
-      <span className={onlineDot} />
-      <span className={nickName}>{member.nickName}</span>
-    </div>
-  )
-}
+//   return (
+//     <div className="flex h-6 flex-row items-center gap-1 rounded-full bg-white px-2 py-1">
+//       <span className={onlineDot} />
+//       <span className={nickName}>{member.nickName}</span>
+//     </div>
+//   )
+// }
 
 const ChatMessages = () => {
-  const { currentSession, messages } = storeChat()
-  const messageArr = messages.filter((el) => el.session_id === currentSession)
+  const { messages } = storeChat()
+
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -148,14 +168,14 @@ const ChatMessages = () => {
         behavior: 'smooth',
       })
     }
-  }, [messageArr.length])
+  }, [messages.length])
 
   return (
     <div
       ref={containerRef}
       className="transparent-scrollbar h-[217px] w-full p-3"
     >
-      {messageArr.map((el) => (
+      {messages.map((el) => (
         <Message message={el} key={el.id} />
       ))}
     </div>
@@ -163,11 +183,12 @@ const ChatMessages = () => {
 }
 
 const Message = ({ message }: { message: ChatMessage }) => {
-  const { currentSession, sessions } = storeChat()
-  const session = sessions.find((s) => s.id === currentSession)
-  const isMe = session?.member[0] === message.sender
+  const { user } = storeUser()
+  if (!user) return
 
-  const sender = dummyUsers.find((el) => el.id === message.sender)
+  const isMe = message.sender.id === user?.id
+
+  const sender = message.sender
 
   const messageItem = clsx('flex gap-1 flex-col mb-3', {
     'items-end': isMe,
@@ -190,7 +211,7 @@ const Message = ({ message }: { message: ChatMessage }) => {
 
   return (
     <div className={messageItem}>
-      <div className={grayStyle}>{isMe ? '' : sender?.nickName}</div>
+      <div className={grayStyle}>{isMe ? '' : sender?.nickname}</div>
       <div className={messageContent} style={borderRadiusStyle}>
         {message.content}
       </div>
@@ -200,9 +221,9 @@ const Message = ({ message }: { message: ChatMessage }) => {
 }
 
 const ChatInput = () => {
-  const { currentSession, addMessage, sessions } = storeChat()
-  const session = sessions.find((s) => s.id === currentSession)
-  const me = session?.member[0]
+  const { addMessage } = storeChat()
+  const { user } = storeUser()
+
   const ref = useRef<HTMLTextAreaElement>(null)
   const [text, setText] = useState('')
   const [height, setHeight] = useState(38)
@@ -214,16 +235,20 @@ const ChatInput = () => {
     }
   }, [text])
 
+  if (!user) return
+  const me = { id: user.id, nickname: user.nickname }
+
+  const newChat: ChatMessage = {
+    id: Date.now(),
+    sender: me,
+    content: text,
+    is_read: true,
+    created_at: new Date().toISOString(),
+  }
+
   const handleSubmit = () => {
     try {
-      addMessage({
-        id: Date.now(),
-        session_id: currentSession,
-        sender: me,
-        content: text,
-        created_at: new Date().toISOString(),
-        is_read: true,
-      } as ChatMessage)
+      addMessage(newChat)
     } catch (error) {
       toast.error(`메시지 전송 중 에러가 발생했습니다:${error}`)
     } finally {

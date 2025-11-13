@@ -6,6 +6,7 @@ import type {
 } from 'axios'
 import type { UserNotification } from './Notification'
 import type { UserProfile } from './User'
+import type { ChatMessage, ChatRoom } from './Chat'
 
 // ===================== Notification =====================
 // type NotificationTypeEnum =
@@ -341,34 +342,18 @@ type ScheduleDetail = Schedule & {
 }
 
 // ===================== Chat =====================
-type LastMessage = {
-  id: number
-  content: string
-  sender_nickname: string
-  created_at: string
-}
-
-type ChatRoom = {
-  uuid: string
-  name: string
-  last_message: LastMessage | null
-  unread_message_count: number
-}
-
-// uuid로 변경 가능성 매우 높음
-type ChatSender = {
-  id: number
-  nickname: string
-}
-
-// study_group_uuid 삭제됨
-// 추후에 변경 가능성 매우 높음
-type ChatMessage = {
-  id: number
-  sender: ChatSender
-  content: string
-  is_read: boolean
-  created_at: string
+type PaginatedChats = {
+  status: string
+  code: string
+  message: string
+  data: {
+    messages: ChatMessage[]
+    pagination: {
+      page: number
+      page_size: number
+      total_count: number
+    }
+  }
 }
 
 // ===================== Pagination =====================
@@ -642,19 +627,7 @@ type ChatApi = {
         // 페이지 옵션과 데이터 결과가 매우 이질적으로 되어 있음
         // 이것만 따로 데이터 구조 다르게 기입함
         GET: () => {
-          res: {
-            status: string
-            code: string
-            message: string
-            data: {
-              messages: ChatMessage[]
-              pagination: {
-                page: number
-                page_size: number
-                total_count: number
-              }
-            }
-          }
+          res: PaginatedChats
         }
       }
     }

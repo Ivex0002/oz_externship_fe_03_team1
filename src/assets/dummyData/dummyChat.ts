@@ -1,4 +1,4 @@
-import type { ChatMessage, ChatSession, ChatUser } from '@/types/Chat'
+import type { ChatMessage, ChatRoom, ChatUser } from '@/types/Chat'
 
 export const dummyMessages: ChatMessage[] = [
   // === Session 1: 프로젝트 A 팀 채팅 ===
@@ -302,7 +302,7 @@ export const dummyMessages: ChatMessage[] = [
   },
 ]
 
-export const dummySessions: ChatSession[] = [
+export const dummySessions: ChatRoom[] = [
   {
     id: 1,
     title: '프로젝트 A 팀 채팅',

@@ -42,7 +42,10 @@ const GETNoti = () => {
   const { user } = storeUser()
   useAsyncEffect(
     async () => {
-      if (!user) return
+      if (!user) {
+        setNotiArr([])
+        return
+      }
       return await api.v1.notifications.GET()
     },
     (data) => data && setNotiArr(data.items),

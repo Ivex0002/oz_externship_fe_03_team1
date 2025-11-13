@@ -4,6 +4,8 @@ import { useRef } from 'react'
 import { ChatPanel } from './ChatPanel'
 import clsx from 'clsx'
 import { AnimatePresence } from 'framer-motion'
+import { useAsyncEffect } from '@/hooks/useAsyncEffect'
+import { api } from '@/api/api'
 
 export const ChatButton = () => {
   const { totalUnreadCount, setIsPanelOpen, isPanelOpen } = storeChat()
@@ -15,6 +17,7 @@ export const ChatButton = () => {
 
   return (
     <>
+      <GETChatRooms />
       <button
         ref={buttonRef}
         onClick={handleClick}
@@ -37,6 +40,16 @@ export const ChatButton = () => {
       </AnimatePresence>
     </>
   )
+}
+
+const GETChatRooms = () => {
+  const { setChatRooms, chatRooms } = storeChat()
+  useAsyncEffect(
+    async () => await api.v1.chat.rooms.GET(),
+    (data) => data && setChatRooms(data.data || []),
+    [chatRooms]
+  )
+  return null
 }
 
 const iconStyle = clsx('text-white text-2xl')

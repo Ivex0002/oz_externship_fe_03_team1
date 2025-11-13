@@ -30,7 +30,10 @@ export const NavbarLayout = () => {
 
 const Logo = () => {
   return (
-    <NavLink to="/" className="flex items-center space-x-2">
+    <NavLink
+      to="https://account.ozcoding.site/"
+      className="flex items-center space-x-2"
+    >
       <div className="bg-primary-400 flex h-8 w-8 items-center justify-center rounded-lg font-semibold text-white">
         S
       </div>
@@ -41,7 +44,7 @@ const Logo = () => {
 
 const linkArr = [
   { path: 'https://learn.ozcoding.site/lecture', label: '강의 목록' },
-  { path: '/', label: '스터디 그룹' },
+  { path: 'https://study.ozcoding.site/', label: '스터디 그룹' },
   { path: 'https://learn.ozcoding.site/recruit', label: '구인 공고' },
 ]
 

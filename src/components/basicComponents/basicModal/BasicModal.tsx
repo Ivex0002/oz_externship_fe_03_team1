@@ -1,5 +1,5 @@
 import { createPortal } from 'react-dom'
-import { motion } from 'framer-motion'
+import { AnimatePresence, motion } from 'framer-motion'
 import { useEffect, useRef } from 'react'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import { ModalHeader } from '@/components/modal/ModalHeader'
@@ -88,33 +88,35 @@ export const BasicModal = () => {
   }
 
   return createPortal(
-    isModalOpen && (
-      <motion.div
-        className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
-        variants={modalAnim}
-        initial="hidden"
-        animate="visible"
-        transition={{ duration: 0.1 }}
-        role="dialog"
-        aria-modal="true"
-        onClick={closeModal}
-      >
+    <AnimatePresence>
+      {isModalOpen && (
         <motion.div
-          className="relative flex h-auto max-h-[90vh] flex-col items-center justify-center rounded-xl bg-white shadow-2xl"
-          variants={contentAnim}
-          ref={modalRef}
+          className="fixed inset-0 z-[9999] flex items-center justify-center bg-black/50 p-4 backdrop-blur-sm"
+          variants={modalAnim}
           initial="hidden"
           animate="visible"
-          transition={{ type: 'spring', stiffness: 280, damping: 25 }}
-          onClick={(e) => e.stopPropagation()}
+          transition={{ duration: 0.1 }}
+          role="dialog"
+          aria-modal="true"
+          onClick={closeModal}
         >
-          <div className="transparent-scrollbar">
-            <ModalHeader />
-            {renderModalContent()}
-          </div>
+          <motion.div
+            className="relative flex h-auto max-h-[90vh] flex-col items-center justify-center rounded-xl bg-white shadow-2xl"
+            variants={contentAnim}
+            ref={modalRef}
+            initial="hidden"
+            animate="visible"
+            transition={{ type: 'spring', stiffness: 280, damping: 25 }}
+            onClick={(e) => e.stopPropagation()}
+          >
+            <div className="transparent-scrollbar">
+              <ModalHeader />
+              {renderModalContent()}
+            </div>
+          </motion.div>
         </motion.div>
-      </motion.div>
-    ),
+      )}
+    </AnimatePresence>,
     document.body
   )
 }

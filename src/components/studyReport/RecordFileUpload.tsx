@@ -1,5 +1,4 @@
-import { useState, useRef } from 'react'
-import type { DragEvent, ChangeEvent } from 'react'
+import { useState, useRef, type ChangeEvent, type DragEvent } from 'react'
 import {
   FileText,
   Image,
@@ -10,7 +9,6 @@ import {
   Paperclip,
 } from 'lucide-react'
 import 'react-toastify/dist/ReactToastify.css'
-import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 import { toast } from 'react-toastify'
 
 interface RecordFileUploadProps {
@@ -187,9 +185,6 @@ export const RecordFileUpload = ({
           </div>
         </div>
       )}
-
-      {/* ToastContainer 실제 렌더링 */}
-      <GlobalToast />
     </div>
   )
 }

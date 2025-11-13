@@ -10,8 +10,8 @@ export const App = () => {
   return (
     <QueryClientProvider client={queryClient}>
       <NavbarLayout />
-      <GlobalToast />
       <BasicModal />
+      <GlobalToast />
     </QueryClientProvider>
   )
 }

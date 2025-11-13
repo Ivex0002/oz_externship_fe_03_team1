@@ -8,6 +8,7 @@ import { useAsyncEffect } from '@/hooks/useAsyncEffect'
 
 export const UserMenu = () => {
   const { user } = storeUser()
+  // console.log({ user })
 
   return (
     <>
@@ -30,15 +31,20 @@ const RefreshComp = () => {
 }
 
 const GetMeComp = () => {
-  const { accessToken } = storeAccessToken()
-  const { setUser } = storeUser()
+  const { accessToken, clearAccessToken } = storeAccessToken()
+  const { setUser, clearUser } = storeUser()
 
   useAsyncEffect(
     async () => {
-      if (!accessToken) return
+      if (!accessToken) {
+        // console.log('로그인 안됨')
+        clearAccessToken()
+        clearUser()
+        return
+      }
       return await api.v1.users.me.GET()
     },
-    (user) => user && setUser(user),
+    (data) => data && setUser(data.data),
     [accessToken]
   )
   return null

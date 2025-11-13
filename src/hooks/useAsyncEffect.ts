@@ -1,3 +1,4 @@
+import type { AxiosResponse } from 'axios'
 import { useEffect } from 'react'
 import { toast } from 'react-toastify'
 
@@ -10,7 +11,7 @@ import { toast } from 'react-toastify'
  * @param deps 의존성 배열
  */
 export const useAsyncEffect = <R>(
-  asyncFn: () => Promise<R>,
+  asyncFn: () => Promise<AxiosResponse<R> | R>,
   onSuccess: (res: R) => void,
   deps: React.DependencyList
 ) => {
@@ -18,7 +19,17 @@ export const useAsyncEffect = <R>(
     ;(async () => {
       try {
         const res = await asyncFn()
-        if (res !== undefined) onSuccess(res)
+
+        const data =
+          res && typeof res === 'object' && 'data' in res
+            ? (res as AxiosResponse<R>).data
+            : res
+
+        // console.log({ res })
+        // console.log({ data })
+
+        if (!data) return
+        onSuccess(data)
       } catch (error) {
         toast.error(`${error}`)
       }

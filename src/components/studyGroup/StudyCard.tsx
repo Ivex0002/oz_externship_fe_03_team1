@@ -7,7 +7,6 @@ import { useModal } from '@/hooks/useModal'
 import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
-import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useNavigate } from 'react-router'
 
 interface StudyCardProps {

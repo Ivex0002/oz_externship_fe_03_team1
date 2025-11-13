@@ -1,11 +1,8 @@
-import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { ReviewDetailAverage } from './ReviewDetailAverage'
 import { ReviewDetailCard } from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useModal } from '@/hooks/useModal'
 import { storeReview } from '@/store/storeReview'
-import dayjs from '@/lib/dayjs'
 import {
   useQueryReview,
   type Ordering,

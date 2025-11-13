@@ -11,6 +11,7 @@ import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { toast } from 'react-toastify'
 import { ReviewDetailSkeleton } from './ReviewDetailSkeleton'
+import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 
 const ORDERING: Ordering = '-updated_at'
 const PAGE_SIZE = 10
@@ -31,6 +32,7 @@ export const ReviewDetailModal = () => {
   }
   const { data, error, isError, isPending } = useQueryReview(reviewParams)
   if (isPending) return <ReviewDetailSkeleton />
+  if (isError) toast.error(error.message)
 
   const reviewData = data && data.data
   const reviewList = reviewData ? reviewData.results : []
@@ -66,8 +68,6 @@ export const ReviewDetailModal = () => {
           totalReview={reviewData?.meta?.count_total}
         />
 
-        {isError && toast.error(error.message)}
-
         <div className="transparent-scrollbar flex h-[326px] w-full flex-col overflow-scroll">
           {reviewList &&
             reviewList.map((review, i) => (
@@ -96,6 +96,8 @@ export const ReviewDetailModal = () => {
           </span>
         )}
       </footer>
+
+      <GlobalToast />
     </div>
   )
 }

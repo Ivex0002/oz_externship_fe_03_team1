@@ -1,36 +1,51 @@
-// import { useLoaderData } from 'react-router'
-import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { ReviewDetailAverage } from './ReviewDetailAverage'
 import { ReviewDetailCard } from './ReviewDetailCard'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useModal } from '@/hooks/useModal'
-import { useParams } from 'react-router'
 import { storeReview } from '@/store/storeReview'
-import dayjs from '@/lib/dayjs'
-import type { ReviewParams } from '@/types/Params'
+import {
+  useQueryReview,
+  type Ordering,
+} from '@/hooks/api/queries/useQueryReview'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
+import { toast } from 'react-toastify'
+import { ReviewDetailSkeleton } from './ReviewDetailSkeleton'
+import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
+
+const ORDERING: Ordering = '-updated_at'
+const PAGE_SIZE = 10
 
 export const ReviewDetailModal = () => {
   const { modalToModal } = useModal()
   const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
-  const { studyGroupId } = useParams<ReviewParams>()
-  //loader 설정하면 아래 코드로 변경
-  //   const reviewDetailData = useLoaderData<ReviewDetailData>()
-  const reviewList = reviewDetailData.results
-  reviewList.sort((a, b) =>
-    dayjs(a.updated_at).isBefore(dayjs(b.updated_at)) ? 1 : -1
-  )
+  const { modalState } = storeModalOpen()
+  const modalProps = modalState.modalProps
+  const groupId = (modalProps as ModalPropsMap['REVIEW_DETAIL']).studyGroupId
 
-  const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
+  const reviewParams = {
+    page: 1,
+    page_size: PAGE_SIZE,
+    groupId: groupId,
+    ordering: ORDERING,
+  }
+  const { data, error, isError, isPending } = useQueryReview(reviewParams)
+  if (isPending) return <ReviewDetailSkeleton />
+  if (isError) toast.error(error.message)
+
+  const reviewData = data && data.data
+  const reviewList = reviewData ? reviewData.results : []
+
+  const myReview = reviewList.find((review) => review.isMine === true)
   const isReviewed = !!myReview
 
   const handleClickPostReview = () => {
-    if (isReviewed || !studyGroupId) return
+    if (isReviewed || !groupId) return
 
     modalToModal('REVIEW', {
       title: '리뷰 작성',
-      modalProps: { studyGroupId: studyGroupId },
+      modalProps: { studyGroupId: groupId },
     })
   }
 
@@ -38,10 +53,10 @@ export const ReviewDetailModal = () => {
     if (!isReviewed) return
 
     setPreviousMyReview(myReview, basicStudyInfo)
-    if (!studyGroupId) return
+    if (!groupId) return
     modalToModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyGroupId: studyGroupId, reviewId: myReview.id },
+      modalProps: { studyGroupId: groupId, reviewId: myReview.id },
     })
   }
 
@@ -49,19 +64,23 @@ export const ReviewDetailModal = () => {
     <div className="w-[672px]">
       <main className="flex flex-col items-center p-6">
         <ReviewDetailAverage
-          averageRating={reviewDetailData.averageRating}
-          totalReview={reviewDetailData.count}
+          averageRating={reviewData?.meta?.avg_rating}
+          totalReview={reviewData?.meta?.count_total}
         />
-        <div className="flex flex-col">
-          {reviewList.map((review) => (
-            <ReviewDetailCard
-              key={review.id}
-              review={review}
-              isMine={review === myReview}
-            />
-          ))}
+
+        <div className="transparent-scrollbar flex h-[326px] w-full flex-col overflow-scroll">
+          {reviewList &&
+            reviewList.map((review, i) => (
+              <ReviewDetailCard
+                index={i}
+                key={review.id}
+                review={review}
+                isMine={review.isMine}
+              />
+            ))}
         </div>
       </main>
+
       <footer className="flex justify-center border-t border-gray-200 p-6">
         {isReviewed ? (
           <span>
@@ -77,6 +96,8 @@ export const ReviewDetailModal = () => {
           </span>
         )}
       </footer>
+
+      <GlobalToast />
     </div>
   )
 }

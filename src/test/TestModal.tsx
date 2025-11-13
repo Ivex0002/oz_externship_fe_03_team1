@@ -1,4 +1,5 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 import { useModal } from '@/hooks/useModal'
 import type { ModalPropsMap, ModalType } from '@/types/Modal'
 
@@ -33,12 +34,12 @@ const modalTestList: ModalTestUnion[] = [
   {
     modalType: 'REVIEW',
     title: '리뷰 작성',
-    modalProps: { studyGroupId: '10' },
+    modalProps: { studyGroupId: '57c71ffc-1a31-484f-8807-8fb985f63e7b' },
   },
   {
     modalType: 'REVIEW_DETAIL',
     title: '리뷰 상세',
-    modalProps: { studyGroupId: '10' },
+    modalProps: { studyGroupId: '57c71ffc-1a31-484f-8807-8fb985f63e7b' },
   },
 ]
 
@@ -68,6 +69,8 @@ function TestModal() {
         </BasicButton>
       ))}
       <BasicButton onClick={() => openConfirm(options)}>확인창</BasicButton>
+
+      <GlobalToast />
     </div>
   )
 }

@@ -1,3 +1,4 @@
+import { useReviewMutation } from '@/hooks/api/mutations/useReviewMutation'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import { ReviewRating } from './ReviewRating'
 import { ReviewText } from './ReviewText'
@@ -5,7 +6,8 @@ import { useModal } from '@/hooks/useModal'
 import dayjs from '@/lib/dayjs'
 import { storeReview } from '@/store/storeReview'
 import { useEffect, useState } from 'react'
-// import { useLoaderData } from 'react-router'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
 
 const ReviewStudyBasicInfo = () => {
   const { basicStudyInfo } = storeReview()
@@ -25,12 +27,15 @@ const ReviewStudyBasicInfo = () => {
 export const ReviewModal = () => {
   const [rating, setRating] = useState(0)
   const [reviewInputValue, setReviewInputValue] = useState('')
-  // loader 설정시 아래 코드로 변경
-  // const studyGroup = useLoaderData<StudyGroup>()
 
   const { closeModal } = useModal()
+  const { modalState } = storeModalOpen()
+  const modalProps = modalState.modalProps
+  const groupId = (modalProps as ModalPropsMap['REVIEW']).studyGroupId
 
   const { previousMyReview, isEditReview, clearReviews } = storeReview()
+
+  const { postReview, patchReview } = useReviewMutation(groupId)
 
   useEffect(() => {
     if (!isEditReview) {
@@ -38,10 +43,18 @@ export const ReviewModal = () => {
       setReviewInputValue('')
     }
     if (isEditReview) {
-      setRating(previousMyReview.star_rating)
+      setRating(previousMyReview.rating)
       setReviewInputValue(previousMyReview.content)
     }
   }, [isEditReview, previousMyReview])
+
+  const reviewRequestBody = {
+    rating: previousMyReview.rating !== rating ? rating : undefined,
+    content:
+      previousMyReview.content !== reviewInputValue
+        ? reviewInputValue
+        : undefined,
+  }
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -50,8 +63,21 @@ export const ReviewModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!groupId) return
+
+    if (isEditReview) {
+      patchReview.mutate({
+        reviewId: previousMyReview.id,
+        ...reviewRequestBody,
+      })
+    } else {
+      postReview.mutate({
+        rating: rating,
+        content: reviewInputValue,
+      })
+    }
+
     clearReviews()
-    // todo 리뷰 작성/수정 api 호출
     closeModal()
   }
 

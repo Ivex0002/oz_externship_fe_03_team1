@@ -32,7 +32,7 @@ export interface ModalPropsMap {
   // [3] 리뷰 작성/수정 모달
   REVIEW: {
     studyGroupId: string
-    reviewId?: number
+    reviewId?: string
   }
 
   // [4] 리뷰 상세 모달

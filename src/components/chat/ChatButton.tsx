@@ -44,11 +44,11 @@ export const ChatButton = () => {
 
 const GETChatRooms = () => {
   const { setChatRooms, chatRooms } = storeChat()
-  useAsyncEffect(
-    async () => await api.v1.chat.rooms.GET(),
-    (data) => data && setChatRooms(data.data || []),
-    [chatRooms]
-  )
+  useAsyncEffect({
+    asyncFn: async () => await api.v1.chat.rooms.GET(),
+    onSuccess: (data) => data && setChatRooms(data.data || []),
+    deps: [chatRooms],
+  })
   return null
 }
 

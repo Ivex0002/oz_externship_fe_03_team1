@@ -7,7 +7,6 @@ import { useModal } from '@/hooks/useModal'
 import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
 import { reviewDetailData } from '@/assets/dummyData/reviewList'
-import { dummyUser } from '@/assets/dummyData/dummyUser'
 import { useNavigate } from 'react-router'
 
 interface StudyCardProps {
@@ -22,7 +21,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   const [imgError, setImgError] = useState(false)
 
   const reviewList = reviewDetailData.results
-  const myReview = reviewList.find((review) => review.user.id === dummyUser.id)
+  const myReview = reviewList.find((review) => review.isMine === true)
   const isReviewed = !!myReview
 
   const startDate = dayjs(study.start_at).format('LL')
@@ -137,9 +136,9 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
               <div className="flex items-center gap-1">
-                <RatedStar rating={reviewData.averageRating} />
+                <RatedStar rating={reviewData.meta.avg_rating} />
                 <span className="flex items-center text-xs text-gray-500">
-                  {reviewData.averageRating} {`(${reviewData.count})`}
+                  {reviewData.meta.avg_rating} {`(${reviewData.count})`}
                 </span>
               </div>
             </div>

@@ -2,6 +2,9 @@ import { storeNotification } from '@/store/storeNotification'
 import { Bell } from 'lucide-react'
 import { NotiPanel } from './NotiPanel'
 import { useRef } from 'react'
+import { useAsyncEffect } from '@/hooks/useAsyncEffect'
+import { api } from '@/api/api'
+import { storeUser } from '@/store/storeUser'
 
 export const NotiButton = () => {
   const { unreadCount, isNotiPanelOpen, setIsNotiPanelOpen } =
@@ -14,7 +17,9 @@ export const NotiButton = () => {
   }
 
   return (
-    <div>
+    <>
+      <GETNoti />
+
       <button
         ref={buttonRef}
         onClick={handleClick}
@@ -28,6 +33,24 @@ export const NotiButton = () => {
         )}
       </button>
       {isNotiPanelOpen && <NotiPanel buttonRef={buttonRef} />}
-    </div>
+    </>
   )
+}
+
+const GETNoti = () => {
+  const { setNotiArr } = storeNotification()
+  const { user } = storeUser()
+  useAsyncEffect(
+    async () => {
+      if (!user) {
+        setNotiArr([])
+        return
+      }
+      return await api.v1.notifications.GET()
+    },
+    (data) => data && setNotiArr(data.items),
+    [user]
+  )
+
+  return null
 }

@@ -8,24 +8,29 @@ export type ChatUser = {
   nickName: string
 }
 
+type ChatSender = {
+  id: number
+  nickname: string
+}
+
 export type ChatMessage = {
   id: number
-  session_id: number
-  sender: UserId
+  sender: ChatSender
   content: string
-  created_at: string
   is_read: boolean
+  created_at: string
 }
 
-export type ChatSession = {
+type LastMessage = {
   id: number
-  title: string
-  last_sender: UserId
-  last_message: string
-  updated_at: string
-  member: UserId[]
+  content: string
+  sender_nickname: string
+  created_at: string
 }
 
-export type ChatSessionUI = ChatSession & {
-  unreadCount: number
+export type ChatRoom = {
+  uuid: string
+  name: string
+  last_message: LastMessage | null
+  unread_message_count: number
 }

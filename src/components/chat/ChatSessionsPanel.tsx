@@ -1,17 +1,17 @@
 import { formatToMonthDay } from '@/hooks/useFormatDate'
 import { storeChat } from '@/store/storeChat'
-import type { ChatSessionUI } from '@/types/Chat'
+import type { ChatRoom } from '@/types/Chat'
 import { X } from 'lucide-react'
 
 export const ChatSessionsPanel = () => {
-  const { sessions } = storeChat()
+  const { chatRooms } = storeChat()
   return (
     <>
       <ChatSessionHeader />
 
       {/* sessions 개수에 따른 분기처리 필요 */}
       <div className="transparent-scrollbar h-[309px] w-full">
-        {sessions.map((el) => SessionItem(el))}
+        {chatRooms.map((el) => SessionItem(el))}
       </div>
     </>
   )
@@ -43,32 +43,33 @@ const ChatSessionHeader = () => {
   )
 }
 
-const SessionItem = (session: ChatSessionUI) => {
+const SessionItem = (chatRoom: ChatRoom) => {
   const { togglePanel } = storeChat()
   const handleClick = (e: React.MouseEvent) => {
     e.stopPropagation()
-    togglePanel(session.id)
+    togglePanel(chatRoom.uuid)
   }
   return (
     <div
-      key={session.id}
+      key={chatRoom.uuid}
       className="flex h-[76px] w-full cursor-pointer flex-col border-b border-gray-200 p-3 transition-colors hover:bg-gray-50"
       onClick={handleClick}
     >
       <div className="flex h-6 flex-row justify-between">
         {/* title */}
-        <div className="text-sm">{session.title}</div>
+        <div className="text-sm">{chatRoom.name}</div>
 
         <div className="flex flex-row items-center gap-1">
           {/* updated at */}
           <div className="h-4 text-xs text-gray-500">
-            {formatToMonthDay(session.updated_at)}
+            {chatRoom.last_message &&
+              formatToMonthDay(chatRoom.last_message.created_at)}
           </div>
 
           {/* unread count */}
-          {session.unreadCount > 0 && (
+          {chatRoom.unread_message_count > 0 && (
             <div className="center-center bg-danger-500 h-5 w-5 rounded-full text-xs text-white">
-              {session.unreadCount}
+              {chatRoom.unread_message_count}
             </div>
           )}
         </div>
@@ -76,7 +77,8 @@ const SessionItem = (session: ChatSessionUI) => {
 
       {/* last msg */}
       <div className="flex text-start text-xs text-gray-600">
-        {session.last_sender}:{session.last_message}
+        {chatRoom.last_message?.sender_nickname}:
+        {chatRoom.last_message?.created_at}
       </div>
     </div>
   )

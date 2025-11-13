@@ -4,25 +4,14 @@ import type {
   InternalAxiosRequestConfig,
   Method,
 } from 'axios'
+
+import type { UserNotification } from './Notification'
+import type { UserProfile } from './User'
+import type { ChatMessage, ChatRoom } from './Chat'
+
 import type { ReviewApiResponse } from './Review'
 
-// ===================== User =====================
-// type RoleEnum = 'admin' | 'staff' | 'user'
-// (스웨거) RoleEnum이 존재하나 어디에도 쓰이지 않음
-// (예상) UserProfile에 RoleEnum 추가 가능성 있음
-// (스웨거) 스터디 그룹의 멤버 항목은 uuid로써 식별값을 가지지만,
-// /api/v1/users/me 에선 number 타입으로 받음
-// (스웨거) UserProfile 타입 또한 id:integer 라고 명시되어 있음
-type UserProfile = {
-  id: number
-  email: string
-  nickname: string
-  name: string
-  phone_number: string
-  birthday: string
-  profile_img_url: string
-  created_at: string
-}
+
 
 // ===================== Notification =====================
 // type NotificationTypeEnum =
@@ -36,15 +25,6 @@ type UserProfile = {
 //   | 'STUDY_RECORD_CREATED'
 //   | 'SYSTEM'
 //   | 'CUSTOM'
-
-type Notification = {
-  id: number
-  message: string
-  is_read: boolean
-  type: string
-  back_link_url: string
-  created_at: string
-}
 
 type NotiStudyJoinPost = {
   // api 명세서상 number 타입
@@ -363,34 +343,18 @@ type ScheduleDetail = Schedule & {
 }
 
 // ===================== Chat =====================
-type LastMessage = {
-  id: number
-  content: string
-  sender_nickname: string
-  created_at: string
-}
-
-type ChatRoom = {
-  uuid: string
-  name: string
-  last_message: LastMessage | null
-  unread_message_count: number
-}
-
-// uuid로 변경 가능성 매우 높음
-type ChatSender = {
-  id: number
-  nickname: string
-}
-
-// study_group_uuid 삭제됨
-// 추후에 변경 가능성 매우 높음
-type ChatMessage = {
-  id: number
-  sender: ChatSender
-  content: string
-  is_read: boolean
-  created_at: string
+type PaginatedChats = {
+  status: string
+  code: string
+  message: string
+  data: {
+    messages: ChatMessage[]
+    pagination: {
+      page: number
+      page_size: number
+      total_count: number
+    }
+  }
 }
 
 // ===================== Pagination =====================
@@ -423,6 +387,11 @@ export type BaseResponse = {
   }
 }
 
+export type DataDetail<T> = {
+  data: T
+  detail: string
+}
+
 /**
  * 모든 api 링크에 따른 타입 명시
  *
@@ -441,7 +410,7 @@ export type ApiLinks = {
   v1: {
     users: {
       me: {
-        GET: () => { res: UserProfile }
+        GET: () => { res: DataDetail<UserProfile> }
       }
     }
     auth: {
@@ -466,7 +435,7 @@ type NotificationApi = {
   // 엔드포인트 분리 X
   // 예정 스케줄 알림 생성 데이터 필드 누락
   GET: () => {
-    res: Pagination<Notification>
+    res: { total: number; items: UserNotification[] }
   }
   read$all: {
     PATCH: () => {
@@ -660,19 +629,7 @@ type ChatApi = {
         // 페이지 옵션과 데이터 결과가 매우 이질적으로 되어 있음
         // 이것만 따로 데이터 구조 다르게 기입함
         GET: () => {
-          res: {
-            status: string
-            code: string
-            message: string
-            data: {
-              messages: ChatMessage[]
-              pagination: {
-                page: number
-                page_size: number
-                total_count: number
-              }
-            }
-          }
+          res: PaginatedChats
         }
       }
     }

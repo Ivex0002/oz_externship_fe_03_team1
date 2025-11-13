@@ -1,4 +1,4 @@
-import { dummyNotifications } from '@/assets/dummyData/dummyNotification'
+// import { dummyNotifications } from '@/assets/dummyData/dummyNotification'
 import type { UserNotification } from '@/types/Notification'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
@@ -29,17 +29,15 @@ const applyFilter = (notifications: UserNotification[], filter: filterKey) => {
 
 export const storeNotification = create<StoreNoti>()(
   subscribeWithSelector((set) => {
-    // TODO : 초기값 나중에 api 받아와야 함
-    const initialNotiArr = dummyNotifications
     return {
-      notiArr: initialNotiArr,
-      filtered: initialNotiArr,
+      notiArr: [],
+      filtered: [],
       currentFilter: 'all',
       isNotiPanelOpen: false,
-      unreadCount: initialNotiArr.filter((el) => !el.is_read).length,
-      readCount: initialNotiArr.filter((el) => el.is_read).length,
-      setIsNotiPanelOpen: (val) => set(() => ({ isNotiPanelOpen: val })),
-      setNotiArr: (notis) => set(() => ({ notiArr: notis })),
+      unreadCount: 0,
+      readCount: 0,
+      setIsNotiPanelOpen: (val) => set({ isNotiPanelOpen: val }),
+      setNotiArr: (notis) => set({ notiArr: notis || [] }),
       addNoti: (noti) =>
         set((state) => ({ notiArr: [...state.notiArr, noti] })),
       filterNoti: (key) =>

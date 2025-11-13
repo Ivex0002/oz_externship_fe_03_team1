@@ -1,3 +1,4 @@
+import { useReviewMutation } from '@/hooks/api/mutations/useReviewMutation'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import { ReviewRating } from './ReviewRating'
 import { ReviewText } from './ReviewText'
@@ -5,6 +6,8 @@ import { useModal } from '@/hooks/useModal'
 import dayjs from '@/lib/dayjs'
 import { storeReview } from '@/store/storeReview'
 import { useEffect, useState } from 'react'
+import { storeModalOpen } from '@/store/storeModalOpen'
+import type { ModalPropsMap } from '@/types/Modal'
 
 const ReviewStudyBasicInfo = () => {
   const { basicStudyInfo } = storeReview()
@@ -26,8 +29,13 @@ export const ReviewModal = () => {
   const [reviewInputValue, setReviewInputValue] = useState('')
 
   const { closeModal } = useModal()
+  const { modalState } = storeModalOpen()
+  const modalProps = modalState.modalProps
+  const groupId = (modalProps as ModalPropsMap['REVIEW']).studyGroupId
 
   const { previousMyReview, isEditReview, clearReviews } = storeReview()
+
+  const { postReview, patchReview } = useReviewMutation(groupId)
 
   useEffect(() => {
     if (!isEditReview) {
@@ -40,6 +48,14 @@ export const ReviewModal = () => {
     }
   }, [isEditReview, previousMyReview])
 
+  const reviewRequestBody = {
+    rating: previousMyReview.rating !== rating ? rating : undefined,
+    content:
+      previousMyReview.content !== reviewInputValue
+        ? reviewInputValue
+        : undefined,
+  }
+
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
     closeModal()
@@ -47,8 +63,21 @@ export const ReviewModal = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
+    if (!groupId) return
+
+    if (isEditReview) {
+      patchReview.mutate({
+        reviewId: previousMyReview.id,
+        ...reviewRequestBody,
+      })
+    } else {
+      postReview.mutate({
+        rating: rating,
+        content: reviewInputValue,
+      })
+    }
+
     clearReviews()
-    // todo 리뷰 작성/수정 api 호출
     closeModal()
   }
 

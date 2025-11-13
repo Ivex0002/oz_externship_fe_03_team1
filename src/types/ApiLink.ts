@@ -206,8 +206,8 @@ type StudyReview = {
 }
 
 type StudyReviewPost = {
-  star_rating: number
-  content: string
+  star_rating?: number
+  content?: string
 }
 
 type StudyReviewPatchRes = StudyReview & {

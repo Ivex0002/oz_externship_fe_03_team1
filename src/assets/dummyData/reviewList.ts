@@ -18,7 +18,7 @@ export const reviewDetailData: ReviewApiResponse = {
   previous: null,
   results: [
     {
-      id: '1',
+      id: '0ce9295e-ade0-4854-8311-a6dea6ae3ef7',
       rating: 4,
       content:
         '스터디 리더님이 열정적으로 이끌어주셔서 끝까지 완주할 수 있었습니다. 다만 난이도가 조금 높았어요',
@@ -27,7 +27,7 @@ export const reviewDetailData: ReviewApiResponse = {
       isMine: true,
     },
     {
-      id: '2',
+      id: '57c71ffc-1a31-484f-8807-8fb985f63e7b',
       rating: 5,
       content:
         '동료들과의 협업 프로젝트가 특히 도움되었습니다. 실무 경험을 쌓을 수 있어서 좋았어요.',

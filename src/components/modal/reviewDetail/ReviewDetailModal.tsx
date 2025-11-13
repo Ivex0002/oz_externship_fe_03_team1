@@ -10,8 +10,7 @@ import {
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { toast } from 'react-toastify'
-import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
-import ReviewDetailSkeleton from './ReviewDetailSkeleton'
+import { ReviewDetailSkeleton } from './ReviewDetailSkeleton'
 
 const ORDERING: Ordering = '-updated_at'
 const PAGE_SIZE = 10
@@ -97,8 +96,6 @@ export const ReviewDetailModal = () => {
           </span>
         )}
       </footer>
-
-      <GlobalToast />
     </div>
   )
 }

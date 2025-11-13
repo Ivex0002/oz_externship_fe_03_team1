@@ -19,6 +19,14 @@ export const StudyRecordHeader = ({
 }: StudyRecordHeaderProps) => {
   const [isImageError, setIsImageError] = useState(false)
 
+  const handleEdit = () => {
+    // TODO: 수정 페이지 이동
+  }
+
+  const handleDelete = () => {
+    // TODO: 삭제 확인 모달
+  }
+
   return (
     <>
       <div className="mb-4 flex items-start justify-between">
@@ -29,7 +37,7 @@ export const StudyRecordHeader = ({
             variant="secondary"
             size="small"
             className="!h-[32px] !rounded-lg !bg-[#F3F4F6] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#374151]"
-            onClick={() => alert('수정하기')}
+            onClick={handleEdit}
           >
             수정하기
           </BasicButton>
@@ -38,7 +46,7 @@ export const StudyRecordHeader = ({
             variant="danger"
             size="small"
             className="!h-[32px] !rounded-lg !bg-[#FEE2E2] !px-3 !py-[6px] !text-[14px] !font-medium !text-[#B91C1C] hover:!bg-[#FEE2E2] active:!bg-[#FEE2E2]"
-            onClick={() => alert('삭제하기')}
+            onClick={handleDelete}
           >
             삭제하기
           </BasicButton>

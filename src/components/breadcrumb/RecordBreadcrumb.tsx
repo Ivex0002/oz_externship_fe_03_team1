@@ -12,7 +12,7 @@ interface StudyParams {
   groupId?: string
 }
 
-const DEFAULT_HOME = '/'
+const DEFAULT_HOME = 'https://account.ozcoding.site/'
 const DEFAULT_GROUPS = '/'
 
 export const RecordBreadcrumb = ({
@@ -26,17 +26,23 @@ export const RecordBreadcrumb = ({
   return (
     <nav
       aria-label="breadcrumb"
-      className="mb-6 flex items-center text-sm text-gray-500"
+      className="mb-6 flex items-center gap-2 text-sm text-gray-500"
     >
-      <Link to={homeTo} className="hover:text-gray-700">
+      <a
+        href={homeTo}
+        className="hover:text-gray-700"
+        target="_self"
+        rel="noopener noreferrer"
+      >
         홈
-      </Link>
-      <ChevronRight size={16} className="mx-1" />
+      </a>
+
+      <ChevronRight size={16} />
 
       <Link to={groupsTo} className="hover:text-gray-700">
         스터디 그룹
       </Link>
-      <ChevronRight size={16} className="mx-1" />
+      <ChevronRight size={16} />
 
       <Link
         to={`/study_group/${resolvedGroupId}`}
@@ -44,7 +50,7 @@ export const RecordBreadcrumb = ({
       >
         스터디 상세
       </Link>
-      <ChevronRight size={16} className="mx-1" />
+      <ChevronRight size={16} />
 
       <span className="font-medium text-gray-800">기록 {current}</span>
     </nav>

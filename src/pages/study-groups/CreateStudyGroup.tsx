@@ -9,6 +9,8 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
 import { storeDatePicker } from '@/store/storeDatePicker'
+import { toast } from 'react-toastify'
+import { useModal } from '@/hooks/useModal'
 
 export const CreateStudyGroup = () => {
   const [form, setForm] = useState<StudyGroupForm>({
@@ -24,6 +26,7 @@ export const CreateStudyGroup = () => {
   const [isEdit, setIsEdit] = useState(false)
   const { startDate, endDate, reset } = storeDatePicker()
   const navigate = useNavigate()
+  const { openConfirm } = useModal()
 
   useEffect(() => {
     if (window.location.pathname.includes('edit')) {
@@ -41,15 +44,12 @@ export const CreateStudyGroup = () => {
 
   const handleSubmit = () => {
     if (!form.name || !form.startDate) {
-      alert('필수 항목을 모두 입력해주세요.')
+      toast.warn('필수 항목을 모두 입력해주세요.')
       return
     }
 
-    if (isEdit) {
-      alert('스터디 그룹이 수정되었습니다.')
-    } else {
-      alert('스터디 그룹이 생성되었습니다.')
-    }
+    if (isEdit) toast.success('스터디 그룹이 수정되었습니다.')
+    else toast.success('스터디 그룹이 생성되었습니다.')
 
     setForm({
       ...form,
@@ -60,8 +60,15 @@ export const CreateStudyGroup = () => {
   }
 
   const handleBack = () => {
-    reset()
-    navigate('/')
+    openConfirm({
+      message: '정말 취소하시겠어요?',
+      onConfirm: async () => {
+        reset()
+        navigate('/')
+      },
+      confirmText: '확인',
+      cancelText: '취소',
+    })
   }
 
   return (

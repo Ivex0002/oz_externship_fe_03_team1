@@ -3,11 +3,14 @@ import { useMemo, useRef } from 'react'
 import { createIconNode, NOTIFICATION_STYLE } from './NotiCreateIcon'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePanelClose } from '@/hooks/usePanelClose'
+import type { UserNotification } from '@/types/Notification'
+import { formatToMonthDay } from '@/hooks/useFormatDate'
+import { api } from '@/api/api'
 
 // TODO
-// 1. store : 초기값 api 요청 로직 작성
-// 2. Header : 모두 읽음 버튼 api 로직 연결
-// 3. ItemList : 알림 클릭시 해당 링크로 이동하는 로직 필요(백엔드 api 명세 확인 필요)
+// 1. store : 초기값 api 요청 로직 작성 v
+// 2. Header : 모두 읽음 버튼 api 로직 연결 v
+// 3. ItemList : 알림 클릭시 해당 링크로 이동하는 로직 필요(백엔드 api 명세 확인 필요) v
 export const NotiPanel = ({
   buttonRef,
 }: {
@@ -44,9 +47,8 @@ export const NotiPanel = ({
 
 const NotiHeader = () => {
   const { markAllAsRead } = storeNotification()
-  const handleClick = () => {
-    // TODO : 모두 읽음 처리 로직
-    // 서버쪽에서 1회 요청으로 처리되나, 혹은 다회 요청이 필요하냐에 따라서 달라짐
+  const handleClick = async () => {
+    await api.v1.notifications.read$all.PATCH()
     markAllAsRead()
   }
   return (
@@ -113,8 +115,12 @@ const NotiTabs = () => {
 const NotiItemList = () => {
   const { filtered } = storeNotification()
 
-  // TODO : 해당 알림 링크로 이동하는 로직 필요
-  const handleClick = () => {}
+  // TODO:제대로 요청/응답 오나 확인 필요
+  // 현재 테스트 계정에 알림 없음
+  const handleClick = async (n: UserNotification) => {
+    await api.v1.notifications(n.id).PATCH()
+    window.location.href = n.back_link_url
+  }
 
   return filtered.length === 0 ? (
     <div className="center-center h-80 text-gray-500">알림이 없습니다</div>
@@ -125,7 +131,7 @@ const NotiItemList = () => {
           key={n.id}
           aria-label={`${n.id}. ${n.is_read ? '읽은' : '읽지 않은'} 알림`}
           className={`cursor-pointer p-4 transition-colors ${index !== 0 ? 'border-t border-gray-100' : ''} ${n.is_read ? 'bg-white' : 'bg-primary-50'}`}
-          onClick={handleClick}
+          onClick={() => handleClick(n)}
         >
           <div className="relative flex items-start">
             {createIconNode(NOTIFICATION_STYLE[n.type])}
@@ -135,8 +141,7 @@ const NotiItemList = () => {
                 {n.message}
               </p>
               <p className="font-roboto mt-1 text-xs text-gray-500">
-                {/* TODO : API 리턴값 날짜 형태에 따른 파싱 필요함 */}
-                {n.created_at}
+                {formatToMonthDay(n.created_at)}
               </p>
             </div>
 

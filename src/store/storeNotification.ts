@@ -36,8 +36,8 @@ export const storeNotification = create<StoreNoti>()(
       isNotiPanelOpen: false,
       unreadCount: 0,
       readCount: 0,
-      setIsNotiPanelOpen: (val) => set(() => ({ isNotiPanelOpen: val })),
-      setNotiArr: (notis) => set(() => ({ notiArr: notis })),
+      setIsNotiPanelOpen: (val) => set({ isNotiPanelOpen: val }),
+      setNotiArr: (notis) => set({ notiArr: notis || [] }),
       addNoti: (noti) =>
         set((state) => ({ notiArr: [...state.notiArr, noti] })),
       filterNoti: (key) =>

@@ -3,7 +3,7 @@ export type UserNotification = {
   id: number
   message: string
   is_read: boolean
-  type: string
+  type: NotificationType
   back_link_url: string
   created_at: string
 }

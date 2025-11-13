@@ -1,5 +1,6 @@
 import { useRef } from 'react'
 import { X } from 'lucide-react'
+import { toast } from 'react-toastify'
 import ImageUploadIcon from '/icons/image-upload-icon.svg'
 
 interface ImageUploadBoxProps {
@@ -16,16 +17,18 @@ export const ImageUploadBox = ({
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0] || null
     if (file && file.size > 5 * 1024 * 1024) {
-      alert('5MB 이하의 이미지만 업로드 가능합니다.')
+      toast.warn('5MB 이하의 이미지만 업로드 가능합니다.')
       return
     }
     onFileSelect(file)
+    if (file) toast.success('이미지가 업로드되었습니다.')
   }
 
   const handleClearFile = (e: React.MouseEvent) => {
     e.stopPropagation()
     onFileSelect(null)
     if (fileInputRef.current) fileInputRef.current.value = ''
+    toast.info('이미지가 삭제되었습니다.')
   }
 
   return (

@@ -12,7 +12,9 @@ export const StudyRecordDetail = () => {
   const { data } = dummyStudyRecordDetail
   const { title, author, content, ai_summary, attachments, created_at } = data
 
-  const handleBack = () => alert('스터디 그룹으로 돌아가기')
+  const handleBack = () => {
+    // TODO: 추후 navigate('/study-groups/ID') 등으로 연결 예정
+  }
 
   return (
     <div className="mx-auto max-w-5xl px-6 py-10">

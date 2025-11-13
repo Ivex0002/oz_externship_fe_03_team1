@@ -9,8 +9,8 @@ import { toast } from 'react-toastify'
  * @param onSuccess 성공 시 실행할 콜백 (res를 인자로 받음)
  * @param deps 의존성 배열
  */
-export const useAsyncEffect = <S, R>(
-  asyncFn: (storeValue?: S) => Promise<R>,
+export const useAsyncEffect = <R>(
+  asyncFn: () => Promise<R>,
   onSuccess: (res: R) => void,
   deps: React.DependencyList
 ) => {

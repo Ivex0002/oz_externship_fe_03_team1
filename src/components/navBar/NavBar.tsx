@@ -32,7 +32,7 @@ const Logo = () => {
   return (
     <NavLink
       to="https://account.ozcoding.site/"
-      className="flex items-center space-x-2"
+      className="mr-8 flex items-center space-x-2"
     >
       <div className="bg-primary-400 flex h-8 w-8 items-center justify-center rounded-lg font-semibold text-white">
         S

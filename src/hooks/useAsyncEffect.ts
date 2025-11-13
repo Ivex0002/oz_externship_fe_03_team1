@@ -1,39 +1,62 @@
+import { useEffect, useState } from 'react'
 import type { AxiosResponse } from 'axios'
-import { useEffect } from 'react'
-import { toast } from 'react-toastify'
+
+interface UseAsyncEffectOptions<R> {
+  asyncFn: (signal?: AbortSignal) => Promise<R | AxiosResponse<R>>
+  onSuccess?: (data: R) => void
+  onError?: (error: unknown) => void
+  deps?: React.DependencyList
+  finallyFn?: () => void
+}
 
 /**
- * 비동기 effect를 공통화한 훅
- *
- * @param storeSelector 구독할 스토어 (필요 없으면 null)
- * @param asyncFn 실행할 비동기 함수 (필수)
- * @param onSuccess 성공 시 실행할 콜백 (res를 인자로 받음)
- * @param deps 의존성 배열
+ * useAsyncEffect
+ * - abort 처리
+ * - 로딩 / 에러 상태 관리
+ * - AxiosResponse 자동 언랩
  */
-export const useAsyncEffect = <R>(
-  asyncFn: () => Promise<AxiosResponse<R> | R>,
-  onSuccess: (res: R) => void,
-  deps: React.DependencyList
-) => {
+export const useAsyncEffect = <R>({
+  asyncFn,
+  onSuccess,
+  onError,
+  deps = [],
+  finallyFn,
+}: UseAsyncEffectOptions<R>) => {
+  const [loading, setLoading] = useState(false)
+
   useEffect(() => {
+    const controller = new AbortController()
+    const { signal } = controller
+
     ;(async () => {
+      setLoading(true)
+
       try {
-        const res = await asyncFn()
+        const res = await asyncFn(signal)
+
+        if (signal.aborted) return
 
         const data =
           res && typeof res === 'object' && 'data' in res
             ? (res as AxiosResponse<R>).data
             : res
 
-        // console.log({ res })
-        // console.log({ data })
+        if (onSuccess && data) onSuccess(data)
+      } catch (err) {
+        if (signal.aborted) return
 
-        if (!data) return
-        onSuccess(data)
-      } catch (error) {
-        toast.error(`${error}`)
+        onError?.(err)
+      } finally {
+        if (!signal.aborted) setLoading(false)
+        if (finallyFn) finallyFn()
       }
     })()
+
+    return () => {
+      controller.abort()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps)
+
+  return { loading }
 }

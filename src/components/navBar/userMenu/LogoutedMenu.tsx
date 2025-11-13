@@ -8,7 +8,7 @@ export const LogoutedMenu = () => {
       </NavLink>
       <NavLink
         to="https://account.ozcoding.site/signup"
-        className="bg-primary-500 hover:bg-primary-600 rounded-lg px-4 py-2 text-white transition-colors"
+        className="bg-primary-500 hover:bg-primary-600 rounded-lg px-4 py-2 whitespace-nowrap text-white transition-colors"
       >
         회원가입
       </NavLink>{' '}

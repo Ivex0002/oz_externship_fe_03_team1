@@ -60,8 +60,7 @@ export const NoStudiesResult = ({
 
   // 출력 UI 내부에 컨텐츠( 이미지, 텍스트 등 )은 프롭스로 내려받아서 사용
   return (
-    <section className="min-h-screen w-full bg-gray-50 px-6 py-10">
-      <div className="mx-auto flex max-w-6xl flex-col items-center justify-center rounded-lg border border-gray-200 bg-white p-16">
+      <section className="mx-auto bg-gray-50 flex w-full flex-col items-center justify-center rounded-xl p-16">
         <div className="mb-6 rounded-full bg-gray-100 p-6">
           {currentStatus.icon}
         </div>
@@ -73,7 +72,6 @@ export const NoStudiesResult = ({
             <span>스터디 그룹 만들기</span>
           </BasicButton>
         )}
-      </div>
-    </section>
+      </section>
   )
 }

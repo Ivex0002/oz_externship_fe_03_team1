@@ -9,16 +9,14 @@ import {
 } from '@/hooks/api/queries/useQueryReview'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
-import { useEffect } from 'react'
-import { storeAccessToken } from '@/store/storeAccessToken'
+import { toast } from 'react-toastify'
+import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
+import ReviewDetailSkeleton from './ReviewDetailSkeleton'
 
 const ORDERING: Ordering = '-updated_at'
-const PAGE_SIZE = null
+const PAGE_SIZE = 10
 
 export const ReviewDetailModal = () => {
-  const { setAccessToken } = storeAccessToken()
-  const dummyAccessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMDM4ODc1LCJpYXQiOjE3NjI5NTI0NzUsImp0aSI6IjU1YWMwMDQwOTllYTQyNzk4ZjcwOTI4NzcyYWVkNzgzIiwidXNlcl9pZCI6IjEifQ.A4HRA7yT0Y3iOPvL2H-aA9W1sKIXdCIzexxeCTVaZBs'
   const { modalToModal } = useModal()
   const { basicStudyInfo, setPreviousMyReview } = storeReview()
 
@@ -33,15 +31,10 @@ export const ReviewDetailModal = () => {
     ordering: ORDERING,
   }
   const { data, error, isError, isPending } = useQueryReview(reviewParams)
+  if (isPending) return <ReviewDetailSkeleton />
 
   const reviewData = data && data.data
   const reviewList = reviewData ? reviewData.results : []
-
-  console.log(data)
-
-  useEffect(() => {
-    setAccessToken(dummyAccessToken)
-  }, [])
 
   const myReview = reviewList.find((review) => review.isMine === true)
   const isReviewed = !!myReview
@@ -73,6 +66,9 @@ export const ReviewDetailModal = () => {
           averageRating={reviewData?.meta?.avg_rating}
           totalReview={reviewData?.meta?.count_total}
         />
+
+        {isError && toast.error(error.message)}
+
         <div className="transparent-scrollbar flex h-[326px] w-full flex-col overflow-scroll">
           {reviewList &&
             reviewList.map((review, i) => (
@@ -85,6 +81,7 @@ export const ReviewDetailModal = () => {
             ))}
         </div>
       </main>
+
       <footer className="flex justify-center border-t border-gray-200 p-6">
         {isReviewed ? (
           <span>
@@ -100,6 +97,8 @@ export const ReviewDetailModal = () => {
           </span>
         )}
       </footer>
+
+      <GlobalToast />
     </div>
   )
 }

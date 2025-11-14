@@ -37,14 +37,14 @@ const GETChatMessages = ({
   currentChatRoomUUID: string | null
 }) => {
   const { setMessages } = storeChat()
-  useAsyncEffect(
-    async () => {
+  useAsyncEffect({
+    asyncFn: async () => {
       if (!currentChatRoomUUID) return
       return await api.v1.chat.rooms(currentChatRoomUUID).messages.GET()
     },
-    (data) => data && setMessages(data.data.messages),
-    []
-  )
+    onSuccess: (data) => data && setMessages(data.data.messages),
+    deps: [],
+  })
   return null
 }
 

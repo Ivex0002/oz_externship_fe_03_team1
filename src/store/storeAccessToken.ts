@@ -2,11 +2,15 @@ import { create } from 'zustand'
 
 interface StoreAccessToken {
   accessToken: string | null
-  setAccessToken: (val: string) => void
+  tokenLoading: boolean
+  setAccessToken: (token: string) => void
   clearAccessToken: () => void
+  setTokenLoading: (loading: boolean) => void
 }
 export const storeAccessToken = create<StoreAccessToken>((set) => ({
   accessToken: null,
-  setAccessToken: (val) => set({ accessToken: val }),
+  tokenLoading: true,
+  setAccessToken: (token) => set({ accessToken: token }),
   clearAccessToken: () => set({ accessToken: null }),
+  setTokenLoading: (loading) => set({ tokenLoading: loading }),
 }))

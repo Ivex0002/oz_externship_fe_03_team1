@@ -40,17 +40,17 @@ export const NotiButton = () => {
 const GETNoti = () => {
   const { setNotiArr } = storeNotification()
   const { user } = storeUser()
-  useAsyncEffect(
-    async () => {
+  useAsyncEffect({
+    asyncFn: async () => {
       if (!user) {
         setNotiArr([])
         return
       }
       return await api.v1.notifications.GET()
     },
-    (data) => data && setNotiArr(data.items),
-    [user]
-  )
+    onSuccess: (data) => data && setNotiArr(data.items),
+    deps: [user],
+  })
 
   return null
 }

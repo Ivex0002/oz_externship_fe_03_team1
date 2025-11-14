@@ -52,7 +52,7 @@ body {
 
 /* 네브 바 링크들 스타일 통일 */
 .nav-links {
-  @apply hover:text-primary-600 text-base font-normal text-gray-700 transition-colors;
+  @apply hover:text-primary-600 text-base font-normal whitespace-nowrap text-gray-700 transition-colors;
 }
 
 /* BasicInput에 추가할 수 있는 아이콘 스타일 지정 */

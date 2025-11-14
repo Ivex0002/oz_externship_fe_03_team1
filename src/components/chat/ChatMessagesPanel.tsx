@@ -40,7 +40,7 @@ const GETChatMessages = ({
   useAsyncEffect({
     asyncFn: async () => {
       if (!currentChatRoomUUID) return
-      return await api.v1.chat.rooms(currentChatRoomUUID).messages.GET()
+      return await api.v1.chat.chatrooms(currentChatRoomUUID).messages.GET()
     },
     onSuccess: (data) => data && setMessages(data.data.messages),
     deps: [],

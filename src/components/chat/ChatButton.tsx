@@ -6,6 +6,7 @@ import clsx from 'clsx'
 import { AnimatePresence } from 'framer-motion'
 import { useAsyncEffect } from '@/hooks/useAsyncEffect'
 import { api } from '@/api/api'
+import { storeUser } from '@/store/storeUser'
 
 export const ChatButton = () => {
   const { totalUnreadCount, setIsPanelOpen, isPanelOpen } = storeChat()
@@ -27,9 +28,12 @@ export const ChatButton = () => {
           <X className={iconStyle} />
         ) : (
           <>
-            <div className="center-center bg-danger-500 absolute -top-2 left-12 h-6 w-6 rounded-full text-xs font-semibold text-white">
-              {totalUnreadCount}
-            </div>
+            {totalUnreadCount !== 0 && (
+              <div className="center-center bg-danger-500 absolute -top-2 left-12 h-6 w-6 rounded-full text-xs font-semibold text-white">
+                {totalUnreadCount}
+              </div>
+            )}
+
             <MessageCircle className={iconStyle} />
           </>
         )}
@@ -43,11 +47,16 @@ export const ChatButton = () => {
 }
 
 const GETChatRooms = () => {
-  const { setChatRooms, chatRooms } = storeChat()
+  const { user } = storeUser()
+  const { setChatRooms } = storeChat()
   useAsyncEffect({
-    asyncFn: async () => await api.v1.chat.rooms.GET(),
-    onSuccess: (data) => data && setChatRooms(data.data || []),
-    deps: [chatRooms],
+    asyncFn: async () => await api.v1.chat.chatrooms.GET(),
+    onSuccess: (data) => {
+      // console.log(data)
+
+      return setChatRooms(data || [])
+    },
+    deps: [user],
   })
   return null
 }

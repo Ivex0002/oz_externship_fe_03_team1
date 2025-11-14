@@ -11,8 +11,6 @@ import type { ChatMessage, ChatRoom } from './Chat'
 
 import type { ReviewApiResponse } from './Review'
 
-
-
 // ===================== Notification =====================
 // type NotificationTypeEnum =
 //   | 'APPLICATIONS_CREATED'
@@ -435,7 +433,10 @@ type NotificationApi = {
   // 엔드포인트 분리 X
   // 예정 스케줄 알림 생성 데이터 필드 누락
   GET: () => {
-    res: { total: number; items: UserNotification[] }
+    res: {
+      counts: { total: number; unread: number; read: number }
+      results: UserNotification[]
+    }
   }
   read$all: {
     PATCH: () => {
@@ -617,9 +618,9 @@ type ChatApi = {
   total$unread$messages: {
     GET: () => { res: BaseResWithGeneric<{ total_unread_count: number }> }
   }
-  rooms: {
+  chatrooms: {
     GET: () => {
-      res: BaseResWithGeneric<ChatRoom[]>
+      res: ChatRoom[]
     }
     (study_group_uuid: string): {
       messages: {

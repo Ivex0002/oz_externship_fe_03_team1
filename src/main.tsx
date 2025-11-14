@@ -53,6 +53,10 @@ const router = createBrowserRouter([
         path: '/testModal',
         Component: TestModal,
       },
+      {
+        path: '/testG',
+        Component: TestG,
+      },
     ],
   },
 
@@ -64,10 +68,7 @@ const router = createBrowserRouter([
     path: '/testE',
     Component: TestE,
   },
-  {
-    path: '/testG',
-    Component: TestG,
-  },
+
   {
     path: '/testH',
     Component: TestH,

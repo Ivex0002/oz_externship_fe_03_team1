@@ -42,6 +42,12 @@ export const queryKeys = {
 
       reviews: (groupId: string) =>
         defineQueryKey(['studies', 'groups', groupId, 'reviews']),
+
+      notes: (groupId: string) =>
+        defineQueryKey(['studies', 'groups', groupId, 'notes']),
+
+      schedules: (groupId: string) =>
+        defineQueryKey(['studies', 'groups', groupId, 'schedules']),
     },
   },
 } as const

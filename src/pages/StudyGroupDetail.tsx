@@ -1,5 +1,5 @@
 import { StudyCalendar } from '../pages/study-group-detail/StudyCalendar';
-import { StudyRecordList } from '../pages/study-group-detail/StudyRecordList';
+import { StudyRecordList } from './study-group-detail/StudyRecordList';
 import { StudyInfoAndCourses } from '../pages/study-group-detail/StudyInfoAndCourses';
 import { StudyMemberList } from '../pages/study-group-detail/StudyMemberList';
 import { StudyBannerSection } from '../pages/study-group-detail/StudyBannerSection';

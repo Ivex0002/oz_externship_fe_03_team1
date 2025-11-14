@@ -72,10 +72,8 @@ export const StudyMemberList = ({
     position: null,
   })
 
-  // 현재 선택된 멤버의 ID를 저장하기 위한 ref
   const selectedMemberIdRef = useRef<string | null>(null)
 
-  // 리더를 최상단으로 정렬
   const sortedMembers = useMemo(() => {
     return [...members].sort((a, b) => {
       if (a.is_leader && !b.is_leader) return -1
@@ -84,33 +82,29 @@ export const StudyMemberList = ({
     })
   }, [members])
 
-  // 추방 확인 핸들러
   const onConfirmExpel = () => {
     if (selectedMemberIdRef.current) {
       expelMember.mutate(selectedMemberIdRef.current, {
         onSuccess: () => {
           closeModal()
-          // 성공 알림을 띄우고 싶다면 여기에 추가
+          selectedMemberIdRef.current = null
         },
         onError: () => {
           closeModal()
-          // 에러 알림을 띄우고 싶다면 여기에 추가
         },
       })
     }
   }
 
-  // 리더 위임 확인 핸들러
   const onConfirmDelegate = () => {
     if (selectedMemberIdRef.current) {
       delegateLeader.mutate(selectedMemberIdRef.current, {
         onSuccess: () => {
           closeModal()
-          // 성공 알림을 띄우고 싶다면 여기에 추가
+          selectedMemberIdRef.current = null
         },
         onError: () => {
           closeModal()
-          // 에러 알림을 띄우고 싶다면 여기에 추가
         },
       })
     }
@@ -121,7 +115,6 @@ export const StudyMemberList = ({
     selectedMemberIdRef.current = null
   }
 
-  // 추방 버튼 클릭 시 모달 오픈
   const handleExpelClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId
     openModal('CONFIRM', {
@@ -134,7 +127,6 @@ export const StudyMemberList = ({
     })
   }
 
-  // 리더 위임 버튼 클릭 시 모달 오픈
   const handleDelegateClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId
     openModal('CONFIRM', {
@@ -146,9 +138,7 @@ export const StudyMemberList = ({
       },
     })
   }
-  console.log(selectedMemberIdRef.current)
 
-  // Tooltip 관련
   const updateTooltipPosition = (
     targetIndex: number,
     nickname: string,
@@ -228,13 +218,11 @@ export const StudyMemberList = ({
                 </div>
               </div>
 
-              {/* 리더일 경우만 표시 */}
               {isLeader && !member.is_leader && (
                 <div className="flex items-center gap-2 opacity-0 transition-opacity group-hover:opacity-100">
-                  {/* 리더 위임 버튼 */}
                   <div
                     ref={(el: HTMLDivElement | null) => {
-                      buttonRefs.current[member.uuid] = el
+                      buttonRefs.current[`delegate-${member.uuid}`] = el
                     }}
                     className="relative"
                     onMouseEnter={() =>
@@ -255,10 +243,9 @@ export const StudyMemberList = ({
                     </BasicButton>
                   </div>
 
-                  {/* 추방 버튼 */}
                   <div
                     ref={(el: HTMLDivElement | null) => {
-                      buttonRefs.current[index * 2 + 1] = el
+                      buttonRefs.current[`expel-${member.uuid}`] = el
                     }}
                     className="relative"
                     onMouseEnter={() =>
@@ -285,7 +272,6 @@ export const StudyMemberList = ({
         </div>
       </div>
 
-      {/* Tooltip */}
       {tooltipState.targetMember && tooltipState.position && (
         <TooltipPortal>
           <div

@@ -117,12 +117,13 @@ const TestG = () => {
       //   .delegate$leader.POST({
       //     target_member_uuid: serverDummyGroupMemberUUid[0].uuid,
       //   })
-      const res = await api.v1.studies
-        .groups(serverDummyGroupUUid)
-        .kick$member.DELETE({
-          target_member_uuid: serverDummyGroupMemberUUid[9].uuid,
-        })
+      // const res = await api.v1.studies
+      //   .groups(serverDummyGroupUUid)
+      //   .kick$member.DELETE({
+      //     target_member_uuid: serverDummyGroupMemberUUid[9].uuid,
+      //   })
 
+      const res = await api.v1.studies.groups.POST()
       // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
       console.log(res)
       // toast.info(`${res}`)

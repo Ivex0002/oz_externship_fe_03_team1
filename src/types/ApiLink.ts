@@ -94,11 +94,6 @@ type StudyGroupDetail = StudyGroup & {
 }
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
-type StudyGroupPostLecture = {
-  uuid: string
-  title: string
-  instructor: string
-}
 
 type StudyGroupPost = {
   name: string
@@ -110,7 +105,7 @@ type StudyGroupPost = {
   status: string
   // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
   // (스웨거) uuid[] 라고 기입되어 있음
-  lectures: StudyGroupPostLecture[]
+  lectures: string[]
 }
 
 // api명세서:lectures타입 기입 x
@@ -121,7 +116,7 @@ type StudyGroupPut = {
   profile_img_url: string
   start_at: string
   end_at: string
-  lectures: StudyGroupPostLecture[]
+  lectures: string[]
   max_headcount: number
 }
 

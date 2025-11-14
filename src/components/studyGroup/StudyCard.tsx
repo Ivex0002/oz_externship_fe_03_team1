@@ -6,29 +6,26 @@ import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
 import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
-import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { useNavigate } from 'react-router'
+import { useQueryReview } from '@/hooks/api/queries/useQueryReview'
+import { toast } from 'react-toastify'
+import { storeAccessToken } from '@/store/storeAccessToken'
 
 interface StudyCardProps {
   study: StudyGroup
 }
 
 export const StudyCard = ({ study }: StudyCardProps) => {
+  const { setAccessToken } = storeAccessToken()
+  const dummyAccessToken =
+    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMTcxNTkxLCJpYXQiOjE3NjMwODUxOTEsImp0aSI6IjYyMjU5Zjc0Mzc4MDQwYjA4NjkxMTk1YzMwZjYxMzI3IiwidXNlcl9pZCI6IjEifQ.5tLzNfKasuv_kr7Opvu_zP7EvayK4Z6cibRZdtJ0F8Q'
+  useEffect(() => {
+    setAccessToken(dummyAccessToken)
+  }, [])
   const navigate = useNavigate()
   const { openModal } = useModal()
-  const {
-    reviewData,
-    setReviewData,
-    setPreviousMyReview,
-    setBasicStudyInfo,
-    userId, // 로그인 사용자 ID
-  } = storeReview()
-
+  const { setPreviousMyReview, setBasicStudyInfo } = storeReview()
   const [imgError, setImgError] = useState(false)
-
-  const reviewList = reviewDetailData.results
-  const myReview = reviewList.find((review) => review.isMine === true)
-  const isReviewed = !!myReview
 
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
@@ -41,13 +38,19 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     end_at: study.end_at,
   }
 
-  useEffect(() => {
-    if (study.status === 'ONGOING') return
-    if (study.status === 'ENDED') {
-      // todo 스터디 리뷰 api 호출
-      setReviewData(reviewDetailData)
-    }
-  }, [study.status, setReviewData])
+  const reviewParams = {
+    page: 1,
+    groupId: study.id,
+  }
+  const { data, error, isError, isPending } = useQueryReview(reviewParams)
+
+  const reviewData = data && data.data
+  const reviewList = reviewData ? reviewData.results : []
+
+  const myReview = reviewList.find((review) => review.isMine === true)
+  const isReviewed = !!myReview
+
+  console.log('reviewData', reviewData)
 
   const handleClickDetailReview = () => {
     if (study.status === 'ONGOING') return
@@ -136,17 +139,24 @@ export const StudyCard = ({ study }: StudyCardProps) => {
         </p>
       </div>
 
+      {isError && toast.error((error as Error).message)}
+
       {study.status === 'ENDED' ? (
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">
           <div className="mb-2 flex w-full justify-between">
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
-              <div className="flex items-center gap-1">
-                <RatedStar rating={reviewData.meta.avg_rating} />
-                <span className="flex items-center text-xs text-gray-500">
-                  {reviewData.meta.avg_rating} {`(${reviewData.count})`}
-                </span>
-              </div>
+              {isPending ? (
+                <span className="text-xs text-gray-400">로딩 중...</span>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <RatedStar rating={reviewData?.meta.avg_rating || 0} />
+                  <span className="flex items-center text-xs text-gray-500">
+                    {reviewData?.meta?.avg_rating || 0}{' '}
+                    {`(${reviewData?.count || 0})`}
+                  </span>
+                </div>
+              )}
             </div>
 
             <span

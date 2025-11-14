@@ -9,19 +9,12 @@ import { storeReview } from '@/store/storeReview'
 import { useNavigate } from 'react-router'
 import { useQueryReview } from '@/hooks/api/queries/useQueryReview'
 import { toast } from 'react-toastify'
-import { storeAccessToken } from '@/store/storeAccessToken'
 
 interface StudyCardProps {
   study: StudyGroup
 }
 
 export const StudyCard = ({ study }: StudyCardProps) => {
-  const { setAccessToken } = storeAccessToken()
-  const dummyAccessToken =
-    'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNzYzMTcxNTkxLCJpYXQiOjE3NjMwODUxOTEsImp0aSI6IjYyMjU5Zjc0Mzc4MDQwYjA4NjkxMTk1YzMwZjYxMzI3IiwidXNlcl9pZCI6IjEifQ.5tLzNfKasuv_kr7Opvu_zP7EvayK4Z6cibRZdtJ0F8Q'
-  useEffect(() => {
-    setAccessToken(dummyAccessToken)
-  }, [])
   const navigate = useNavigate()
   const { openModal } = useModal()
   const { setPreviousMyReview, setBasicStudyInfo } = storeReview()
@@ -44,13 +37,19 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   }
   const { data, error, isError, isPending } = useQueryReview(reviewParams)
 
+  useEffect(() => {
+    if (isError) {
+      toast.error((error as Error)?.message ?? '리뷰를 불러오지 못했습니다.', {
+        toastId: `review-load-error-${study.id}`, // 같은 카드에서 중복 토스트 방지
+      })
+    }
+  }, [isError, error, study.id])
+
   const reviewData = data && data.data
   const reviewList = reviewData ? reviewData.results : []
 
   const myReview = reviewList.find((review) => review.isMine === true)
   const isReviewed = !!myReview
-
-  console.log('reviewData', reviewData)
 
   const handleClickDetailReview = () => {
     if (study.status === 'ONGOING') return
@@ -138,8 +137,6 @@ export const StudyCard = ({ study }: StudyCardProps) => {
           ))}
         </p>
       </div>
-
-      {isError && toast.error((error as Error).message)}
 
       {study.status === 'ENDED' ? (
         <div className="relative flex w-full flex-col items-stretch border-t border-gray-100 px-5 py-5">

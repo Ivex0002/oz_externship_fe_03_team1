@@ -24,7 +24,7 @@ export const refreshAccessToken = async (): Promise<string | null> => {
       '/v1/auth/refresh',
       {}
     )
-    // console.log({ data })
+    console.log(data)
     if (data.data.access) {
       // console.log(data)
       return data.data.access

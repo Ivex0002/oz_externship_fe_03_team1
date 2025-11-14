@@ -1,7 +1,6 @@
 import { CreateStudyGroup } from '@/pages/study-groups/CreateStudyGroup'
 import { BasicModal } from '@/components/basicComponents/basicModal/BasicModal'
 import { createPortal } from 'react-dom'
-import { GlobalToast } from '@/components/basicComponents/toast/ToastContainer'
 
 export default function TestE() {
   // 아래줄 주석처리 후 링크 TestE 변경-생성 모드, 주석해제 후 링크 TestE 변경-수정 모드
@@ -34,8 +33,6 @@ export default function TestE() {
 
       {typeof document !== 'undefined' &&
         createPortal(<BasicModal />, document.body)}
-
-      <GlobalToast />
     </>
   )
 }

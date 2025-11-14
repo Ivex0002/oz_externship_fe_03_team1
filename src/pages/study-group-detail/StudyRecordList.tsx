@@ -1,7 +1,6 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import dayjs from '@/lib/dayjs'
 import { useNavigate } from 'react-router'
-import { useStudyRecords } from '@/hooks/useStudyRecords'
+import { useQueryStudyRecords } from '@/hooks/api/queries/useQueryStudyRecords'
 
 interface StudyRecordListProps {
   groupId: string
@@ -9,8 +8,8 @@ interface StudyRecordListProps {
 
 export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
   const navigate = useNavigate()
-  const { data: records, isLoading, isError } = useStudyRecords(groupId)
-
+  const { data, isPending, isError } = useQueryStudyRecords(groupId)
+  console.log(data)
   const handleWriteClick = () => {
     navigate(`/create_study_record/${groupId}`)
   }
@@ -19,7 +18,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
     navigate(`/study-record/${recordId}`)
   }
 
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="rounded-xl border border-gray-100 bg-white p-6">
         <div className="flex items-center justify-center py-8">
@@ -40,7 +39,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
   }
 
   // records 데이터 정규화 - API 응답이 배열이 아닐 수 있음
-  const recordsList = Array.isArray(records) ? records : []
+  // const recordsList = data
 
   return (
     <div className="rounded-xl border border-gray-100 bg-white p-6">
@@ -61,7 +60,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         </BasicButton>
       </div>
 
-      {recordsList.length === 0 ? (
+      {/* {recordsList?.length === 0 ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <p className="text-gray-500 mb-2">아직 작성된 스터디 기록이 없습니다.</p>
@@ -70,7 +69,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         </div>
       ) : (
         <div className="space-y-3">
-          {recordsList.map((record) => (
+          {recordsList?.map((record) => (
             <div
               key={record.id}
               className="hover:border-primary-400 hover:bg-primary-50/40 group cursor-pointer rounded-xl border border-gray-200 transition-all"
@@ -108,7 +107,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
             </div>
           ))}
         </div>
-      )}
+      )} */}
     </div>
   )
 }

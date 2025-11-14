@@ -1,6 +1,7 @@
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useNavigate } from 'react-router'
 import { useQueryStudyRecords } from '@/hooks/api/queries/useQueryStudyRecords'
+import dayjs from '@/lib/dayjs'
 
 interface StudyRecordListProps {
   groupId: string
@@ -9,6 +10,7 @@ interface StudyRecordListProps {
 export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
   const navigate = useNavigate()
   const { data, isPending, isError } = useQueryStudyRecords(groupId)
+  const recordsList = data?.data?.data
   console.log(data)
   const handleWriteClick = () => {
     navigate(`/create_study_record/${groupId}`)
@@ -60,7 +62,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         </BasicButton>
       </div>
 
-      {/* {recordsList?.length === 0 ? (
+      {recordsList?.length === 0 ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
             <p className="text-gray-500 mb-2">아직 작성된 스터디 기록이 없습니다.</p>
@@ -100,14 +102,14 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
                       alt="파일 첨부"
                       className="filter: contrast-84; w-[8.5px] brightness-90 hue-rotate-182 invert-47 saturate-755 sepia-7"
                     />
-                    <p className="mt-1 text-xs text-gray-500">{record.summary}</p>
+                    <p className="mt-1 text-xs text-gray-500">첨부파일 {record.files_count}개</p>
                   </div>
                 </div>
               </div>
             </div>
           ))}
         </div>
-      )} */}
+      )}
     </div>
   )
 }

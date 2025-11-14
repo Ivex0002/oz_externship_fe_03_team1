@@ -37,7 +37,7 @@ export const studyGroupApiResponse = {
     start_at: '2025-01-15',
     end_at: '2025-03-15',
     status: 'ONGOING' as const,
-    is_me_leader: false,
+    is_me_leader: true,
     lectures: [
       {
         uuid: '1',

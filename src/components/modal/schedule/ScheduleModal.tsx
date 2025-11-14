@@ -8,6 +8,7 @@ import type { Member } from '@/types/Schedule'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { useScheduleMutation } from '@/hooks/api/mutations/useScheduleMutation'
+import { toast } from 'react-toastify'
 
 export const ScheduleModal = () => {
   const [selectedMembers, setSelectedMembers] = useState<Member[]>([])
@@ -58,7 +59,6 @@ export const ScheduleModal = () => {
       participants: selectedMembers.map((member) => member.uuid),
     }
 
-    console.log('Schedule Payload:', payload)
     if (isEdit) {
       if (!studyGroupId || !scheduleId) return
 
@@ -91,11 +91,11 @@ export const ScheduleModal = () => {
       }
       patchSchedule.mutate(patchParams)
 
-      if (patchSchedule.isError) return
+      if (patchSchedule.isError) return toast.error(patchSchedule.error.message)
     } else {
       postSchedule.mutate(payload)
 
-      if (postSchedule.isError) return
+      if (postSchedule.isError) return toast.error(postSchedule.error.message)
     }
     clearSchedules()
     closeModal()

@@ -4,13 +4,15 @@ import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
 export type filterKey = 'all' | 'unread' | 'read'
+
+type Counts = { total: number; unread: number; read: number }
 interface StoreNoti {
+  counts: Counts
   notiArr: UserNotification[]
   filtered: UserNotification[]
   currentFilter: filterKey
   isNotiPanelOpen: boolean
-  unreadCount: number
-  readCount: number
+  setCounts: (counts: Counts) => void
   setIsNotiPanelOpen: (val: boolean) => void
   setNotiArr: (notis: UserNotification[]) => void
   addNoti: (noti: UserNotification) => void
@@ -30,12 +32,12 @@ const applyFilter = (notifications: UserNotification[], filter: filterKey) => {
 export const storeNotification = create<StoreNoti>()(
   subscribeWithSelector((set) => {
     return {
+      counts: { total: 0, unread: 0, read: 0 },
       notiArr: [],
       filtered: [],
       currentFilter: 'all',
       isNotiPanelOpen: false,
-      unreadCount: 0,
-      readCount: 0,
+      setCounts: (counts) => set({ counts: counts }),
       setIsNotiPanelOpen: (val) => set({ isNotiPanelOpen: val }),
       setNotiArr: (notis) => set({ notiArr: notis || [] }),
       addNoti: (noti) =>
@@ -60,8 +62,6 @@ storeNotification.subscribe(
   (notiArr) => {
     const state = storeNotification.getState()
     storeNotification.setState({
-      unreadCount: notiArr.filter((n) => !n.is_read).length,
-      readCount: notiArr.filter((n) => n.is_read).length,
       filtered: applyFilter(notiArr, state.currentFilter),
     })
   }

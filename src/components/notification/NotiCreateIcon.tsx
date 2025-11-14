@@ -19,14 +19,14 @@ type NotificationStyle = {
 
 // 팔레트에 없는 색상도 있어서 일단 전부 다 헥스값으로 지정
 export const NOTIFICATION_STYLE: Record<NotificationType, NotificationStyle> = {
-  application: { Icon: UserRoundPlus, bg: '#DBEAFE', text: '#2563EB' },
-  approval: { Icon: Check, bg: '#DCFCE7', text: '#16A34A' },
-  rejection: { Icon: X, bg: '#FEE2E2', text: '#DC2626' },
-  new_member: { Icon: UsersRound, bg: '#F3E8FF', text: '#9333EA' },
-  study_end: { Icon: CalendarCheck, bg: '#FFEDD5', text: '#EA580C' },
-  upcoming_schedule: { Icon: Calendar1, bg: '#E0E7FF', text: '#4F46E5' },
-  today_schedule: { Icon: CalendarRange, bg: '#FCE7F3', text: '#DB2777' },
-  record_writing: { Icon: NotebookPen, bg: '#CCFBF1', text: '#0D9488' },
+  APPLICATION_CREATED: { Icon: UserRoundPlus, bg: '#DBEAFE', text: '#2563EB' },
+  APPLICATION_STATUS_APPROVAL: { Icon: Check, bg: '#DCFCE7', text: '#16A34A' },
+  APPLICATION_STATUS_REJECTION: { Icon: X, bg: '#FEE2E2', text: '#DC2626' },
+  STUDY_MEMBER_JOINED: { Icon: UsersRound, bg: '#F3E8FF', text: '#9333EA' },
+  STUDY_REVIEW_REQUEST: { Icon: CalendarCheck, bg: '#FFEDD5', text: '#EA580C' },
+  STUDY_SCHEDULE_UPCOMING: { Icon: Calendar1, bg: '#E0E7FF', text: '#4F46E5' },
+  STUDY_SCHEDULE_TODAY: { Icon: CalendarRange, bg: '#FCE7F3', text: '#DB2777' },
+  STUDY_RECORD_CREATED: { Icon: NotebookPen, bg: '#CCFBF1', text: '#0D9488' },
 }
 
 /**

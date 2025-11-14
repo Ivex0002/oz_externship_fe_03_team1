@@ -33,4 +33,6 @@ export type ChatRoom = {
   name: string
   last_message: LastMessage | null
   unread_message_count: number
+  created_at: string
+  updated_at: string
 }

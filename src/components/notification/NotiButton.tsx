@@ -7,9 +7,8 @@ import { api } from '@/api/api'
 import { storeUser } from '@/store/storeUser'
 
 export const NotiButton = () => {
-  const { unreadCount, isNotiPanelOpen, setIsNotiPanelOpen } =
-    storeNotification()
-  const notiCount = unreadCount
+  const { counts, isNotiPanelOpen, setIsNotiPanelOpen } = storeNotification()
+  const notiCount = counts.unread
   const buttonRef = useRef<HTMLButtonElement>(null)
 
   const handleClick = () => {
@@ -38,7 +37,7 @@ export const NotiButton = () => {
 }
 
 const GETNoti = () => {
-  const { setNotiArr } = storeNotification()
+  const { setNotiArr, setCounts } = storeNotification()
   const { user } = storeUser()
   useAsyncEffect({
     asyncFn: async () => {
@@ -48,7 +47,12 @@ const GETNoti = () => {
       }
       return await api.v1.notifications.GET()
     },
-    onSuccess: (data) => data && setNotiArr(data.items),
+    onSuccess: (data) => {
+      // console.log('noti', data)
+      if (!data) return
+      setNotiArr(data.results)
+      setCounts(data.counts)
+    },
     deps: [user],
   })
 

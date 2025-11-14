@@ -65,22 +65,21 @@ const NotiHeader = () => {
 }
 
 const NotiTabs = () => {
-  const { notiArr, unreadCount, readCount, currentFilter, filterNoti } =
-    storeNotification()
+  const { counts, currentFilter, filterNoti } = storeNotification()
 
   const TABS = useMemo(
     () => [
-      { key: 'all', label: `전체보기 (${notiArr.length})` },
+      { key: 'all', label: `전체보기 (${counts.total})` },
       {
         key: 'unread',
-        label: `읽지 않음 (${unreadCount})`,
+        label: `읽지 않음 (${counts.read})`,
       },
       {
         key: 'read',
-        label: `읽음 (${readCount})`,
+        label: `읽음 (${counts.unread})`,
       },
     ],
-    [notiArr.length, readCount, unreadCount]
+    [counts]
   )
 
   return (
@@ -119,7 +118,7 @@ const NotiItemList = () => {
   // 현재 테스트 계정에 알림 없음
   const handleClick = async (n: UserNotification) => {
     await api.v1.notifications(n.id).PATCH()
-    window.location.href = n.back_link_url
+    window.location.href = n.back_url_link
   }
 
   return filtered.length === 0 ? (
@@ -138,7 +137,7 @@ const NotiItemList = () => {
 
             <div className="flex-1 pl-3">
               <p className="h-10 text-sm leading-5 tracking-[0px] text-gray-900">
-                {n.message}
+                {n.content}
               </p>
               <p className="font-roboto mt-1 text-xs text-gray-500">
                 {formatToMonthDay(n.created_at)}

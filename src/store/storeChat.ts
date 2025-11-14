@@ -30,16 +30,19 @@ export const storeChat = create<storeChat>()(
       currentChatRoomUUID: null,
       chatRooms: [],
       messages: [],
-      // initSessions 에서 각 안읽은 메시지 개수 뽑아와서 합산
       totalUnreadCount: 0,
 
-      setIsPanelOpen: (isOpen) => set(() => ({ isPanelOpen: isOpen })),
-      setCurrentPanel: (panel) => set(() => ({ currentPanel: panel })),
-      setMessages: (messages) => set(() => ({ messages: messages })),
+      setIsPanelOpen: (isOpen) => set({ isPanelOpen: isOpen }),
+      setCurrentPanel: (panel) => set({ currentPanel: panel }),
+      setMessages: (messages) => set({ messages: messages }),
       addMessage: (message) =>
         set((state) => ({ messages: [...state.messages, message] })),
 
-      setChatRooms: (Chatrooms) => set({ chatRooms: Chatrooms }),
+      setChatRooms: (Chatrooms) => {
+        // console.log({ Chatrooms })
+
+        return set({ chatRooms: Chatrooms })
+      },
       togglePanel: (studyGroupUUID?) =>
         set((state) => ({
           currentPanel:

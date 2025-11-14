@@ -507,7 +507,8 @@ type GroupApi = {
     // members/{member_id} PATCH 가 합당한 조치라고 판단하여 이동 조치함
     // delegate$leader: {
     //   // userProfile을 제외한 모든 필드에서 유저 id는 uuid 형식임
-      "delegate-leader":{POST: (req: { target_member_uuid: string }) => {
+    delegate$leader: {
+      POST: (req: { target_member_uuid: string }) => {
         res: {
           // 어째서 타겟은 uuid이고 이전, 신규/이전 리더는 number인가?
           // 동일한 유저 필드를 참조하는 것이라면 둘 중 하나로 통일하는것이 맞음
@@ -516,11 +517,14 @@ type GroupApi = {
           previous_leader_id: number
           new_leader_id: number
         }
-      }}
+      }
+    }
     // }
     leave: { DELETE: () => { res: BaseResponse } }
 
-    "kick-member":{DELETE:(req: { target_member_uuid: string })=>{res:BaseResponse}}
+    kick$member: {
+      DELETE: (req: { target_member_uuid: string }) => { res: BaseResponse }
+    }
 
     reviews: ReviewApi
     schedules: ScheduleApi
@@ -535,7 +539,7 @@ type GroupApi = {
     notes: {
       GET: () => {
         res: BaseResWithGeneric<
-            {data:NoteGetByGroupRes[]} & {
+          { data: NoteGetByGroupRes[] } & {
             order: string
             group_id: string
           }

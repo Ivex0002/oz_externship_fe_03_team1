@@ -7,8 +7,10 @@ import { api } from '@/api/api'
 export const useStudyGroupMutation = (studyGroupId: string) => {
   // 1. 리더 위임 mutation
   const delegateLeaderMutation = useMutation({
-    mutationFn: (targetMemberId: string) => 
-      api.v1.studies.groups(studyGroupId)['delegate-leader'].POST({target_member_uuid:targetMemberId}),
+    mutationFn: (targetMemberId: string) =>
+      api.v1.studies
+        .groups(studyGroupId)
+        .delegate$leader.POST({ target_member_uuid: targetMemberId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.studies.groups.members(studyGroupId),
@@ -23,7 +25,9 @@ export const useStudyGroupMutation = (studyGroupId: string) => {
   // 2. 멤버 추방 mutation
   const expelMemberMutation = useMutation({
     mutationFn: (targetMemberId: string) =>
-      api.v1.studies.groups(studyGroupId)['kick-member'].DELETE({target_member_uuid:targetMemberId}),
+      api.v1.studies
+        .groups(studyGroupId)
+        .kick$member.DELETE({ target_member_uuid: targetMemberId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: queryKeys.studies.groups.members(studyGroupId),

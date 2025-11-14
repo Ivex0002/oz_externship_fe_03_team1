@@ -5,14 +5,15 @@ export type Member = {
 }
 
 export type Schedule = {
-  id?: number
+  uuid?: string
   title: string
   objective: string
   session_date: string
   start_time: string
   end_time: string
   created_at?: string
-  schedule_members: Member[]
+  updated_at?: string
+  participants: Member[]
 }
 // 스터디 기록 타입
 export type StudyRecord = {

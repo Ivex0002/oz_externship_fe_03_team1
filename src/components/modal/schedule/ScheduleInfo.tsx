@@ -70,7 +70,7 @@ export const ScheduleInfo = () => {
         <div className="relative" onClick={() => handleOpenDatePicker()}>
           <BasicInput
             id="scheduleDate"
-            name="date"
+            name="session_date"
             placeholder="날짜를 선택하세요"
             value={dateValue}
             readOnly

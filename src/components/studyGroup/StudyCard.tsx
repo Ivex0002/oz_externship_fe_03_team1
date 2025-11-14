@@ -25,7 +25,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
   const period = `${startDate} ~ ${endDate}`
 
   const basicStudyInfo = {
-    id: study.id,
+    id: study.uuid,
     name: study.name,
     start_at: study.start_at,
     end_at: study.end_at,
@@ -33,17 +33,17 @@ export const StudyCard = ({ study }: StudyCardProps) => {
 
   const reviewParams = {
     page: 1,
-    groupId: study.id,
+    groupId: study.uuid,
   }
   const { data, error, isError, isPending } = useQueryReview(reviewParams)
 
   useEffect(() => {
     if (isError) {
       toast.error((error as Error)?.message ?? '리뷰를 불러오지 못했습니다.', {
-        toastId: `review-load-error-${study.id}`, // 같은 카드에서 중복 토스트 방지
+        toastId: `review-load-error-${study.uuid}`, // 같은 카드에서 중복 토스트 방지
       })
     }
-  }, [isError, error, study.id])
+  }, [isError, error, study.uuid])
 
   const reviewData = data && data.data
   const reviewList = reviewData ? reviewData.results : []
@@ -57,7 +57,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     openModal('REVIEW_DETAIL', {
       title: '리뷰 상세',
       subTitle: study.name,
-      modalProps: { studyGroupId: study.id },
+      modalProps: { studyGroupId: study.uuid },
     })
   }
 
@@ -66,7 +66,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setBasicStudyInfo(basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 작성',
-      modalProps: { studyGroupId: study.id },
+      modalProps: { studyGroupId: study.uuid },
     })
   }
 
@@ -75,12 +75,12 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setPreviousMyReview(myReview, basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyGroupId: study.id, reviewId: myReview.id },
+      modalProps: { studyGroupId: study.uuid, reviewId: myReview.id },
     })
   }
 
   const handleNavigateDetail = () => {
-    navigate(`/study_group_detail/${study.id}`)
+    navigate(`/study_group_detail/${study.uuid}`)
   }
 
   return (

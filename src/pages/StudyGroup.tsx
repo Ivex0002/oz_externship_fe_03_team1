@@ -40,19 +40,12 @@ export const StudyGroup = () => {
   // API 연동: useQueryStudyGroup
   const { data, isLoading, error } = useQueryStudyGroup({
     page: 1,
+    status: 'ONGOING',
     page_size: 100,
     search: debouncedSearchTerm || null,
   })
 
-  const allStudies: StudyGroupType[] = data?.results || []
-
-  // 상태별 분류
-  const ongoingStudyGroupList = allStudies.filter(
-    (study) => study.status === 'ONGOING'
-  )
-  const completedStudyGroupList = allStudies.filter(
-    (study) => study.status === 'ENDED'
-  )
+  const ongoingStudyGroupList = data?.results || []
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">
@@ -85,13 +78,13 @@ export const StudyGroup = () => {
           <>
             <StudySection
               title="진행중인 스터디"
-              studies={ongoingStudyGroupList}
+              debouncedSearchTerm={debouncedSearchTerm}
               type="active"
               isSearchResult={!!searchTerm}
             />
             <StudySection
               title="완료된 스터디"
-              studies={completedStudyGroupList}
+              debouncedSearchTerm={debouncedSearchTerm}
               type="completed"
               isSearchResult={!!searchTerm}
             />

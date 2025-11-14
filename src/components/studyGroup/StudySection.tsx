@@ -1,32 +1,41 @@
-import { useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
-import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
+import { useQueryStudyGroup } from '@/hooks/api/queries/useQueryStudyGroup'
 
 interface StudySectionProps {
   title: string
-  studies: StudyGroupType[]
   type: 'active' | 'completed'
+  debouncedSearchTerm: string
   isSearchResult: boolean
   itemsPerPage?: number // 페이지당 표시할 개수 (기본값 9)
 }
 
 export const StudySection = ({
   title,
-  studies,
+  debouncedSearchTerm,
   type,
   isSearchResult,
   itemsPerPage = 9,
 }: StudySectionProps) => {
   const [currentPage, setCurrentPage] = useState(0)
-  const hasNoStudies = studies.length === 0
+  const status = type === 'active' ? 'ONGOING' : 'COMPLETED'
   const subTitle =
     type === 'active'
       ? '현재 활발히 진행되고 있는 스터디 그룹들'
       : '성공적으로 마무리된 스터디 그룹들'
 
-  // 페이지네이션 계산
+  const { data, isLoading, error } = useQueryStudyGroup({
+    page: 1,
+    status: status,
+    page_size: 100,
+    search: debouncedSearchTerm || null,
+  })
+
+  const studies = data?.results || []
+  const hasNoStudies = studies.length === 0
+
   const startIndex = currentPage * itemsPerPage
   const paginatedStudies = studies.slice(startIndex, startIndex + itemsPerPage)
   const totalPages = Math.ceil(studies.length / itemsPerPage)
@@ -47,7 +56,7 @@ export const StudySection = ({
           </div>
         ) : (
           paginatedStudies.map((study) => (
-            <StudyCard key={study.id} study={study} />
+            <StudyCard key={study.uuid} study={study} />
           ))
         )}
       </div>

@@ -131,7 +131,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             <Book size={16} className="text-gray-700" /> 스터디 강의
           </span>
           {study.lectures.map((lec) => (
-            <span key={lec.id} className="mt-0.5 block">
+            <span key={lec.uuid} className="mt-0.5 block">
               - {lec.title}
             </span>
           ))}

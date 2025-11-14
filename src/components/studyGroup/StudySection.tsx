@@ -1,4 +1,4 @@
-import { use, useEffect, useState } from 'react'
+import { useState } from 'react'
 import { StudyCard } from '@/components/studyGroup/StudyCard'
 import { NoStudiesResult } from '@/components/searchStudy/NoStudiesResult'
 import { CustomPagination } from '@/components/basicComponents/pagination/CustomPagination'
@@ -20,20 +20,22 @@ export const StudySection = ({
   itemsPerPage = 9,
 }: StudySectionProps) => {
   const [currentPage, setCurrentPage] = useState(0)
-  const status = type === 'active' ? 'ONGOING' : 'COMPLETED'
+  const status = type === 'active' ? 'ONGOING' : 'ENDED'
   const subTitle =
     type === 'active'
       ? '현재 활발히 진행되고 있는 스터디 그룹들'
       : '성공적으로 마무리된 스터디 그룹들'
 
-  const { data, isLoading, error } = useQueryStudyGroup({
+  const { data, isPending, isError, error } = useQueryStudyGroup({
     page: 1,
     status: status,
     page_size: 100,
     search: debouncedSearchTerm || null,
   })
 
-  const studies = data?.results || []
+  console.log(data)
+
+  const studies = data?.data.results || []
   const hasNoStudies = studies.length === 0
 
   const startIndex = currentPage * itemsPerPage

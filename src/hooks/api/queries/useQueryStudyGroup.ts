@@ -4,7 +4,7 @@ import { api } from '@/api/api'
 import type { PageReq } from '@/types/ApiLink'
 
 interface StudyGroupParams extends PageReq {
-  status: 'ONGOING' | 'COMPLETED' | 'UPCOMING'
+  status: 'ONGOING' | 'ENDED' | 'PENDING'
   page_size?: number
   search: string | null
 }

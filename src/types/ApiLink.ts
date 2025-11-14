@@ -482,7 +482,7 @@ type GroupApi = {
    * api.v1.studies.groups.GET(undefined, {status:”PENDING” | ”ONGOING” | ”ENDED” , page:number, search:string})
    * ```
    */
-  GET: () => { res: Pagination<StudyGroup> }
+  GET: () => { res: { data: Pagination<StudyGroup> } }
   POST: (req: StudyGroupPost) => {
     res: BaseResWithGeneric<StudyGroupPost & { uuid: string }>
   }

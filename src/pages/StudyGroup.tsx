@@ -5,8 +5,6 @@ import { BasicInput } from '@/components/basicComponents/input/BasicInput'
 import { useDebounce } from '@/hooks/useDebounce'
 import { StudySection } from '@/components/studyGroup/StudySection'
 import { useNavigate } from 'react-router'
-import { useQueryStudyGroup } from '@/hooks/api/queries/useQueryStudyGroup'
-import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
 const SearchBar = ({
   searchTerm,
@@ -37,16 +35,6 @@ export const StudyGroup = () => {
     navigate('/create_study_group')
   }
 
-  // API 연동: useQueryStudyGroup
-  const { data, isLoading, error } = useQueryStudyGroup({
-    page: 1,
-    status: 'ONGOING',
-    page_size: 100,
-    search: debouncedSearchTerm || null,
-  })
-
-  const ongoingStudyGroupList = data?.results || []
-
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
@@ -68,28 +56,18 @@ export const StudyGroup = () => {
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
       <main className="mx-auto flex w-full flex-1 flex-col">
-        {isLoading ? (
-          <div className="py-10 text-center">로딩중...</div>
-        ) : error ? (
-          <div className="py-10 text-center text-red-500">
-            스터디 그룹을 불러오는 중 오류가 발생했습니다.
-          </div>
-        ) : (
-          <>
-            <StudySection
-              title="진행중인 스터디"
-              debouncedSearchTerm={debouncedSearchTerm}
-              type="active"
-              isSearchResult={!!searchTerm}
-            />
-            <StudySection
-              title="완료된 스터디"
-              debouncedSearchTerm={debouncedSearchTerm}
-              type="completed"
-              isSearchResult={!!searchTerm}
-            />
-          </>
-        )}
+        <StudySection
+          title="진행중인 스터디"
+          debouncedSearchTerm={debouncedSearchTerm}
+          type="active"
+          isSearchResult={!!searchTerm}
+        />
+        <StudySection
+          title="완료된 스터디"
+          debouncedSearchTerm={debouncedSearchTerm}
+          type="completed"
+          isSearchResult={!!searchTerm}
+        />
       </main>
     </div>
   )

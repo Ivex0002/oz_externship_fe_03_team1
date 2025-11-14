@@ -19,6 +19,8 @@ export const PeriodSection = ({ form, setForm }: Props) => {
   const studyEndDate = endDate ? dayjs(endDate).format('L') : ''
 
   const handleOpenDatePicker = (type: 'start' | 'end') => {
+    // console.log(type)
+
     openModal('DATE_PICKER', {
       title: type === 'start' ? '스터디 시작일 선택' : '스터디 종료일 선택',
       modalProps: { target: type },

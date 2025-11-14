@@ -11,24 +11,29 @@ import type { ModalPropsMap } from '@/types/Modal'
 import { storeDatePicker } from '@/store/storeDatePicker'
 
 export const DatePickerModal = () => {
-  const [selected, setSelected] = useState<Date>()
-
-  const modalProps = storeModalOpen().modalState.modalProps
-
-  const target = (modalProps as ModalPropsMap['DATE_PICKER']).target
-
-  const { startDate, endDate, date, mode } = storeDatePicker()
-
   const today = dayjs().toDate()
   const [month, setMonth] = useState(dayjs(today).set('date', 1).toDate())
+  const [selected, setSelected] = useState<Date>()
+
+  const { startDate, endDate, date, mode } = storeDatePicker()
+  const { modalState } = storeModalOpen()
+
+  const modalProps = modalState.modalProps
+
+  const target = modalProps
+    ? (modalProps as ModalPropsMap['DATE_PICKER']).target
+    : null
 
   useEffect(() => {
+    if (!target) return
     if (target === 'start' && startDate) setSelected(startDate)
 
     if (target === 'end' && endDate) setSelected(endDate)
 
     if ((target === 'single' || mode === 'single') && date) setSelected(date)
   }, [target, startDate, endDate, date, mode])
+
+  if (!target) return null
 
   return (
     <motion.div

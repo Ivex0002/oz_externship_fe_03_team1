@@ -2,12 +2,12 @@ import { useState } from 'react'
 import { Plus, Search } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { BasicInput } from '@/components/basicComponents/input/BasicInput'
-import { studyGroupList } from '@/assets/dummyData/studiesData'
 import { useDebounce } from '@/hooks/useDebounce'
 import { StudySection } from '@/components/studyGroup/StudySection'
 import { useNavigate } from 'react-router'
+import { useQueryStudyGroup } from '@/hooks/api/queries/useQueryStudyGroup'
+import type { StudyGroup as StudyGroupType } from '@/types/StudyGroupTypes'
 
-/** 검색창 컴포넌트 */
 const SearchBar = ({
   searchTerm,
   setSearchTerm,
@@ -28,30 +28,34 @@ const SearchBar = ({
   </div>
 )
 
-/** 메인 StudyGroup 페이지 */
 export const StudyGroup = () => {
   const [searchTerm, setSearchTerm] = useState('')
   const debouncedSearchTerm = useDebounce(searchTerm, 300)
   const navigate = useNavigate()
 
-  /** 새 스터디 만들기 버튼 클릭 핸들러 */
   const handleClickCreateStudy = () => {
     navigate('/create_study_group')
   }
-  // 검색 필터링
-  const filteredStudyGroups = studyGroupList.filter((study) =>
-    study.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase())
-  )
-  const ongoingStudyGroupList = filteredStudyGroups.filter(
+
+  // API 연동: useQueryStudyGroup
+  const { data, isLoading, error } = useQueryStudyGroup({
+    page: 1,
+    page_size: 100,
+    search: debouncedSearchTerm || null,
+  })
+
+  const allStudies: StudyGroupType[] = data?.results || []
+
+  // 상태별 분류
+  const ongoingStudyGroupList = allStudies.filter(
     (study) => study.status === 'ONGOING'
   )
-  const completedStudyGroupList = filteredStudyGroups.filter(
+  const completedStudyGroupList = allStudies.filter(
     (study) => study.status === 'ENDED'
   )
 
   return (
     <div className="flex min-h-screen w-screen flex-col bg-white px-5 pt-[65px] pb-20 sm:px-10 lg:px-20">
-      {/* 헤더 */}
       <header className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-0">
         <div>
           <h1 className="mb-1 text-3xl font-bold text-gray-800">스터디 그룹</h1>
@@ -68,23 +72,31 @@ export const StudyGroup = () => {
         </BasicButton>
       </header>
 
-      {/* 검색창 */}
       <SearchBar searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
 
-      {/* 메인 컨텐츠 */}
       <main className="mx-auto flex w-full flex-1 flex-col">
-        <StudySection
-          title="진행중인 스터디"
-          studies={ongoingStudyGroupList}
-          type="active"
-          isSearchResult={!!searchTerm}
-        />
-        <StudySection
-          title="완료된 스터디"
-          studies={completedStudyGroupList}
-          type="completed"
-          isSearchResult={!!searchTerm}
-        />
+        {isLoading ? (
+          <div className="py-10 text-center">로딩중...</div>
+        ) : error ? (
+          <div className="py-10 text-center text-red-500">
+            스터디 그룹을 불러오는 중 오류가 발생했습니다.
+          </div>
+        ) : (
+          <>
+            <StudySection
+              title="진행중인 스터디"
+              studies={ongoingStudyGroupList}
+              type="active"
+              isSearchResult={!!searchTerm}
+            />
+            <StudySection
+              title="완료된 스터디"
+              studies={completedStudyGroupList}
+              type="completed"
+              isSearchResult={!!searchTerm}
+            />
+          </>
+        )}
       </main>
     </div>
   )

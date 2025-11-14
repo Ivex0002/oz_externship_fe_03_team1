@@ -21,7 +21,10 @@ export const StudySection = ({
 }: StudySectionProps) => {
   const [currentPage, setCurrentPage] = useState(0)
   const hasNoStudies = studies.length === 0
-  const subTitle = type === "active" ? "현재 활발히 진행되고 있는 스터디 그룹들" : "성공적으로 마무리된 스터디 그룹들"
+  const subTitle =
+    type === 'active'
+      ? '현재 활발히 진행되고 있는 스터디 그룹들'
+      : '성공적으로 마무리된 스터디 그룹들'
 
   // 페이지네이션 계산
   const startIndex = currentPage * itemsPerPage
@@ -31,16 +34,16 @@ export const StudySection = ({
   return (
     <section className="mb-20 flex w-full flex-col">
       <h2 className="pb-1 text-2xl font-semibold text-gray-800">{title}</h2>
-      <p className='text-gray-600'>{subTitle}</p>
+      <p className="text-gray-600">{subTitle}</p>
 
       <div
-        className={`grid pt-8 w-full grid-cols-3 gap-6 ${
+        className={`grid w-full grid-cols-3 gap-6 pt-8 ${
           hasNoStudies ? 'place-items-center' : ''
         }`}
       >
         {hasNoStudies ? (
           <div className="col-span-full flex w-full justify-center">
-              <NoStudiesResult type={type} isSearchResult={isSearchResult} />
+            <NoStudiesResult type={type} isSearchResult={isSearchResult} />
           </div>
         ) : (
           paginatedStudies.map((study) => (

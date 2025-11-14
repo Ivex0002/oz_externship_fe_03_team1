@@ -306,11 +306,11 @@ type NotePatchReq = {
 
 // ===================== Study:Schedule =====================
 type SchedulePost = {
-  title?: FormDataEntryValue
-  objective?: FormDataEntryValue
-  session_date?: FormDataEntryValue
-  start_time?: FormDataEntryValue
-  end_time?: FormDataEntryValue
+  title: FormDataEntryValue
+  objective: FormDataEntryValue
+  session_date: FormDataEntryValue
+  start_time: FormDataEntryValue
+  end_time: FormDataEntryValue
 }
 
 type Schedule = {
@@ -567,7 +567,9 @@ type ScheduleApi = {
 
   (schedule_id: string): {
     GET: () => { res: BaseResWithGeneric<ScheduleDetail> }
-    PATCH: (req: SchedulePost) => { res: BaseResWithGeneric<Schedule[]> }
+    PATCH: (req: Partial<SchedulePost>) => {
+      res: BaseResWithGeneric<Schedule[]>
+    }
     DELETE: () => { res: BaseResponse }
   }
 }

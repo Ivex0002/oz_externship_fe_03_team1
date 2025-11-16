@@ -259,23 +259,23 @@ src/
 
 ### 🏠 스터디 그룹 목록 페이지 (`/`)
 
-![스터디 그룹 목록 페이지](./assets/images/main.png)
+![스터디 그룹 목록 페이지](./src/assets/images/main.png)
 
 ### ➕ 스터디 그룹 생성 페이지 (`/create_study_group`)
 
-![스터디 그룹 생성 페이지](./assets/images/create_study.png)
+![스터디 그룹 생성 페이지](./src/assets/images/create_study.png)
 
 ### 📄 스터디 그룹 상세 페이지 (`/study_group_detail/:studyGroupId`)
 
-![스터디 그룹 상세 페이지](./assets/images/study_detail.png)
+![스터디 그룹 상세 페이지](./src/assets/images/study_detail.png)
 
 ### ➕ 학습 기록 생성 페이지 (`/create_study_record/:studyGroupId`)
 
-![학습 기록 생성 페이지](./assets/images/create_record.png)
+![학습 기록 생성 페이지](./src/assets/images/create_record.png)
 
 ### 📄 학습 기록 상세 페이지 (`/study_record_detail/:studyGroupId/:studyRecordId`)
 
-![학습 기록 상세 페이지](./assets/images/record_detail.png)
+![학습 기록 상세 페이지](./src/assets/images/record_detail.png)
 
 ---
 

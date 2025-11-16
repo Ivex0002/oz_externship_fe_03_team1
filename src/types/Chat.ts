@@ -14,11 +14,11 @@ type ChatSender = {
 }
 
 export type ChatMessage = {
+  content: string
+  created_at: string
   id: number
   sender: ChatSender
-  content: string
-  is_read: boolean
-  created_at: string
+  study_group_uuid: string
 }
 
 type LastMessage = {

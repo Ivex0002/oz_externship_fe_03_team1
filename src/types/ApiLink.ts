@@ -336,21 +336,6 @@ type ScheduleDetail = Schedule & {
   participants: Participant[]
 }
 
-// ===================== Chat =====================
-type PaginatedChats = {
-  status: string
-  code: string
-  message: string
-  data: {
-    messages: ChatMessage[]
-    pagination: {
-      page: number
-      page_size: number
-      total_count: number
-    }
-  }
-}
-
 // ===================== Pagination =====================
 export type PageReq = { page: number }
 
@@ -631,8 +616,10 @@ type ChatApi = {
         // 스웨거에는 ChatMessage 만 적혀있음
         // 페이지 옵션과 데이터 결과가 매우 이질적으로 되어 있음
         // 이것만 따로 데이터 구조 다르게 기입함
+
+        // 25.11.16 실제 오는 데이터를 기준으로 수정함
         GET: () => {
-          res: PaginatedChats
+          res: Pagination<ChatMessage>
         }
       }
     }

@@ -51,10 +51,10 @@ const GETChatRooms = () => {
   const { setChatRooms } = storeChat()
   useAsyncEffect({
     asyncFn: async () => await api.v1.chat.chatrooms.GET(),
-    onSuccess: (data) => {
-      // console.log(data)
+    onSuccess: (chatRoomsData) => {
+      // console.log(chatRoomsData)
 
-      return setChatRooms(data || [])
+      return setChatRooms(chatRoomsData || [])
     },
     deps: [user],
   })

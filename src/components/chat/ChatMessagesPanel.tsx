@@ -42,8 +42,12 @@ const GETChatMessages = ({
       if (!currentChatRoomUUID) return
       return await api.v1.chat.chatrooms(currentChatRoomUUID).messages.GET()
     },
-    onSuccess: (data) => data && setMessages(data.data.messages),
-    deps: [],
+    onSuccess: (chatMessageData) => {
+      // console.log({ chatMessageData })
+
+      return chatMessageData && setMessages(chatMessageData.results)
+    },
+    deps: [currentChatRoomUUID],
   })
   return null
 }
@@ -184,7 +188,8 @@ const ChatMessages = () => {
 
 const Message = ({ message }: { message: ChatMessage }) => {
   const { user } = storeUser()
-  if (!user) return
+  // 서버쪽 더미데이터에 sender가 null 인 경우도 있음
+  if (!user || !message.sender) return
 
   const isMe = message.sender.id === user?.id
 
@@ -222,6 +227,7 @@ const Message = ({ message }: { message: ChatMessage }) => {
 
 const ChatInput = () => {
   const { addMessage } = storeChat()
+  const { currentChatRoomUUID } = storeChat()
   const { user } = storeUser()
 
   const ref = useRef<HTMLTextAreaElement>(null)
@@ -235,14 +241,14 @@ const ChatInput = () => {
     }
   }, [text])
 
-  if (!user) return
+  if (!user || !currentChatRoomUUID) return
   const me = { id: user.id, nickname: user.nickname }
 
   const newChat: ChatMessage = {
+    study_group_uuid: currentChatRoomUUID,
     id: Date.now(),
     sender: me,
     content: text,
-    is_read: true,
     created_at: new Date().toISOString(),
   }
 

@@ -30,7 +30,7 @@ export const ChatButton = () => {
           <>
             {totalUnreadCount !== 0 && (
               <div className="center-center bg-danger-500 absolute -top-2 left-12 h-6 w-6 rounded-full text-xs font-semibold text-white">
-                {totalUnreadCount}
+                {totalUnreadCount < 100 ? totalUnreadCount : '99+'}
               </div>
             )}
 

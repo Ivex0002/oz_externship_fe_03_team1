@@ -3,7 +3,6 @@ import { StudyRecordList } from './study-group-detail/StudyRecordList';
 import { StudyInfoAndCourses } from '../pages/study-group-detail/StudyInfoAndCourses';
 import { StudyMemberList } from '../pages/study-group-detail/StudyMemberList';
 import { StudyBannerSection } from '../pages/study-group-detail/StudyBannerSection';
-import { studyGroupDetail } from '@/assets/dummyData/dummyStudyGroupDetail';
 import dayjs from '@/lib/dayjs';
 import { getStatusText } from '@/utils/statusFormatter';
 import { useParams } from 'react-router';
@@ -18,7 +17,7 @@ export const StudyGroupDetail = () => {
   if(!studyGroupDetailData)return null
   if(isError)toast.error(error.message)
   if(isPending)<div> 로딩중... </div>
-  console.log(studyGroupDetailData)
+  
   const startDate = dayjs(studyGroupDetailData.start_at).format('L');
   const endDate = dayjs(studyGroupDetailData.end_at).format('L');
   const statusText = getStatusText(studyGroupDetailData.status);

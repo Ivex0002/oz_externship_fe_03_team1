@@ -46,7 +46,7 @@ export const queryKeys = {
       notes: (groupId: string) =>
         defineQueryKey(['studies', 'groups', groupId, 'notes']),
 
-      schedules: (groupId: string) =>
+      schedules: (groupId: string|undefined) =>
         defineQueryKey(['studies', 'groups', groupId, 'schedules']),
     },
   },

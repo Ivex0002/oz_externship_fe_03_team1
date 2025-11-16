@@ -118,7 +118,7 @@ export const StudyMemberList = ({
   const handleExpelClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId
     openModal('CONFIRM', {
-      title: '추방하시겠습니까?',
+      title: '그룹원 추방',
       modalProps: {
         message: `${nickname}님을 추방하시겠습니까?`,
         onConfirm: onConfirmExpel,
@@ -130,7 +130,7 @@ export const StudyMemberList = ({
   const handleDelegateClick = (nickname: string, memberId: string) => {
     selectedMemberIdRef.current = memberId
     openModal('CONFIRM', {
-      title: '위임하시겠습니까?',
+      title: '리더 위임',
       modalProps: {
         message: `${nickname}님에게 리더를 위임하시겠습니까?`,
         onConfirm: onConfirmDelegate,

@@ -4,6 +4,8 @@ import dayjs from '@/lib/dayjs'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import type { Schedule } from '@/types/Schedule'
 import { useModal } from '@/hooks/useModal'
+import { useQueryStudyGroupSchedule } from '@/hooks/api/queries/useQuryStudyGroupSchedule'
+import { toast } from 'react-toastify'
 
 interface StudyCalendarProps {
   groupId: string
@@ -29,7 +31,6 @@ const tooltipReducer = (
 const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
 export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
-  const [schedules, setSchedules] = useState<Schedule[]>([])
   const [currentDate, setCurrentDate] = useState(dayjs())
   const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
     hoveredDay: null,
@@ -39,23 +40,19 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
   const { openModal } = useModal()
 
   useEffect(() => {
-    const fetchSchedules = async () => {
-      try {
-        setSchedules([
-          {
-            id: 1,
-            title: '첫 번째 스터디',
-            session_date: '2025-11-15',
-            start_time: '14:00',
-            end_time: '16:00',
-          },
-        ])
-      } catch (error) {
-        console.error('Failed to fetch schedules:', error)
+    return () => {
+      if (hoverTimeoutRef.current) {
+        clearTimeout(hoverTimeoutRef.current)
       }
     }
-    fetchSchedules()
-  }, [groupId])
+  }, [])
+  
+  const {data, error, isError, isPending} = useQueryStudyGroupSchedule({groupId})
+  const studyScheduleData = data && data.data
+  if(!studyScheduleData)return null
+    if(isError)toast.error(error.message)
+    if(isPending)<div> 로딩중... </div>
+  console.log(data?.data)
 
   const handlePrevMonth = () =>
     setCurrentDate((prev) => prev.subtract(1, 'month'))
@@ -88,13 +85,6 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
     dispatchTooltip({ type: 'HIDE' })
   }
 
-  useEffect(() => {
-    return () => {
-      if (hoverTimeoutRef.current) {
-        clearTimeout(hoverTimeoutRef.current)
-      }
-    }
-  }, [])
 
   const generateCalendar = () => {
     const year = currentDate.year()
@@ -122,7 +112,7 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
     return calendar
   }
 
-  const currentMonthSchedules = schedules.filter((schedule) => {
+  const currentMonthSchedules = studyScheduleData?.filter((schedule) => {
     const scheduleDate = dayjs(schedule.session_date)
     return (
       scheduleDate.year() === currentDate.year() &&
@@ -130,7 +120,7 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
     )
   })
 
-  const schedulesByDay = currentMonthSchedules.reduce(
+  const schedulesByDay = currentMonthSchedules?.reduce(
     (acc, schedule) => {
       const day = dayjs(schedule.session_date).date()
       if (!acc[day]) acc[day] = []

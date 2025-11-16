@@ -6,8 +6,9 @@ import dayjs from '@/lib/dayjs'
 import { useModal } from '@/hooks/useModal'
 import { useEffect, useState } from 'react'
 import { storeReview } from '@/store/storeReview'
-import { reviewDetailData } from '@/assets/dummyData/reviewList'
 import { useNavigate } from 'react-router'
+import { useQueryReview } from '@/hooks/api/queries/useQueryReview'
+import { toast } from 'react-toastify'
 
 interface StudyCardProps {
   study: StudyGroup
@@ -16,32 +17,39 @@ interface StudyCardProps {
 export const StudyCard = ({ study }: StudyCardProps) => {
   const navigate = useNavigate()
   const { openModal } = useModal()
-  const { reviewData, setReviewData, setPreviousMyReview, setBasicStudyInfo } =
-    storeReview()
+  const { setPreviousMyReview, setBasicStudyInfo } = storeReview()
   const [imgError, setImgError] = useState(false)
-
-  const reviewList = reviewDetailData.results
-  const myReview = reviewList.find((review) => review.isMine === true)
-  const isReviewed = !!myReview
 
   const startDate = dayjs(study.start_at).format('LL')
   const endDate = dayjs(study.end_at).format('LL')
   const period = `${startDate} ~ ${endDate}`
 
   const basicStudyInfo = {
-    id: study.id,
+    id: study.uuid,
     name: study.name,
     start_at: study.start_at,
     end_at: study.end_at,
   }
 
+  const reviewParams = {
+    page: 1,
+    groupId: study.uuid,
+  }
+  const { data, error, isError, isPending } = useQueryReview(reviewParams)
+
   useEffect(() => {
-    if (study.status === 'ONGOING') return
-    if (study.status === 'ENDED') {
-      // todo 스터디 리뷰 api 호출
-      setReviewData(reviewDetailData)
+    if (isError) {
+      toast.error((error as Error)?.message ?? '리뷰를 불러오지 못했습니다.', {
+        toastId: `review-load-error-${study.uuid}`, // 같은 카드에서 중복 토스트 방지
+      })
     }
-  }, [study.status, setReviewData])
+  }, [isError, error, study.uuid])
+
+  const reviewData = data && data.data
+  const reviewList = reviewData ? reviewData.results : []
+
+  const myReview = reviewList.find((review) => review.isMine === true)
+  const isReviewed = !!myReview
 
   const handleClickDetailReview = () => {
     if (study.status === 'ONGOING') return
@@ -49,7 +57,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     openModal('REVIEW_DETAIL', {
       title: '리뷰 상세',
       subTitle: study.name,
-      modalProps: { studyGroupId: study.id },
+      modalProps: { studyGroupId: study.uuid },
     })
   }
 
@@ -58,7 +66,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setBasicStudyInfo(basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 작성',
-      modalProps: { studyGroupId: study.id },
+      modalProps: { studyGroupId: study.uuid },
     })
   }
 
@@ -67,12 +75,12 @@ export const StudyCard = ({ study }: StudyCardProps) => {
     setPreviousMyReview(myReview, basicStudyInfo)
     openModal('REVIEW', {
       title: '리뷰 수정',
-      modalProps: { studyGroupId: study.id, reviewId: myReview.id },
+      modalProps: { studyGroupId: study.uuid, reviewId: myReview.id },
     })
   }
 
   const handleNavigateDetail = () => {
-    navigate(`/study_group_detail/${study.id}`)
+    navigate(`/study_group_detail/${study.uuid}`)
   }
 
   return (
@@ -123,7 +131,7 @@ export const StudyCard = ({ study }: StudyCardProps) => {
             <Book size={16} className="text-gray-700" /> 스터디 강의
           </span>
           {study.lectures.map((lec) => (
-            <span key={lec.id} className="mt-0.5 block">
+            <span key={lec.uuid} className="mt-0.5 block">
               - {lec.title}
             </span>
           ))}
@@ -135,12 +143,17 @@ export const StudyCard = ({ study }: StudyCardProps) => {
           <div className="mb-2 flex w-full justify-between">
             <div className="flex items-center gap-2 font-medium text-gray-700">
               스터디 리뷰
-              <div className="flex items-center gap-1">
-                <RatedStar rating={reviewData.meta.avg_rating} />
-                <span className="flex items-center text-xs text-gray-500">
-                  {reviewData.meta.avg_rating} {`(${reviewData.count})`}
-                </span>
-              </div>
+              {isPending ? (
+                <span className="text-xs text-gray-400">로딩 중...</span>
+              ) : (
+                <div className="flex items-center gap-1">
+                  <RatedStar rating={reviewData?.meta.avg_rating || 0} />
+                  <span className="flex items-center text-xs text-gray-500">
+                    {reviewData?.meta?.avg_rating || 0}{' '}
+                    {`(${reviewData?.count || 0})`}
+                  </span>
+                </div>
+              )}
             </div>
 
             <span

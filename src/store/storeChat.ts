@@ -1,4 +1,4 @@
-import type { ChatMessage, chatPanel, ChatRoom } from '@/types/Chat'
+import type { chatMember, ChatMessage, chatPanel, ChatRoom } from '@/types/Chat'
 import { create } from 'zustand'
 import { subscribeWithSelector } from 'zustand/middleware'
 
@@ -9,6 +9,7 @@ interface storeChat {
   messages: ChatMessage[]
   chatRooms: ChatRoom[]
   totalUnreadCount: number
+  chatMembers: chatMember[]
 
   setIsPanelOpen: (isOpen: boolean) => void
   setCurrentPanel: (panel: chatPanel) => void
@@ -16,6 +17,7 @@ interface storeChat {
   addMessage: (message: ChatMessage) => void
   setChatRooms: (chatRooms: ChatRoom[]) => void
   togglePanel: (studyGroupUUID?: string) => void
+  setOnlineUsers: (users: chatMember[]) => void
 }
 
 // 헬퍼 함수
@@ -31,6 +33,7 @@ export const storeChat = create<storeChat>()(
       chatRooms: [],
       messages: [],
       totalUnreadCount: 0,
+      chatMembers: [],
 
       setIsPanelOpen: (isOpen) => set({ isPanelOpen: isOpen }),
       setCurrentPanel: (panel) => set({ currentPanel: panel }),
@@ -50,6 +53,7 @@ export const storeChat = create<storeChat>()(
           currentChatRoomUUID:
             state.currentPanel === 'sessions' ? studyGroupUUID : null,
         })),
+      setOnlineUsers: (users) => set({ chatMembers: users }),
     }
   })
 )

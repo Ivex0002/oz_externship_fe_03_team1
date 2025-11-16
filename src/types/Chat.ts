@@ -1,11 +1,9 @@
 export type chatPanel = 'sessions' | 'messages'
 
-type UserId = number
-
-export type ChatUser = {
-  id: UserId
-  is_online: boolean
-  nickName: string
+export type chatMember = {
+  id: number
+  nickname: string
+  name: string
 }
 
 type ChatSender = {
@@ -14,11 +12,11 @@ type ChatSender = {
 }
 
 export type ChatMessage = {
+  content: string
+  created_at: string
   id: number
   sender: ChatSender
-  content: string
-  is_read: boolean
-  created_at: string
+  study_group_uuid: string
 }
 
 type LastMessage = {

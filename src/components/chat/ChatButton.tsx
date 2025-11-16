@@ -30,7 +30,7 @@ export const ChatButton = () => {
           <>
             {totalUnreadCount !== 0 && (
               <div className="center-center bg-danger-500 absolute -top-2 left-12 h-6 w-6 rounded-full text-xs font-semibold text-white">
-                {totalUnreadCount}
+                {totalUnreadCount < 100 ? totalUnreadCount : '99+'}
               </div>
             )}
 
@@ -51,10 +51,10 @@ const GETChatRooms = () => {
   const { setChatRooms } = storeChat()
   useAsyncEffect({
     asyncFn: async () => await api.v1.chat.chatrooms.GET(),
-    onSuccess: (data) => {
-      // console.log(data)
+    onSuccess: (chatRoomsData) => {
+      // console.log(chatRoomsData)
 
-      return setChatRooms(data || [])
+      return setChatRooms(chatRoomsData || [])
     },
     deps: [user],
   })

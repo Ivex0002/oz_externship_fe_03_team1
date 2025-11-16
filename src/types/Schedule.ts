@@ -1,4 +1,4 @@
-type Participant = {
+export type Participant = {
   id: number
   user: {
     uuid: string
@@ -17,6 +17,15 @@ export type ScheduleDetail = {
   created_at?: string
   participants: Participant[]
 }
+
+export type Schedule = {
+  uuid?: string
+  title: string
+  session_date: string
+  start_time: string
+  end_time: string
+}
+
 // 스터디 기록 타입
 export type StudyRecord = {
   id: number

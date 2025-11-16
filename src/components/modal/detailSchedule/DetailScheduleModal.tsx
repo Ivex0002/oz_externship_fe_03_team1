@@ -8,6 +8,7 @@ import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { useQueryScheduleDetail } from '@/hooks/api/queries/useQuerySchedule'
 import { toast } from 'react-toastify'
+import { DetailScheduleSkeleton } from './DetailScheduleSkeleton'
 
 export const DetailScheduleModal = () => {
   const { modalToModal } = useModal()
@@ -15,16 +16,22 @@ export const DetailScheduleModal = () => {
 
   const { modalState } = storeModalOpen()
   const modalProps = modalState.modalProps
-  const { scheduleId, studyGroupId } =
-    modalProps as ModalPropsMap['DETAIL_SCHEDULE']
+  const studyGroupId = modalProps
+    ? (modalProps as ModalPropsMap['DETAIL_SCHEDULE']).studyGroupId
+    : ''
+  const scheduleId = modalProps
+    ? (modalProps as ModalPropsMap['DETAIL_SCHEDULE']).scheduleId
+    : ''
 
   const { data, error, isError, isPending } = useQueryScheduleDetail({
     scheduleId,
   })
-  if (isPending) return <div>Loading...</div>
+  if (isPending) return <DetailScheduleSkeleton />
   if (isError) return toast.error(error.message)
 
   const scheduleDetailData = data && data.data
+
+  if (!studyGroupId || !scheduleId) return null
 
   const scheduleInfo = {
     title: scheduleDetailData?.title || '',
@@ -35,18 +42,19 @@ export const DetailScheduleModal = () => {
   }
   const participants = scheduleDetailData?.participants || []
 
-  console.log(data?.data)
-
   const formattedCreatedScheduleDate =
     dayjs(scheduleDetailData?.created_at).format('LLL') || ''
 
   const handleClickEdit = () => {
     setPreviousSchedule({ ...scheduleInfo, participants })
     setIsEdit(true)
-    if (!studyGroupId || !scheduleId) return
+
     modalToModal('SCHEDULE', {
       title: '스케줄 수정',
-      modalProps: { studyGroupId, scheduleId },
+      modalProps: {
+        studyGroupId,
+        scheduleId,
+      },
     })
   }
 

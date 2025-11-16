@@ -24,7 +24,7 @@ export const DetailScheduleSelectedParticipants = ({
       <h4 className="text-sm font-medium text-gray-700">
         참여자 목록 {`(${participants.length}명)`}
       </h4>
-      <ul className="transparent-scrollbar flex max-h-48 flex-col gap-2 rounded-lg border border-gray-200 p-4">
+      <ul className="transparent-scrollbar flex h-48 flex-col gap-2 rounded-lg border border-gray-200 p-4">
         {leader && (
           <li className="flex items-center gap-3 text-sm">
             <div className="center-center bg-primary-100 h-8 w-8 rounded-full">

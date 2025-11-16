@@ -25,7 +25,7 @@ export const DatePickerModal = () => {
     : null
 
   useEffect(() => {
-    if (!target) return
+    // if (!target) return
     if (target === 'start' && startDate) setSelected(startDate)
 
     if (target === 'end' && endDate) setSelected(endDate)
@@ -33,7 +33,18 @@ export const DatePickerModal = () => {
     if ((target === 'single' || mode === 'single') && date) setSelected(date)
   }, [target, startDate, endDate, date, mode])
 
-  if (!target) return null
+  // if (!target) return null
+
+  const disabledStartDate = {
+    before: today,
+    after: endDate ? dayjs(endDate).subtract(5, 'day').toDate() : undefined,
+  }
+
+  const disabledEndDate = {
+    before: startDate
+      ? dayjs(startDate).add(5, 'day').toDate()
+      : dayjs(today).add(5, 'day').toDate(),
+  }
 
   return (
     <motion.div
@@ -51,20 +62,7 @@ export const DatePickerModal = () => {
       >
         <DayPicker
           mode="single"
-          disabled={
-            target === 'start'
-              ? {
-                  before: today,
-                  after: endDate
-                    ? dayjs(endDate).subtract(5, 'day').toDate()
-                    : undefined,
-                }
-              : {
-                  before: startDate
-                    ? dayjs(startDate).add(5, 'day').toDate()
-                    : dayjs(today).add(5, 'day').toDate(),
-                }
-          }
+          disabled={target === 'start' ? disabledStartDate : disabledEndDate}
           locale={ko}
           navLayout="around"
           showOutsideDays

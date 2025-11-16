@@ -1,5 +1,5 @@
 export const dummySchedule = {
-  uuid: '1',
+  uuid: 'c3ad87f2-1206-4636-a5a5-f9fbc9ac2c6b',
   title: 'React Hooks 심화학습',
   objective:
     'useState, useEffect,useContext 등 주요 Hook들의 동작 원리와 최적화 방법 학습',

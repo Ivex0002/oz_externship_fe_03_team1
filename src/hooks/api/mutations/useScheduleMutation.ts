@@ -13,14 +13,8 @@ interface PostScheduleParams {
   participants: FormDataEntryValue[]
 }
 
-interface PatchScheduleParams {
+interface PatchScheduleParams extends Partial<PostScheduleParams> {
   scheduleId: string
-  title?: FormDataEntryValue
-  objective?: FormDataEntryValue
-  session_date?: FormDataEntryValue
-  start_time?: FormDataEntryValue
-  end_time?: FormDataEntryValue
-  participants?: FormDataEntryValue[]
 }
 
 export const useScheduleMutation = (studyGroupId: string) => {

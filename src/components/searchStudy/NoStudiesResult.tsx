@@ -2,6 +2,7 @@ import React from 'react'
 import { Users } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import test1 from '../../../public/icons/medal.svg'
+import { useNavigate } from 'react-router'
 
 // StudyType타입에 active와 completed라는 상태를 정의
 type StudyType = 'active' | 'completed'
@@ -28,6 +29,11 @@ export const NoStudiesResult = ({
   type,
   isSearchResult = false,
 }: NoStudiesResultProps) => {
+  const navigate = useNavigate()
+
+  const handleClickCreateStudy = () => {
+  navigate('/create_study_group')
+}
   // 타입 매핑 (키에 따라 서로 다른 상태 설정을 매핑하는 객체)
   // Record< K:키(StudyType), T:타입(StatusConfig) > 유틸리티 타입.
   // K:진행중인 스터디가 없을 때 or  완료된 스터디가 없을 때
@@ -67,10 +73,17 @@ export const NoStudiesResult = ({
         <h3 className="mb-2 text-xl font-bold text-gray-900">{displayTitle}</h3>
         <p className="mb-6 text-gray-600">{currentStatus.description}</p>
         {currentStatus.showButton && (
-          <BasicButton variant="primary" size="large">
+          <BasicButton variant="primary" size="large" onClick={handleClickCreateStudy}>
             <span className="mr-2 text-xl">+</span>
             <span>스터디 그룹 만들기</span>
           </BasicButton>
+        //           <BasicButton
+        //   variant="primary"
+        //   onClick={handleClickCreateStudy}
+        //   size="medium"
+        // >
+        //   <Plus size={16} /> 새 스터디 만들기
+        // </BasicButton>
         )}
       </section>
   )

@@ -62,7 +62,6 @@ export const CreateStudyGroup = () => {
       navigate(`/study_group_detail/${res.data.uuid}`)
       reset()
     } catch (err) {
-      console.error(err)
       toast.error('스터디 그룹 생성 실패')
     }
   }

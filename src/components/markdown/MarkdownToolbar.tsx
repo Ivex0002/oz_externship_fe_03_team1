@@ -216,7 +216,6 @@ export const MarkdownToolbar = ({
         autoClose: 2000,
       })
     } catch (error) {
-      console.error(error)
       toast.update(toastId, {
         render: '이미지 업로드 중 오류가 발생했습니다.',
         type: 'error',

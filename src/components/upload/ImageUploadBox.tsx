@@ -80,7 +80,6 @@ export const ImageUploadBox = ({
         autoClose: 1500,
       })
     } catch (error) {
-      console.error(error)
       toast.error('이미지 업로드 실패')
     } finally {
       setUploading(false)

@@ -2,7 +2,7 @@ interface CustomSliderProps {
   min: number
   max: number
   value: number
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  onChange: (value: number) => void
   color?: string
 }
 
@@ -11,7 +11,7 @@ export const CustomSlider = ({
   max,
   value,
   onChange,
-  color = '#007BFF',
+  color = '#2563EB',
 }: CustomSliderProps) => {
   const percentage = ((value - min) / (max - min)) * 100
 
@@ -21,7 +21,7 @@ export const CustomSlider = ({
       min={min}
       max={max}
       value={value}
-      onChange={onChange}
+      onChange={(e) => onChange(Number(e.target.value))}
       className="w-full cursor-pointer appearance-none"
       style={{
         height: '6px',

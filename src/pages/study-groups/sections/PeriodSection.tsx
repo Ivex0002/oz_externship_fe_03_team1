@@ -27,11 +27,6 @@ export const PeriodSection = ({ form, setForm }: Props) => {
     })
   }
 
-  const handleSliderChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const newValue = Number(e.target.value)
-    setForm((prev) => ({ ...prev, maxMembers: newValue }))
-  }
-
   return (
     <section className="space-y-6 pt-2">
       <h2 className="text-lg font-semibold text-gray-800">
@@ -90,8 +85,10 @@ export const PeriodSection = ({ form, setForm }: Props) => {
             <CustomSlider
               min={2}
               max={10}
-              value={form.maxMembers}
-              onChange={handleSliderChange}
+              value={form.max_headcount}
+              onChange={(v) =>
+                setForm((prev) => ({ ...prev, max_headcount: v }))
+              }
               color="#007BFF"
             />
             <div className="mt-2 flex justify-between text-sm text-gray-500">
@@ -107,7 +104,7 @@ export const PeriodSection = ({ form, setForm }: Props) => {
               className="h-[16px] w-[16px] select-none"
               draggable="false"
             />
-            <span>{form.maxMembers}</span>
+            <span>{form.max_headcount}</span>
             <span className="text-sm font-medium text-gray-500">명</span>
           </div>
         </div>

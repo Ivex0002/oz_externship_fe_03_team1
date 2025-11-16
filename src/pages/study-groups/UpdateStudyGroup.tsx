@@ -1,18 +1,29 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { ArrowLeft } from 'lucide-react'
 import { BasicInfoSection } from './sections/BasicInfoSection'
 import { PeriodSection } from './sections/PeriodSection'
 import { LectureSection } from './sections/LectureSection'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import dayjs from '@/lib/dayjs'
-import { useNavigate } from 'react-router'
+import { useNavigate, useParams } from 'react-router'
 import { storeDatePicker } from '@/store/storeDatePicker'
 import { toast } from 'react-toastify'
 import { useModal } from '@/hooks/useModal'
-import { useCreateStudyGroupMutation } from '@/hooks/api/mutations/useCreateStudyGroupMutation'
-import type { StudyGroupForm, StudyGroupPost } from '@/types/StudyGroupTypes'
+import { useUpdateStudyGroupMutation } from '@/hooks/api/mutations/useUpdateStudyGroupMutation'
+import type { StudyGroupForm, StudyGroupUpdate } from '@/types/StudyGroupTypes'
+import { useQuery } from '@tanstack/react-query'
+import { api } from '@/api/api'
 
-export const CreateStudyGroup = () => {
+export const UpdateStudyGroup = () => {
+  const { studyGroupId } = useParams()
+  const navigate = useNavigate()
+  const { openConfirm } = useModal()
+
+  const { startDate, endDate, reset, setStartDate, setEndDate } =
+    storeDatePicker()
+
+  const { mutateAsync: updateGroup } = useUpdateStudyGroupMutation()
+
   const [form, setForm] = useState<StudyGroupForm>({
     name: '',
     introduction: '',
@@ -24,10 +35,38 @@ export const CreateStudyGroup = () => {
     lectures: [],
   })
 
-  const { startDate, endDate, reset } = storeDatePicker()
-  const navigate = useNavigate()
-  const { openConfirm } = useModal()
-  const { mutateAsync: createStudyGroup } = useCreateStudyGroupMutation()
+  const { data: detailData } = useQuery({
+    queryKey: ['studyGroupDetail', studyGroupId],
+    queryFn: () => api.v1.studies.groups(studyGroupId!).GET(),
+    enabled: !!studyGroupId,
+  })
+
+  useEffect(() => {
+    if (!detailData?.data) return
+    const d = detailData.data
+
+    const formattedLectures = d.lectures.map((lec: any) => ({
+      uuid: lec.uuid ?? lec,
+      title: lec.title ?? '',
+      instructor: lec.instructor ?? '',
+      thumbnail_img_url: lec.thumbnail_img_url ?? '',
+      url_link: lec.url_link ?? '',
+    }))
+
+    setForm({
+      name: d.name,
+      introduction: d.introduction || '',
+      profile_img_url: d.profile_img_url,
+      start_at: d.start_at,
+      end_at: d.end_at,
+      max_headcount: d.max_headcount,
+      status: d.status,
+      lectures: formattedLectures,
+    })
+
+    setStartDate(new Date(d.start_at))
+    setEndDate(new Date(d.end_at))
+  }, [detailData])
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -42,37 +81,32 @@ export const CreateStudyGroup = () => {
       return
     }
 
-    const payload: StudyGroupPost = {
+    const payload: StudyGroupUpdate = {
       name: form.name,
       introduction: form.introduction || '',
       profile_img_url: form.profile_img_url || null,
       start_at: dayjs(startDate).format('YYYY-MM-DD'),
       end_at: dayjs(endDate).format('YYYY-MM-DD'),
       max_headcount: form.max_headcount,
-      lectures: [...form.lectures.map((le) => le.uuid)],
+      lectures: form.lectures.map((l) => l.uuid),
     }
 
     try {
-      const res = await createStudyGroup(payload)
-      if (!res.data) {
-        toast.error('스터디 그룹 생성 실패')
-        return
-      }
-      toast.success('스터디 그룹이 생성되었습니다!')
-      navigate(`/study_group_detail/${res.data.uuid}`)
+      await updateGroup({ group_uuid: studyGroupId!, payload })
+      toast.success('스터디 그룹이 수정되었습니다!')
       reset()
+      navigate(`/study_group_detail/${studyGroupId}`)
     } catch (err) {
-      console.error(err)
-      toast.error('스터디 그룹 생성 실패')
+      toast.error('수정 실패')
     }
   }
 
   const handleBack = () => {
     openConfirm({
-      message: '정말 취소하시겠어요?',
+      message: '수정을 취소하시겠어요?',
       onConfirm: async () => {
         reset()
-        navigate('/')
+        navigate(`/study_group_detail/${studyGroupId}`)
       },
       confirmText: '확인',
       cancelText: '취소',
@@ -90,11 +124,9 @@ export const CreateStudyGroup = () => {
         </button>
 
         <div>
-          <h1 className="text-2xl font-bold text-gray-800">
-            새 스터디 그룹 만들기
-          </h1>
+          <h1 className="text-2xl font-bold text-gray-800">스터디 그룹 수정</h1>
           <p className="mt-1 text-sm text-gray-500">
-            함께 공부할 멤버들과 스터디 그룹을 시작해보세요.
+            스터디 그룹 정보를 수정해주세요.
           </p>
         </div>
       </div>
@@ -121,7 +153,7 @@ export const CreateStudyGroup = () => {
             취소
           </BasicButton>
           <BasicButton variant="primary" onClick={handleSubmit}>
-            스터디 그룹 만들기
+            수정 완료
           </BasicButton>
         </div>
       </main>

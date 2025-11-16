@@ -39,13 +39,13 @@ export const BasicInfoSection = ({
           스터디 그룹 소개 (선택사항)
         </label>
         <MarkdownWrite
-          value={form.description}
+          value={form.introduction}
           onChange={(action) =>
             setForm((prev) => ({
               ...prev,
-              description:
+              introduction:
                 typeof action === 'function'
-                  ? action(prev.description)
+                  ? action(prev.introduction)
                   : action,
             }))
           }
@@ -58,10 +58,13 @@ export const BasicInfoSection = ({
           스터디 그룹 대표 이미지 (선택사항)
         </label>
         <ImageUploadBox
+          currentFileUrl={form.profile_img_url}
           onFileSelect={(url) =>
-            setForm((prev) => ({ ...prev, image_url: url || null }))
+            setForm((prev) => ({
+              ...prev,
+              profile_img_url: url,
+            }))
           }
-          currentFileUrl={form.image_url || null}
         />
       </div>
     </section>

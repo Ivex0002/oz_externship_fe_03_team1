@@ -79,7 +79,7 @@ type StudyGroup = {
   end_at: string
   status: StudyGroupStatus
   lectures: StudyLecture[]
-  is_leader: boolean
+  is_me_leader: boolean
 }
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음

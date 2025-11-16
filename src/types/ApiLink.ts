@@ -306,11 +306,11 @@ type NotePatchReq = {
 
 // ===================== Study:Schedule =====================
 type SchedulePost = {
-  title: string
-  objective: string
-  session_date: string
-  start_time: string
-  end_time: string
+  title: FormDataEntryValue
+  objective: FormDataEntryValue
+  session_date: FormDataEntryValue
+  start_time: FormDataEntryValue
+  end_time: FormDataEntryValue
 }
 
 type Schedule = {
@@ -418,6 +418,7 @@ export type ApiLinks = {
       groups: GroupApi
       notes: NoteApi
       admin: AdminApi
+      schedules: ScheduleApi
     }
     chat: ChatApi
   }
@@ -522,7 +523,7 @@ type GroupApi = {
     }
 
     reviews: ReviewApi
-    schedules: ScheduleApi
+    schedules: { GET: () => { res: BaseResWithGeneric<Schedule[]> } }
 
     // 다른 곳에선 member : uuid 형식인데 여기는 왜 number 타입으로 받나?
     members: {
@@ -563,11 +564,12 @@ type ReviewApi = {
 
 type ScheduleApi = {
   POST: (req: SchedulePost) => { res: Schedule }
-  GET: () => { res: BaseResWithGeneric<Schedule[]> }
 
-  (schedule_id: number): {
+  (schedule_id: string): {
     GET: () => { res: BaseResWithGeneric<ScheduleDetail> }
-    PATCH: (req: SchedulePost) => { res: BaseResWithGeneric<Schedule[]> }
+    PATCH: (req: Partial<SchedulePost>) => {
+      res: BaseResWithGeneric<Schedule[]>
+    }
     DELETE: () => { res: BaseResponse }
   }
 }

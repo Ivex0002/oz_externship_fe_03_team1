@@ -10,12 +10,12 @@ export const ScheduleMembersSelecting = ({
   setSelectedMembers,
 }: ScheduleMembersSelectingProps) => {
   const members = [
-    { uuid: "1", nickname: '김개발', is_leader: true },
-    { uuid: "2", nickname: '박리엑트', is_leader: false },
-    { uuid: "3", nickname: '이프론트', is_leader: false },
-    { uuid: "4", nickname: '최자바', is_leader: false },
-    { uuid: "5", nickname: '한스크립트', is_leader: false },
-    { uuid: "6", nickname: '오컴포넌트', is_leader: false },
+    { uuid: '1', nickname: '김개발', is_leader: true },
+    { uuid: '2', nickname: '박리엑트', is_leader: false },
+    { uuid: '3', nickname: '이프론트', is_leader: false },
+    { uuid: '4', nickname: '최자바', is_leader: false },
+    { uuid: '5', nickname: '한스크립트', is_leader: false },
+    { uuid: '6', nickname: '오컴포넌트', is_leader: false },
   ]
 
   const leader = members.find((member) => member.is_leader)
@@ -51,13 +51,12 @@ export const ScheduleMembersSelecting = ({
             >
               <input
                 id={leader.nickname}
-                name="schedule_member"
+                name="participants"
                 type="checkbox"
                 value={leader.nickname}
                 checked={isChecked(leader.uuid)}
                 onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
-                required
               />
               <span className="absolute top-1/2 left-1.5 -translate-x-1/2 -translate-y-1/2 transform text-white opacity-0 peer-checked:opacity-100">
                 <svg
@@ -90,7 +89,7 @@ export const ScheduleMembersSelecting = ({
             >
               <input
                 id={member.nickname}
-                name="schedule_member"
+                name="participants"
                 type="checkbox"
                 value={member.nickname}
                 checked={isChecked(member.uuid)}

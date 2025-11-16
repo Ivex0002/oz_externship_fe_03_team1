@@ -4,15 +4,24 @@ export type Member = {
   is_leader: boolean
 }
 
-export type Schedule = {
-  id?: number
+export type ScheduleDetail = {
+  uuid?: string
   title: string
   objective: string
   session_date: string
   start_time: string
   end_time: string
   created_at?: string
-  schedule_members: Member[]
+  updated_at?: string
+  participants: Member[]
+}
+
+export type Schedule = {
+  id: number
+  title: string
+  session_date: string
+  start_time: string
+  end_time: string
 }
 // 스터디 기록 타입
 export type StudyRecord = {

@@ -1,25 +1,25 @@
-import type { Schedule } from '@/types/Schedule'
+import type { ScheduleDetail } from '@/types/Schedule'
 import { create } from 'zustand'
 
 interface StoreSchedule {
-  previousSchedule: Schedule
-  newSchedule: Schedule
+  previousSchedule: ScheduleDetail
+  newSchedule: ScheduleDetail
 
   isEdit: boolean
 
-  setPreviousSchedule: (schedule: Schedule) => void
-  setNewSchedule: (schedule: Schedule) => void
+  setPreviousSchedule: (schedule: ScheduleDetail) => void
+  setNewSchedule: (schedule: ScheduleDetail) => void
   setIsEdit: (isEdit: boolean) => void
   clearSchedules: () => void
 }
 
-const initialSchedule: Schedule = {
+const initialSchedule: ScheduleDetail = {
   title: '',
   objective: '',
   session_date: '',
   start_time: '',
   end_time: '',
-  schedule_members: [],
+  participants: [],
 }
 
 export const storeSchedule = create<StoreSchedule>((set) => ({
@@ -28,10 +28,10 @@ export const storeSchedule = create<StoreSchedule>((set) => ({
 
   isEdit: false,
 
-  setPreviousSchedule: (schedule: Schedule) =>
+  setPreviousSchedule: (schedule: ScheduleDetail) =>
     set({ previousSchedule: schedule }),
 
-  setNewSchedule: (schedule: Schedule) => set({ newSchedule: schedule }),
+  setNewSchedule: (schedule: ScheduleDetail) => set({ newSchedule: schedule }),
 
   setIsEdit: (isEdit: boolean) => set({ isEdit }),
 

@@ -1,18 +1,16 @@
-import { useState, useEffect, useRef, useReducer } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import dayjs from '@/lib/dayjs';
-import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton';
-import type { Schedule } from '@/types/Schedule';
-import { useModal } from '@/hooks/useModal';
+import { useState, useEffect, useRef, useReducer } from 'react'
+import { ChevronLeft, ChevronRight } from 'lucide-react'
+import dayjs from '@/lib/dayjs'
+import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import type { Schedule } from '@/types/Schedule'
+import { useModal } from '@/hooks/useModal'
 
 interface StudyCalendarProps {
   groupId: string
 }
 
-type TooltipState = { hoveredDay: number | null; isVisible: boolean };
-type TooltipAction =
-  | { type: 'SHOW'; day: number }
-  | { type: 'HIDE' };
+type TooltipState = { hoveredDay: number | null; isVisible: boolean }
+type TooltipAction = { type: 'SHOW'; day: number } | { type: 'HIDE' }
 
 const tooltipReducer = (
   state: TooltipState,
@@ -28,13 +26,16 @@ const tooltipReducer = (
   }
 }
 
-const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+const WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토']
 
 export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
-  const [schedules, setSchedules] = useState<Schedule[]>([]);
-  const [currentDate, setCurrentDate] = useState(dayjs());
-  const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, { hoveredDay: null, isVisible: false });
-  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const [schedules, setSchedules] = useState<Schedule[]>([])
+  const [currentDate, setCurrentDate] = useState(dayjs())
+  const [tooltipState, dispatchTooltip] = useReducer(tooltipReducer, {
+    hoveredDay: null,
+    isVisible: false,
+  })
+  const hoverTimeoutRef = useRef<NodeJS.Timeout | null>(null)
   const { openModal } = useModal()
 
   useEffect(() => {
@@ -44,30 +45,35 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
           {
             id: 1,
             title: '첫 번째 스터디',
-            objective: '주간 목표 달성',
             session_date: '2025-11-15',
             start_time: '14:00',
             end_time: '16:00',
-            schedule_members: [],
           },
-        ]);
+        ])
       } catch (error) {
         console.error('Failed to fetch schedules:', error)
       }
-    };
-    fetchSchedules();
-  }, [groupId]);
+    }
+    fetchSchedules()
+  }, [groupId])
 
-  const handlePrevMonth = () => setCurrentDate((prev) => prev.subtract(1, 'month'));
-  const handleNextMonth = () => setCurrentDate((prev) => prev.add(1, 'month'));
-// 'DETAIL_SCHEDULE'
+  const handlePrevMonth = () =>
+    setCurrentDate((prev) => prev.subtract(1, 'month'))
+  const handleNextMonth = () => setCurrentDate((prev) => prev.add(1, 'month'))
+  // 'DETAIL_SCHEDULE'
   const handleAddSchedule = () => {
-openModal("SCHEDULE", {title:"새 스케줄 추가",modalProps:{studyGroupId:groupId}});
-  };
+    openModal('SCHEDULE', {
+      title: '새 스케줄 추가',
+      modalProps: { studyGroupId: groupId },
+    })
+  }
 
   const handleOpenDetail = (scheduleId: number) => {
-openModal("DETAIL_SCHEDULE", {title:"스케줄 상세",modalProps:{studyGroupId:groupId,scheduleId: scheduleId }});
-  };
+    openModal('DETAIL_SCHEDULE', {
+      title: '스케줄 상세',
+      modalProps: { studyGroupId: groupId, scheduleId: scheduleId },
+    })
+  }
 
   const handleMouseEnter = (day: number) => {
     hoverTimeoutRef.current = setTimeout(() => {
@@ -110,32 +116,38 @@ openModal("DETAIL_SCHEDULE", {title:"스케줄 상세",modalProps:{studyGroupId:
       }
     }
     if (week.length > 0) {
-      while (week.length < 7) week.push(null);
-      calendar.push(week);
+      while (week.length < 7) week.push(null)
+      calendar.push(week)
     }
-    return calendar;
-  };
+    return calendar
+  }
 
   const currentMonthSchedules = schedules.filter((schedule) => {
-    const scheduleDate = dayjs(schedule.session_date);
-    return scheduleDate.year() === currentDate.year() && scheduleDate.month() === currentDate.month();
-  });
+    const scheduleDate = dayjs(schedule.session_date)
+    return (
+      scheduleDate.year() === currentDate.year() &&
+      scheduleDate.month() === currentDate.month()
+    )
+  })
 
-  const schedulesByDay = currentMonthSchedules.reduce((acc, schedule) => {
-    const day = dayjs(schedule.session_date).date();
-    if (!acc[day]) acc[day] = [];
-    acc[day].push(schedule);
-    return acc;
-  }, {} as Record<number, Schedule[]>);
+  const schedulesByDay = currentMonthSchedules.reduce(
+    (acc, schedule) => {
+      const day = dayjs(schedule.session_date).date()
+      if (!acc[day]) acc[day] = []
+      acc[day].push(schedule)
+      return acc
+    },
+    {} as Record<number, Schedule[]>
+  )
 
   return (
-    <div className="bg-white rounded-2xl p-6 border border-gray-100 relative">
-      <div className="flex items-center justify-between mb-6">
+    <div className="relative rounded-2xl border border-gray-100 bg-white p-6">
+      <div className="mb-6 flex items-center justify-between">
         <h2 className="text-xl font-bold text-gray-900">스케줄 관리</h2>
         <BasicButton
           variant="primary"
           size="medium"
-          className="!px-4 !py-2 !text-sm text-white cursor-pointer"
+          className="cursor-pointer !px-4 !py-2 !text-sm text-white"
           onClick={handleAddSchedule}
         >
           + 스케줄 추가
@@ -151,7 +163,7 @@ openModal("DETAIL_SCHEDULE", {title:"스케줄 상세",modalProps:{studyGroupId:
           >
             <ChevronLeft className="h-5 w-5 text-gray-700" />
           </button>
-          <h3 className="text-lg font-bold text-gray-900 min-w-[120px] text-center">
+          <h3 className="min-w-[120px] text-center text-lg font-bold text-gray-900">
             {currentDate.format('YYYY년 M월')}
           </h3>
           <button
@@ -174,51 +186,61 @@ openModal("DETAIL_SCHEDULE", {title:"스케줄 상세",modalProps:{studyGroupId:
           ))}
         </div>
 
-        <div className="grid grid-cols-7 border border-gray-200 border-t-0 rounded-b-lg min-w-[600px]">
+        <div className="grid min-w-[600px] grid-cols-7 rounded-b-lg border border-t-0 border-gray-200">
           {generateCalendar().map((week, weekIdx) =>
             week.map((day, dayIdx) => {
-              const daySchedules = day ? schedulesByDay[day] ?? [] : [];
+              const daySchedules = day ? (schedulesByDay[day] ?? []) : []
               return (
                 <div
                   key={`${weekIdx}-${dayIdx}`}
                   className="relative aspect-[1/0.95] border-r border-b border-gray-200 last:border-r-0"
                 >
                   {day ? (
-                    <div className="h-full bg-white hover:border-gray-300 transition-all p-2">
-                      <div className="text-xs text-gray-900 pb-2">{day}</div>
+                    <div className="h-full bg-white p-2 transition-all hover:border-gray-300">
+                      <div className="pb-2 text-xs text-gray-900">{day}</div>
                       {daySchedules?.map((schedule) => (
                         <div
                           key={schedule.id}
-                          className="relative bg-primary-100 rounded p-1 mb-1 cursor-pointer"
+                          className="bg-primary-100 relative mb-1 cursor-pointer rounded p-1"
                           onClick={() => handleOpenDetail(schedule.id!)}
                           onMouseEnter={() => handleMouseEnter(day)}
                           onMouseLeave={handleMouseLeave}
                         >
-                          <h4 className="text-[11px] text-primary-800 leading-tight line-clamp-1 mb-1">
+                          <h4 className="text-primary-800 mb-1 line-clamp-1 text-[11px] leading-tight">
                             {schedule.title}
                           </h4>
-                          <p className="text-[10px] text-primary-800/75 leading-tight">
+                          <p className="text-primary-800/75 text-[10px] leading-tight">
                             {dayjs(schedule.start_time).format('HH시mm분')} ~{' '}
                             {dayjs(schedule.end_time).format('HH시mm분')}
                           </p>
 
-                          {tooltipState.isVisible && tooltipState.hoveredDay === day && (
-                            <div className="absolute z-50 left-0 top-full mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-xl p-3 animate-fade-in">
-                              <div className="absolute -top-2 left-4 w-4 h-4 bg-white border-l border-t border-gray-200 transform rotate-45"></div>
-                              <div className="relative z-10 bg-white">
-                                <h4 className="text-sm font-bold text-gray-900 mb-2">{schedule.title}</h4>
-                                <div className="text-xs text-gray-600">
-                                  <div className="flex items-center gap-2">
-                                    <span className="font-semibold">시간:</span>
-                                    <span>
-                                      {dayjs(schedule.start_time).format('HH시mm분')} ~{' '}
-                                      {dayjs(schedule.end_time).format('HH시mm분')}
-                                    </span>
+                          {tooltipState.isVisible &&
+                            tooltipState.hoveredDay === day && (
+                              <div className="animate-fade-in absolute top-full left-0 z-50 mt-2 w-48 rounded-lg border border-gray-200 bg-white p-3 shadow-xl">
+                                <div className="absolute -top-2 left-4 h-4 w-4 rotate-45 transform border-t border-l border-gray-200 bg-white"></div>
+                                <div className="relative z-10 bg-white">
+                                  <h4 className="mb-2 text-sm font-bold text-gray-900">
+                                    {schedule.title}
+                                  </h4>
+                                  <div className="text-xs text-gray-600">
+                                    <div className="flex items-center gap-2">
+                                      <span className="font-semibold">
+                                        시간:
+                                      </span>
+                                      <span>
+                                        {dayjs(schedule.start_time).format(
+                                          'HH시mm분'
+                                        )}{' '}
+                                        ~{' '}
+                                        {dayjs(schedule.end_time).format(
+                                          'HH시mm분'
+                                        )}
+                                      </span>
+                                    </div>
                                   </div>
                                 </div>
                               </div>
-                            </div>
-                          )}
+                            )}
                         </div>
                       ))}
                     </div>
@@ -226,7 +248,7 @@ openModal("DETAIL_SCHEDULE", {title:"스케줄 상세",modalProps:{studyGroupId:
                     <div className="h-full bg-gray-50"></div>
                   )}
                 </div>
-              );
+              )
             })
           )}
         </div>

@@ -22,7 +22,7 @@ export const DetailScheduleModal = () => {
     if (!studyGroupId || !scheduleId) return
     modalToModal('SCHEDULE', {
       title: '스케줄 수정',
-      modalProps: { studyGroupId, scheduleId: Number(scheduleId) },
+      modalProps: { studyGroupId, scheduleId: scheduleId },
     })
   }
 

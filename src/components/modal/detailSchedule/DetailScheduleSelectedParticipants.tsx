@@ -2,15 +2,15 @@ import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { User } from 'lucide-react'
 
 export const DetailScheduleSelectedParticipants = () => {
-  const { schedule_members } = dummySchedule
+  const { participants } = dummySchedule
 
-  const leader = schedule_members.find((member) => member.is_leader)
-  const others = schedule_members.filter((member) => !member.is_leader)
+  const leader = participants.find((member) => member.is_leader)
+  const others = participants.filter((member) => !member.is_leader)
 
   return (
     <section className="flex flex-col gap-2">
       <h4 className="text-sm font-medium text-gray-700">
-        참여자 목록 {`(${schedule_members.length}명)`}
+        참여자 목록 {`(${participants.length}명)`}
       </h4>
       <ul className="transparent-scrollbar flex max-h-48 flex-col gap-2 rounded-lg border border-gray-200 p-4">
         {leader && (

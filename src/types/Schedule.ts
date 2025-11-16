@@ -1,6 +1,9 @@
-export type Member = {
-  uuid: string
-  nickname: string
+type Participant = {
+  id: number
+  user: {
+    uuid: string
+    nickname: string
+  }
   is_leader: boolean
 }
 
@@ -12,16 +15,7 @@ export type ScheduleDetail = {
   start_time: string
   end_time: string
   created_at?: string
-  updated_at?: string
-  participants: Member[]
-}
-
-export type Schedule = {
-  id: number
-  title: string
-  session_date: string
-  start_time: string
-  end_time: string
+  participants: Participant[]
 }
 // 스터디 기록 타입
 export type StudyRecord = {

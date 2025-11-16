@@ -13,7 +13,6 @@ const LECTURES_PER_PAGE = 5
 
 export const LectureChoosingModal = () => {
   const [searchInputValue, setSearchInputValue] = useState('')
-  // const [lectureData, setLectureData] = useState<ApiLectureList>()
   const [currentPage, setCurrentPage] = useState(0)
   const {
     selectedLectureList,

@@ -26,7 +26,10 @@ const modalTestList: ModalTestUnion[] = [
   {
     modalType: 'DETAIL_SCHEDULE',
     title: '스케줄 상세',
-    modalProps: { studyGroupId: '1', scheduleId: 1 },
+    modalProps: {
+      studyGroupId: '1',
+      scheduleId: '0193d682-e468-4dad-8bdd-f819dc242d61',
+    },
   },
   {
     modalType: 'DATE_PICKER',

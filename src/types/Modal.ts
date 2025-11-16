@@ -26,7 +26,7 @@ export interface ModalPropsMap {
   }
   DETAIL_SCHEDULE: {
     studyGroupId: string
-    scheduleId: number
+    scheduleId: string
   }
 
   // [3] 리뷰 작성/수정 모달

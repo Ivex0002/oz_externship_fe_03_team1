@@ -323,7 +323,7 @@ type SchedulePost = {
 }
 
 type Schedule = {
-  id: number
+  uuid: string
   study_group: string
   title: string
   objective: string
@@ -335,11 +335,11 @@ type Schedule = {
 }
 type Participant = {
   id: number
-  member: number
-  member_name: string
+  user: {
+    uuid: string
+    nickname: string
+  }
   is_leader: boolean
-  created_at: string
-  updated_at: string
 }
 type ScheduleDetail = Schedule & {
   participants: Participant[]

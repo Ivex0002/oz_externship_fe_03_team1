@@ -12,16 +12,6 @@ React + TypeScript 기반의 스터디 관리 웹 애플리케이션입니다.
 
 ---
 
-## 👤 역할 & 기여 (발표 자료 완성 후 업데이트 예정)
-
-- **우혜림(FE 1팀 리드)** –
-- **김가람** –
-- **양은지** –
-- **유용균** –
-- **최도혁** –
-
----
-
 ## 📖 목차
 
 - [프로젝트 개요](#프로젝트-개요)
@@ -31,6 +21,7 @@ React + TypeScript 기반의 스터디 관리 웹 애플리케이션입니다.
 - [코드 스타일 & 품질 원칙](#코드-스타일--품질-원칙)
 - [프로젝트 구조](#프로젝트-구조)
 - [주요 라우트](#주요-라우트)
+- [주요 페이지 미리보기](#주요-페이지-미리보기)
 - [향후 개선 계획](#향후-개선-계획)
 - [배운 점 및 회고](#배운-점-및-회고)
 - [참고 자료](#참고-자료)
@@ -250,21 +241,57 @@ src/
 
 ## 🧭 주요 라우트
 
-| 경로                                                | 설명             |
-| --------------------------------------------------- | ---------------- |
-| `/`                                                 | 스터디 그룹 목록 |
-| `/create_study_group`                               | 스터디 그룹 생성 |
-| `/edit_study_group/:studyGroupId`                   | 스터디 그룹 수정 |
-| `/study_group_detail/:studyGroupId`                 | 스터디 그룹 상세 |
-| `/create_study_record/:studyGroupId`                | 스터디 기록 작성 |
-| `/edit_study_record/:studyGroupId/:studyRecordId`   | 스터디 기록 수정 |
-| `/study_record_detail/:studyGroupId/:studyRecordId` | 스터디 기록 상세 |
+| 경로                                                | 설명                                                       |
+| --------------------------------------------------- | ---------------------------------------------------------- |
+| `/`                                                 | 참여 중인 **스터디 그룹 목록을 확인**하는 페이지           |
+| `/create_study_group`                               | 새로운 **스터디 그룹을 생성**하는 페이지                   |
+| `/edit_study_group/:studyGroupId`                   | 특정 **스터디 그룹의 정보를 수정**하는 페이지              |
+| `/study_group_detail/:studyGroupId`                 | 일정, 기록, 구성원 등을 포함한 **스터디 그룹 상세 페이지** |
+| `/create_study_record/:studyGroupId`                | 해당 그룹의 **학습 활동을 기록하고 공유하는 페이지**       |
+| `/edit_study_record/:studyGroupId/:studyRecordId`   | 작성된 **학습 기록 내용을 편집**하는 페이지                |
+| `/study_record_detail/:studyGroupId/:studyRecordId` | 특정 기록의 내용을 **열람하는 상세 페이지**                |
+
+---
+
+## 📸 주요 페이지 미리보기
+
+> 아래는 각 주요 페이지의 UI입니다. (피그마)
+
+### 🏠 스터디 그룹 목록 페이지 (`/`)
+
+![스터디 그룹 목록 페이지](./assets/images/main.png)
+
+### ➕ 스터디 그룹 생성 페이지 (`/create_study_group`)
+
+![스터디 그룹 생성 페이지](./assets/images/create_study.png)
+
+### 📄 스터디 그룹 상세 페이지 (`/study_group_detail/:studyGroupId`)
+
+![스터디 그룹 상세 페이지](./assets/images/study_detail.png)
+
+### ➕ 학습 기록 생성 페이지 (`/create_study_record/:studyGroupId`)
+
+![학습 기록 생성 페이지](./assets/images/create_record.png)
+
+### 📄 학습 기록 상세 페이지 (`/study_record_detail/:studyGroupId/:studyRecordId`)
+
+![학습 기록 상세 페이지](./assets/images/record_detail.png)
 
 ---
 
 ## 🔧 향후 개선 계획
 
 - [ ] 논의가 완료된 후 항목을 업데이트할 예정입니다.
+
+---
+
+## 👤 역할 & 기여 (발표 자료 완성 후 업데이트 예정)
+
+- **우혜림(FE 1팀 리드)** –
+- **김가람** –
+- **양은지** –
+- **유용균** –
+- **최도혁** –
 
 ---
 

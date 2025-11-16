@@ -29,7 +29,7 @@ export class ApiClientFactory {
   ): WebSocketClient {
     return new WebSocketClient({
       url,
-      tokenStorage: this.tokenStorage,
+      tokenManager: this.tokenStorage,
       ...callbacks,
     })
   }

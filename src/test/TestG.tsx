@@ -1,5 +1,6 @@
-import { api } from '@/api/api'
+// import { apiFactory } from '@/api/api'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
+import { storeAccessToken } from '@/store/storeAccessToken'
 // import { toast } from 'react-toastify'
 
 // const serverDummyGroupUUid = '57c71ffc-1a31-484f-8807-8fb985f63e7b'
@@ -80,6 +81,7 @@ import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButto
 
 // const params = { page: 1 }
 const TestG = () => {
+  const { accessToken } = storeAccessToken()
   const handleClick = async () => {
     try {
       // const res = await api.v1.lectures.GET()
@@ -90,17 +92,14 @@ const TestG = () => {
       // const res = await api.v1.studies.groups(444).members(555).DELETE()
       // const res = await api.v1.studies.groups.POST(dummyStudyGroup)
       // const res = await api.v1.studies.groups.GET(undefined, { params })
-
       // const res = await api.v1.studies
       //   .groups('57c71ffc-1a31-484f-8807-8fb985f63e7b')
       //   .reviews.GET(undefined, {
       //     params: reviewParams,
       //   })
-
       // const res = await api.v1.studies
       //   .groups(serverDummyGroupUUid)
       //   .reviews.GET()
-
       // api.v1.studies.groups(params.groupId).reviews.GET(undefined, {
       //   params: {
       //     page: params.page,
@@ -108,9 +107,7 @@ const TestG = () => {
       //     ordering: params.ordering,
       //   },
       // })
-
       // const res = await api.v1.chat.chatrooms.GET()
-
       // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
       // const res = await api.v1.studies
       //   .groups(serverDummyGroupUUid)
@@ -122,10 +119,12 @@ const TestG = () => {
       //   .kick$member.DELETE({
       //     target_member_uuid: serverDummyGroupMemberUUid[9].uuid,
       //   })
-
-      const res = await api.v1.studies.groups.POST()
+      // const res = await api.v1.studies.groups.POST()
       // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
-      console.log(res)
+
+      console.log({ accessToken })
+
+      // console.log(res)
       // toast.info(`${res}`)
     } catch (error) {
       console.error('API call failed:', error)

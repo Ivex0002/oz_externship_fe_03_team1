@@ -14,10 +14,10 @@ export const StudyGroupDetail = () => {
   const {studyGroupId} = params
   const {data, error, isError, isPending} = useQueryStudyGroupDetail({groupId:studyGroupId})
   const studyGroupDetailData = data && data.data
-  if(!studyGroupDetailData)return null
+  if(!studyGroupDetailData) return <div>페이지를 찾을 수 없습니다.</div>
   if(isError)toast.error(error.message)
   if(isPending)<div> 로딩중... </div>
-  
+
   const startDate = dayjs(studyGroupDetailData.start_at).format('L');
   const endDate = dayjs(studyGroupDetailData.end_at).format('L');
   const statusText = getStatusText(studyGroupDetailData.status);

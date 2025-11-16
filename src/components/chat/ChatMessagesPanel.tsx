@@ -11,9 +11,8 @@ import { useEffect, useLayoutEffect, useRef, useState } from 'react'
 import { toast } from 'react-toastify'
 
 // TODO
-// 1. 현재 사용자가 누구인지 파악하는 로직이 없음
-//    더미데이터의 세션 첫번째 유저가 사용자인것으로 가정하고 작성함
-//    추후에 수정 필요
+// 1. 멤버 구분(온라인/오프라인) 필드가 아예 없음
+//    스웨거, 명세서, 실제 데이터 어디에도 없음
 export const ChatMessagesPanel = () => {
   const { currentChatRoomUUID } = storeChat()
 

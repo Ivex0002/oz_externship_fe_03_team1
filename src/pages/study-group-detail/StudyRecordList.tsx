@@ -15,8 +15,8 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
     navigate(`/create_study_record/${groupId}`)
   }
 
-  const handleRecordClick = (recordId: number) => {
-    navigate(`/study-record/${recordId}`)
+  const handleRecordClick = (groupId: string, recordId: number) => {
+    navigate(`/study_record_detail/${groupId}/${recordId}`)
   }
 
   if (isPending) {
@@ -33,7 +33,9 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
     return (
       <div className="rounded-xl border border-gray-100 bg-white p-6">
         <div className="flex items-center justify-center py-8">
-          <div className="text-red-500">스터디 기록을 불러오는데 실패했습니다.</div>
+          <div className="text-red-500">
+            스터디 기록을 불러오는데 실패했습니다.
+          </div>
         </div>
       </div>
     )
@@ -49,7 +51,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
         <BasicButton
           variant="primary"
           size="small"
-          className="flex items-center gap-2 !px-4 !py-2 !text-sm text-white cursor-pointer"
+          className="flex cursor-pointer items-center gap-2 !px-4 !py-2 !text-sm text-white"
           onClick={handleWriteClick}
         >
           <img
@@ -64,8 +66,12 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
       {recordsList?.length === 0 ? (
         <div className="flex items-center justify-center py-12">
           <div className="text-center">
-            <p className="text-gray-500 mb-2">아직 작성된 스터디 기록이 없습니다.</p>
-            <p className="text-sm text-gray-400">첫 스터디 기록을 작성해보세요!</p>
+            <p className="mb-2 text-gray-500">
+              아직 작성된 스터디 기록이 없습니다.
+            </p>
+            <p className="text-sm text-gray-400">
+              첫 스터디 기록을 작성해보세요!
+            </p>
           </div>
         </div>
       ) : (
@@ -74,7 +80,7 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
             <div
               key={record.id}
               className="hover:border-primary-400 hover:bg-primary-50/40 group cursor-pointer rounded-xl border border-gray-200 transition-all"
-              onClick={() => handleRecordClick(record.id)}
+              onClick={() => handleRecordClick(groupId, record.id)}
             >
               <div className="flex items-center justify-between p-4">
                 <h3 className="group-hover:text-primary-700 text-[28px] text-gray-900">
@@ -101,7 +107,9 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
                       alt="파일 첨부"
                       className="filter: contrast-84; w-[8.5px] brightness-90 hue-rotate-182 invert-47 saturate-755 sepia-7"
                     />
-                    <p className="mt-1 text-xs text-gray-500">첨부파일 {record.files_count}개</p>
+                    <p className="mt-1 text-xs text-gray-500">
+                      첨부파일 {record.files_count}개
+                    </p>
                   </div>
                 </div>
               </div>

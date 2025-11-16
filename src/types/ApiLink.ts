@@ -267,21 +267,21 @@ type NoteAuthor = {
   profile_image_url: string
 }
 
-type AISummary = {
-  available: boolean
-  created_at: string
-  format: string
-  body: string
-}
+// type AISummary = {
+//   available: boolean
+//   created_at: string
+//   format: string
+//   body: string
+// }
 
 type Note = {
   id: number
   group_id: string
   title: string
   author: NoteAuthor
-  content_md: string
+  content: string
   attachments: NoteFile[]
-  ai_summary: AISummary
+  ai_summary: string
   created_at: string
   updated_at: string
 }
@@ -574,7 +574,7 @@ type NoteApi = {
   POST: (req: NotePost) => { res: BaseResWithGeneric<NotePostRes> }
 
   (note_id: number): {
-    GET: () => { res: BaseResWithGeneric<Note> }
+    GET: () => { res: { data: BaseResWithGeneric<Note> } }
     PATCH: (req: NotePatchReq) => { res: BaseResWithGeneric<Note> }
     DELETE: () => { res: BaseResponse }
   }

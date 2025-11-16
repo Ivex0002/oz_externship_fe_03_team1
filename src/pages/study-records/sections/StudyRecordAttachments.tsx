@@ -1,10 +1,8 @@
+import type { NoteFile } from '@/types/Note'
 import { ArrowDownToLine } from 'lucide-react'
 
 interface AttachmentsProps {
-  attachments: {
-    filename: string
-    url: string
-  }[]
+  attachments: NoteFile[]
 }
 
 export const StudyRecordAttachments = ({ attachments }: AttachmentsProps) => {

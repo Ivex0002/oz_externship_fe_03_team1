@@ -2,12 +2,13 @@ import { useState } from 'react'
 import { Eye, EyeOff } from 'lucide-react'
 
 interface AISummaryProps {
-  summaryData: {
-    title: string
-    summary: string
-    keywords: string[]
-    recommendations: string[]
-  }
+  // summaryData: {
+  //   title: string
+  //   summary: string
+  //   keywords: string[]
+  //   recommendations: string[]
+  // }
+  summaryData: string
 }
 
 export const StudyRecordAISummary = ({ summaryData }: AISummaryProps) => {
@@ -47,7 +48,8 @@ export const StudyRecordAISummary = ({ summaryData }: AISummaryProps) => {
 
       {isOpen && (
         <div className="rounded-xl bg-[#FEFCE8] p-6 text-gray-800">
-          <p className="mb-4">{summaryData.title}</p>
+          <p>{summaryData}</p>
+          {/* <p className="mb-4">{summaryData.title}</p>
 
           <div className="space-y-6">
             <section>
@@ -76,7 +78,7 @@ export const StudyRecordAISummary = ({ summaryData }: AISummaryProps) => {
                 ))}
               </ul>
             </section>
-          </div>
+          </div> */}
         </div>
       )}
     </div>

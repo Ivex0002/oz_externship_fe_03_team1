@@ -80,7 +80,7 @@ export const CreateStudyGroup = () => {
   }
 
   return (
-    <div className="relative min-h-screen w-full bg-[#FAFAFA] py-10">
+    <div className="relative min-h-screen w-screen bg-[#FAFAFA] py-10">
       <div className="mx-auto mb-8 flex h-[96px] w-[832px] items-center gap-4">
         <button
           onClick={handleBack}

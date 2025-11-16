@@ -17,6 +17,10 @@ interface PatchScheduleParams extends Partial<PostScheduleParams> {
   scheduleId: string
 }
 
+interface DeleteScheduleParams {
+  scheduleId: string
+}
+
 export const useScheduleMutation = (studyGroupId: string) => {
   const postSchedule = useMutation({
     mutationFn: (params: PostScheduleParams) => {
@@ -64,8 +68,23 @@ export const useScheduleMutation = (studyGroupId: string) => {
     },
   })
 
+  const deleteSchedule = useMutation({
+    mutationFn: (params: DeleteScheduleParams) =>
+      api.v1.studies.schedules(params.scheduleId).DELETE(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: queryKeys.studies.groups.schedules(studyGroupId),
+      })
+      toast.success('일정이 성공적으로 삭제되었습니다.')
+    },
+    onError: (error) => {
+      toast.error(`일정 삭제에 실패했습니다: ${(error as Error).message}`)
+    },
+  })
+
   return {
     postSchedule,
     patchSchedule,
+    deleteSchedule,
   }
 }

@@ -1,10 +1,10 @@
 import { useRef, useReducer, useMemo } from 'react'
 import { TooltipPortal } from '../../utils/TooltipPortal'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import type { Member } from '@/types/Schedule'
 import { Crown, X } from 'lucide-react'
 import { useModal } from '@/hooks/useModal'
 import { useStudyGroupMutation } from '@/hooks/api/mutations/useStudyGroupMutation'
+import type { Member } from '@/types/StudyGroupDetailTypes'
 
 interface StudyMemberListProps {
   members: Member[]

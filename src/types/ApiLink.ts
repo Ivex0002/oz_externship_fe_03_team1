@@ -428,17 +428,21 @@ type NotificationApi = {
   GET: () => {
     res: {
       counts: { total: number; unread: number; read: number }
+      next: string | null
+      previous: string | null
       results: UserNotification[]
     }
   }
   read$all: {
-    PATCH: () => {
+    POST: () => {
       res: BaseResponse
     }
   }
   (notification_id: number): {
-    PATCH: () => {
-      res: BaseResponse
+    read: {
+      POST: () => {
+        res: BaseResponse
+      }
     }
   }
   study: {

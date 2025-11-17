@@ -29,6 +29,12 @@ export const NOTIFICATION_STYLE: Record<NotificationType, NotificationStyle> = {
   STUDY_RECORD_CREATED: { Icon: NotebookPen, bg: '#CCFBF1', text: '#0D9488' },
 }
 
+export const DEFAULT_NOTIFICATION_STYLE: NotificationStyle = {
+  Icon: NotebookPen,
+  bg: '#E5E7EB',
+  text: '#6B7280',
+}
+
 /**
  * 아이콘과 색상을 입력받아 원형 배경이 적용된 아이콘을 만들어주는 메서드
  * @param {NotificationStyle} 아이콘(Icon), 아이콘 색상(text), 배경색상(bg)
@@ -46,4 +52,10 @@ export const createIconNode = ({ Icon, text, bg }: NotificationStyle) => {
       <Icon size={14} color={text} />
     </div>
   )
+}
+
+export const getNotificationStyle = (
+  type: NotificationType
+): NotificationStyle => {
+  return NOTIFICATION_STYLE[type] ?? DEFAULT_NOTIFICATION_STYLE
 }

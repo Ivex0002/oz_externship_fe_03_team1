@@ -120,26 +120,28 @@ const TestG = () => {
       //   .kick$member.DELETE({
       //     target_member_uuid: serverDummyGroupMemberUUid[9].uuid,
       //   })
-      const res = await api.v1.studies.groups.GET(undefined, {
-        params: {
-          is_member: true,
-        },
-      })
-      // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
+      // const res = await api.v1.studies.groups.GET(undefined, {
+      //   params: {
+      //     is_member: true,
+      //   },
+      // })
+      // // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
 
-      const groupuuids = res.data.results.map((el) => el.uuid)
-      console.log(res)
+      // const groupuuids = res.data.results.map((el) => el.uuid)
+      // console.log(res)
 
-      for (const uuid of groupuuids) {
-        console.log(uuid)
+      // for (const uuid of groupuuids) {
+      //   console.log(uuid)
 
-        const resRev = api.v1.studies.groups(uuid).reviews.GET(undefined, {
-          params: {
-            page: 1,
-          },
-        })
-        console.log({ resRev })
-      }
+      //   const resRev = api.v1.studies.groups(uuid).reviews.GET(undefined, {
+      //     params: {
+      //       page: 1,
+      //     },
+      //   })
+      //   console.log({ resRev })
+      // }
+
+      const res = await api.v1.notifications.GET()
 
       // console.log({ accessToken })
 

@@ -1,11 +1,12 @@
 import { storeNotification, type filterKey } from '@/store/storeNotification'
 import { useMemo, useRef } from 'react'
-import { createIconNode, NOTIFICATION_STYLE } from './NotiCreateIcon'
+import { createIconNode, getNotificationStyle } from './NotiCreateIcon'
 import { AnimatePresence, motion } from 'framer-motion'
 import { usePanelClose } from '@/hooks/usePanelClose'
 import type { UserNotification } from '@/types/Notification'
 import { formatToMonthDay } from '@/hooks/useFormatDate'
-import { api } from '@/api/api'
+import { api, httpClient } from '@/api/api'
+import { toast } from 'react-toastify'
 
 // TODO
 // 1. store : 초기값 api 요청 로직 작성 v
@@ -48,7 +49,7 @@ export const NotiPanel = ({
 const NotiHeader = () => {
   const { markAllAsRead } = storeNotification()
   const handleClick = async () => {
-    await api.v1.notifications.read$all.PATCH()
+    await api.v1.notifications.read$all.POST()
     markAllAsRead()
   }
   return (
@@ -116,9 +117,31 @@ const NotiItemList = () => {
 
   // TODO:제대로 요청/응답 오나 확인 필요
   // 현재 테스트 계정에 알림 없음
-  const handleClick = async (n: UserNotification) => {
-    await api.v1.notifications(n.id).PATCH()
-    window.location.href = n.back_url_link
+  const handleNotificationClick = async (notification: UserNotification) => {
+    const link = notification.back_url_link
+
+    if (!link) return
+
+    if (link.startsWith('http')) {
+      window.location.href = link
+      return
+    }
+
+    if (link.startsWith('/api')) {
+      try {
+        const cleaned = link.replace(/^\/api/, '')
+        const res = await httpClient.request(cleaned, 'GET')
+        console.log('API 호출 성공:', res.data)
+
+        // 필요 시 성공 후 특정 동작 실행
+        // navigate(...)
+        // open modal 등등...
+      } catch (err) {
+        console.error('API 호출 실패:', err)
+        toast.error('요청 처리 중 오류가 발생했습니다.')
+      }
+      return
+    }
   }
 
   return filtered.length === 0 ? (
@@ -130,10 +153,10 @@ const NotiItemList = () => {
           key={n.id}
           aria-label={`${n.id}. ${n.is_read ? '읽은' : '읽지 않은'} 알림`}
           className={`cursor-pointer p-4 transition-colors ${index !== 0 ? 'border-t border-gray-100' : ''} ${n.is_read ? 'bg-white' : 'bg-primary-50'}`}
-          onClick={() => handleClick(n)}
+          onClick={() => handleNotificationClick(n)}
         >
           <div className="relative flex items-start">
-            {createIconNode(NOTIFICATION_STYLE[n.type])}
+            {createIconNode(getNotificationStyle(n.type))}
 
             <div className="flex-1 pl-3">
               <p className="h-10 text-sm leading-5 tracking-[0px] text-gray-900">

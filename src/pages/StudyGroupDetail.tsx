@@ -31,8 +31,8 @@ export const StudyGroupDetail = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <div className="mx-auto px-[80px] pt-[60.5px]">
+    <div className="min-h-screen w-screen bg-gray-50">
+      <div className="px-[80px] pt-[60.5px]">
         <StudyBannerSection
           isLeader={studyGroupDetailData.is_me_leader}
           formattedInfo={formattedInfo}

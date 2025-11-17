@@ -11,6 +11,14 @@ interface StudyGroupParams extends PageReq {
 export const useQueryStudyGroup = (params: StudyGroupParams) => {
   return useQuery({
     queryKey: queryKeys.studies.groups.list(params),
-    queryFn: () => api.v1.studies.groups.GET(undefined, { params }),
+    queryFn: () =>
+      api.v1.studies.groups.GET(undefined, {
+        params: {
+          is_member: true,
+          status: params.status,
+          page_size: params.page_size,
+          search: params.search,
+        },
+      }),
   })
 }

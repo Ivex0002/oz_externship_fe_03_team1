@@ -1,6 +1,7 @@
 // import { apiFactory } from '@/api/api'
+import { api } from '@/api/api'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import { storeAccessToken } from '@/store/storeAccessToken'
+// import { storeAccessToken } from '@/store/storeAccessToken'
 // import { toast } from 'react-toastify'
 
 // const serverDummyGroupUUid = '57c71ffc-1a31-484f-8807-8fb985f63e7b'
@@ -81,7 +82,7 @@ import { storeAccessToken } from '@/store/storeAccessToken'
 
 // const params = { page: 1 }
 const TestG = () => {
-  const { accessToken } = storeAccessToken()
+  // const { accessToken } = storeAccessToken()
   const handleClick = async () => {
     try {
       // const res = await api.v1.lectures.GET()
@@ -119,12 +120,30 @@ const TestG = () => {
       //   .kick$member.DELETE({
       //     target_member_uuid: serverDummyGroupMemberUUid[9].uuid,
       //   })
-      // const res = await api.v1.studies.groups.POST()
+      const res = await api.v1.studies.groups.GET(undefined, {
+        params: {
+          is_member: true,
+        },
+      })
       // const res = await api.v1.studies.groups(serverDummyGroupUUid).GET()
 
-      console.log({ accessToken })
+      const groupuuids = res.data.results.map((el) => el.uuid)
+      console.log(res)
 
-      // console.log(res)
+      for (const uuid of groupuuids) {
+        console.log(uuid)
+
+        const resRev = api.v1.studies.groups(uuid).reviews.GET(undefined, {
+          params: {
+            page: 1,
+          },
+        })
+        console.log({ resRev })
+      }
+
+      // console.log({ accessToken })
+
+      console.log(res)
       // toast.info(`${res}`)
     } catch (error) {
       console.error('API call failed:', error)

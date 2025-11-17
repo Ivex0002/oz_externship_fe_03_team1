@@ -236,10 +236,9 @@ type ReviewDetailAdminRes = {
 type File = {
   file_name: string
   content_type: string
+  file_size: number
 }
-type PresignedURLReq = {
-  files: File[]
-}
+type PresignedURLReq = File[]
 
 type PresignedURLRes = {
   file_name: string
@@ -335,16 +334,16 @@ type Schedule = {
   created_at: string
   updated_at: string
 }
-type Participant = {
-  id: number
-  user: {
-    uuid: string
-    nickname: string
-  }
-  is_leader: boolean
-}
+// type Participant = {
+//   id: number
+//   user: {
+//     uuid: string
+//     nickname: string
+//   }
+//   is_leader: boolean
+// }
 type ScheduleDetail = Schedule & {
-  participants: Participant[]
+  members: Member[]
 }
 
 // ===================== Pagination =====================

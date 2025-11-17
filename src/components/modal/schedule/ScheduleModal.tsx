@@ -8,10 +8,10 @@ import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { useScheduleMutation } from '@/hooks/api/mutations/useScheduleMutation'
 import { toast } from 'react-toastify'
-import type { Participant } from '@/types/Schedule'
+import type { Member } from '@/types/StudyGroupDetailTypes'
 
 export const ScheduleModal = () => {
-  const [selectedMembers, setSelectedMembers] = useState<Participant[]>([])
+  const [selectedMembers, setSelectedMembers] = useState<Member[]>([])
   const { closeModal, modalToModal } = useModal()
   const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
 
@@ -29,7 +29,7 @@ export const ScheduleModal = () => {
   useEffect(() => {
     if (!isEdit) return // 수정이 아닌 경우 초기화하지 않음
     if (previousSchedule) {
-      setSelectedMembers(previousSchedule.participants)
+      setSelectedMembers(previousSchedule.members)
     }
   }, [isEdit, previousSchedule])
 
@@ -63,7 +63,7 @@ export const ScheduleModal = () => {
       session_date: data.session_date,
       start_time: data.start_time,
       end_time: data.end_time,
-      participants: selectedMembers.map((member) => member.user.uuid),
+      participants: selectedMembers.map((member) => member.uuid),
     }
 
     if (isEdit) {
@@ -90,9 +90,8 @@ export const ScheduleModal = () => {
             ? payload.end_time
             : undefined,
         participants:
-          previousSchedule.participants.map(
-            (participant) => participant.user.uuid
-          ) !== payload.participants
+          previousSchedule.members.map((participant) => participant.uuid) !==
+          payload.participants
             ? payload.participants
             : undefined,
       }

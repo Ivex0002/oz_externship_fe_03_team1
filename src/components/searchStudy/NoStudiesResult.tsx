@@ -1,7 +1,7 @@
 import React from 'react'
 import { Users } from 'lucide-react'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
-import test1 from '../../../public/icons/medal.svg'
+import medal from '../../../public/icons/medal.svg'
 import { useNavigate } from 'react-router'
 
 // StudyType타입에 active와 completed라는 상태를 정의
@@ -32,8 +32,8 @@ export const NoStudiesResult = ({
   const navigate = useNavigate()
 
   const handleClickCreateStudy = () => {
-  navigate('/create_study_group')
-}
+    navigate('/create_study_group')
+  }
   // 타입 매핑 (키에 따라 서로 다른 상태 설정을 매핑하는 객체)
   // Record< K:키(StudyType), T:타입(StatusConfig) > 유틸리티 타입.
   // K:진행중인 스터디가 없을 때 or  완료된 스터디가 없을 때
@@ -48,7 +48,7 @@ export const NoStudiesResult = ({
     },
     // 완료된 스터디가 없을 때
     completed: {
-      icon: <img src={test1} alt="메달 아이콘" className="h-12 w-12" />,
+      icon: <img src={medal} alt="메달 아이콘" className="h-12 w-12" />,
       defaultTitle: '완료된 스터디가 없습니다',
       searchTitle: '검색된 완료된 스터디가 없습니다',
       description: '아직 완료된 스터디 그룹이 없습니다',
@@ -66,17 +66,21 @@ export const NoStudiesResult = ({
 
   // 출력 UI 내부에 컨텐츠( 이미지, 텍스트 등 )은 프롭스로 내려받아서 사용
   return (
-      <section className="mx-auto bg-gray-50 flex w-full flex-col items-center justify-center rounded-xl p-16">
-        <div className="mb-6 rounded-full bg-gray-100 p-6">
-          {currentStatus.icon}
-        </div>
-        <h3 className="mb-2 text-xl font-bold text-gray-900">{displayTitle}</h3>
-        <p className="mb-6 text-gray-600">{currentStatus.description}</p>
-        {currentStatus.showButton && (
-          <BasicButton variant="primary" size="large" onClick={handleClickCreateStudy}>
-            <span className="mr-2 text-xl">+</span>
-            <span>스터디 그룹 만들기</span>
-          </BasicButton>
+    <section className="mx-auto flex w-full flex-col items-center justify-center rounded-xl bg-gray-50 p-16">
+      <div className="mb-6 rounded-full bg-gray-100 p-6">
+        {currentStatus.icon}
+      </div>
+      <h3 className="mb-2 text-xl font-bold text-gray-900">{displayTitle}</h3>
+      <p className="mb-6 text-gray-600">{currentStatus.description}</p>
+      {currentStatus.showButton && (
+        <BasicButton
+          variant="primary"
+          size="large"
+          onClick={handleClickCreateStudy}
+        >
+          <span className="mr-2 text-xl">+</span>
+          <span>스터디 그룹 만들기</span>
+        </BasicButton>
         //           <BasicButton
         //   variant="primary"
         //   onClick={handleClickCreateStudy}
@@ -84,7 +88,7 @@ export const NoStudiesResult = ({
         // >
         //   <Plus size={16} /> 새 스터디 만들기
         // </BasicButton>
-        )}
-      </section>
+      )}
+    </section>
   )
 }

@@ -7,6 +7,7 @@ import { AnimatePresence } from 'framer-motion'
 import { useAsyncEffect } from '@/hooks/useAsyncEffect'
 import { api } from '@/api/api'
 import { storeUser } from '@/store/storeUser'
+import { storeWs } from '@/store/storeWS'
 
 export const ChatButton = () => {
   const { totalUnreadCount, setIsPanelOpen, isPanelOpen } = storeChat()
@@ -49,6 +50,7 @@ export const ChatButton = () => {
 const GETChatRooms = () => {
   const { user } = storeUser()
   const { setChatRooms } = storeChat()
+  const { ws } = storeWs()
   useAsyncEffect({
     asyncFn: async () => await api.v1.chat.chatrooms.GET(),
     onSuccess: (chatRoomsData) => {
@@ -56,7 +58,7 @@ const GETChatRooms = () => {
 
       return setChatRooms(chatRoomsData || [])
     },
-    deps: [user],
+    deps: [user, ws],
   })
   return null
 }

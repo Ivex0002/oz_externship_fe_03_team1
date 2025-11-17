@@ -83,16 +83,25 @@ type StudyGroup = {
   is_leader: boolean
 }
 
+type StudyGroupDetail = {
+  uuid: string
+  name: string
+  profile_img_url: string
+  current_headcount: number
+  max_headcount: number
+  start_at: string
+  end_at: string
+  status: StudyGroupStatus
+  lectures: StudyLecture[]
+  is_me_leader: boolean
+  members: Member[]
+}
+
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
 type Member = {
   uuid: string
   nickname: string
   is_leader: boolean
-}
-
-type StudyGroupDetail = StudyGroup & {
-  // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
-  members: Member[]
 }
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음

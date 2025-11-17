@@ -11,7 +11,6 @@ export const StudyRecordList = ({ groupId }: StudyRecordListProps) => {
   const navigate = useNavigate()
   const { data, isPending, isError } = useQueryStudyRecords(groupId)
   const recordsList = data?.data?.data
-  console.log(data)
   const handleWriteClick = () => {
     navigate(`/create_study_record/${groupId}`)
   }

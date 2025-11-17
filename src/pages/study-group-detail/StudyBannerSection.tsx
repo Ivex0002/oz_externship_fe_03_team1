@@ -46,9 +46,9 @@ export const StudyBannerSection = ({
 
   const handleLeaveClick = () => {
     openModal('CONFIRM', {
-      title: '스터디 그룹을 나가시겠습니까?',
+      title: '스터디 그룹 탈퇴',
       modalProps: {
-        message: '확인을 누르면 스터디그룹을 나갑니다',
+        message: '스터디 그룹을 나가시겠습니까?',
         onConfirm: onConfirmLeave,
         onCancel: onCancelLeave,
       },

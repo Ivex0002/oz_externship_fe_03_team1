@@ -86,6 +86,7 @@ type StudyGroup = {
 type StudyGroupDetail = {
   uuid: string
   name: string
+  introduction: string
   profile_img_url: string
   current_headcount: number
   max_headcount: number

@@ -12,7 +12,7 @@ export const LOGIN_PAGE_URL = '/login'
 export const tokenManager = new TokenManager()
 export const apiFactory = new ApiClientFactory(tokenManager)
 
-const httpClient = apiFactory.createHttpClient(BASE_URL, throwHttpError)
+export const httpClient = apiFactory.createHttpClient(BASE_URL, throwHttpError)
 const requestExecutor = httpClient.getRequestExecutor()
 
 // 일반 http 통신은 트리 구조로 접근

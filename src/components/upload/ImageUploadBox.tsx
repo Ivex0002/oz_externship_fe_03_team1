@@ -45,15 +45,13 @@ export const ImageUploadBox = ({
     const toastId = toast.loading('이미지 업로드 중...')
 
     try {
-      const res = await presignedUrl.mutateAsync({
-        files: [
-          {
-            file_name: file.name,
-            content_type: file.type,
-            file_size: file.size,
-          },
-        ],
-      })
+      const res = await presignedUrl.mutateAsync([
+        {
+          file_name: file.name,
+          content_type: file.type,
+          file_size: file.size,
+        },
+      ])
 
       const presigned = res?.data?.data
       if (!presigned) throw new Error('Presigned URL 생성 실패')

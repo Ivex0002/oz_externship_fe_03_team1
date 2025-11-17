@@ -1,3 +1,5 @@
+import type { Member } from './StudyGroupDetailTypes'
+
 export type Participant = {
   id: number
   user: {
@@ -15,7 +17,7 @@ export type ScheduleDetail = {
   start_time: string
   end_time: string
   created_at?: string
-  participants: Participant[]
+  members: Member[]
 }
 
 export type Schedule = {

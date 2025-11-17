@@ -43,13 +43,13 @@ export const DetailScheduleModal = () => {
     start_time: scheduleDetailData?.start_time || '',
     end_time: scheduleDetailData?.end_time || '',
   }
-  const participants = scheduleDetailData?.participants || []
+  const members = scheduleDetailData?.members || []
 
   const formattedCreatedScheduleDate =
     dayjs(scheduleDetailData?.created_at).format('LLL') || ''
 
   const handleClickEdit = () => {
-    setPreviousSchedule({ ...scheduleInfo, participants })
+    setPreviousSchedule({ ...scheduleInfo, members })
     setIsEdit(true)
 
     modalToModal('SCHEDULE', {
@@ -81,7 +81,7 @@ export const DetailScheduleModal = () => {
     <div className="w-[672px] text-gray-900">
       <main className="flex flex-col gap-6 p-6">
         <DetailScheduleInfo scheduleInfo={scheduleInfo} />
-        <DetailScheduleSelectedParticipants participants={participants} />
+        <DetailScheduleSelectedParticipants participants={members} />
       </main>
       <footer className="flex w-full items-center justify-between gap-3 border-t border-gray-200 p-6">
         <span className="text-xs text-gray-500">

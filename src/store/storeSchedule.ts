@@ -19,7 +19,7 @@ const initialSchedule: ScheduleDetail = {
   session_date: '',
   start_time: '',
   end_time: '',
-  participants: [],
+  members: [],
 }
 
 export const storeSchedule = create<StoreSchedule>((set) => ({

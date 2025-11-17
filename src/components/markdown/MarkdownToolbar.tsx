@@ -187,8 +187,8 @@ export const MarkdownToolbar = ({
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
-            fileName: file.name,
-            fileType: file.type,
+            file_name: file.name,
+            file_type: file.type,
             folder: 'users/markdown/images',
           }),
         }

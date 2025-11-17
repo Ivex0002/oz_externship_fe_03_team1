@@ -1,16 +1,8 @@
+import type { Member } from '@/types/StudyGroupDetailTypes'
 import { User } from 'lucide-react'
 
-type Participant = {
-  id: number
-  user: {
-    uuid: string
-    nickname: string
-  }
-  is_leader: boolean
-}
-
 interface DetailScheduleSelectedParticipantsProps {
-  participants: Participant[]
+  participants: Member[]
 }
 
 export const DetailScheduleSelectedParticipants = ({
@@ -30,7 +22,7 @@ export const DetailScheduleSelectedParticipants = ({
             <div className="center-center bg-primary-100 h-8 w-8 rounded-full">
               <User className="text-primary-600" size={18} />
             </div>
-            {leader.user.nickname}
+            {leader.nickname}
             <span className="bg-primary-100 text-primary-800 rounded-sm px-2 py-1 text-xs">
               리더
             </span>
@@ -41,7 +33,7 @@ export const DetailScheduleSelectedParticipants = ({
             <div className="center-center bg-primary-100 h-8 w-8 rounded-full">
               <User className="text-primary-600" size={18} />
             </div>
-            {member.user.nickname}
+            {member.nickname}
           </li>
         ))}
       </ul>

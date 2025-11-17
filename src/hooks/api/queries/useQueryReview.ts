@@ -22,7 +22,6 @@ export const useQueryReview = (params: ReviewParams) => {
     queryFn: () =>
       api.v1.studies.groups(params.groupId).reviews.GET(undefined, {
         params: {
-          is_member: true,
           page: params.page,
           page_size: params.page_size,
           ordering: params.ordering,

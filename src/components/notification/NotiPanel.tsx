@@ -48,7 +48,7 @@ export const NotiPanel = ({
 const NotiHeader = () => {
   const { markAllAsRead } = storeNotification()
   const handleClick = async () => {
-    await api.v1.notifications.read$all.PATCH()
+    await api.v1.notifications.read$all.POST()
     markAllAsRead()
   }
   return (
@@ -117,7 +117,7 @@ const NotiItemList = () => {
   // TODO:제대로 요청/응답 오나 확인 필요
   // 현재 테스트 계정에 알림 없음
   const handleClick = async (n: UserNotification) => {
-    await api.v1.notifications(n.id).PATCH()
+    await api.v1.notifications(n.id).read.POST()
     window.location.href = n.back_url_link
   }
 

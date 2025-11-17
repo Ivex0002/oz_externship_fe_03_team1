@@ -432,13 +432,15 @@ type NotificationApi = {
     }
   }
   read$all: {
-    PATCH: () => {
+    POST: () => {
       res: BaseResponse
     }
   }
   (notification_id: number): {
-    PATCH: () => {
-      res: BaseResponse
+    read: {
+      POST: () => {
+        res: BaseResponse
+      }
     }
   }
   study: {

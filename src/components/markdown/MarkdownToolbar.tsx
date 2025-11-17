@@ -165,9 +165,10 @@ export const MarkdownToolbar = ({
     })
   }
 
-  const handleFileSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (!file) return
+
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       toast.error(UPLOAD_ERROR_MESSAGES.invalidType)
       return
@@ -176,10 +177,54 @@ export const MarkdownToolbar = ({
       toast.error(UPLOAD_ERROR_MESSAGES.tooLarge)
       return
     }
-    const imageURL = URL.createObjectURL(file)
-    const markdownImage = `![${file.name}](${imageURL})`
-    onUpdate((prev) => prev + '\n' + markdownImage)
-    toast.success('이미지가 추가되었습니다.')
+
+    const toastId = toast.loading('이미지 업로드 중...')
+
+    try {
+      const res = await fetch(
+        `${import.meta.env.VITE_API_BASE_URL}/upload/presigned-url`,
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            fileName: file.name,
+            fileType: file.type,
+            folder: 'users/markdown/images',
+          }),
+        }
+      )
+
+      if (!res.ok) throw new Error('Presigned URL 요청 실패')
+      const { presignedUrl, objectKey } = await res.json()
+
+      const uploadRes = await fetch(presignedUrl, {
+        method: 'PUT',
+        headers: { 'Content-Type': file.type },
+        body: file,
+      })
+      if (!uploadRes.ok) throw new Error('S3 업로드 실패')
+
+      const imageUrl = `${import.meta.env.VITE_S3_BASE_URL}/${objectKey}`
+
+      const markdownImage = `\n![${file.name}](${imageUrl})`
+      onUpdate((prev) => prev + markdownImage)
+
+      toast.update(toastId, {
+        render: '이미지가 업로드되었습니다!',
+        type: 'success',
+        isLoading: false,
+        autoClose: 2000,
+      })
+    } catch (error) {
+      toast.update(toastId, {
+        render: '이미지 업로드 중 오류가 발생했습니다.',
+        type: 'error',
+        isLoading: false,
+        autoClose: 2000,
+      })
+    } finally {
+      if (fileInputRef.current) fileInputRef.current.value = ''
+    }
   }
 
   return (

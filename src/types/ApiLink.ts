@@ -72,6 +72,7 @@ type StudyLecture = {
 type StudyGroup = {
   uuid: string
   name: string
+  introduction: string
   profile_img_url: string
   current_headcount: number
   max_headcount: number
@@ -99,11 +100,10 @@ type StudyGroupDetail = StudyGroup & {
 type StudyGroupPost = {
   name: string
   introduction: string
-  profile_img_url: string
+  profile_img_url: string | null
   start_at: string
   end_at: string
   max_headcount: number
-  status: string
   // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
   // (스웨거) uuid[] 라고 기입되어 있음
   lectures: string[]
@@ -114,7 +114,7 @@ type StudyGroupPost = {
 type StudyGroupPut = {
   name: string
   introduction: string
-  profile_img_url: string
+  profile_img_url: string | null
   start_at: string
   end_at: string
   lectures: string[]
@@ -225,7 +225,6 @@ type ReviewDetailAdminRes = {
 type File = {
   file_name: string
   content_type: string
-  file_size: number
 }
 type PresignedURLReq = {
   files: File[]
@@ -475,7 +474,7 @@ type GroupApi = {
 
   presigned$url: {
     POST: (req: PresignedURLReq) => {
-      res: BaseResWithGeneric<PresignedURLRes[]>
+      res: { data: BaseResWithGeneric<PresignedURLRes> }
     }
   }
 

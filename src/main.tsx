@@ -11,6 +11,7 @@ import TestModal from './test/TestModal'
 
 import { StudyGroup } from './pages/StudyGroup'
 import { CreateStudyGroup } from './pages/study-groups/CreateStudyGroup'
+import { UpdateStudyGroup } from './pages/study-groups/UpdateStudyGroup'
 import { StudyGroupDetail } from './pages/StudyGroupDetail'
 import { StudyRecord } from './pages/study-groups/StudyRecord/StudyRecord'
 import { StudyRecordDetail } from './pages/study-records/StudyRecordDetail'
@@ -31,7 +32,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/edit_study_group/:studyGroupId',
-        Component: CreateStudyGroup,
+        Component: UpdateStudyGroup,
       },
       {
         path: '/study_group_detail/:studyGroupId',

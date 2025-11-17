@@ -16,10 +16,6 @@ export const BasicInfoSection = ({
   setForm,
   handleChange,
 }: BasicInfoSectionProps) => {
-  const handleFileSelect = (file: File | null) => {
-    setForm((prev) => ({ ...prev, image: file }))
-  }
-
   return (
     <section className="space-y-6 border-gray-200 pb-6">
       <h2 className="text-lg font-semibold text-gray-700">기본 정보</h2>
@@ -43,13 +39,13 @@ export const BasicInfoSection = ({
           스터디 그룹 소개 (선택사항)
         </label>
         <MarkdownWrite
-          value={form.description}
+          value={form.introduction}
           onChange={(action) =>
             setForm((prev) => ({
               ...prev,
-              description:
+              introduction:
                 typeof action === 'function'
-                  ? action(prev.description)
+                  ? action(prev.introduction)
                   : action,
             }))
           }
@@ -62,8 +58,13 @@ export const BasicInfoSection = ({
           스터디 그룹 대표 이미지 (선택사항)
         </label>
         <ImageUploadBox
-          currentFile={form.image}
-          onFileSelect={handleFileSelect}
+          currentFileUrl={form.profile_img_url}
+          onFileSelect={(url) =>
+            setForm((prev) => ({
+              ...prev,
+              profile_img_url: url,
+            }))
+          }
         />
       </div>
     </section>

@@ -31,7 +31,9 @@ export const ReviewModal = () => {
   const { closeModal } = useModal()
   const { modalState } = storeModalOpen()
   const modalProps = modalState.modalProps
-  const groupId = (modalProps as ModalPropsMap['REVIEW']).studyGroupId
+  const groupId = modalProps
+    ? (modalProps as ModalPropsMap['REVIEW']).studyGroupId
+    : ''
 
   const { previousMyReview, isEditReview, clearReviews } = storeReview()
 

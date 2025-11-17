@@ -4,20 +4,25 @@ import { ScheduleInfo } from './ScheduleInfo'
 import { BasicButton } from '@/components/basicComponents/BasicButton/BasicButton'
 import { useModal } from '@/hooks/useModal'
 import { storeSchedule } from '@/store/storeSchedule'
-import type { Member } from '@/types/Schedule'
 import { storeModalOpen } from '@/store/storeModalOpen'
 import type { ModalPropsMap } from '@/types/Modal'
 import { useScheduleMutation } from '@/hooks/api/mutations/useScheduleMutation'
 import { toast } from 'react-toastify'
+import type { Participant } from '@/types/Schedule'
 
 export const ScheduleModal = () => {
-  const [selectedMembers, setSelectedMembers] = useState<Member[]>([])
+  const [selectedMembers, setSelectedMembers] = useState<Participant[]>([])
   const { closeModal, modalToModal } = useModal()
   const { previousSchedule, isEdit, clearSchedules } = storeSchedule()
 
   const { modalState } = storeModalOpen()
   const modalProps = modalState.modalProps
-  const { studyGroupId, scheduleId } = modalProps as ModalPropsMap['SCHEDULE']
+  const studyGroupId = modalProps
+    ? (modalProps as ModalPropsMap['SCHEDULE']).studyGroupId
+    : ''
+  const scheduleId = modalProps
+    ? (modalProps as ModalPropsMap['SCHEDULE']).scheduleId
+    : ''
 
   const { postSchedule, patchSchedule } = useScheduleMutation(studyGroupId)
 
@@ -28,6 +33,8 @@ export const ScheduleModal = () => {
     }
   }, [isEdit, previousSchedule])
 
+  if (!studyGroupId) return null
+
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
     if (isEdit) {
@@ -35,7 +42,7 @@ export const ScheduleModal = () => {
       if (!studyGroupId || !scheduleId) return
       modalToModal('DETAIL_SCHEDULE', {
         title: '스케줄 상세보기',
-        modalProps: { studyGroupId, scheduleId: Number(scheduleId) },
+        modalProps: { studyGroupId: studyGroupId, scheduleId: scheduleId },
       })
       return
     }
@@ -56,7 +63,7 @@ export const ScheduleModal = () => {
       session_date: data.session_date,
       start_time: data.start_time,
       end_time: data.end_time,
-      participants: selectedMembers.map((member) => member.uuid),
+      participants: selectedMembers.map((member) => member.user.uuid),
     }
 
     if (isEdit) {
@@ -84,7 +91,7 @@ export const ScheduleModal = () => {
             : undefined,
         participants:
           previousSchedule.participants.map(
-            (participant) => participant.uuid
+            (participant) => participant.user.uuid
           ) !== payload.participants
             ? payload.participants
             : undefined,
@@ -107,6 +114,7 @@ export const ScheduleModal = () => {
         <ScheduleInfo />
 
         <ScheduleMembersSelecting
+          studyGroupId={studyGroupId}
           selectedMembers={selectedMembers}
           setSelectedMembers={setSelectedMembers}
         />

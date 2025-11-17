@@ -1,8 +1,9 @@
-import type { Member } from '@/types/Schedule'
+import type { Participant } from '@/types/Schedule'
 
 interface ScheduleMembersSelectingProps {
-  selectedMembers: Member[]
-  setSelectedMembers: React.Dispatch<React.SetStateAction<Member[]>>
+  studyGroupId: string
+  selectedMembers: Participant[]
+  setSelectedMembers: React.Dispatch<React.SetStateAction<Participant[]>>
 }
 
 export const ScheduleMembersSelecting = ({
@@ -10,29 +11,29 @@ export const ScheduleMembersSelecting = ({
   setSelectedMembers,
 }: ScheduleMembersSelectingProps) => {
   const members = [
-    { uuid: '1', nickname: '김개발', is_leader: true },
-    { uuid: '2', nickname: '박리엑트', is_leader: false },
-    { uuid: '3', nickname: '이프론트', is_leader: false },
-    { uuid: '4', nickname: '최자바', is_leader: false },
-    { uuid: '5', nickname: '한스크립트', is_leader: false },
-    { uuid: '6', nickname: '오컴포넌트', is_leader: false },
+    { id: 1, user: { uuid: '1', nickname: '김개발' }, is_leader: true },
+    { id: 2, user: { uuid: '2', nickname: '박리엑트' }, is_leader: false },
+    { id: 3, user: { uuid: '3', nickname: '이프론트' }, is_leader: false },
+    { id: 4, user: { uuid: '4', nickname: '최자바' }, is_leader: false },
+    { id: 5, user: { uuid: '5', nickname: '한스크립트' }, is_leader: false },
+    { id: 6, user: { uuid: '6', nickname: '오컴포넌트' }, is_leader: false },
   ]
 
   const leader = members.find((member) => member.is_leader)
   const others = members.filter((member) => !member.is_leader)
   const isChecked = (id: string) =>
-    selectedMembers.some((member) => member.uuid === id)
+    selectedMembers.some((member) => member.user.uuid === id)
 
   const handleMemberChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value, checked } = e.target
     if (checked) {
-      const memberToAdd = members.find((member) => member.nickname === value)
+      const memberToAdd = members.find((member) => member.user.uuid === value)
       if (memberToAdd) {
         setSelectedMembers([...selectedMembers, memberToAdd])
       }
     } else {
       setSelectedMembers(
-        selectedMembers.filter((member) => member.nickname !== value)
+        selectedMembers.filter((member) => member.user.uuid !== value)
       )
     }
   }
@@ -46,15 +47,15 @@ export const ScheduleMembersSelecting = ({
         {leader && (
           <div className="flex items-center gap-2">
             <label
-              htmlFor={leader.nickname}
+              htmlFor={leader.user.uuid}
               className="relative flex items-center gap-2 text-sm"
             >
               <input
-                id={leader.nickname}
+                id={leader.user.uuid}
                 name="participants"
                 type="checkbox"
-                value={leader.nickname}
-                checked={isChecked(leader.uuid)}
+                value={leader.user.uuid}
+                checked={isChecked(leader.user.uuid)}
                 onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
               />
@@ -74,7 +75,7 @@ export const ScheduleMembersSelecting = ({
                   ></path>
                 </svg>
               </span>
-              {leader.nickname}
+              {leader.user.nickname}
               <span className="bg-primary-100 text-primary-800 rounded-sm px-2 py-1 text-xs">
                 리더
               </span>
@@ -82,17 +83,17 @@ export const ScheduleMembersSelecting = ({
           </div>
         )}
         {others.map((member) => (
-          <div key={member.uuid} className="flex items-center gap-2">
+          <div key={member.user.uuid} className="flex items-center gap-2">
             <label
-              htmlFor={member.nickname}
+              htmlFor={member.user.uuid}
               className="relative flex items-center gap-2 text-sm"
             >
               <input
-                id={member.nickname}
+                id={member.user.uuid}
                 name="participants"
                 type="checkbox"
-                value={member.nickname}
-                checked={isChecked(member.uuid)}
+                value={member.user.uuid}
+                checked={isChecked(member.user.uuid)}
                 onChange={handleMemberChange}
                 className="peer checked:bg-primary-500 h-3 w-3 appearance-none rounded-xs border border-gray-600 checked:border-none focus:outline-none"
               />
@@ -112,7 +113,7 @@ export const ScheduleMembersSelecting = ({
                   ></path>
                 </svg>
               </span>
-              {member.nickname}
+              {member.user.nickname}
             </label>
           </div>
         ))}

@@ -67,7 +67,10 @@ export const ScheduleInfo = () => {
         <label htmlFor="scheduleDate" className="text-sm font-medium">
           스터디 날짜 <span className="text-danger-600">*</span>
         </label>
-        <div className="relative" onClick={() => handleOpenDatePicker()}>
+        <div
+          className="relative cursor-pointer"
+          onClick={() => handleOpenDatePicker()}
+        >
           <BasicInput
             id="scheduleDate"
             name="session_date"
@@ -75,7 +78,7 @@ export const ScheduleInfo = () => {
             value={dateValue}
             readOnly
           />
-          <Calendar className="absolute top-1/2 right-3 h-[16px] w-[16px] -translate-y-1/2 cursor-pointer text-gray-400 hover:text-gray-600" />
+          <Calendar className="absolute top-1/2 right-3 h-[16px] w-[16px] -translate-y-1/2 text-gray-400 hover:text-gray-600" />
           {isOpenDatePicker && (
             <div className="absolute top-0 right-0 z-50 rounded-2xl bg-white shadow-xl">
               <DatePickerModal />

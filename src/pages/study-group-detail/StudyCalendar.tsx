@@ -46,12 +46,14 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
       }
     }
   }, [])
-  
-  const {data, error, isError, isPending} = useQueryStudyGroupSchedule({groupId})
+
+  const { data, error, isError, isPending } = useQueryStudyGroupSchedule({
+    groupId,
+  })
   const studyScheduleData = data && data.data
-  if(!studyScheduleData)return null
-    if(isError)toast.error(error.message)
-    if(isPending)<div> 로딩중... </div>
+  if (!studyScheduleData) return null
+  if (isError) toast.error(error.message)
+  if (isPending) <div> 로딩중... </div>
   console.log(data?.data)
 
   const handlePrevMonth = () =>
@@ -65,7 +67,7 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
     })
   }
 
-  const handleOpenDetail = (scheduleId: number) => {
+  const handleOpenDetail = (scheduleId: string) => {
     openModal('DETAIL_SCHEDULE', {
       title: '스케줄 상세',
       modalProps: { studyGroupId: groupId, scheduleId: scheduleId },
@@ -84,7 +86,6 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
     }
     dispatchTooltip({ type: 'HIDE' })
   }
-
 
   const generateCalendar = () => {
     const year = currentDate.year()
@@ -190,9 +191,9 @@ export const StudyCalendar = ({ groupId }: StudyCalendarProps) => {
                       <div className="pb-2 text-xs text-gray-900">{day}</div>
                       {daySchedules?.map((schedule) => (
                         <div
-                          key={schedule.id}
+                          key={schedule.uuid}
                           className="bg-primary-100 relative mb-1 cursor-pointer rounded p-1"
-                          onClick={() => handleOpenDetail(schedule.id!)}
+                          onClick={() => handleOpenDetail(schedule.uuid!)}
                           onMouseEnter={() => handleMouseEnter(day)}
                           onMouseLeave={handleMouseLeave}
                         >

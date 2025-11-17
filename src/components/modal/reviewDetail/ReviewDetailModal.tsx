@@ -21,7 +21,9 @@ export const ReviewDetailModal = () => {
 
   const { modalState } = storeModalOpen()
   const modalProps = modalState.modalProps
-  const groupId = (modalProps as ModalPropsMap['REVIEW_DETAIL']).studyGroupId
+  const groupId = modalProps
+    ? (modalProps as ModalPropsMap['REVIEW_DETAIL']).studyGroupId
+    : ''
 
   const reviewParams = {
     page: 1,

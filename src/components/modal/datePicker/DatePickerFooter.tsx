@@ -1,6 +1,7 @@
 import { useModal } from '@/hooks/useModal'
 import { BasicButton } from '../../basicComponents/BasicButton/BasicButton'
 import { storeDatePicker } from '@/store/storeDatePicker'
+import { storeSchedule } from '@/store/storeSchedule'
 
 interface DatePickerFooterProps {
   selected: Date | undefined
@@ -13,6 +14,7 @@ export const DatePickerFooter = ({
 }: DatePickerFooterProps) => {
   const { closeModal } = useModal()
   const { mode, setStartDate, setEndDate, setDate } = storeDatePicker()
+  const { previousSchedule, setPreviousSchedule } = storeSchedule()
 
   const handleClickCancel = (e: React.MouseEvent) => {
     e.preventDefault()
@@ -31,7 +33,13 @@ export const DatePickerFooter = ({
       setEndDate(selected)
       closeModal()
     }
-    if (mode === 'single' || target === 'single') setDate(selected)
+    if (mode === 'single' || target === 'single') {
+      setDate(selected)
+      setPreviousSchedule({
+        ...previousSchedule,
+        session_date: selected.toISOString().split('T')[0],
+      })
+    }
   }
 
   return (

@@ -1,14 +1,27 @@
-import { dummySchedule } from '@/assets/dummyData/dummySchedule'
 import { Calendar, Clock3 } from 'lucide-react'
 import dayjs from '@/lib/dayjs'
 
-export const DetailScheduleInfo = () => {
-  const { session_date, start_time, end_time, objective } = dummySchedule
+type StudyInfo = {
+  title: string
+  session_date: string
+  start_time: string
+  end_time: string
+  objective: string
+}
+
+interface DetailScheduleInfoProps {
+  scheduleInfo: StudyInfo
+}
+
+export const DetailScheduleInfo = ({
+  scheduleInfo,
+}: DetailScheduleInfoProps) => {
+  const { title, session_date, start_time, end_time, objective } = scheduleInfo
   const formattedScheduleDate = dayjs(session_date).format('LLLL').slice(0, 15)
 
   return (
     <section className="flex flex-col gap-6">
-      <h3 className="text-lg">{dummySchedule.title}</h3>
+      <h3 className="text-lg">{title}</h3>
       <div className="flex flex-col gap-2">
         <h4 className="text-sm font-medium text-gray-700">스터디 목표</h4>
         <p className="rounded-lg bg-gray-50 p-4">{objective}</p>

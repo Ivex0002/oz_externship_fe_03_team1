@@ -86,6 +86,7 @@ type StudyGroup = {
 type StudyGroupDetail = {
   uuid: string
   name: string
+  introduction: string
   profile_img_url: string
   current_headcount: number
   max_headcount: number
@@ -99,6 +100,7 @@ type StudyGroupDetail = {
 
 // api 명세서를 기준으로 작성 - 이후 변경 가능성 있음
 type Member = {
+  id: number
   uuid: string
   nickname: string
   is_leader: boolean
@@ -323,7 +325,7 @@ type SchedulePost = {
 }
 
 type Schedule = {
-  id: number
+  uuid: string
   study_group: string
   title: string
   objective: string
@@ -335,11 +337,11 @@ type Schedule = {
 }
 type Participant = {
   id: number
-  member: number
-  member_name: string
+  user: {
+    uuid: string
+    nickname: string
+  }
   is_leader: boolean
-  created_at: string
-  updated_at: string
 }
 type ScheduleDetail = Schedule & {
   participants: Participant[]
